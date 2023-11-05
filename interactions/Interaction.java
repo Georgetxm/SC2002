@@ -1,6 +1,7 @@
 package interactions;
+import java.util.HashMap;
 
-public interface Interaction {
-	String message;
-	boolean run();
+public abstract class Interaction {
+	protected String message;
+	protected abstract boolean run(HashMap<String, Object> data) throws Exception;
 }

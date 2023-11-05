@@ -1,5 +1,15 @@
 package camsAction;
 
-public class doSubmitSuggestion {
+import java.util.HashMap;
+
+import interactions.Interaction;
+
+public class doSubmitSuggestion extends Interaction{
+
+	@Override
+	protected boolean run(HashMap<String, Object> data) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

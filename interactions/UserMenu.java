@@ -1,15 +1,13 @@
 package interactions;
+import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
-
 import core.Utility;
 import types.Perms;
 
 public abstract class UserMenu extends Interaction{
 	protected MenuChoice choices[];
-	protected final boolean givechoices(Set<Perms> userperm, HashMap<String,Object> data) throws Exception {
+	protected final boolean givechoices(EnumSet<Perms> userperm, HashMap<String,Object> data) throws Exception {
 		System.out.println(this.message);
 		int selected;
 		int startcounter = 1;

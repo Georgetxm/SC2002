@@ -1,7 +1,7 @@
-#Updates#
+# Updates
 Cams.java is the one with the main(), I've got some stuff in there just for testing.
 
-##Major Changes##
+## Major Changes
 1. Action and QueryMenu instances -> Action and QueryMenu child classes
 Since you cannot pass in methods as parameters, different instances of the same class will all have the same methods.
 This means that .run() will have to be the same for all instances of the same class
@@ -22,8 +22,8 @@ You can replace the current implementation (i.e. the rest) freely with whatever
 Honestly I think the current implementation is kinda bad so do fix it up.
 
 
-#ToDo#
+# ToDo
 
-##Jih How##
+## Jih How
 1. Implement all action classes
 2. Start on static and query menus

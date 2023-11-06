@@ -4,9 +4,10 @@ import java.util.HashMap;
 
 import core.CampAspectValue;
 import core.CampInfo;
+import types.Role;
 
 public interface CampController {
-	public String submitUser(int campid, int userid, String role);
+	public String submitUser(int campid, int userid, Role role);
 	public int submitEnquiry(int campid, String enquiry);
 	public int submitSuggestion(int campid, CampInfo edited, String reason, int userid);
 	public int submitReply(int campid, int enquiryid, String reply);
@@ -24,4 +25,6 @@ public interface CampController {
 	public boolean approveSuggestion(int campid, int suggestionid);
 	public boolean isEnquiryEditable(int campid, int enquiryid);
 	public boolean isSuggestionEditable(int campid, int suggestionid);
+	public boolean isAttendeeFull(int campid);
+	public boolean isCommiteeFull(int campid);
 }

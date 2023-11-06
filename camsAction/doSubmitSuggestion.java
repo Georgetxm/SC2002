@@ -1,6 +1,9 @@
 package camsAction;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import controllers.CampController;
@@ -8,6 +11,7 @@ import controllers.UserController;
 import core.CampAspectValue;
 import core.CampInfo;
 import interactions.Interaction;
+import types.CampAspects;
 
 public final class doSubmitSuggestion extends Interaction{
 	//Currently using distinct control interfaces for dual inheritance
@@ -45,13 +49,13 @@ public final class doSubmitSuggestion extends Interaction{
 		Scanner s = getScanner(data);
 		int counter = 1;
 		System.out.println("What would you like to amend:");
-		for(CampAspectValue aspect: campinfo.info()) {
-			System.out.printf("%d: %s", counter, aspect.name().name());
+		for(CampAspects aspect: campinfo.info().keySet()) {
+			System.out.printf("%d: %s", counter, aspect.name());
 			counter++;
 			//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		}
 		int choice = s.nextInt();
-		campinfo.info().get(choice-1);
+		new ArrayList<Entry<CampAspects, Object>>(campinfo.info().entrySet()).get(choice-1);
 		//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		
 		String reason;

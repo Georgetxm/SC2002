@@ -23,7 +23,8 @@ Honestly I think the current implementation is kinda bad so do fix it up.
 
 
 # ToDo
-
+## Awaits
+1. doSubmitSuggestion and doEditSuggestion awaiting CampInfo confirmation
 ## Jih How
 1. Implement all action classes
 2. Start on static and query menus

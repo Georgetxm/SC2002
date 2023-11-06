@@ -8,7 +8,7 @@ import core.CampInfo;
 public interface CampController {
 	public String submitUser(int campid, int userid, String role);
 	public int submitEnquiry(int campid, String enquiry);
-	public int submitSuggestion(int campid, CampInfo edited, String reason);
+	public int submitSuggestion(int campid, CampInfo edited, String reason, int userid);
 	public int submitReply(int campid, int enquiryid, String reply);
 	public boolean deleteUser(int campid, int userid);
 	public boolean deleteEnquiry(int campid, int enquiryid);
@@ -20,5 +20,8 @@ public interface CampController {
 	public HashMap<String,Integer> getCampSuggestions(int campid, CampAspectValue filter);  
 	public String editSuggestion(int campid, int suggestionid, CampInfo edited, String reason);
 	public String editEnquiry(int campid, int enquiryid, String edited);
+	public int getSuggestionOwner(int campid, int suggestionid);
 	public boolean approveSuggestion(int campid, int suggestionid);
+	public boolean isEnquiryEditable(int campid, int enquiryid);
+	public boolean isSuggestionEditable(int campid, int suggestionid);
 }

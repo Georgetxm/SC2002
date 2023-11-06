@@ -1,5 +1,4 @@
 package core;
+import java.util.List;
 
-import java.util.Set;
-
-public record CampInfo(Set<CampAspectValue> info) {}
+public record CampInfo( List<CampAspectValue> info) {}

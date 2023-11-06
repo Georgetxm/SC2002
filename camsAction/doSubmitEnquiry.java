@@ -9,12 +9,11 @@ import interactions.Interaction;
 public final class doSubmitEnquiry extends Interaction {
 	@Override
 	public final Integer run(HashMap<String, Object> data) throws Exception {
-		CampController controller;
 		if(!data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
-		try {controller = (CampController) data.get("Controller");}
-		catch(ClassCastException e) {
-			throw new Exception("Controller lacking required methods. Request Failed.");
-		}
+		if(!CampController.class.isInstance(data.get("Controller")))
+			throw new Exception("Controller not able enough. Request Failed.");
+		CampController campcontrol = (CampController) data.get("Controller");
+		
 		int campid;
 		if(!data.containsKey("CurrentCamp")) throw new Exception("Did not select camp. Request Failed.");
 		try {campid = (int) data.get("CurrentCamp");}
@@ -26,7 +25,7 @@ public final class doSubmitEnquiry extends Interaction {
 		String enquiry;
 		System.out.println("Please type your enquiry:");
 		enquiry = s.nextLine();
-		int enquiryid = controller.submitEnquiry(campid, enquiry);
+		int enquiryid = campcontrol.submitEnquiry(campid, enquiry);
 		System.out.println("Your enquiry has been submitted.");
 		
 		return enquiryid;

@@ -1,4 +1,5 @@
 package core;
-import java.util.List;
+import java.util.LinkedHashMap;
+import types.CampAspects;
 
-public record CampInfo( List<CampAspectValue> info) {}
+public record CampInfo( LinkedHashMap<CampAspects,Object> info) {}

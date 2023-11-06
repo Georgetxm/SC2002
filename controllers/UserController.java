@@ -10,5 +10,7 @@ public interface UserController {
 	public boolean addCamp(int userid, String name, int campid);
 	public List<Entry<String,Integer>> getCamp(int userid);
 	public int incrementPoints(int userid, int points);
-	public EnumSet<Perms> grantPerms(int userid, Perms newperms);
+	public EnumSet<Perms> grantPerms(int userid, EnumSet<Perms> newperms);
+	public EnumSet<Perms> denyPerms(int userid, EnumSet<Perms> removedperms);
+	public EnumSet<Perms> replacePerms(int userid, EnumSet<Perms> replacementperms);
 }

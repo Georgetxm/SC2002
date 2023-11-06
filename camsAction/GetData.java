@@ -3,7 +3,7 @@ package camsAction;
 import java.util.HashMap;
 
 final class GetData {
-	final int CurrentUser(HashMap<String,Object> data) throws Exception {
+	static final int CurrentUser(HashMap<String,Object> data) throws Exception {
 		int userid;
 		if(!data.containsKey("CurrentUser")) throw new Exception("User not identified. Request Failed.");
 		try {userid = (int) data.get("CurrentUser");}
@@ -12,7 +12,7 @@ final class GetData {
 		}
 		return userid;
 	}
-	final int CampID(HashMap<String,Object> data) throws Exception {
+	static final int CampID(HashMap<String,Object> data) throws Exception {
 		int campid;
 		if(!data.containsKey("CurrentCamp")) throw new Exception("Did not select camp. Request Failed.");
 		try {campid = (int) data.get("CurrentCamp");}
@@ -22,7 +22,7 @@ final class GetData {
 		return campid;
 	}
 	
-	final int SuggestionID(HashMap<String,Object> data) throws Exception {
+	static final int SuggestionID(HashMap<String,Object> data) throws Exception {
 		int suggestionid;
 		if(!data.containsKey("CurrentItem")) throw new Exception("Did not select suggestion. Request Failed.");
 		try {suggestionid = (int) data.get("CurrentItem");}
@@ -31,7 +31,7 @@ final class GetData {
 		}
 		return suggestionid;
 	}
-	final int EnquiryID(HashMap<String,Object> data) throws Exception {
+	static final int EnquiryID(HashMap<String,Object> data) throws Exception {
 		int enquiryid;
 		if(!data.containsKey("CurrentItem")) throw new Exception("Did not select enquiry. Request Failed.");
 		try {enquiryid = (int) data.get("CurrentItem");}

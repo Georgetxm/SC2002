@@ -7,10 +7,12 @@ import core.CampInfo;
 import types.Role;
 
 public interface CampController {
+	public int submitCamp(CampInfo info);
 	public String submitUser(int campid, int userid, Role role);
 	public int submitEnquiry(int campid, String enquiry);
 	public int submitSuggestion(int campid, CampInfo edited, String reason, int userid);
 	public int submitReply(int campid, int enquiryid, String reply);
+	public boolean deleteCamp(int campid);
 	public boolean deleteUser(int campid, int userid);
 	public boolean deleteEnquiry(int campid, int enquiryid);
 	public boolean deleteSuggestion(int campid, int suggestionid);

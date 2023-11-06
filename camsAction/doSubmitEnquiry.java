@@ -9,7 +9,7 @@ import interactions.Interaction;
 
 public final class doSubmitEnquiry extends Interaction {
 	@Override
-	public final boolean run(HashMap<String, Object> data) throws Exception {
+	public final Integer run(HashMap<String, Object> data) throws Exception {
 		CampController controller;
 		if(!data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
 		try {controller = (CampController) data.get("Controller");}
@@ -27,10 +27,10 @@ public final class doSubmitEnquiry extends Interaction {
 		String enquiry;
 		System.out.println("Please type your enquiry:");
 		enquiry = s.nextLine();
-		controller.submitEnquiry(campid, enquiry);
+		int enquiryid = controller.submitEnquiry(campid, enquiry);
 		System.out.println("Your enquiry has been submitted.");
 		
-		return true;
+		return enquiryid;
 	}
 
 }

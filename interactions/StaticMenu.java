@@ -10,7 +10,8 @@ public class StaticMenu extends UserMenu{
 		this.message=title;
 		this.choices=choice;
 	}
-	public final boolean run(HashMap<String, Object> data) throws Exception{
+	@Override
+	public final Boolean run(HashMap<String, Object> data) throws Exception{
 		EnumSet<Perms> userperms;
 		if(!data.containsKey("UserPerms")) throw new Exception("User has no permissions! Menu cannot load without permissions.");
 		try {userperms = (EnumSet<Perms>) data.get("UserPerms");}

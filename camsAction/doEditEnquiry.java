@@ -6,7 +6,7 @@ import java.util.Scanner;
 import controllers.CampController;
 import interactions.Interaction;
 
-public class doEditEnquiry extends Interaction {
+public final class doEditEnquiry extends Interaction {
 
 	@Override
 	public final Boolean run(HashMap<String, Object> data) throws Exception {

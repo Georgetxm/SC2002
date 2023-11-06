@@ -7,7 +7,7 @@ import controllers.CampController;
 import controllers.UserController;
 import interactions.Interaction;
 
-public class doSubmitReply extends Interaction {
+public final class doSubmitReply extends Interaction {
 
 	@Override
 	public final Boolean run(HashMap<String, Object> data) throws Exception {

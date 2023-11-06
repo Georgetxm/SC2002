@@ -9,7 +9,7 @@ import core.CampAspectValue;
 import core.CampInfo;
 import interactions.Interaction;
 
-public class doSubmitSuggestion extends Interaction{
+public final class doSubmitSuggestion extends Interaction{
 	//Currently using distinct control interfaces for dual inheritance
 	@Override
 	public final Integer run(HashMap<String, Object> data) throws Exception {

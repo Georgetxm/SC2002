@@ -6,7 +6,7 @@ import controllers.CampController;
 import controllers.UserController;
 import interactions.Interaction;
 
-public class doApproveSuggestion extends Interaction {
+public final class doApproveSuggestion extends Interaction {
 	//Currently using new single umbrella class implementation for dual inheritance
 	@Override
 	public final Boolean run(HashMap<String, Object> data) throws Exception {

@@ -6,7 +6,7 @@ import controllers.CampController;
 import controllers.UserController;
 import interactions.Interaction;
 
-public class doDeleteSuggestion extends Interaction {
+public final class doDeleteSuggestion extends Interaction {
 
 	@Override
 	public final Boolean run(HashMap<String, Object> data) throws Exception {

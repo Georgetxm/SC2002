@@ -5,7 +5,7 @@ import java.util.HashMap;
 import controllers.CampController;
 import interactions.Interaction;
 
-public class doPrintStudentList extends Interaction {
+public final class doPrintStudentList extends Interaction {
 
 	@Override
 	final public Boolean run(HashMap<String, Object> data) throws Exception {

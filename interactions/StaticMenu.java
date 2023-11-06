@@ -3,7 +3,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import types.Perms;
 
-public class StaticMenu extends UserMenu{
+public final class StaticMenu extends UserMenu{
 	public StaticMenu(String title,MenuChoice choice[]) {
 		this.message=title;
 		this.choices=choice;

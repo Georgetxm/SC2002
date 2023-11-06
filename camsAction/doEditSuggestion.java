@@ -7,7 +7,7 @@ import controllers.UserController;
 import core.CampInfo;
 import interactions.Interaction;
 
-public class doEditSuggestion extends Interaction {
+public final class doEditSuggestion extends Interaction {
 	//Currently using distinct control interfaces for dual inheritance
 	@Override
 	public final Boolean run(HashMap<String, Object> data) throws Exception {

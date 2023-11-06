@@ -7,7 +7,6 @@ import controllers.CampController;
 import controllers.UserController;
 import core.CampAspectValue;
 import core.CampInfo;
-import core.Utility;
 import interactions.Interaction;
 
 public class doSubmitSuggestion extends Interaction{

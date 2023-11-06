@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import controllers.CampController;
-import core.Utility;
 import interactions.Interaction;
 
 public final class doSubmitEnquiry extends Interaction {

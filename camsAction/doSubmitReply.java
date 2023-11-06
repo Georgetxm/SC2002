@@ -7,7 +7,7 @@ import controllers.CampController;
 import controllers.UserController;
 import interactions.Interaction;
 
-public class doSubmitEnquiryReply extends Interaction {
+public class doSubmitReply extends Interaction {
 
 	@Override
 	public final Boolean run(HashMap<String, Object> data) throws Exception {
@@ -38,6 +38,8 @@ public class doSubmitEnquiryReply extends Interaction {
 		
 		campcontrol.submitReply(campid, userid, s.nextLine());
 		System.out.println("Reply Submitted");
+		
+		usercontrol.incrementPoints(userid, 1);
 		return true;
 	}
 

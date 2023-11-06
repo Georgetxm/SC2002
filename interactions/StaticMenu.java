@@ -1,8 +1,6 @@
 package interactions;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Set;
-
 import types.Perms;
 
 public class StaticMenu extends UserMenu{
@@ -12,12 +10,11 @@ public class StaticMenu extends UserMenu{
 	}
 	@Override
 	public final Boolean run(HashMap<String, Object> data) throws Exception{
-		EnumSet<Perms> userperms;
 		if(!data.containsKey("UserPerms")) throw new Exception("User has no permissions! Menu cannot load without permissions.");
-		try {userperms = (EnumSet<Perms>) data.get("UserPerms");}
-		catch(ClassCastException e) {
+		if(!EnumSet.class.isInstance(data.get("UserPerms"))) 
 			throw new Exception("User Permission format is invalid.");
-		}
+		@SuppressWarnings("unchecked")
+		EnumSet<Perms> userperms=(EnumSet<Perms>) data.get("UserPerms");
 		this.givechoices(userperms,data);
 		return true;
 	}

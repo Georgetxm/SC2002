@@ -2,7 +2,6 @@ package interactions;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Scanner;
-import core.Utility;
 import types.Perms;
 
 public abstract class UserMenu extends Interaction{

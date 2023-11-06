@@ -1,14 +1,10 @@
 package camsAction;
 
-import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Map;
-
 import controllers.CampController;
 import controllers.UserController;
 import interactions.Interaction;
 import types.CampAspects;
-import types.Perms;
 import types.Role;
 
 public final class doSubmitAttendeeRegistration extends Interaction {

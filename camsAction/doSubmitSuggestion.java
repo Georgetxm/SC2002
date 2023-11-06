@@ -2,13 +2,11 @@ package camsAction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
 import controllers.CampController;
 import controllers.UserController;
-import core.CampAspectValue;
 import core.CampInfo;
 import interactions.Interaction;
 import types.CampAspects;

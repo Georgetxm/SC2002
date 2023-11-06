@@ -33,7 +33,7 @@ public class doEditEnquiry extends Interaction {
 			System.out.println("Enquiry has been seen and may not be edited");
 			return false;
 		}
-		Scanner s = core.Utility.getScanner(data);
+		Scanner s = getScanner(data);
 		System.out.println("Please type your edited enquiry");
 		campcontrol.editEnquiry(campid, enquiryid, s.nextLine());
 		System.out.println("Enquiry saved.");

@@ -43,7 +43,7 @@ public class doSubmitSuggestion extends Interaction{
 			throw new Exception("Invalid Camp Info. Request Failed.");
 		}
 
-		Scanner s = Utility.getScanner(data);
+		Scanner s = getScanner(data);
 		int counter = 1;
 		System.out.println("What would you like to amend:");
 		for(CampAspectValue aspect: campinfo.info()) {

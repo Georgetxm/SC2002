@@ -22,7 +22,7 @@ public final class doSubmitEnquiry extends Interaction {
 		catch(ClassCastException e) {
 			throw new Exception("Invalid Camp ID. Request Failed.");
 		}
-		Scanner s = Utility.getScanner(data);
+		Scanner s = getScanner(data);
 		
 		String enquiry;
 		System.out.println("Please type your enquiry:");

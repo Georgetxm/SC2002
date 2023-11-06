@@ -16,7 +16,7 @@ public abstract class UserMenu extends Interaction{
 				if(userperm.contains(choice.perms())) System.out.printf("%d: %s\n", startcounter++,choice.text());
 			}
 			System.out.printf("%d: %s\n", startcounter++,"Back");
-			Scanner s=Utility.getScanner(data);
+			Scanner s=getScanner(data);
 			selected = s.nextInt();
 			if(selected==choices.length+1) {
 				break;

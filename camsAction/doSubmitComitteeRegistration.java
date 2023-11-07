@@ -43,6 +43,7 @@ public final class doSubmitComitteeRegistration extends Interaction {
 			Perms.EDIT_CAMP_SUGGESTION,
 			Perms.DELETE_CAMP_SUGGESTION
 		));
+		usercontrol.denyPerms(userid, EnumSet.of(Perms.REGISTER_AS_COMITTEE));
 		System.out.println("Registered successfully as a comittee member.");
 		
 		

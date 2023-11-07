@@ -17,7 +17,7 @@ import types.CampAspects;
 public class doSubmitCamp extends Interaction {
 
 	@Override
-	protected Object run(HashMap<String, Object> data) throws Exception {
+	public final Integer run(HashMap<String, Object> data) throws Exception {
 		if(!data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
 		if(
 			!CampController.class.isInstance(data.get("Controller"))||
@@ -45,7 +45,7 @@ public class doSubmitCamp extends Interaction {
 		//Asks camp control for camp details and pulls the camp name out of camp details
 		String campname = (String) campcontrol.getCampDetails(campid).info().get(CampAspects.NAME);
 		usercontrol.addCamp(userid, campname, campid);
-		return null;
+		return campid;
 	}
 
 }

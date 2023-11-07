@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import core.CampAspectValue;
 import core.CampInfo;
@@ -19,6 +20,7 @@ public interface CampController {
 	public HashMap<String,Integer> getCamps(CampAspectValue filter);
 	public CampInfo getCampDetails(int campid);
 	public String getCampStudentList(int campid);
+	public Entry<Integer,Role>[] getCampParticipantID(int campid);
 	public HashMap<String,Integer> getCampEnquiries(int campid, CampAspectValue filter);
 	public HashMap<String,Integer> getCampSuggestions(int campid, CampAspectValue filter);  
 	public String editSuggestion(int campid, int suggestionid, CampInfo edited, String reason);

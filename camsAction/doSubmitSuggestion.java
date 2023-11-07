@@ -23,26 +23,9 @@ public final class doSubmitSuggestion extends Interaction{
 		CampController campcontrol = (CampController) data.get("Controller");
 		UserController usercontrol = (UserController) data.get("Controller");
 		
-		int campid;
-		if(!data.containsKey("CurrentCamp")) throw new Exception("Did not select camp. Request Failed.");
-		try {campid = (int) data.get("CurrentCamp");}
-		catch(ClassCastException e) {
-			throw new Exception("Invalid Camp ID. Request Failed.");
-		}
-		
-		int userid;
-		if(!data.containsKey("CurrentUser")) throw new Exception("User not identified. Request Failed.");
-		try {userid = (int) data.get("CurrentUser");}
-		catch(ClassCastException e) {
-			throw new Exception("Invalid User ID. Request Failed.");
-		}
-		
-		CampInfo campinfo;
-		if(!data.containsKey("CampInfo")) throw new Exception("Camp info not retrieved");
-		try {campinfo = (CampInfo) data.get("CampInfo");}
-		catch(ClassCastException e) {
-			throw new Exception("Invalid Camp Info. Request Failed.");
-		}
+		int campid = GetData.CampID(data);
+		int userid = GetData.CurrentUser(data);
+		CampInfo campinfo = GetData.CampInfo(data);
 
 		Scanner s = getScanner(data);
 		int counter = 1;

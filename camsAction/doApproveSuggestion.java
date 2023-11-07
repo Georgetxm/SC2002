@@ -16,21 +16,12 @@ public final class doApproveSuggestion extends Interaction {
 			throw new Exception("Controller not able enough. Request Failed.");
 		maincontrol control = (maincontrol) data.get("Controller");
 		
-		int campid;
-		if(!data.containsKey("CurrentCamp")) throw new Exception("Did not select camp. Request Failed.");
-		try {campid = (int) data.get("CurrentCamp");}
-		catch(ClassCastException e) {
-			throw new Exception("Invalid Camp ID. Request Failed.");
-		}
-		int suggestionid;
-		if(!data.containsKey("CurrentItem")) throw new Exception("Did not select suggestion. Request Failed.");
-		try {suggestionid = (int) data.get("CurrentItem");}
-		catch(ClassCastException e) {
-			throw new Exception("Invalid Suggestion ID. Request Failed.");
-		}
-		int userid = control.getSuggestionOwner(campid, suggestionid);
+		int campid = GetData.CampID(data);
+		int suggestionid = GetData.SuggestionID(data);
+		int ownerid = control.getSuggestionOwner(campid, suggestionid);
+		
 		control.approveSuggestion(campid, suggestionid);
-		control.incrementPoints(userid, 1);
+		control.incrementPoints(ownerid, 1);
 		
 		return null;
 	}

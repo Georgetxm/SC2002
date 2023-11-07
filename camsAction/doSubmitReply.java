@@ -19,19 +19,8 @@ public final class doSubmitReply extends Interaction {
 		CampController campcontrol = (CampController) data.get("Controller");
 		UserController usercontrol = (UserController) data.get("Controller");
 		
-		int campid;
-		if(!data.containsKey("CurrentCamp")) throw new Exception("Did not select camp. Request Failed.");
-		try {campid = (int) data.get("CurrentCamp");}
-		catch(ClassCastException e) {
-			throw new Exception("Invalid Camp ID. Request Failed.");
-		}
-		
-		int userid;
-		if(!data.containsKey("CurrentUser")) throw new Exception("User not identified. Request Failed.");
-		try {userid = (int) data.get("CurrentUser");}
-		catch(ClassCastException e) {
-			throw new Exception("Invalid User ID. Request Failed.");
-		}
+		int campid = GetData.CampID(data);
+		int userid = GetData.CurrentUser(data);
 		
 		Scanner s = getScanner(data);
 		System.out.println("Please type your reply.");

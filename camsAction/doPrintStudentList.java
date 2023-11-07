@@ -15,14 +15,8 @@ public final class doPrintStudentList extends Interaction {
 		catch(ClassCastException e) {
 			throw new Exception("Controller lacking required methods. Request Failed.");
 		}
-		int campid;
-		if(!data.containsKey("CurrentCamp")) throw new Exception("Did not select camp. Request Failed.");
-		try {campid = (int) data.get("CurrentCamp");}
-		catch(ClassCastException e) {
-			throw new Exception("Invalid Camp ID. Request Failed.");
-		}
+		int campid = GetData.CampID(data);
 		System.out.println(controller.getCampStudentList(campid));
-		// TODO Auto-generated method stub
 		return true;
 	}
 

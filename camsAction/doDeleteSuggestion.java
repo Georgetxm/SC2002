@@ -18,19 +18,9 @@ public final class doDeleteSuggestion extends Interaction {
 		CampController campcontrol = (CampController) data.get("Controller");
 		UserController usercontrol = (UserController) data.get("Controller");
 		
-		int campid;
-		if(!data.containsKey("CurrentCamp")) throw new Exception("Did not select camp. Request Failed.");
-		try {campid = (int) data.get("CurrentCamp");}
-		catch(ClassCastException e) {
-			throw new Exception("Invalid Camp ID. Request Failed.");
-		}
+		int campid = GetData.CampID(data);
+		int suggestionid = GetData.SuggestionID(data);
 		
-		int suggestionid;
-		if(!data.containsKey("CurrentItem")) throw new Exception("Did not select suggestion. Request Failed.");
-		try {suggestionid = (int) data.get("CurrentItem");}
-		catch(ClassCastException e) {
-			throw new Exception("Invalid Suggestion ID. Request Failed.");
-		}
 		campcontrol.getSuggestionOwner(campid, suggestionid);
 		usercontrol.incrementPoints(campid, -1);
 		campcontrol.deleteSuggestion(campid, suggestionid);

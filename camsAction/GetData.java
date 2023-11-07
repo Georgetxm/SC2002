@@ -2,6 +2,8 @@ package camsAction;
 
 import java.util.HashMap;
 
+import core.CampInfo;
+
 final class GetData {
 	static final int CurrentUser(HashMap<String,Object> data) throws Exception {
 		int userid;
@@ -39,5 +41,14 @@ final class GetData {
 			throw new Exception("Invalid Enquiry ID. Request Failed.");
 		}
 		return enquiryid;
+	}
+	static final CampInfo CampInfo(HashMap<String,Object> data) throws Exception{
+		CampInfo campinfo;
+		if(!data.containsKey("CampInfo")) throw new Exception("Camp info not retrieved");
+		try {campinfo = (CampInfo) data.get("CampInfo");}
+		catch(ClassCastException e) {
+			throw new Exception("Invalid Camp Info. Request Failed.");
+		}
+		return campinfo;
 	}
 }

@@ -1,31 +1,9 @@
 # Updates
-Cams.java is the one with the main(), I've got some stuff in there just for testing.
-
-## Major Changes
-1. Action and QueryMenu instances -> Action and QueryMenu child classes
-Since you cannot pass in methods as parameters, different instances of the same class will all have the same methods.
-This means that .run() will have to be the same for all instances of the same class
-So if each Action and QueryMenu call different controller functions, they will have to be their own class
-The package camsAction houses these child classes
-
-2. Permissions object -> EnumSet of permission enums
-If permissions are a set, we can use .contains() to check whether the user has the required perms.
-Users will only need to store perms they have, so it will reduce clutter of Perm = false stuff.
-Sets support union, so can easily grant perms
-Perms being enum means we can restrict what the perms are
-
-3. CampAspects.java, the core package, and the CampController interface
-These are just to ensure my code can compile, cos it will error if these are missing.
-Please edit them freely as you want, idrc how they are done.
-The only part that directly interfaces with my code is CampController.java
-You can replace the current implementation (i.e. the rest) freely with whatever
-Honestly I think the current implementation is kinda bad so do fix it up.
-
+I think the current implementation of CampInfo is good. I plan to keep it that way.
 
 # ToDo
 ## Awaits
-1. doSubmitSuggestion and doEditSuggestion awaiting CampInfo confirmation
-2. Action classes inheritance testing awaits methods in controllers
+1. Action classes inheritance testing awaits methods in controllers
 ## Jih How
 1. Implement all action classes
 2. Start on static and query menus

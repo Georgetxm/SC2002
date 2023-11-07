@@ -23,8 +23,9 @@ public interface CampController {
 	public String getCampStudentList(int campid);
 	public Entry<Integer,Role>[] getCampParticipantID(int campid);
 	public HashMap<String,Integer> getCampEnquiries(int campid, CampAspectValue filter);
-	public HashMap<String,Integer> getCampSuggestions(int campid, CampAspectValue filter);  
-	public String editSuggestion(int campid, int suggestionid, CampInfo edited, String reason);
+	public HashMap<String,Integer> getCampSuggestions(int campid, CampAspectValue filter);
+	public CampAspects getSuggestionAspect(int campid, int suggestionid);
+	public String editSuggestion(int campid, int suggestionid, Entry<CampAspects, ? extends Object> edited, String reason);
 	public String editEnquiry(int campid, int enquiryid, String edited);
 	public int getSuggestionOwner(int campid, int suggestionid);
 	public boolean approveSuggestion(int campid, int suggestionid);

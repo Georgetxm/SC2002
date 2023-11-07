@@ -11,6 +11,13 @@ public class User {
     private Faculty faculty;
     private EnumSet<Perms> permission;
 
+    public User() {
+        this.userId = "";
+        this.password = "";
+        this.faculty = Faculty.WHOLE_NTU;
+        this.permission = EnumSet.noneOf(Perms.class);
+    }
+
     public User(String userId, String password, Faculty faculty, EnumSet<Perms> permission) {
         this.userId = userId;
         this.password = password;

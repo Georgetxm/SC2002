@@ -1,13 +1,13 @@
 package types;
 
 public enum Location {
-	ARC,
-	HIVE,
-	NORTHSPINE,
-	SOUTHSPINE,
-	SRC,
-	WAVE,
-	NIE,
-	SBS,
-	SPMS
+    THE_ARC,
+    HIVE,
+    YUNAN_GARDEN,
+    ADM,
+    SOUTH_SPINE,
+    NORTH_SPINE,
+    SRC,
+    WAVE,
+    NIE
 }

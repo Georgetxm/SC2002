@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import types.Perms;
 
 public interface UserController {
-	public boolean setCampComittee(int userid, String name, int campid);
+	public boolean setCampComittee(int campId, String userId);
 	public boolean addCamp(int userid, String name, int campid);
 	public boolean deleteCamp(int userid, int campid);
 	public List<Entry<String,Integer>> getCamp(int userid);

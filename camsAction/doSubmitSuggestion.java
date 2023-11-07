@@ -1,7 +1,12 @@
 package camsAction;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
@@ -25,31 +30,31 @@ public final class doSubmitSuggestion extends Interaction{
 		
 		int campid = GetData.CampID(data);
 		int userid = GetData.CurrentUser(data);
-		CampInfo campinfo = GetData.CampInfo(data);
+		//Asks campcontroller for the camp details, and puts them into a list
+		List<Entry<CampAspects,Object>> infolist = new ArrayList<Entry<CampAspects, Object>>(campcontrol.getCampDetails(campid).info().entrySet());
 
 		Scanner s = getScanner(data);
-		int counter = 1;
 		System.out.println("What would you like to amend:");
-		for(CampAspects aspect: campinfo.info().keySet()) {
-			System.out.printf("%d: %s", counter, aspect.name());
-			counter++;
-			//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		for(int i=1;i<=infolist.size();i++) {
+			String value;
+			if(String.class.isInstance(infolist.get(i-1).getValue())) value = (String) infolist.get(i-1).getValue();
+			if(Enum.class.isInstance(infolist.get(i-1).getValue())) value = ((Enum<?>) infolist.get(i-1).getValue()).name();
+			if(Integer.class.isInstance(infolist.get(i-1).getValue())) value = infolist.get(i-1).getValue().toString();
+			if(LocalDate.class.isInstance(infolist.get(i-1).getValue())) value = DateTimeFormatter.ofPattern("dd.MMMM uuuu", Locale.ENGLISH).format((TemporalAccessor) infolist.get(i-1).getValue());
 		}
 		int choice = s.nextInt();
-		new ArrayList<Entry<CampAspects, Object>>(campinfo.info().entrySet()).get(choice-1);
 		//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		
 		String reason;
 		System.out.println("Please type your rationale:");
 		reason = s.nextLine();
 		
-		int suggestionid = campcontrol.submitSuggestion(campid, campinfo, reason, userid);
 		System.out.println("Your suggestion has been submitted.");
 		
 		usercontrol.incrementPoints(userid, 1);
 		System.out.println("Your points have been incremented");
 		System.out.println("This function is incomplete. Await CampInfo finalisation");
-		return suggestionid;
+		return 1;
 	}
 
 }

@@ -2,12 +2,16 @@ package camsAction;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import controllers.CampController;
 import controllers.UserController;
+import core.CampInfo;
 
 import java.util.Scanner;
 
@@ -28,18 +32,23 @@ public class doSubmitCamp extends Interaction {
 		int userid = GetData.CurrentUser(data);
 		
 		Scanner s = getScanner(data);
-		Entry<CampAspects, String> name = ParseInput.CampName(s);
-		Entry<CampAspects, HashSet<LocalDate>> date = ParseInput.CampDate(s);
-//		CampAspects.LASTREGISTERDATE: LocalDate regdate
-//		CampAspects.USERGROUP: Faculty faculty
-//		CampAspects.LOCATION: Location location
-//		CampAspects.SLOTS: Integer totalslots
-//		CampAspects.COMITTEESLOTS: Integer comitteeslots
-//		CampAspects.DESCRIPTION: String description
-//		CampAspects.STAFFIC: Integer userid
-		campcontrol.submitCamp(null);
-		
-		// TODO Auto-generated method stub
+		//For each camp aspect required in camp details, calls its parse input function.
+		//These are then compiled and given to campcontrol so it can register a camp
+		//Typecasts are done when necessary
+		int campid = campcontrol.submitCamp(new CampInfo(new LinkedHashMap<>(Map.ofEntries(
+				(Entry<CampAspects, ? extends Object>) ParseInput.CampName(s),
+				(Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s),
+				(Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s),
+				(Entry<CampAspects, ? extends Object>) ParseInput.CampFaculty(s),
+				(Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s),
+				(Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s),
+				(Entry<CampAspects, ? extends Object>) ParseInput.CampComitteeSlots(s),
+				(Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s),
+				new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.STAFFIC,userid)
+		))));
+		//Asks camp control for camp details and pulls the camp name out of camp details
+		String campname = (String) campcontrol.getCampDetails(campid).info().get(CampAspects.NAME);
+		usercontrol.addCamp(userid, campname, campid);
 		return null;
 	}
 

@@ -2,6 +2,12 @@ package types;
 
 public enum CampAspects {
 	NAME,
+	DATE,
+	LASTREGISTERDATE,
+	USERGROUP,
 	LOCATION,
-	DATE
+	SLOTS,
+	COMITTEESLOTS,
+	DESCRIPTION,
+	STAFFIC
 }

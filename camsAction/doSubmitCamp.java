@@ -10,6 +10,7 @@ import controllers.UserController;
 import core.CampInfo;
 
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import interactions.Interaction;
 import types.CampAspects;
@@ -31,7 +32,7 @@ public class doSubmitCamp extends Interaction {
 		//For each camp aspect required in camp details, calls its parse input function.
 		//These are then compiled and given to campcontrol so it can register a camp
 		//Typecasts are done when necessary
-		int campid = campcontrol.submitCamp(new CampInfo(new LinkedHashMap<>(Map.ofEntries(
+		int campid = campcontrol.submitCamp(new CampInfo(new TreeMap<>(Map.ofEntries(
 				(Entry<CampAspects, ? extends Object>) ParseInput.CampName(s),
 				(Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s),
 				(Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s),

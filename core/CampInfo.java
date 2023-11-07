@@ -1,8 +1,9 @@
 package core;
-import java.util.LinkedHashMap;
+import java.util.TreeMap;
+
 import types.CampAspects;
 
-public record CampInfo( LinkedHashMap<CampAspects,Object> info) {}
+public record CampInfo( TreeMap<CampAspects,Object> info) {}
 
 
 // Currently

@@ -5,13 +5,14 @@ import java.util.Map.Entry;
 
 import core.CampAspectValue;
 import core.CampInfo;
+import types.CampAspects;
 import types.Role;
 
 public interface CampController {
 	public int submitCamp(CampInfo info);
 	public String submitUser(int campid, int userid, Role role);
 	public int submitEnquiry(int campid, String enquiry);
-	public int submitSuggestion(int campid, CampInfo edited, String reason, int userid);
+	public int submitSuggestion(int campid, Entry<CampAspects,? extends Object> edited, String reason, int userid);
 	public int submitReply(int campid, int enquiryid, String reply);
 	public boolean deleteCamp(int campid);
 	public boolean deleteUser(int campid, int userid);

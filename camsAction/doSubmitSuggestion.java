@@ -6,7 +6,6 @@ import java.util.Scanner;
 import java.util.TreeMap;
 import controllers.CampController;
 import controllers.UserController;
-import core.CampInfo;
 import interactions.Interaction;
 import types.CampAspects;
 
@@ -25,16 +24,16 @@ public final class doSubmitSuggestion extends Interaction{
 		int campid = GetData.CampID(data);
 		int userid = GetData.CurrentUser(data);
 		//Asks campcontrol for the camp info and pulls out the info
-		TreeMap<CampAspects,Object> info = campcontrol.getCampDetails(campid).info();
+		TreeMap<CampAspects,? extends Object> info = campcontrol.getCampDetails(campid).info();
 
 		Scanner s = getScanner(data);
 		int choice=0;
 		while(true) {
 			System.out.println("What would you like to amend:");
 			int counter = 1;
-			for(CampAspects aspect:info.keySet())
+			for(CampAspects aspect:info.keySet())// For each aspect, print aspect
 				System.out.printf("%d: %s\n",counter,GetData.FromObject(info.get(aspect)));
-			choice = s.nextInt();
+			choice = s.nextInt(); //user chooses an aspect, see if choice is valid
 			if(choice<1||choice>info.keySet().size()) {
 				System.out.println("Invalid option");
 				continue;
@@ -42,18 +41,16 @@ public final class doSubmitSuggestion extends Interaction{
 			break;
 		}
 
-		Entry<CampAspects, ? extends Object> editedvalue;
+		Entry<CampAspects, ? extends Object> edited;
 		CampAspects chosenaspect = (CampAspects) info.keySet().toArray()[choice-1];
-		switch(chosenaspect) {
-		case DATE: 				editedvalue = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
-		case LASTREGISTERDATE: 	editedvalue = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);break;
-		case LOCATION: 			editedvalue = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
-		case SLOTS: 			editedvalue = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
-		case DESCRIPTION: 		editedvalue = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); break;
+		switch(chosenaspect) { //Depending on the aspect chosen, request data from user
+		case DATE: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
+		case LASTREGISTERDATE: 	edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);break;
+		case LOCATION: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
+		case SLOTS: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
+		case DESCRIPTION: 		edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); break;
 		default: System.out.println("This field cannot be changed."); return -1;
 		}
-		info.put(chosenaspect, editedvalue);
-		CampInfo edited = new CampInfo(info);
 		
 		String reason;
 		System.out.println("Please type your rationale:");

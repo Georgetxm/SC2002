@@ -1,9 +1,25 @@
 # Updates
 I think the current implementation of CampInfo is good. I plan to keep it that way.
 
+## Major changes
+1. Submission body CampInfo -> Entry<CampAspects,? extends Object>
+Previously the submission body held a dictionary of form CampAspects:value.
+I think it would be better to hold just 1 changed entry instead of the whole dictionary.
+Even if a student wants to suggest changes to a lot of stuff I think the teacher would want to be able to selectively approve each one.
+Also, I think each aspect kinda counts as a different suggestion, so students should be awarded points accordingly
+Each aspect changed might also have a different reason.
+
+To update CampInfo with the new suggestion, you can extract the dictionary by CampInfo.info(), then .put(Entry.getKey(),Entry.getValue()
+Then make a new CampInfo object using this new updated dictionary and replace it.
+E.g.
+CampInfo oldcamp; Entry<CampAspects, ? extends Object> suggestion; <- you start with the camp info and some suggestion
+TreeMap<CampAspects,? extends Object> dict = oldcamp.info();
+dict.put(suggestion.getKey(),suggestion.getValue());
+CampInfo newcamp = new CampInfo(dict);
+oldcamp = newcamp; <- here, the camp info has been updated with the suggestion.
+
 # ToDo
 ## Awaits
 1. Action classes inheritance testing awaits methods in controllers
 ## Jih How
-1. Implement all action classes
-2. Start on static and query menus
+1. Start on static and query menus

@@ -1,6 +1,11 @@
 package camsAction;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map.Entry;
 
 import core.CampInfo;
 
@@ -50,5 +55,16 @@ final class GetData {
 			throw new Exception("Invalid Camp Info. Request Failed.");
 		}
 		return campinfo;
+	}
+	//This is a function that recursively passes all constituent objects and turns them into strings.
+	static final String FromObject(Object value) throws Exception{
+		String valuestring="";
+		if(Iterable.class.isInstance(value)) 
+			for(Object thing:(Iterable<?>)value) valuestring+=(FromObject(thing)+"\n");
+		else if(Entry.class.isInstance(value)) valuestring = String.format("%s:\t%s", FromObject(((Entry<?,?>) value).getKey()), FromObject(((Entry<?,?>) value).getValue()));
+		else if(String.class.isInstance(value)) valuestring = (String) value;
+		else if(LocalDate.class.isInstance(value)) valuestring = DateTimeFormatter.ofPattern("dd.MMMM uuuu", Locale.ENGLISH).format((TemporalAccessor) value);
+		else valuestring = value.toString();
+		return valuestring;
 	}
 }

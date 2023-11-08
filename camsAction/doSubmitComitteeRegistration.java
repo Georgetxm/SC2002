@@ -46,9 +46,7 @@ public final class doSubmitComitteeRegistration extends Interaction {
 		usercontrol.denyPerms(userid, EnumSet.of(Perms.REGISTER_AS_COMITTEE));
 		System.out.println("Registered successfully as a comittee member.");
 		
-		
-		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 }

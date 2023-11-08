@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import controllers.CampController;
 import controllers.UserController;
-import core.CampInfo;
 import interactions.Interaction;
 import types.CampAspects;
 
@@ -30,26 +29,26 @@ public final class doEditSuggestion extends Interaction {
 			System.out.println("Suggestion has been viewed and may not be edited");
 			return false;
 		}
+		
 		CampAspects chosenaspect=campcontrol.getSuggestionAspect(campid, suggestionid);
 		Entry<CampAspects, ? extends Object> edited;
+		
 		switch(chosenaspect) { //Depending on the aspect chosen, request data from user
 		case DATE: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
-		case LASTREGISTERDATE: 	edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);break;
+		case LASTREGISTERDATE: 	edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);	break;
 		case LOCATION: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
 		case SLOTS: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
-		case DESCRIPTION: 		edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); break;
+		case DESCRIPTION: 		edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); 	break;
 		default: System.out.println("Change to this field is no longer permitted. As such your suggestion cannot be amended."); return false;
 		}
 		
-		String reason;
 		System.out.println("Please type your rationale:");
-		reason = s.nextLine();
+		String reason = s.nextLine();
 
 		usercontrol.incrementPoints(0, 0);
-		campcontrol.editSuggestion(campid, suggestionid, edited, "Rationale");
+		campcontrol.editSuggestion(campid, suggestionid, edited, reason);
 		
-		// TODO Auto-generated method stub
-		System.out.println("This method is incomplete");
+		System.out.println("Edits have been saved");
 		return null;
 	}
 

@@ -56,6 +56,15 @@ final class GetData {
 		}
 		return campinfo;
 	}
+	static final Boolean isSilenced(HashMap<String,Object> data) throws Exception{
+		Boolean silenced;
+		if(!data.containsKey("isSilenced")) return false;
+		try {silenced = (Boolean) data.get("CampInfo");}
+		catch(ClassCastException e) {
+			throw new Exception("Invalid silenced tag");
+		}
+		return silenced;
+	}
 	//This is a function that recursively passes all constituent objects and turns them into strings.
 	static final String FromObject(Object value) throws Exception{
 		String valuestring="";

@@ -25,8 +25,8 @@ public class doSubmitCamp extends Interaction {
 		)	throw new Exception("Controller not able enough. Request Failed.");
 		CampController campcontrol = (CampController) data.get("Controller");
 		UserController usercontrol = (UserController) data.get("Controller");
-		int userid = GetData.CurrentUser(data);
 		
+		int userid = GetData.CurrentUser(data);
 		Scanner s = getScanner(data);
 		//For each camp aspect required in camp details, calls its parse input function.
 		//These are then compiled and given to campcontrol so it can register a camp
@@ -45,6 +45,8 @@ public class doSubmitCamp extends Interaction {
 		//Asks camp control for camp details and pulls the camp name out of camp details
 		String campname = (String) campcontrol.getCampDetails(campid).info().get(CampAspects.NAME);
 		usercontrol.addCamp(userid, campname, campid);
+		
+		System.out.println("Camp has been created.");
 		return campid;
 	}
 

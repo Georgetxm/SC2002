@@ -23,6 +23,8 @@ public final class doApproveSuggestion extends Interaction {
 		control.approveSuggestion(campid, suggestionid);
 		control.incrementPoints(ownerid, 1);
 		
+		if(!GetData.isSilenced(data)) System.out.println("Suggestion Approved");
+		
 		return null;
 	}
 

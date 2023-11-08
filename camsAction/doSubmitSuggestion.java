@@ -1,16 +1,11 @@
 package camsAction;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
-
 import controllers.CampController;
 import controllers.UserController;
-import core.CampInfo;
 import interactions.Interaction;
 import types.CampAspects;
 
@@ -28,37 +23,34 @@ public final class doSubmitSuggestion extends Interaction{
 		
 		int campid = GetData.CampID(data);
 		int userid = GetData.CurrentUser(data);
-		//Asks campcontroller for the camp details, and puts them into a list
-		List<Entry<CampAspects,? extends Object>> infolist = new ArrayList<Entry<CampAspects, ? extends Object>>(campcontrol.getCampDetails(campid).info().entrySet());
+		//Asks campcontrol for the camp info and pulls out the info
+		TreeMap<CampAspects,? extends Object> info = campcontrol.getCampDetails(campid).info();
 
 		Scanner s = getScanner(data);
-		int choice;
-		Entry<CampAspects, ? extends Object> editedvalue;
-		
+		int choice=0;
 		while(true) {
 			System.out.println("What would you like to amend:");
-			for(int i=1;i<=infolist.size();i++)
-				System.out.printf("%d: %s\n",i,GetData.FromObject(infolist.get(i-1)));
-			choice = s.nextInt();
-			if(choice<1||choice>infolist.size()) {
+			int counter = 1;
+			for(CampAspects aspect:info.keySet())// For each aspect, print aspect
+				System.out.printf("%d: %s\n",counter,GetData.FromObject(info.get(aspect)));
+			choice = s.nextInt(); //user chooses an aspect, see if choice is valid
+			if(choice<1||choice>info.keySet().size()) {
 				System.out.println("Invalid option");
 				continue;
 			}
 			break;
 		}
-		
-		switch(infolist.get(choice-1).getKey()) {
-		case DATE: 				editedvalue = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
-		case LASTREGISTERDATE: 	editedvalue = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);break;
-		case LOCATION: 			editedvalue = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
-		case SLOTS: 			editedvalue = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
-		case DESCRIPTION: 		editedvalue = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); break;
+
+		Entry<CampAspects, ? extends Object> edited;
+		CampAspects chosenaspect = (CampAspects) info.keySet().toArray()[choice-1];
+		switch(chosenaspect) { //Depending on the aspect chosen, request data from user
+		case DATE: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
+		case LASTREGISTERDATE: 	edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);break;
+		case LOCATION: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
+		case SLOTS: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
+		case DESCRIPTION: 		edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); break;
 		default: System.out.println("This field cannot be changed."); return -1;
 		}
-		
-		infolist.remove(choice-1);
-		infolist.add(editedvalue);
-		CampInfo edited = new CampInfo(new TreeMap<>(infolist.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue))));
 		
 		String reason;
 		System.out.println("Please type your rationale:");

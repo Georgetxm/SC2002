@@ -1,11 +1,13 @@
 package camsAction;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Scanner;
 
 import controllers.CampController;
 import controllers.UserController;
-import core.CampInfo;
 import interactions.Interaction;
+import types.CampAspects;
 
 public final class doEditSuggestion extends Interaction {
 	//Currently using distinct control interfaces for dual inheritance
@@ -21,18 +23,32 @@ public final class doEditSuggestion extends Interaction {
 		
 		int campid = GetData.CampID(data);
 		int suggestionid = GetData.SuggestionID(data);
+		Scanner s = getScanner(data);
 		
 		if(!campcontrol.isSuggestionEditable(campid, suggestionid)) {
 			System.out.println("Suggestion has been viewed and may not be edited");
 			return false;
 		}
-
-		CampInfo campinfo = null;
-		usercontrol.incrementPoints(0, 0);
-		campcontrol.editSuggestion(campid, suggestionid, campinfo, "Rationale");
 		
-		// TODO Auto-generated method stub
-		System.out.println("This method is incomplete");
+		CampAspects chosenaspect=campcontrol.getSuggestionAspect(campid, suggestionid);
+		Entry<CampAspects, ? extends Object> edited;
+		
+		switch(chosenaspect) { //Depending on the aspect chosen, request data from user
+		case DATE: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
+		case LASTREGISTERDATE: 	edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);	break;
+		case LOCATION: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
+		case SLOTS: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
+		case DESCRIPTION: 		edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); 	break;
+		default: System.out.println("Change to this field is no longer permitted. As such your suggestion cannot be amended."); return false;
+		}
+		
+		System.out.println("Please type your rationale:");
+		String reason = s.nextLine();
+
+		usercontrol.incrementPoints(0, 0);
+		campcontrol.editSuggestion(campid, suggestionid, edited, reason);
+		
+		System.out.println("Edits have been saved");
 		return null;
 	}
 

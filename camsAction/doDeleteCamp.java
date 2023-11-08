@@ -22,8 +22,10 @@ public class doDeleteCamp extends Interaction {
 		)	throw new Exception("Controller not able enough. Request Failed.");
 		CampController campcontrol = (CampController) data.get("Controller");
 		UserController usercontrol = (UserController) data.get("Controller");
+		
 		//Delete the camp
 		campcontrol.deleteCamp(campid);
+		System.out.println("Camp has been deleted");
 		//Remove the camp from all participants data
 		Entry<Integer,Role> participantlist[] = campcontrol.getCampParticipantID(campid);
 		for(Entry<Integer,Role> participant:participantlist) {
@@ -42,6 +44,7 @@ public class doDeleteCamp extends Interaction {
 			default: break;
 			}
 		}
+		System.out.println("This change will be reflected for participants");
 		return true;
 	}
 

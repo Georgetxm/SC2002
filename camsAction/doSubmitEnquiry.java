@@ -17,9 +17,8 @@ public final class doSubmitEnquiry extends Interaction {
 		int campid = GetData.CampID(data);
 		Scanner s = getScanner(data);
 		
-		String enquiry;
 		System.out.println("Please type your enquiry:");
-		enquiry = s.nextLine();
+		String enquiry = s.nextLine();
 		int enquiryid = campcontrol.submitEnquiry(campid, enquiry);
 		System.out.println("Your enquiry has been submitted.");
 		

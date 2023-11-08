@@ -26,7 +26,7 @@ public final class doDeleteSuggestion extends Interaction {
 		campcontrol.deleteSuggestion(campid, suggestionid);
 		
 		System.out.println("Suggestion deleted. Points deducted accordingly");
-		return null;
+		return true;
 	}
 
 }

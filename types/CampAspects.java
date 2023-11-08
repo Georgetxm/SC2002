@@ -1,6 +1,6 @@
 package types;
 
-public enum CampAspects {
+public enum CampAspects{
 	NAME,
 	DATE,
 	LASTREGISTERDATE,

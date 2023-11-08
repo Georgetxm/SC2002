@@ -27,7 +27,6 @@ public final class doSubmitReply extends Interaction {
 		
 		campcontrol.submitReply(campid, userid, s.nextLine());
 		System.out.println("Reply Submitted");
-		
 		usercontrol.incrementPoints(userid, 1);
 		return true;
 	}

@@ -1,12 +1,12 @@
 package controllers;
 
 public interface EnquiryController {
-	int save(String enquiry);
-	int edit(int enquiryid, String enquiry);
-	String get(int suggestionid);
-	Boolean delete(int enquiryid); //delete suggestion
-	Boolean finalise(int enquiryid); //mark as uneditable
-	Boolean isEditable(int enquiryid); //check if can edit
+	int saveEnquiry(String enquiry);
+	int editEnquiry(int enquiryid, String enquiry);
+	String getEnquiry(int suggestionid);
+	Boolean deleteEnquiry(int enquiryid); //delete suggestion
+	Boolean finaliseEnquiry(int enquiryid); //mark as uneditable
+	Boolean isEnquiryEditable(int enquiryid); //check if can edit
 	
 	int saveReply(String reply);
 	String[] getReply(int enquiryid);

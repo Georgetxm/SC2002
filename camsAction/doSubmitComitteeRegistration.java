@@ -2,7 +2,6 @@ package camsAction;
 
 import java.util.EnumSet;
 import java.util.HashMap;
-
 import controllers.CampController;
 import controllers.UserController;
 import interactions.Interaction;
@@ -24,9 +23,11 @@ public final class doSubmitComitteeRegistration extends Interaction {
 		
 		int userid=GetData.CurrentUser(data);
 		int campid=GetData.CampID(data);
+		HashMap<Integer, String> camplist = usercontrol.getCamp(userid);
 		String campname = (String) campcontrol.getCampDetails(campid).info().get(CampAspects.NAME);
 		
-		if(usercontrol.getCamp(userid).contains(new HashMap.SimpleEntry<String,Integer>(campname,campid))) {
+		if(camplist.keySet().contains(campid)) {
+			if(camplist.get(campid)!=campname) throw new Exception("Data error. CampID and CampName mismatch!");
 			System.out.println("Already registered");
 			return false;
 		}

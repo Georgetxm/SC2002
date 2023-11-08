@@ -3,8 +3,8 @@ package controllers;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import core.CampAspectValue;
 import core.CampInfo;
+import core.Filter;
 import types.CampAspects;
 import types.Role;
 
@@ -18,12 +18,12 @@ public interface CampController {
 	public boolean deleteUser(int campid, int userid);
 	public boolean deleteEnquiry(int campid, int enquiryid);
 	public boolean deleteSuggestion(int campid, int suggestionid);
-	public HashMap<String,Integer> getCamps(CampAspectValue filter);
+	public HashMap<String,Integer> getCamps(Filter filter[]);
 	public CampInfo getCampDetails(int campid);
 	public String getCampStudentList(int campid);
 	public Entry<Integer,Role>[] getCampParticipantID(int campid);
-	public HashMap<String,Integer> getCampEnquiries(int campid, CampAspectValue filter);
-	public HashMap<String,Integer> getCampSuggestions(int campid, CampAspectValue filter);
+	public HashMap<String,Integer> getCampEnquiries(int campid, Filter filter[]);
+	public HashMap<String,Integer> getCampSuggestions(int campid, Filter filter[]);
 	public CampAspects getSuggestionAspect(int campid, int suggestionid);
 	public String editSuggestion(int campid, int suggestionid, Entry<CampAspects, ? extends Object> edited, String reason);
 	public String editEnquiry(int campid, int enquiryid, String edited);

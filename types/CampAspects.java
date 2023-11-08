@@ -1,6 +1,6 @@
 package types;
 
-public enum CampAspects implements Aspects{
+public enum CampAspects{
 	NAME,
 	DATE,
 	LASTREGISTERDATE,

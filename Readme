@@ -18,6 +18,12 @@ dict.put(suggestion.getKey(),suggestion.getValue());
 CampInfo newcamp = new CampInfo(dict);
 oldcamp = newcamp; <- here, the camp info has been updated with the suggestion.
 
+2. User stores enquiry and suggestion ids
+User will store enquiry and suggestion ids together with the counterpart campids in some form.
+Note that users can have multiple suggestions and enquiries for the same camp.
+This means different enquiries can have the same enquiry id or camp id
+Same goes for suggestions
+
 # ToDo
 ## Awaits
 1. Action classes inheritance testing awaits methods in controllers

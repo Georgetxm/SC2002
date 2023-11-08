@@ -9,7 +9,8 @@ public class Enquiries {
     private String title;
     private String description;
     private boolean seen;
-    private LocalDate creationDate;
+    private final LocalDate creationDate;
+    private LocalDate lastUpdateDate;
 
     public Enquiries(String creatorUserId, String title, String description, boolean seen,
             LocalDate creationDate) {
@@ -19,6 +20,7 @@ public class Enquiries {
         this.description = description;
         this.seen = seen;
         this.creationDate = creationDate;
+        this.lastUpdateDate = creationDate;
     }
 
     public String getCreatorUserId() {
@@ -66,11 +68,12 @@ public class Enquiries {
         return this.creationDate;
     }
 
-    public boolean updateCreationDate(LocalDate newCreationDate) {
-        if (newCreationDate == null) {
-            throw new IllegalArgumentException("Creation date cannot be null");
-        }
-        this.creationDate = newCreationDate;
+    public LocalDate getLastUpdateDate() {
+        return this.lastUpdateDate;
+    }
+
+    public boolean updateLastUpdateDate(LocalDate lastestDate) {
+        this.lastUpdateDate = lastestDate;
         return true;
     }
 

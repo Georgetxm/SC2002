@@ -1,9 +1,8 @@
-package interactions;
+package entities;
 
 import java.util.EnumSet;
 import java.util.HashSet;
 
-import entities.User;
 import types.Faculty;
 import types.Perms;
 
@@ -21,32 +20,41 @@ import types.Perms;
  * @since 2021-11-06
  */
 
+/**
+ * 
+ */
+/**
+ * 
+ */
+/**
+ * 
+ */
 public class Student extends User {
-    /*
+    /**
      * camps is a HashSet of campIds that the Student is registered as an attendee
      */
     private HashSet<Integer> camps;
 
-    /*
+    /**
      * campCommittee is the campId of the camp that the Student is a committee of
      * student can only be in one camp committee at a time
      * default value is -1, i.e. not in any camp committee
      */
     private int campCommittee;
 
-    /*
+    /**
      * points is the number of points the Student has accumulated
      * from giving suggestions and having it approved
      */
     private int points;
 
-    /*
+    /**
      * Enquiries that the Student has created
      * enquiries is an HashMap of form campId, enquiryId
      */
     private HashSet<Integer> enquiries;
 
-    /*
+    /**
      * Suggestions that the Student has created
      * suggestions is an HashMap of form campId, suggestionId
      */
@@ -61,7 +69,7 @@ public class Student extends User {
         this.suggestions = new HashSet<Integer>();
     }
 
-    /*
+    /**
      * Creates new Student object with the given parameters
      * 
      * @param userId the Student's userId
@@ -71,8 +79,6 @@ public class Student extends User {
      * @param faculty the Student's faculty, @see Faculty
      * 
      * @param permissions the Student's permissions, @see Perms
-     * 
-     * @return the new Student object
      *
      */
     public Student(String userId, String password, Faculty faculty, EnumSet<Perms> permissions) {
@@ -84,7 +90,7 @@ public class Student extends User {
         this.suggestions = new HashSet<Integer>();
     }
 
-    /*
+    /**
      * Returns the list of Student's camps
      * 
      * @return the list of Student's camps
@@ -93,7 +99,7 @@ public class Student extends User {
         return this.camps;
     }
 
-    /*
+    /**
      * Returns the Student's points
      * 
      * @return the Student's points
@@ -102,7 +108,7 @@ public class Student extends User {
         return this.points;
     }
 
-    /*
+    /**
      * Returns the campId that the Student is a campCommittee of
      * 
      * @return the campId that the Student is a campCommittee of
@@ -111,7 +117,7 @@ public class Student extends User {
         return this.campCommittee;
     }
 
-    /*
+    /**
      * Overrides the Student's campCommittee if the Student was previously in
      * campCommittee (i.e. CampCommittee != -1)
      * 
@@ -124,7 +130,7 @@ public class Student extends User {
         return true;
     }
 
-    /*
+    /**
      * Adds a campId to the Student's camps HashSet as an attendee
      * 
      * @param campId the campId to be added
@@ -136,7 +142,7 @@ public class Student extends User {
         return true;
     }
 
-    /*
+    /**
      * Removes a campId from the Student's camps HashSet as an attendee
      * 
      * @param campid the campId to be removed
@@ -148,7 +154,7 @@ public class Student extends User {
         return true;
     }
 
-    /*
+    /**
      * Increments the Student's points by the given points
      * 
      * @param points the number of points to be added
@@ -160,7 +166,7 @@ public class Student extends User {
         return true;
     }
 
-    /*
+    /**
      * Returns the list of enquiries this student has created
      * 
      * @return the list of enquiries this student has created
@@ -169,7 +175,7 @@ public class Student extends User {
         return this.enquiries;
     }
 
-    /*
+    /**
      * Adds an enquiryId to the Student's list of enquiries
      * 
      * @param enquiryId the enquiryId to be added
@@ -181,7 +187,7 @@ public class Student extends User {
         return true;
     }
 
-    /*
+    /**
      * Removes an enquiryId from the Student's list of enquiries
      * 
      * @param enquiryId the enquiryId to be removed
@@ -193,7 +199,7 @@ public class Student extends User {
         return true;
     }
 
-    /*
+    /**
      * Returns the list of suggestions this student has created
      * 
      * @return the list of suggestions this student has created
@@ -202,7 +208,7 @@ public class Student extends User {
         return this.suggestions;
     }
 
-    /*
+    /**
      * Adds a suggestionId to the Student's list of suggestions
      * 
      * @param suggestionId the suggestionId to be added
@@ -214,7 +220,7 @@ public class Student extends User {
         return true;
     }
 
-    /*
+    /**
      * Removes a suggestionId from the Student's list of suggestions
      * 
      * @param suggestionId the suggestionId to be removed

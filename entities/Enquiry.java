@@ -2,7 +2,7 @@ package entities;
 
 import java.time.LocalDate;
 
-public class Enquiries {
+public class Enquiry {
     private final String creatorUserId;
     private final int campId;
     private static int nextEnquiryId = 0;
@@ -13,7 +13,7 @@ public class Enquiries {
     private final LocalDate creationDate;
     private LocalDate lastUpdateDate;
 
-    public Enquiries(String creatorUserId, int campId, String title, String description, boolean seen,
+    public Enquiry(String creatorUserId, int campId, String title, String description, boolean seen,
             LocalDate creationDate) {
         this.campId = campId;
         this.creatorUserId = creatorUserId;

@@ -32,6 +32,7 @@ public abstract class UserMenu extends Interaction{
 			System.out.printf("%d: %s\n", startcounter++,"Back");
 			Scanner s=getScanner();
 			selected = s.nextInt();
+			s.nextLine();
 			if(TLB.keySet().contains(selected)) return TLB.get(selected);
 		}
 	}

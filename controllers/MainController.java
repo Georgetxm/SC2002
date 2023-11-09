@@ -500,7 +500,7 @@ public class MainController implements CampController, UserController, Suggestio
 	}
 
 	@Override
-	public Entry<CampAspects, ? extends Object>[] getSuggestions() {
+	public HashMap<Integer, Entry<CampAspects, ? extends Object>> getSuggestions() {
 		// TODO Auto-generated method stub
 		return null;
 	}

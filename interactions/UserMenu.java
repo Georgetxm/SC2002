@@ -7,8 +7,13 @@ import types.Perms;
 
 public abstract class UserMenu extends Interaction{
 	protected List<MenuChoice> choices;
-	protected final boolean givechoices(EnumSet<Perms> userperm, HashMap<String,Object> data) throws Exception {
-		System.out.println(this.message);
+	protected final int givechoices(HashMap<String,Object> data) throws Exception {
+		if(!data.containsKey("UserPerms")) throw new Exception("User has no permissions! Menu cannot load without permissions.");
+		if(!EnumSet.class.isInstance(data.get("UserPerms"))) 
+			throw new Exception("User Permission format is invalid.");
+		@SuppressWarnings("unchecked")
+		EnumSet<Perms> userperm=(EnumSet<Perms>) data.get("UserPerms");
+		
 		int selected;
 		int startcounter = 1;
 		while(true) {
@@ -21,9 +26,12 @@ public abstract class UserMenu extends Interaction{
 			if(selected==choices.size()+1) {
 				break;
 			}
-			else if(selected<=choices.size() && selected > 0) choices.get(startcounter-1).action().run(data);
+			else if(selected<=choices.size() && selected > 0) return startcounter-1;
 			startcounter = 1;
 		}
-		return true;
+		return -1;
+	}
+	protected final void checkandrun(int choice, HashMap<String,Object> data) throws Exception {
+		if(choice>=0) choices.get(choice).action().run(data);
 	}
 }

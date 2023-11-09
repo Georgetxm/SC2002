@@ -1,8 +1,9 @@
-package entities;
+package interactions;
 
 import java.util.EnumSet;
 import java.util.HashSet;
 
+import entities.User;
 import types.Faculty;
 import types.Perms;
 

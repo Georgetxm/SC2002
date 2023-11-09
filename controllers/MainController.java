@@ -11,10 +11,10 @@ import java.util.Map.Entry;
 
 import entities.Camp;
 import entities.CampInfo;
-import entities.Student;
 import entities.Suggestion;
 import entities.Enquiry;
 import entities.User;
+import interactions.Student;
 import types.CampAspects;
 import types.Perms;
 import types.Role;

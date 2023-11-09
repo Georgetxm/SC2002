@@ -1,10 +1,12 @@
 package interactions;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
+
 import types.Perms;
 
 public final class StaticMenu extends UserMenu{
-	public StaticMenu(String title,MenuChoice choice[]) {
+	public StaticMenu(String title,List<MenuChoice> choice) {
 		this.message=title;
 		this.choices=choice;
 	}

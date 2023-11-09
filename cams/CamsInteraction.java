@@ -1,5 +1,10 @@
 package cams;
 import interactions.StaticMenu;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import camsAction.doApproveSuggestion;
 import camsAction.doDeleteSuggestion;
 import camsAction.doEditSuggestion;
@@ -14,17 +19,16 @@ public class CamsInteraction{
 	viewAllCamps 		= new MenuChoice(Perms.DEFAULT, 					"View All Camps", 			new doNothing()),
 	approveSuggestion	= new MenuChoice(Perms.APPROVE_CAMP_SUGGESTION, 	"Approve Suggestion", 		new doApproveSuggestion()),
 	editSuggestion		= new MenuChoice(Perms.EDIT_CAMP_SUGGESTION,		"Edit this suggestion",		new doEditSuggestion()),
-	deleteSuggestion	= new MenuChoice(Perms.DELETE_CAMP_SUGGESTION,		"Delete this suggestion",	new doDeleteSuggestion()),
+	deleteSuggestion	= new MenuChoice(Perms.DELETE_CAMP_SUGGESTION,		"Delete this suggestion",	new doDeleteSuggestion());
 	
-	singleSuggestionChoice[] = {
+	static List<MenuChoice>
+	singleSuggestionChoice = Arrays.asList(
 		approveSuggestion,
 		editSuggestion,
-		deleteSuggestion
-	},
-	
-	startmenuchoices[] = {
+		deleteSuggestion),
+	startmenuchoices = Arrays.asList(
 		viewAllCamps
-	};
+	);
 	
 	
 	public static StaticMenu 

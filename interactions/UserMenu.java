@@ -1,11 +1,12 @@
 package interactions;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import types.Perms;
 
 public abstract class UserMenu extends Interaction{
-	protected MenuChoice choices[];
+	protected List<MenuChoice> choices;
 	protected final boolean givechoices(EnumSet<Perms> userperm, HashMap<String,Object> data) throws Exception {
 		System.out.println(this.message);
 		int selected;
@@ -17,10 +18,10 @@ public abstract class UserMenu extends Interaction{
 			System.out.printf("%d: %s\n", startcounter++,"Back");
 			Scanner s=getScanner(data);
 			selected = s.nextInt();
-			if(selected==choices.length+1) {
+			if(selected==choices.size()+1) {
 				break;
 			}
-			else if(selected<=choices.length && selected > 0) choices[selected-1].action().run(data);
+			else if(selected<=choices.size() && selected > 0) choices.get(startcounter-1).action().run(data);
 			startcounter = 1;
 		}
 		return true;

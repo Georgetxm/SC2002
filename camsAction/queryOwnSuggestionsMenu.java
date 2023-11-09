@@ -1,9 +1,15 @@
 package camsAction;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 import controllers.SuggestionController;
+import interactions.MenuChoice;
 import interactions.UserMenu;
+import types.CampAspects;
+import types.Perms;
 
 public class queryOwnSuggestionsMenu extends UserMenu {
 	@Override
@@ -12,7 +18,11 @@ public class queryOwnSuggestionsMenu extends UserMenu {
 		if(!SuggestionController.class.isInstance(data.get("Controller")))
 			throw new Exception("Controller not able enough. Request Failed.");
 		
-		((SuggestionController) ((SuggestionController)data.get("Controller")).FilterUser(GetData.CurrentUser(data))).getSuggestions();
+		List<MenuChoice> options = new ArrayList<MenuChoice>();
+		Entry<CampAspects, ? extends Object>[] suggestionlist = ((SuggestionController) ((SuggestionController)data.get("Controller")).FilterUser(GetData.CurrentUser(data))).getSuggestions();
+		for(Entry<CampAspects, ? extends Object> entry : suggestionlist) {
+			options.add(new MenuChoice(Perms.DEFAULT, Camp))
+		}
 		
 		return null;
 	}

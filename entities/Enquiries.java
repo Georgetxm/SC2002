@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Enquiries {
     private final String creatorUserId;
+    private final int campId;
     private static int nextEnquiryId = 0;
     private final int enquiryId;
     private String title;
@@ -12,8 +13,9 @@ public class Enquiries {
     private final LocalDate creationDate;
     private LocalDate lastUpdateDate;
 
-    public Enquiries(String creatorUserId, String title, String description, boolean seen,
+    public Enquiries(String creatorUserId, int campId, String title, String description, boolean seen,
             LocalDate creationDate) {
+        this.campId = campId;
         this.creatorUserId = creatorUserId;
         this.enquiryId = nextEnquiryId++;
         this.title = title;

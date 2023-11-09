@@ -180,6 +180,18 @@ public class Student extends User {
     }
 
     /*
+     * Removes an enquiryId from the Student's list of enquiries
+     * 
+     * @param enquiryId the enquiryId to be removed
+     * 
+     * @return true if the enquiryId is successfully removed, false otherwise
+     */
+    public boolean removeEnquiry(int enquiryId) {
+        this.enquiries.remove(enquiryId);
+        return true;
+    }
+
+    /*
      * Returns the list of suggestions this student has created
      * 
      * @return the list of suggestions this student has created
@@ -197,6 +209,18 @@ public class Student extends User {
      */
     public boolean addSuggestion(int suggestionId) {
         this.suggestions.add(suggestionId);
+        return true;
+    }
+
+    /*
+     * Removes a suggestionId from the Student's list of suggestions
+     * 
+     * @param suggestionId the suggestionId to be removed
+     * 
+     * @return true if the suggestionId is successfully removed, false otherwise
+     */
+    public boolean removeSuggestion(int suggestionId) {
+        this.suggestions.remove(suggestionId);
         return true;
     }
 }

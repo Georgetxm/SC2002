@@ -1,8 +1,8 @@
 package entities;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.ArrayList;
 
 import types.Faculty;
 import types.Perms;
@@ -41,22 +41,24 @@ public class Student extends User {
     private int points;
 
     /*
-     * enquiries is an ArrayList of enquiryIds that the Student has created
+     * Enquiries that the Student has created
+     * enquiries is an HashMap of form campId, enquiryId
      */
-    private ArrayList<Integer> enquiries;
+    private HashMap<Integer, Integer> enquiries;
 
     /*
-     * suggestions is an ArrayList of suggestionIds that the Student has created
+     * Suggestions that the Student has created
+     * suggestions is an HashMap of form campId, suggestionId
      */
-    private ArrayList<Integer> suggestions;
+    private HashMap<Integer, Integer> suggestions;
 
     public Student() {
         super();
         this.camps = new HashSet<Integer>();
         this.campCommittee = -1;
         this.points = 0;
-        this.enquiries = new ArrayList<Integer>();
-        this.suggestions = new ArrayList<Integer>();
+        this.enquiries = new HashMap<Integer, Integer>();
+        this.suggestions = new HashMap<Integer, Integer>();
     }
 
     /*
@@ -78,8 +80,8 @@ public class Student extends User {
         this.camps = new HashSet<Integer>();
         this.campCommittee = -1;
         this.points = 0;
-        this.enquiries = new ArrayList<Integer>();
-        this.suggestions = new ArrayList<Integer>();
+        this.enquiries = new HashMap<Integer, Integer>();
+        this.suggestions = new HashMap<Integer, Integer>();
     }
 
     /*
@@ -163,7 +165,7 @@ public class Student extends User {
      * 
      * @return the list of enquiries this student has created
      */
-    public ArrayList<Integer> getEnquiries() {
+    public HashMap<Integer, Integer> getEnquiries() {
         return this.enquiries;
     }
 
@@ -174,8 +176,8 @@ public class Student extends User {
      * 
      * @return true if the enquiryId is successfully added, false otherwise
      */
-    public boolean addEnquiry(int enquiryId) {
-        this.enquiries.add(enquiryId);
+    public boolean addEnquiry(int campId, int enquiryId) {
+        this.enquiries.put(campId, enquiryId);
         return true;
     }
 
@@ -186,8 +188,8 @@ public class Student extends User {
      * 
      * @return true if the enquiryId is successfully removed, false otherwise
      */
-    public boolean removeEnquiry(int enquiryId) {
-        this.enquiries.remove(enquiryId);
+    public boolean removeEnquiry(int campId, int enquiryId) {
+        this.enquiries.remove(campId, enquiryId);
         return true;
     }
 
@@ -196,7 +198,7 @@ public class Student extends User {
      * 
      * @return the list of suggestions this student has created
      */
-    public ArrayList<Integer> getSuggestions() {
+    public HashMap<Integer, Integer> getSuggestions() {
         return this.suggestions;
     }
 
@@ -207,8 +209,8 @@ public class Student extends User {
      * 
      * @return true if the suggestionId is successfully added, false otherwise
      */
-    public boolean addSuggestion(int suggestionId) {
-        this.suggestions.add(suggestionId);
+    public boolean addSuggestion(int campId, int suggestionId) {
+        this.suggestions.put(campId, suggestionId);
         return true;
     }
 
@@ -219,8 +221,8 @@ public class Student extends User {
      * 
      * @return true if the suggestionId is successfully removed, false otherwise
      */
-    public boolean removeSuggestion(int suggestionId) {
-        this.suggestions.remove(suggestionId);
+    public boolean removeSuggestion(int campId, int suggestionId) {
+        this.suggestions.remove(campId, suggestionId);
         return true;
     }
 }

@@ -24,12 +24,10 @@ public abstract class UserMenu extends Interaction{
 			Scanner s=getScanner(data);
 			selected = s.nextInt();
 			if(selected==choices.size()+1) {
-				break;
+				return -1;
 			}
-			else if(selected<=choices.size() && selected > 0) return startcounter-1;
-			startcounter = 1;
+			else if(selected<=choices.size() && selected > 0) return selected-1;
 		}
-		return -1;
 	}
 	protected final void checkandrun(int choice, HashMap<String,Object> data) throws Exception {
 		if(choice>=0) choices.get(choice).action().run(data);

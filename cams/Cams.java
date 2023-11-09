@@ -13,6 +13,7 @@ public class Cams {
 		EnumSet<Perms> defaultperms = EnumSet.of(Perms.DEFAULT);
 		data.put("UserPerms", defaultperms);
 		data.put("Scanner", new Scanner(System.in));
+		data.put("CurrentUser", "Armstrong");
 		CamsInteraction.startmenu.run(data);
 	}
 

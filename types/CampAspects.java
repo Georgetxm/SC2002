@@ -1,13 +1,13 @@
 package types;
 
-public enum CampAspects{
+public enum CampAspects {
 	NAME,
 	DATE,
-	LASTREGISTERDATE,
+	REGISTRATION_DEADLINE,
 	USERGROUP,
 	LOCATION,
 	SLOTS,
-	COMITTEESLOTS,
+	COMMITTEESLOTS,
 	DESCRIPTION,
 	STAFFIC
 }

@@ -79,4 +79,8 @@ public class Enquiry {
         return true;
     }
 
+	public int getCampId() {
+		return campId;
+	}
+
 }

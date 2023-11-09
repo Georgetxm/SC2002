@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 import controllers.CampController;
 import controllers.UserController;
-import core.CampInfo;
+import entities.CampInfo;
 
 import java.util.Scanner;
 import java.util.TreeMap;

@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import core.CampInfo;
 import entities.Camp;
+import entities.CampInfo;
 import entities.Student;
 import entities.Suggestion;
 import entities.Enquiry;

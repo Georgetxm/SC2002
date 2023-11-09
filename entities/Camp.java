@@ -3,7 +3,6 @@ package entities;
 import java.time.LocalDate;
 import java.util.HashSet;
 
-import core.CampInfo;
 import types.CampAspects;
 
 public class Camp {

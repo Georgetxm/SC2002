@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
-import core.CampInfo;
+import entities.CampInfo;
 import types.CampAspects;
 import types.Role;
 

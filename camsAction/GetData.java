@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map.Entry;
 
-import core.CampInfo;
+import entities.CampInfo;
 
 final class GetData {
 	static final String CurrentUser(HashMap<String,Object> data) throws Exception {

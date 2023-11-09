@@ -2,7 +2,6 @@ package camsAction;
 
 import java.util.HashMap;
 
-import controllers.CampController;
 import controllers.SuggestionController;
 import controllers.UserController;
 import interactions.Interaction;
@@ -16,18 +15,13 @@ public final class doDeleteSuggestion extends Interaction {
 			!SuggestionController.class.isInstance(data.get("Controller"))||
 			!UserController.class.isInstance(data.get("Controller"))
 		)	throw new Exception("Controller not able enough. Request Failed.");
-		SuggestionController suggestioncontrol = (SuggestionController) data.get("Controller");
-		UserController usercontrol = (UserController) data.get("Controller");
-		CampController campcontrol = (CampController) data.get("Controller");
+		Object control = data.get("Controller");
 		
 		int suggestionid = GetData.SuggestionID(data);
-		int ownerid = suggestioncontrol.getOwner(suggestionid);
-		int campid = suggestioncontrol.getHostCamp(suggestionid);
+		String ownerid = ((SuggestionController) control).getOwner(suggestionid);
 		
-		usercontrol.incrementPoints(ownerid, -1);
-		suggestioncontrol.deleteSuggestion(suggestionid);
-		usercontrol.deleteSuggestion(ownerid, suggestionid);
-		campcontrol.deleteSuggestion(campid, suggestionid);
+		((UserController) control).incrementPoints(ownerid, -1);
+		((SuggestionController) control).deleteSuggestion(suggestionid);
 		System.out.println("Suggestion deleted. Points deducted accordingly");
 		return true;
 	}

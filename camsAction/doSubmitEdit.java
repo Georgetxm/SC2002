@@ -19,7 +19,7 @@ public class doSubmitEdit extends Interaction {
 		)	throw new Exception("Controller not able enough. Request Failed.");
 		Object control = data.get("Controller");
 		
-		int campid = GetData.CurrentUser(data);
+		int campid = GetData.CampID(data);
 		//Asks campcontrol for the camp info and pulls out the info
 		TreeMap<CampAspects,? extends Object> info = ((CampController) control).getCampDetails(campid).info();
 
@@ -42,7 +42,7 @@ public class doSubmitEdit extends Interaction {
 		CampAspects chosenaspect = (CampAspects) info.keySet().toArray()[choice-1];
 		switch(chosenaspect) { //Depending on the aspect chosen, request data from user
 		case DATE: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
-		case LASTREGISTERDATE: 	edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);break;
+		case REGISTRATION_DEADLINE: 	edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);break;
 		case LOCATION: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
 		case SLOTS: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
 		case DESCRIPTION: 		edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); break;

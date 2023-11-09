@@ -21,7 +21,7 @@ public final class doSubmitEnquiry extends Interaction {
 		Object control = data.get("Controller");
 		
 		int campid = GetData.CampID(data);
-		int userid = GetData.CurrentUser(data);
+		String userid = GetData.CurrentUser(data);
 		Scanner s = getScanner(data);
 		
 		System.out.println("Please type your enquiry:");

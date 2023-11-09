@@ -12,7 +12,7 @@ public class queryOwnSuggestionsMenu extends UserMenu {
 		if(!SuggestionController.class.isInstance(data.get("Controller")))
 			throw new Exception("Controller not able enough. Request Failed.");
 		
-		((SuggestionController)data.get("Controller")).FilterUser(GetData.CurrentUser(data)).getSuggestions();
+		((SuggestionController) ((SuggestionController)data.get("Controller")).FilterUser(GetData.CurrentUser(data))).getSuggestions();
 		
 		return null;
 	}

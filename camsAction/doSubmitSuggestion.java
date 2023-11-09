@@ -23,7 +23,7 @@ public final class doSubmitSuggestion extends Interaction{
 		Object control = data.get("Controller");
 		
 		int campid = GetData.CampID(data);
-		int userid = GetData.CurrentUser(data);
+		String userid = GetData.CurrentUser(data);
 		//Asks campcontrol for the camp info and pulls out the info
 		TreeMap<CampAspects,? extends Object> info = ((CampController) control).getCampDetails(campid).info();
 
@@ -45,11 +45,11 @@ public final class doSubmitSuggestion extends Interaction{
 		Entry<CampAspects, ? extends Object> edited;
 		CampAspects chosenaspect = (CampAspects) info.keySet().toArray()[choice-1];
 		switch(chosenaspect) { //Depending on the aspect chosen, request data from user
-		case DATE: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
-		case LASTREGISTERDATE: 	edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);break;
-		case LOCATION: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
-		case SLOTS: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
-		case DESCRIPTION: 		edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); break;
+		case DATE: 						edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
+		case REGISTRATION_DEADLINE: 	edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);break;
+		case LOCATION: 					edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
+		case SLOTS: 					edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
+		case DESCRIPTION: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); break;
 		default: System.out.println("This field cannot be changed."); return -1;
 		}
 		

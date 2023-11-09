@@ -10,10 +10,10 @@ import java.util.Map.Entry;
 import core.CampInfo;
 
 final class GetData {
-	static final int CurrentUser(HashMap<String,Object> data) throws Exception {
-		int userid;
+	static final String CurrentUser(HashMap<String,Object> data) throws Exception {
+		String userid;
 		if(!data.containsKey("CurrentUser")) throw new Exception("User not identified. Request Failed.");
-		try {userid = (int) data.get("CurrentUser");}
+		try {userid = (String) data.get("CurrentUser");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid User ID. Request Failed.");
 		}

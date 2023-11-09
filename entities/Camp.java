@@ -1,15 +1,10 @@
 package entities;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import core.CampInfo;
 import types.CampAspects;
-import types.Faculty;
-import types.Location;
-import types.Role;
 
 public class Camp {
     private CampInfo campInfo;
@@ -19,8 +14,8 @@ public class Camp {
     private HashSet<String> campCommittee;
     private boolean visibility;
     private final LocalDate creationDate;
-    private HashMap<String, Integer> enquiries;
-    private HashMap<String, Integer> suggestions;
+    private HashSet<Integer> enquiries;
+    private HashSet<Integer> suggestions;
 
     // private String name;
     // private String description;
@@ -81,7 +76,7 @@ public class Camp {
         }
         this.attendees.add(userId);
         Integer currentAttendees = (Integer) this.campInfo.info().get(CampAspects.SLOTS);
-        this.campInfo.info().put(CampAspects.SLOTS, currentAttendees + 1);
+        this.campInfo.info().put(CampAspects.SLOTS, ((Integer)(currentAttendees + 1)));
 
         return true;
     }
@@ -135,31 +130,31 @@ public class Camp {
         return true;
     }
 
-    public HashMap<String, Integer> getEnquiries() {
+    public HashSet<Integer> getEnquiries() {
         return this.enquiries;
     }
 
-    public boolean addEnquiry(String creatorId, int enquiryId) {
-        this.enquiries.put(creatorId, enquiryId);
+    public boolean addEnquiry(int enquiryId) {
+        this.enquiries.add(enquiryId);
         return true;
     }
 
-    public boolean removeEnquiry(String creatorId, int enquiryId) {
-        this.enquiries.remove(creatorId, enquiryId);
+    public boolean removeEnquiry(int enquiryId) {
+        this.enquiries.remove(enquiryId);
         return true;
     }
 
-    public HashMap<String, Integer> getSuggestions() {
+    public HashSet<Integer> getSuggestions() {
         return this.suggestions;
     }
 
-    public boolean addSuggestion(String creatorId, int suggestionId) {
-        this.suggestions.put(creatorId, suggestionId);
+    public boolean addSuggestion(int suggestionId) {
+        this.suggestions.add(suggestionId);
         return true;
     }
 
-    public boolean removeSuggestion(String creatorId, int suggestionId) {
-        this.suggestions.remove(creatorId, suggestionId);
+    public boolean removeSuggestion(int suggestionId) {
+        this.suggestions.remove( suggestionId);
         return true;
     }
 }

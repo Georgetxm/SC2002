@@ -21,7 +21,7 @@ public final class doApproveSuggestion extends Interaction {
 		
 		int campid = GetData.CampID(data);
 		int suggestionid = GetData.SuggestionID(data);
-		int ownerid = ((SuggestionController) control).getOwner(suggestionid);
+		String ownerid = ((SuggestionController) control).getOwner(suggestionid);
 		
 		((CampController) control).editCampDetails(campid, ((SuggestionController) control).getSuggestion(suggestionid).getKey());
 		((UserController) control).incrementPoints(ownerid, 1);

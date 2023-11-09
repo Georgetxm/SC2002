@@ -18,10 +18,10 @@ public final class doSubmitAttendeeRegistration extends Interaction {
 		)	throw new Exception("Controller not able enough. Request Failed.");
 		Object control = data.get("Controller");
 		
-		int userid=GetData.CurrentUser(data);
+		String userid=GetData.CurrentUser(data);
 		int campid=GetData.CampID(data);
 		//Gets list of camps the owner is in to check if he alr attending
-		HashMap<Integer, String> camplist = ((CampController)control).FilterUser(userid).getCamps();
+		HashMap<Integer, String> camplist = ((CampController) ((CampController)control).FilterUser(userid)).getCamps();
 		//Get camp name just to check if data tallies
 		String campname = (String) ((CampController)control).getCampDetails(campid).info().get(CampAspects.NAME);
 		

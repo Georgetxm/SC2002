@@ -16,6 +16,7 @@ import entities.Suggestion;
 import entities.Enquiry;
 import entities.User;
 import types.CampAspects;
+import types.Perms;
 import types.Role;
 
 public class MainController implements CampController, UserController, SuggestionController, EnquiryController {
@@ -50,8 +51,8 @@ public class MainController implements CampController, UserController, Suggestio
 
     public Suggestion findSuggestionById(int campId, int suggestionId) {
         Camp camp = findCampById(campId);
-        for (Entry<String, Integer> suggestion : camp.getSuggestions().entrySet()) {
-            if (suggestion.getValue() == suggestionId) {
+        for (Integer suggestion : camp.getSuggestions()) {
+            if (suggestion == suggestionId) {
                 for (Suggestion s : suggestions) {
                     if (s.getSuggestionId() == suggestionId) {
                         return s;
@@ -73,7 +74,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @return the Camp's ID
      */
     @Override
-    public int addCamp(CampInfo info) {
+    public int addCamp(CampInfo info, String ownerid) {
         Camp camp = new Camp(info, new HashSet<String>(), new HashSet<String>(), false, LocalDate.now());
         camps.add(camp);
         return camp.getCampid();
@@ -93,7 +94,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @return true if the User is successfully added to the Camp, false otherwise
      */
     @Override
-    public boolean addUser(int campId, String userId, Role role) {
+    public boolean joinCamp(int campId, String userId, Role role) {
         Camp camp = findCampById(campId);
         Student user = (Student) findUserById(userId);
         if (camp != null) {
@@ -114,39 +115,70 @@ public class MainController implements CampController, UserController, Suggestio
     /*
      * Overriden method from CampController
      * Tags an enquiry to a Camp object's enquiries HashMap
-     * Tags an enquiry to a User object's enquiries HashMap
      * 
      * @param campId the Camp this enquiry belongs to
-     * 
-     * @param creatorId the User who created this enquiry
      * 
      * @param enquiryId the enquiry's ID
      * 
      * @return true if the enquiry is successfully added to the Camp, false
      */
     @Override
-    public boolean addEnquiry(int campId, String creatorId, int enquiryId) {
+    public boolean addEnquiry(int campId, int enquiryId) {
         Camp camp = findCampById(campId);
         if (camp == null) {
             return false;
         } else {
-            if (!camp.addEnquiry(creatorId, enquiryId)) {
-                return false;
-            }
-        }
-
-        // Not sure if this downcasting works
-        Student user = (Student) findUserById(creatorId);
-        if (user == null) {
-            return false;
-        } else {
-            if (!user.addEnquiry(campId, enquiryId)) {
+            if (!camp.addEnquiry(enquiryId)) {
                 return false;
             }
         }
         return true;
     }
-
+    /*
+     * Overriden method from UserController
+     * Tags an enquiry to a Student object's enquiries HashMap
+     * 
+     * @param userId the Student this enquiry belongs to
+     * 
+     * @param enquiryId the enquiry's ID
+     * 
+     * @return true if the enquiry is successfully added to the Student, false
+     */
+    @Override
+    public boolean addEnquiry(String userId, int enquiryId) {
+        Student user = (Student) findUserById(userId);
+        if (user == null) {
+            return false;
+        } else {
+            if (!user.addEnquiry(enquiryId)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    /*
+     * Overriden method from CampController
+     * Tags a suggestion to a Camp object's suggestions HashMap
+     * 
+     * @param campId the Camp this enquiry belongs to
+     * 
+     * @param suggestionId the suggestion's ID
+     * 
+     * @return true if the suggestion is successfully added, false otherwise
+     */
+    @Override
+    public boolean addSuggestion(int campId, int suggestionId) {
+        Camp camp = findCampById(campId);
+        if (camp == null) {
+            return false;
+        } else {
+            if (!camp.addSuggestion(suggestionId)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     /*
      * Overriden method from CampController
      * Tags a suggestion to a Camp object's suggestions HashMap
@@ -161,22 +193,12 @@ public class MainController implements CampController, UserController, Suggestio
      * @return true if the suggestion is successfully added, false otherwise
      */
     @Override
-    public boolean addSuggestion(int campId, String creatorId, int suggestionId) {
-        Camp camp = findCampById(campId);
-        if (camp == null) {
-            return false;
-        } else {
-            if (!camp.addSuggestion(creatorId, suggestionId)) {
-                return false;
-            }
-        }
-
-        // Not sure if this downcasting works
+    public boolean addSuggestion(String creatorId, int suggestionId) {
         Student user = (Student) findUserById(creatorId);
         if (user == null) {
             return false;
         } else {
-            if (!user.addSuggestion(campId, suggestionId)) {
+            if (!user.addSuggestion(suggestionId)) {
                 return false;
             }
         }
@@ -238,11 +260,28 @@ public class MainController implements CampController, UserController, Suggestio
      * @return true if the enquiry is successfully deleted, false otherwise
      */
     @Override
-    public boolean deleteEnquiry(int campId, String creatorId, int enquiryId) {
+    public boolean deleteEnquiry(int campId, int enquiryId) {
         Camp camp = findCampById(campId);
+        if (camp != null && camp.removeEnquiry(enquiryId)){
+            return true;
+        }
+        return false;
+    }
+    
+    /*
+     * Overriden method from UserController
+     * Removes an enquiry from a User object's enquiries HashSet
+     * 
+     * @param creatorId the User's ID
+     * 
+     * @param enquiryId the enquiry's ID
+     * 
+     * @return true if the enquiry is successfully deleted, false otherwise
+     */
+    @Override
+    public boolean deleteEnquiry(String creatorId, int enquiryId) {
         Student user = (Student) findUserById(creatorId);
-        if (camp != null && camp.removeEnquiry(creatorId, enquiryId) &&
-                user != null && user.removeEnquiry(campId, enquiryId)) {
+        if (user != null && user.removeEnquiry(enquiryId)) {
             return true;
         }
         return false;
@@ -250,10 +289,25 @@ public class MainController implements CampController, UserController, Suggestio
 
     /*
      * Overriden method from CampController
-     * Removes an enquiry from a Camp object's enquiries HashMap
-     * Removes an enquiry from a User object's enquiries ArrayList
+     * Removes an enquiry from a Camp object's enquiries HashSet
      * 
      * @param campId the Camp's ID
+     * 
+     * @param suggestion the suggestion's ID
+     * 
+     * @return true if the suggestion is successfully deleted, false otherwise
+     */
+    @Override
+    public boolean deleteSuggestion(int campId, int suggestionId) {
+        Camp camp = findCampById(campId);
+        if (camp != null && camp.removeSuggestion(suggestionId)) {
+            return true;
+        }
+        return false;
+    }
+    /*
+     * Overriden method from CampController
+     * Removes an enquiry from a User object's enquiries HashSet
      * 
      * @param creatorId the User's ID
      * 
@@ -262,16 +316,13 @@ public class MainController implements CampController, UserController, Suggestio
      * @return true if the suggestion is successfully deleted, false otherwise
      */
     @Override
-    public boolean deleteSuggestion(int campId, String creatorId, int suggestionId) {
-        Camp camp = findCampById(campId);
+    public boolean deleteSuggestion(String creatorId, int suggestionId) {
         Student user = (Student) findUserById(creatorId);
-        if (camp != null && camp.removeSuggestion(creatorId, suggestionId) &&
-                user != null && user.removeSuggestion(campId, suggestionId)) {
+        if (user != null && user.removeSuggestion(suggestionId)) {
             return true;
         }
         return false;
     }
-
     // @Override
     // public HashMap<String, Integer> getCamps(Entry<CampAspects, ? extends Object>
     // filter) {
@@ -306,24 +357,6 @@ public class MainController implements CampController, UserController, Suggestio
     // }
     // return null;
     // }
-
-    /*
-     * Returns the owner of the suggestion
-     * 
-     * @param campId the Camp's ID
-     * 
-     * @param suggestionId the suggestion's ID
-     * 
-     * @return the owner of the suggestion
-     */
-    @Override
-    public int getSuggestionOwner(int campId, int suggestionId) {
-        Camp camp = findCampById(campId);
-        if (camp != null) {
-            return findSuggestionById(campId, suggestionId).getSuggestionId();
-        }
-        return -1;
-    }
 
     /*
      * Returns a User object given its ID
@@ -380,5 +413,228 @@ public class MainController implements CampController, UserController, Suggestio
         }
         return null;
     }
+
+	@Override
+	public int addEnquiry(String enquiry, String ownerid, int campid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int editEnquiry(int enquiryid, String enquiry) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getEnquiry(int enquiryid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Controller FilterCamp(int campid) {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
+	@Override
+	public Controller FilterUser(String userid) {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
+	@Override
+	public String[] getEnquiries() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean deleteEnquiry(int enquiryid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean finaliseEnquiry(int enquiryid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean isEnquiryEditable(int enquiryid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int saveReply(int enquiryid, String reply) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String[] getReply(int enquiryid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int addSuggestion(Entry<CampAspects, ? extends Object> suggestion, String rationale, String ownerid,
+			int campid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int editSuggestion(int id, Entry<CampAspects, ? extends Object> edited, String rationale) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Entry<Entry<CampAspects, ? extends Object>, String> getSuggestion(int suggestionid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Entry<CampAspects, ? extends Object>[] getSuggestions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean deleteSuggestion(int suggestionid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean finaliseSuggestion(int suggestionid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean isSuggestionEditable(int suggestionid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getOwner(int suggestionid) {
+		// TODO Auto-generated method stub
+		return "";
+	}
+
+	@Override
+	public int getHostCamp(int suggestionid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean setCampComittee(String userid, String name, int campid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean joinCamp(String userid, String name, int campid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean leaveCamp(String userid, int campid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public HashMap<Integer, String> getCamp(int userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HashSet<Entry<Integer, Integer>> getUserEnquiries(int userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HashSet<Entry<Integer, Integer>> getUserSuggestions(int userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int incrementPoints(String userid, int points) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public EnumSet<Perms> grantPerms(String userid, EnumSet<Perms> newperms) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public EnumSet<Perms> denyPerms(String userid, EnumSet<Perms> removedperms) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public EnumSet<Perms> replacePerms(String userid, EnumSet<Perms> replacementperms) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CampController FilterAspect(Entry<CampAspects, ? extends Object> filter) {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
+	@Override
+	public HashMap<Integer, String> getCamps() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getCampStudentList(int campid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean editCampDetails(int campid, Entry<CampAspects, ? extends Object> detail) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAttendeeFull(int campid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isCommiteeFull(int campid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public HashSet<String> getCampComittees(int campid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

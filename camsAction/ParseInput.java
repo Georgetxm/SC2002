@@ -40,7 +40,7 @@ final class ParseInput {
 			}
 			break;
 		}
-		return new HashMap.SimpleEntry<CampAspects,LocalDate>(CampAspects.LASTREGISTERDATE,date);
+		return new HashMap.SimpleEntry<CampAspects,LocalDate>(CampAspects.REGISTRATION_DEADLINE,date);
 	}
 	static final Entry<CampAspects,Faculty> CampFaculty(Scanner s){
 		Faculty[] facultylist = Faculty.class.getEnumConstants();
@@ -86,7 +86,7 @@ final class ParseInput {
 		return new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.SLOTS,slots);
 	}
 	static final Entry<CampAspects,Integer>CampComitteeSlots(Scanner s){
-		return new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.COMITTEESLOTS,10);
+		return new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.COMMITTEESLOTS,10);
 	}
 	static final Entry<CampAspects,String>CampDescription(Scanner s){
 		System.out.println("Type Camp Description");

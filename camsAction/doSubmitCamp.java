@@ -25,7 +25,7 @@ public class doSubmitCamp extends Interaction {
 		)	throw new Exception("Controller not able enough. Request Failed.");
 		Object control = data.get("Controller");
 		
-		int userid = GetData.CurrentUser(data);
+		String userid = GetData.CurrentUser(data);
 		Scanner s = getScanner(data);
 		//For each camp aspect required in camp details, calls its parse input function.
 		//These are then compiled and given to campcontrol so it can register a camp

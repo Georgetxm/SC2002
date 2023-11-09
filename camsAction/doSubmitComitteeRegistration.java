@@ -21,10 +21,10 @@ public final class doSubmitComitteeRegistration extends Interaction {
 		)	throw new Exception("Controller not able enough. Request Failed.");
 
 		
-		int userid=GetData.CurrentUser(data);
+		String userid=GetData.CurrentUser(data);
 		int campid=GetData.CampID(data);
 
-		HashMap<Integer, String> camplist = ((CampController) control).FilterUser(userid).getCamps();
+		HashMap<Integer, String> camplist = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
 		String campname = (String) ((CampController) control).getCampDetails(campid).info().get(CampAspects.NAME);
 		
 		if(camplist.keySet().contains(campid)) {
@@ -37,7 +37,7 @@ public final class doSubmitComitteeRegistration extends Interaction {
 			System.out.println("Committee is full. Please apply again next time.");
 			return false;
 		}
-		((CampController) control).joinCamp(campid, userid, Role.COMITTEE);
+		((CampController) control).joinCamp(campid, userid, Role.COMMITTEE);
 		((UserController) control).grantPerms(userid, EnumSet.of(
 			Perms.SUBMIT_CAMP_SUGGESTION,
 			Perms.EDIT_CAMP_SUGGESTION,

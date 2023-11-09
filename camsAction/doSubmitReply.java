@@ -20,7 +20,7 @@ public final class doSubmitReply extends Interaction {
 		UserController usercontrol = (UserController) data.get("Controller");
 		
 		int enquiryid = GetData.EnquiryID(data);
-		int userid = GetData.CurrentUser(data);
+		String userid = GetData.CurrentUser(data);
 		
 		Scanner s = getScanner(data);
 		System.out.println("Please type your reply.");

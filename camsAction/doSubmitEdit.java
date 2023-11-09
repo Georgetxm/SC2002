@@ -1,29 +1,25 @@
 package camsAction;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.Map.Entry;
+
 import controllers.CampController;
-import controllers.SuggestionController;
-import controllers.UserController;
 import interactions.Interaction;
 import types.CampAspects;
 
-public final class doSubmitSuggestion extends Interaction{
-	//Currently using distinct control interfaces for dual inheritance
+public class doSubmitEdit extends Interaction {
+
 	@Override
-	public final Integer run(HashMap<String, Object> data) throws Exception {
+	public final Boolean run(HashMap<String, Object> data) throws Exception {
 		if(!data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
 		if(
-			!CampController.class.isInstance(data.get("Controller"))||
-			!UserController.class.isInstance(data.get("Controller"))||
-			!SuggestionController.class.isInstance(data.get("Controller"))
+			!CampController.class.isInstance(data.get("Controller"))
 		)	throw new Exception("Controller not able enough. Request Failed.");
 		Object control = data.get("Controller");
 		
-		int campid = GetData.CampID(data);
-		int userid = GetData.CurrentUser(data);
+		int campid = GetData.CurrentUser(data);
 		//Asks campcontrol for the camp info and pulls out the info
 		TreeMap<CampAspects,? extends Object> info = ((CampController) control).getCampDetails(campid).info();
 
@@ -50,19 +46,10 @@ public final class doSubmitSuggestion extends Interaction{
 		case LOCATION: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
 		case SLOTS: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
 		case DESCRIPTION: 		edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); break;
-		default: System.out.println("This field cannot be changed."); return -1;
+		default: System.out.println("This field cannot be changed."); return false;
 		}
 		
-		String reason;
-		System.out.println("Please type your rationale:");
-		reason = s.nextLine();
-		
-		int suggestionid = ((SuggestionController) control).addSuggestion(edited, reason, userid, campid);
-		System.out.println("Your suggestion has been submitted.");
-		
-		((UserController) control).incrementPoints(userid, 1);
-		System.out.println("Your points have been incremented");
-		return suggestionid;
+		((CampController) control).editCampDetails(campid,edited);
+		return true;
 	}
-
 }

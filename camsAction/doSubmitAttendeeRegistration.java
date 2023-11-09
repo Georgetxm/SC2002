@@ -16,13 +16,14 @@ public final class doSubmitAttendeeRegistration extends Interaction {
 			!CampController.class.isInstance(data.get("Controller"))||
 			!UserController.class.isInstance(data.get("Controller"))
 		)	throw new Exception("Controller not able enough. Request Failed.");
-		CampController campcontrol = (CampController) data.get("Controller");
-		UserController usercontrol = (UserController) data.get("Controller");
+		Object control = data.get("Controller");
 		
 		int userid=GetData.CurrentUser(data);
 		int campid=GetData.CampID(data);
-		HashMap<Integer, String> camplist = usercontrol.getCamp(userid);
-		String campname = (String) campcontrol.getCampDetails(campid).info().get(CampAspects.NAME);
+		//Gets list of camps the owner is in to check if he alr attending
+		HashMap<Integer, String> camplist = ((CampController)control).FilterUser(userid).getCamps();
+		//Get camp name just to check if data tallies
+		String campname = (String) ((CampController)control).getCampDetails(campid).info().get(CampAspects.NAME);
 		
 		if(camplist.keySet().contains(campid)) {
 			if(camplist.get(campid)!=campname) throw new Exception("Data error. CampID and CampName mismatch!");
@@ -30,13 +31,12 @@ public final class doSubmitAttendeeRegistration extends Interaction {
 			return false;
 		}
 		
-		if(campcontrol.isAttendeeFull(campid)) {
+		if(((CampController)control).isAttendeeFull(campid)) {
 			System.out.println("Camp is currently full. Please wait for others to withdraw.");
 			return false;
 		}
 		
-		campcontrol.submitUser(campid, userid, Role.ATTENDEE);
-		usercontrol.addCamp(userid, campname, campid);
+		((CampController)control).joinCamp(campid, userid, Role.ATTENDEE);
 		System.out.println("Registered successfully as an attendee.");
 		
 		return true;

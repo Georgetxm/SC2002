@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
-import controllers.CampController;
-import controllers.UserController;
+import controllers.SuggestionController;
 import interactions.Interaction;
 import types.CampAspects;
 
@@ -14,23 +13,18 @@ public final class doEditSuggestion extends Interaction {
 	@Override
 	public final Boolean run(HashMap<String, Object> data) throws Exception {
 		if(!data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
-		if(
-			!CampController.class.isInstance(data.get("Controller"))||
-			!UserController.class.isInstance(data.get("Controller"))
-		)	throw new Exception("Controller not able enough. Request Failed.");
-		CampController campcontrol = (CampController) data.get("Controller");
-		UserController usercontrol = (UserController) data.get("Controller");
+		if(!SuggestionController.class.isInstance(data.get("Controller")))	throw new Exception("Controller not able enough. Request Failed.");
+		SuggestionController suggestioncontrol = (SuggestionController) data.get("Controller");
 		
-		int campid = GetData.CampID(data);
 		int suggestionid = GetData.SuggestionID(data);
 		Scanner s = getScanner(data);
 		
-		if(!campcontrol.isSuggestionEditable(campid, suggestionid)) {
+		if(!suggestioncontrol.isSuggestionEditable(suggestionid)) {
 			System.out.println("Suggestion has been viewed and may not be edited");
 			return false;
 		}
 		
-		CampAspects chosenaspect=campcontrol.getSuggestionAspect(campid, suggestionid);
+		CampAspects chosenaspect = suggestioncontrol.getSuggestion(suggestionid).getKey().getKey();
 		Entry<CampAspects, ? extends Object> edited;
 		
 		switch(chosenaspect) { //Depending on the aspect chosen, request data from user
@@ -43,10 +37,7 @@ public final class doEditSuggestion extends Interaction {
 		}
 		
 		System.out.println("Please type your rationale:");
-		String reason = s.nextLine();
-
-		usercontrol.incrementPoints(0, 0);
-		campcontrol.editSuggestion(campid, suggestionid, edited, reason);
+		suggestioncontrol.editSuggestion(suggestionid, edited, s.nextLine());
 		
 		System.out.println("Edits have been saved");
 		return null;

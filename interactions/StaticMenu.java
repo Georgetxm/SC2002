@@ -1,5 +1,4 @@
 package interactions;
-import java.util.HashMap;
 import java.util.List;
 
 public final class StaticMenu extends UserMenu{
@@ -8,10 +7,13 @@ public final class StaticMenu extends UserMenu{
 		this.choices=choice;
 	}
 	@Override
-	public final Boolean run(HashMap<String, Object> data) throws Exception{
-		System.out.println(this.message);
-		int choice = this.givechoices(data);
-		this.checkandrun(choice, data);
+	public final Boolean run() throws Exception{
+		while(true) {
+			System.out.println(this.message);
+			int choice = this.givechoices();
+			if(choice<0) break;
+			this.checkandrun(choice);
+		}
 		return true;
 	}
 }

@@ -1,20 +1,19 @@
 package cams;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Scanner;
 
+import entities.Data;
 import types.Perms;
 
 public class Cams {
 
 	public static void main(String[] args) throws Exception {
-		HashMap<String,Object> data = new HashMap<String,Object>();
-		EnumSet<Perms> defaultperms = EnumSet.of(Perms.DEFAULT);
-		data.put("UserPerms", defaultperms);
-		data.put("Scanner", new Scanner(System.in));
-		data.put("CurrentUser", "Armstrong");
-		CamsInteraction.startmenu.run(data);
+		EnumSet<Perms> defaultperms = EnumSet.of(Perms.DEFAULT, Perms.CREATE_CAMP);
+		Data.put("UserPerms", defaultperms);
+		Data.put("Scanner", new Scanner(System.in));
+		Data.put("CurrentUser", "Armstrong");
+		CamsInteraction.startmenu.run();
 	}
 
 }

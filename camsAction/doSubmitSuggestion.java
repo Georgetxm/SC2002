@@ -1,33 +1,33 @@
 package camsAction;
 
-import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
 import controllers.CampController;
 import controllers.SuggestionController;
 import controllers.UserController;
+import entities.Data;
 import interactions.Interaction;
 import types.CampAspects;
 
 public final class doSubmitSuggestion extends Interaction{
 	//Currently using distinct control interfaces for dual inheritance
 	@Override
-	public final Integer run(HashMap<String, Object> data) throws Exception {
-		if(!data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	public final Integer run() throws Exception {
+		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
 		if(
-			!CampController.class.isInstance(data.get("Controller"))||
-			!UserController.class.isInstance(data.get("Controller"))||
-			!SuggestionController.class.isInstance(data.get("Controller"))
+			!CampController.class.isInstance(Data.get("Controller"))||
+			!UserController.class.isInstance(Data.get("Controller"))||
+			!SuggestionController.class.isInstance(Data.get("Controller"))
 		)	throw new Exception("Controller not able enough. Request Failed.");
-		Object control = data.get("Controller");
+		Object control = Data.get("Controller");
 		
-		int campid = GetData.CampID(data);
-		String userid = GetData.CurrentUser(data);
+		int campid = GetData.CampID();
+		String userid = GetData.CurrentUser();
 		//Asks campcontrol for the camp info and pulls out the info
 		TreeMap<CampAspects,? extends Object> info = ((CampController) control).getCampDetails(campid).info();
 
-		Scanner s = getScanner(data);
+		Scanner s = getScanner();
 		int choice=0;
 		while(true) {
 			System.out.println("What would you like to amend:");

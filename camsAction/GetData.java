@@ -3,63 +3,63 @@ package camsAction;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map.Entry;
 
 import entities.CampInfo;
+import entities.Data;
 
 final class GetData {
-	static final String CurrentUser(HashMap<String,Object> data) throws Exception {
+	static final String CurrentUser() throws Exception {
 		String userid;
-		if(!data.containsKey("CurrentUser")) throw new Exception("User not identified. Request Failed.");
-		try {userid = (String) data.get("CurrentUser");}
+		if(!Data.containsKey("CurrentUser")) throw new Exception("User not identified. Request Failed.");
+		try {userid = (String) Data.get("CurrentUser");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid User ID. Request Failed.");
 		}
 		return userid;
 	}
-	static final int CampID(HashMap<String,Object> data) throws Exception {
+	static final int CampID() throws Exception {
 		int campid;
-		if(!data.containsKey("CurrentCamp")) throw new Exception("Did not select camp. Request Failed.");
-		try {campid = (int) data.get("CurrentCamp");}
+		if(!Data.containsKey("CurrentCamp")) throw new Exception("Did not select camp. Request Failed.");
+		try {campid = (int) Data.get("CurrentCamp");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid Camp ID. Request Failed.");
 		}
 		return campid;
 	}
 	
-	static final int SuggestionID(HashMap<String,Object> data) throws Exception {
+	static final int SuggestionID() throws Exception {
 		int suggestionid;
-		if(!data.containsKey("CurrentItem")) throw new Exception("Did not select suggestion. Request Failed.");
-		try {suggestionid = (int) data.get("CurrentItem");}
+		if(!Data.containsKey("CurrentItem")) throw new Exception("Did not select suggestion. Request Failed.");
+		try {suggestionid = (int) Data.get("CurrentItem");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid Suggestion ID. Request Failed.");
 		}
 		return suggestionid;
 	}
-	static final int EnquiryID(HashMap<String,Object> data) throws Exception {
+	static final int EnquiryID() throws Exception {
 		int enquiryid;
-		if(!data.containsKey("CurrentItem")) throw new Exception("Did not select enquiry. Request Failed.");
-		try {enquiryid = (int) data.get("CurrentItem");}
+		if(!Data.containsKey("CurrentItem")) throw new Exception("Did not select enquiry. Request Failed.");
+		try {enquiryid = (int) Data.get("CurrentItem");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid Enquiry ID. Request Failed.");
 		}
 		return enquiryid;
 	}
-	static final CampInfo CampInfo(HashMap<String,Object> data) throws Exception{
+	static final CampInfo CampInfo() throws Exception{
 		CampInfo campinfo;
-		if(!data.containsKey("CampInfo")) throw new Exception("Camp info not retrieved");
-		try {campinfo = (CampInfo) data.get("CampInfo");}
+		if(!Data.containsKey("CampInfo")) throw new Exception("Camp info not retrieved");
+		try {campinfo = (CampInfo) Data.get("CampInfo");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid Camp Info. Request Failed.");
 		}
 		return campinfo;
 	}
-	static final Boolean isSilenced(HashMap<String,Object> data) throws Exception{
+	static final Boolean isSilenced() throws Exception{
 		Boolean silenced;
-		if(!data.containsKey("isSilenced")) return false;
-		try {silenced = (Boolean) data.get("CampInfo");}
+		if(!Data.containsKey("isSilenced")) return false;
+		try {silenced = (Boolean) Data.get("CampInfo");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid silenced tag");
 		}

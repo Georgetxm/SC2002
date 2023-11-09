@@ -1,27 +1,25 @@
 package camsAction;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.HashSet;
 import controllers.CampController;
 import controllers.UserController;
+import entities.Data;
 import interactions.Interaction;
 import types.Perms;
 
 public class doDeleteCamp extends Interaction {
 
 	@Override
-	public final Boolean run(HashMap<String, Object> data) throws Exception {
-		int campid = GetData.CampID(data);
-		if(!data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	public final Boolean run() throws Exception {
+		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
 		if(
-			!CampController.class.isInstance(data.get("Controller"))||
-			!UserController.class.isInstance(data.get("Controller"))
+			!CampController.class.isInstance(Data.get("Controller"))||
+			!UserController.class.isInstance(Data.get("Controller"))
 		)	throw new Exception("Controller not able enough. Request Failed.");
-		Object control = data.get("Controller");
+		Object control = Data.get("Controller");
 		
-		
-		System.out.println("Camp has been deleted");
+		int campid = GetData.CampID();
 		//Remove the camp from all participants data
 		HashSet<String> participantlist = ((CampController)control).getCampComittees(campid);
 		for(String participant:participantlist) {
@@ -34,7 +32,7 @@ public class doDeleteCamp extends Interaction {
 			((UserController)control).grantPerms(participant, EnumSet.of(Perms.REGISTER_AS_COMITTEE));
 		}
 		((CampController)control).deleteCamp(campid);
-		System.out.println("This change will be reflected for participants");
+		System.out.println("Camp has been deleted. This change will be reflected for participants");
 		return true;
 	}
 

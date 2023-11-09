@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import controllers.CampController;
 import controllers.UserController;
 import entities.CampInfo;
+import entities.Data;
 
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -17,16 +18,16 @@ import types.CampAspects;
 public class doSubmitCamp extends Interaction {
 
 	@Override
-	public final Integer run(HashMap<String, Object> data) throws Exception {
-		if(!data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	public final Integer run() throws Exception {
+		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
 		if(
-			!CampController.class.isInstance(data.get("Controller"))||
-			!UserController.class.isInstance(data.get("Controller"))
+			!CampController.class.isInstance(Data.get("Controller"))||
+			!UserController.class.isInstance(Data.get("Controller"))
 		)	throw new Exception("Controller not able enough. Request Failed.");
-		Object control = data.get("Controller");
+		Object control = Data.get("Controller");
 		
-		String userid = GetData.CurrentUser(data);
-		Scanner s = getScanner(data);
+		String userid = GetData.CurrentUser();
+		Scanner s = getScanner();
 		//For each camp aspect required in camp details, calls its parse input function.
 		//These are then compiled and given to campcontrol so it can register a camp
 		//Typecasts are done when necessary

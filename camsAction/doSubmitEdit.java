@@ -1,29 +1,29 @@
 package camsAction;
 
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import controllers.CampController;
+import entities.Data;
 import interactions.Interaction;
 import types.CampAspects;
 
 public class doSubmitEdit extends Interaction {
 
 	@Override
-	public final Boolean run(HashMap<String, Object> data) throws Exception {
-		if(!data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	public final Boolean run() throws Exception {
+		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
 		if(
-			!CampController.class.isInstance(data.get("Controller"))
+			!CampController.class.isInstance(Data.get("Controller"))
 		)	throw new Exception("Controller not able enough. Request Failed.");
-		Object control = data.get("Controller");
+		Object control = Data.get("Controller");
 		
-		int campid = GetData.CampID(data);
+		int campid = GetData.CampID();
 		//Asks campcontrol for the camp info and pulls out the info
 		TreeMap<CampAspects,? extends Object> info = ((CampController) control).getCampDetails(campid).info();
 
-		Scanner s = getScanner(data);
+		Scanner s = getScanner();
 		int choice=0;
 		while(true) {
 			System.out.println("What would you like to amend:");

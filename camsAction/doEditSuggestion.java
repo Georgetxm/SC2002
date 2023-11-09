@@ -1,23 +1,23 @@
 package camsAction;
 
-import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
 import controllers.SuggestionController;
+import entities.Data;
 import interactions.Interaction;
 import types.CampAspects;
 
 public final class doEditSuggestion extends Interaction {
 	//Currently using distinct control interfaces for dual inheritance
 	@Override
-	public final Boolean run(HashMap<String, Object> data) throws Exception {
-		if(!data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
-		if(!SuggestionController.class.isInstance(data.get("Controller")))	throw new Exception("Controller not able enough. Request Failed.");
-		SuggestionController suggestioncontrol = (SuggestionController) data.get("Controller");
+	public final Boolean run() throws Exception {
+		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+		if(!SuggestionController.class.isInstance(Data.get("Controller")))	throw new Exception("Controller not able enough. Request Failed.");
+		SuggestionController suggestioncontrol = (SuggestionController) Data.get("Controller");
 		
-		int suggestionid = GetData.SuggestionID(data);
-		Scanner s = getScanner(data);
+		int suggestionid = GetData.SuggestionID();
+		Scanner s = getScanner();
 		
 		if(!suggestioncontrol.isSuggestionEditable(suggestionid)) {
 			System.out.println("Suggestion has been viewed and may not be edited");

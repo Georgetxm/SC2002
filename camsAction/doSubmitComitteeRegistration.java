@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import controllers.CampController;
 import controllers.UserController;
+import entities.Data;
 import interactions.Interaction;
 import types.CampAspects;
 import types.Perms;
@@ -12,17 +13,17 @@ import types.Role;
 public final class doSubmitComitteeRegistration extends Interaction {
 
 	@Override
-	protected Object run(HashMap<String, Object> data) throws Exception {
-		if(!data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
-		Object control=data.get("Controller");
+	protected Object run() throws Exception {
+		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+		Object control=Data.get("Controller");
 		if(
 			!CampController.class.isInstance(control)||
 			!UserController.class.isInstance(control)
 		)	throw new Exception("Controller not able enough. Request Failed.");
 
 		
-		String userid=GetData.CurrentUser(data);
-		int campid=GetData.CampID(data);
+		String userid=GetData.CurrentUser();
+		int campid=GetData.CampID();
 
 		HashMap<Integer, String> camplist = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
 		String campname = (String) ((CampController) control).getCampDetails(campid).info().get(CampAspects.NAME);

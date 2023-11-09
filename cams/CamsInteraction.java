@@ -7,7 +7,6 @@ import java.util.List;
 import camsAction.doApproveSuggestion;
 import camsAction.doDeleteSuggestion;
 import camsAction.doEditSuggestion;
-import camsAction.doNothing;
 import camsAction.doSubmitCamp;
 import camsAction.queryViewAllCampsMenu;
 import interactions.MenuChoice;

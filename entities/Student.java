@@ -7,6 +7,20 @@ import java.util.ArrayList;
 import types.Faculty;
 import types.Perms;
 
+/**
+ * Represents a Student object
+ * Inherits from User class
+ * 
+ * @see User
+ *      A Student can have multiple camps as an attendee, but only one camp as a
+ *      committee
+ *      A Student can create enquiries and suggestions
+ *      A Student can have points for giving suggestions and having it approved
+ * @author Teo Xuan Ming
+ * @version 1.0
+ * @since 2021-11-06
+ */
+
 public class Student extends User {
     /*
      * camps is a HashSet of campIds that the Student is registered as an attendee

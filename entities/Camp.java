@@ -135,13 +135,31 @@ public class Camp {
         return true;
     }
 
+    public HashMap<String, Integer> getEnquiries() {
+        return this.enquiries;
+    }
+
     public boolean addEnquiry(String creatorId, int enquiryId) {
         this.enquiries.put(creatorId, enquiryId);
         return true;
     }
 
+    public boolean removeEnquiry(String creatorId, int enquiryId) {
+        this.enquiries.remove(creatorId, enquiryId);
+        return true;
+    }
+
+    public HashMap<String, Integer> getSuggestions() {
+        return this.suggestions;
+    }
+
     public boolean addSuggestion(String creatorId, int suggestionId) {
         this.suggestions.put(creatorId, suggestionId);
+        return true;
+    }
+
+    public boolean removeSuggestion(String creatorId, int suggestionId) {
+        this.suggestions.remove(creatorId, suggestionId);
         return true;
     }
 }

@@ -28,8 +28,8 @@ public class CamsInteraction{
 		editSuggestion,
 		deleteSuggestion),
 	startmenuchoices = Arrays.asList(
-		viewAllCamps,
-		createCamp
+		createCamp,
+		viewAllCamps
 	);
 	
 	

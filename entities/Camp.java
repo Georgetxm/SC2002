@@ -3,44 +3,42 @@ package entities;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
+import core.CampInfo;
+import types.CampAspects;
 import types.Faculty;
 import types.Location;
+import types.Role;
 
 public class Camp {
-    private int campid;
-    private String name;
-    private String description;
-    private ArrayList<LocalDate> campDates;
-    private LocalDate registrationDeadline;
-    private Location location;
-    private int remaningSlots;
-    private HashMap<String, Faculty> attendees;
-    private int remainingCommitteeSlots;
-    private HashMap<String, Faculty> campCommittee;
-    private final Staff staffInCharge;
+    private CampInfo campInfo;
+    private final int campid;
+    private static int nextCampId = 0;
+    private HashSet<String> attendees;
+    private HashSet<String> campCommittee;
     private boolean visibility;
-    private final Faculty userGroup;
     private final LocalDate creationDate;
+    private HashMap<String, Integer> enquiries;
+    private HashMap<String, Integer> suggestions;
 
-    public Camp(int campid, String name, String description, ArrayList<LocalDate> campDates,
-            LocalDate registrationDeadline, Location location, int remaningSlots, HashMap<String, Faculty> attendees,
-            int remainingCommitteeSlots, HashMap<String, Faculty> campCommittee, Staff staffInCharge,
-            boolean visibility,
-            Faculty userGroup, LocalDate creationDate) {
-        this.campid = campid;
-        this.name = name;
-        this.description = description;
-        this.campDates = campDates;
-        this.registrationDeadline = registrationDeadline;
-        this.location = location;
-        this.remaningSlots = remaningSlots;
+    // private String name;
+    // private String description;
+    // private ArrayList<LocalDate> campDates;
+    // private LocalDate registrationDeadline;
+    // private Location location;
+    // private int remaningSlots;
+    // private int remainingCommitteeSlots;
+    // private final Staff staffInCharge;
+    // private final Faculty userGroup;
+
+    public Camp(CampInfo campInfo, HashSet<String> attendees, HashSet<String> campCommittee,
+            boolean visibility, LocalDate creationDate) {
+        this.campInfo = campInfo;
+        this.campid = nextCampId++;
         this.attendees = attendees;
-        this.remainingCommitteeSlots = remainingCommitteeSlots;
         this.campCommittee = campCommittee;
-        this.staffInCharge = staffInCharge;
         this.visibility = visibility;
-        this.userGroup = userGroup;
         this.creationDate = creationDate;
     }
 
@@ -48,56 +46,8 @@ public class Camp {
         return this.campid;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public boolean setName(String newName) {
-        if (newName == null || newName.isEmpty()) {
-            return false;
-        }
-        this.name = newName;
-        return true;
-    }
-
-    public boolean setDescription(String newDescription) {
-        if (newDescription == null || newDescription.isEmpty()) {
-            return false;
-        }
-        this.description = newDescription;
-        return true;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public ArrayList<LocalDate> getCampDates() {
-        return this.campDates;
-    }
-
-    public boolean setCampDates(ArrayList<LocalDate> newCampDates) {
-        if (newCampDates == null || newCampDates.isEmpty()) {
-            return false;
-        }
-        this.campDates = newCampDates;
-        return true;
-    }
-
-    public Location getLocation() {
-        return this.location;
-    }
-
-    public boolean setLocation(Location location) {
-        if (this.location == null) {
-            return false;
-        }
-        this.location = location;
-        return true;
-    }
-
-    public Staff getStaffInCharge() {
-        return this.staffInCharge;
+    public CampInfo getCampInfo() {
+        return this.campInfo;
     }
 
     public boolean getVisibility() {
@@ -109,32 +59,30 @@ public class Camp {
         return true;
     }
 
-    public Faculty getUserGroup() {
-        return this.userGroup;
-    }
-
     public LocalDate getCreationDate() {
         return this.creationDate;
     }
 
-    public boolean isCampPastRegistrationDeadline() {
-        return LocalDate.now().isAfter(this.registrationDeadline);
-    }
-
-    public boolean isCampAttendeeFull() {
-        return this.attendees.size() >= this.remaningSlots;
+    public HashSet<String> getAttendees() {
+        return this.attendees;
     }
 
     public boolean isCampAttendee(String userId) {
-        return this.attendees.containsKey(userId);
+        return this.attendees.contains(userId);
     }
 
-    public boolean addAttendee(String userId, Faculty faculty) {
+    public boolean isCampAttendeeFull() {
+        return this.attendees.size() >= (int) this.campInfo.info().get(CampAspects.SLOTS);
+    }
+
+    public boolean addAttendee(String userId) {
         if (this.isCampAttendeeFull()) {
             return false;
         }
-        this.attendees.put(userId, faculty);
-        this.remaningSlots -= 1;
+        this.attendees.add(userId);
+        Integer currentAttendees = (Integer) this.campInfo.info().get(CampAspects.SLOTS);
+        this.campInfo.info().put(CampAspects.SLOTS, currentAttendees + 1);
+
         return true;
     }
 
@@ -143,24 +91,37 @@ public class Camp {
             return false;
         }
         this.attendees.remove(userId);
-        this.remaningSlots += 1;
+        Integer updatedAttendees = (Integer) this.campInfo.info().get(CampAspects.SLOTS) - 1;
+        this.campInfo.info().put(CampAspects.SLOTS, updatedAttendees);
         return true;
     }
 
-    public boolean isCampCommitteeFull() {
-        return this.campCommittee.size() >= this.remainingCommitteeSlots;
-    }
-
     public boolean isCampCommittee(String userId) {
-        return this.campCommittee.containsKey(userId);
+        return this.campCommittee.contains(userId);
     }
 
-    public boolean addCommittee(String userId, Faculty faculty) {
+    public boolean isCampCommitteeFull() {
+        return this.campCommittee.size() >= (int) this.campInfo.info().get(CampAspects.COMMITTEESLOTS);
+    }
+
+    public boolean addCommittee(String userId) {
         if (this.isCampCommitteeFull()) {
+            System.out.println("Camp committee is full");
             return false;
         }
-        this.campCommittee.put(userId, faculty);
-        this.remainingCommitteeSlots -= 1;
+
+        if (this.isCampAttendee(userId)) {
+            System.out.println(userId + " is an attendee");
+            return false;
+        }
+
+        this.campCommittee.add(userId);
+        // Integer currentAttendees = (Integer)
+        // this.campInfo.info().get(CampAspects.COMMITTEESLOTS);
+        // this.campInfo.info().put(CampAspects.SLOTS, currentAttendees + 1);
+        this.campInfo.info().compute(CampAspects.SLOTS,
+                (key, value) -> (value == null) ? (Integer) 1 : (Integer) value + 1);
+
         return true;
     }
 
@@ -169,8 +130,18 @@ public class Camp {
             return false;
         }
         this.campCommittee.remove(userId);
-        this.remainingCommitteeSlots += 1;
+        Integer currentAttendees = (Integer) this.campInfo.info().get(CampAspects.SLOTS);
+        this.campInfo.info().put(CampAspects.SLOTS, currentAttendees - 1);
         return true;
     }
 
+    public boolean addEnquiry(String creatorId, int enquiryId) {
+        this.enquiries.put(creatorId, enquiryId);
+        return true;
+    }
+
+    public boolean addSuggestion(String creatorId, int suggestionId) {
+        this.suggestions.put(creatorId, suggestionId);
+        return true;
+    }
 }

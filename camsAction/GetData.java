@@ -69,12 +69,12 @@ final class GetData {
 		return silenced;
 	}
 	@SuppressWarnings("unchecked")
-	static final HashMap<CampAspects,? extends Object> Filter() throws Exception{
-		HashMap<CampAspects, ? extends Object> filter;
+	static final HashMap<CampAspects,Object> Filter() throws Exception{
+		HashMap<CampAspects,Object> filter;
 		if(!Data.containsKey("Filter")) throw new NoSuchElementException("Filter not found");
-		try {filter = (HashMap<CampAspects,? extends Object>) Data.get("Filter");}
+		try {filter = (HashMap<CampAspects,Object>) Data.get("Filter");}
 		catch(ClassCastException e) {
-			throw new Exception("Invalid silenced tag");
+			throw new Exception("Invalid filter type");
 		}
 		return filter;
 	}

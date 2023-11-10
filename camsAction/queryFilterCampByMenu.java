@@ -43,11 +43,13 @@ public class queryFilterCampByMenu extends UserMenu {
 			case STAFFIC:	 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampStaffIC(s);	 	break;
 			default: System.out.println("Cannot search by this field"); return false;
 			}
-			HashMap<CampAspects, ?extends Object> existingfilter;
+			HashMap<CampAspects, ?extends Object> existingfilter = null;
 			try {existingfilter =  GetData.Filter();}
 			catch(NoSuchElementException e) {
-				Data.put("Filter", edited);
-				System.out.println("Filtering by "+choices.get(option).text());
+				HashMap<CampAspects,Object> newfilter = new HashMap<CampAspects,Object>();
+				newfilter.put(edited.getKey(),edited.getValue());
+				Data.put("Filter", newfilter);
+				System.out.println(choices.get(option).text()+":\n"+GetData.FromObject(edited.getValue()));
 				checkandrun(option);
 				continue;
 			}

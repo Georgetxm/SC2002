@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import camsAction.doApproveSuggestion;
+import camsAction.doDeleteCamp;
 import camsAction.doDeleteSuggestion;
 import camsAction.doEditSuggestion;
 import camsAction.doSubmitCamp;
@@ -23,7 +24,8 @@ public class CamsInteraction{
 	deleteSuggestion	= new MenuChoice(Perms.DELETE_CAMP_SUGGESTION,		"Delete this suggestion",	new doDeleteSuggestion()),
 	createCamp			= new MenuChoice(Perms.CREATE_CAMP,					"Create a new camp",		new doSubmitCamp()),
 	filterCampBy		= new MenuChoice(Perms.DEFAULT, 					"Add Filter",				new queryFilterCampByMenu()),
-	removeCampFilter	= new MenuChoice(Perms.DEFAULT, 					"Remove Filter",			new queryViewAllCampsMenu());
+	removeCampFilter	= new MenuChoice(Perms.DEFAULT, 					"Remove Filter",			new queryViewAllCampsMenu()),
+	deleteCamp			= new MenuChoice(Perms.DELETE_CAMP,					"Delete this camp",			new doDeleteCamp());
 	private static List<MenuChoice>
 	singleSuggestionChoice = Arrays.asList(
 		approveSuggestion,
@@ -31,7 +33,8 @@ public class CamsInteraction{
 		deleteSuggestion),
 	startmenuchoices = Arrays.asList(
 		createCamp,
-		viewAllCamps
+		viewAllCamps,
+		filterCampBy
 	);
 	
 	

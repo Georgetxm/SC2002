@@ -9,6 +9,7 @@ import camsAction.doDeleteCamp;
 import camsAction.doDeleteSuggestion;
 import camsAction.doEditSuggestion;
 import camsAction.doSubmitCamp;
+import camsAction.doSubmitEdit;
 import camsAction.queryFilterCampByMenu;
 import camsAction.queryViewAllCampsMenu;
 import interactions.MenuChoice;
@@ -25,7 +26,8 @@ public class CamsInteraction{
 	createCamp			= new MenuChoice(Perms.CREATE_CAMP,					"Create a new camp",		new doSubmitCamp()),
 	filterCampBy		= new MenuChoice(Perms.DEFAULT, 					"Add Filter",				new queryFilterCampByMenu()),
 	removeCampFilter	= new MenuChoice(Perms.DEFAULT, 					"Remove Filter",			new queryViewAllCampsMenu()),
-	deleteCamp			= new MenuChoice(Perms.DELETE_CAMP,					"Delete this camp",			new doDeleteCamp());
+	deleteCamp			= new MenuChoice(Perms.DELETE_CAMP,					"Delete this camp",			new doDeleteCamp()),
+	editCamp			= new MenuChoice(Perms.EDIT_CAMP,					"Edit this camp details",	new doSubmitEdit());
 	private static List<MenuChoice>
 	singleSuggestionChoice = Arrays.asList(
 		approveSuggestion,

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import cams.CamsInteraction;
 import controllers.CampController;
 import entities.Data;
 import interactions.MenuChoice;
@@ -20,7 +21,7 @@ public class queryViewAllCampsMenu extends UserMenu {
 		Object control = Data.get("Controller");
 		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
-		options.add(new MenuChoice(Perms.DEFAULT, "Add Filter",new queryFilterCampByMenu()));
+		options.add(CamsInteraction.filterCampBy);
 		List<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>(((CampController) control).getCamps().entrySet());
 		for(Entry<Integer, String> entry:camplist) {
 			options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),new doNothing()));

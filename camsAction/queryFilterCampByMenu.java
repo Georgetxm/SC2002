@@ -54,6 +54,7 @@ public class queryFilterCampByMenu extends UserMenu {
 			Data.put("Filter",((HashMap<CampAspects,Object>)existingfilter).put(edited.getKey(),edited.getValue()));
 			System.out.println("Filtering by "+choices.get(option).text());
 			checkandrun(option);
+			continue;
 		}
 		return true;
 	}

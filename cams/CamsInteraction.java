@@ -44,10 +44,19 @@ public class CamsInteraction{
 	startmenuchoices = Arrays.asList(
 		createCamp,
 		viewAllCamps
-	);
+	),
+	owncampchoices = Arrays.asList(
+		deleteCamp,
+		editCamp,
+		viewOwnEnquiry,
+		viewAllEnquiry,
+		submitEnquiry,
+		submitSuggestion
+);
 	
 	
 	public static StaticMenu 
 	startmenu = new StaticMenu("Welcome! What would you like to do", startmenuchoices),
+	OwnCampMenu = new StaticMenu("What would you like to do", owncampchoices),
 	SingleSuggestionMenu = new StaticMenu("What would you like to do with this suggestion?",singleSuggestionChoice);
 }

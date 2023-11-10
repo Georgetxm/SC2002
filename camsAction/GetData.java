@@ -68,6 +68,15 @@ final class GetData {
 		}
 		return silenced;
 	}
+	static final Boolean isViewingOwnCamps() throws Exception{
+		Boolean isViewingOwnCamps;
+		if(!Data.containsKey("isViewingOwnCamps")) return false;
+		try {isViewingOwnCamps = (Boolean) Data.get("isViewingOwnCamps");}
+		catch(ClassCastException e) {
+			throw new Exception("Invalid tag");
+		}
+		return isViewingOwnCamps;
+	}
 	@SuppressWarnings("unchecked")
 	static final HashMap<CampAspects,Object> Filter() throws Exception{
 		HashMap<CampAspects,Object> filter;

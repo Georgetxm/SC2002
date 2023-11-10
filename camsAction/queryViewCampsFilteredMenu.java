@@ -10,9 +10,10 @@ import controllers.Controller;
 import entities.Data;
 import interactions.MenuChoice;
 import interactions.UserMenu;
+import types.CampAspects;
 import types.Perms;
 
-public class queryViewAllCampsMenu extends UserMenu {
+public final class queryViewCampsFilteredMenu extends UserMenu {
 
 	@Override
 	public final Boolean run() throws Exception {
@@ -20,18 +21,17 @@ public class queryViewAllCampsMenu extends UserMenu {
 		if(!CampController.class.isInstance(Data.get("Controller")))	
 			throw new Exception("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
-		String userid = GetData.CurrentUser();
+		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		options.add(CamsInteraction.filterCampBy);
-		if(GetData.isViewingOwnCamps()) ((Controller) control).FilterUser(userid);
+		options.add(CamsInteraction.removeCampFilter);
+		List<Entry<CampAspects, ? extends Object>> filterlist = new ArrayList<Entry<CampAspects, ? extends Object>>(GetData.Filter().entrySet());
+		for(Entry<CampAspects, ? extends Object> filter:filterlist) {
+			((Controller) control).FilterAspect(filter);
+		}
 		List<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>(((CampController) control).getCamps().entrySet());
 		for(Entry<Integer, String> entry:camplist) {
-			options.add(new MenuChoice(
-					Perms.DEFAULT, 
-					entry.getValue(),
-					GetData.isViewingOwnCamps() ?
-						new doNothing() : 
-						CamsInteraction.OwnCampMenu));
+			options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),new doNothing()));
 		}
 		choices = options;
 		while(true) {
@@ -41,11 +41,16 @@ public class queryViewAllCampsMenu extends UserMenu {
 				checkandrun(option);
 				continue;
 			}
+			if(option==1) {
+				Data.clear("Filter");
+				checkandrun(option);
+				continue;
+			}
 			Data.put("CurrentCamp", camplist.get(option).getKey());
 			System.out.println(">>"+choices.get(option).text());
 			checkandrun(option);
+			continue;
 		}
-		if(GetData.isViewingOwnCamps()) Data.clear("isViewingOwnCamps");
 		return true;
 	}
 

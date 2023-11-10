@@ -23,7 +23,7 @@ public class queryFilterCampByMenu extends UserMenu {
 	public final Boolean run() throws Exception {
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		for(CampAspects aspects:CampAspects.values()) {
-			options.add(new MenuChoice(Perms.DEFAULT, "Filter by "+aspects.name(),new queryViewAllCampsFilteredMenu()));
+			options.add(new MenuChoice(Perms.DEFAULT, "Filter by "+aspects.name(),new queryViewCampsFilteredMenu()));
 		}
 		choices=options;
 		while(true) {

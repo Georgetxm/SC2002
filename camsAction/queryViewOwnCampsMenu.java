@@ -11,7 +11,7 @@ import interactions.MenuChoice;
 import interactions.UserMenu;
 import types.Perms;
 
-public class queryViewOwnCamps extends UserMenu {
+public class queryViewOwnCampsMenu extends UserMenu {
 
 	@Override
 	public final Boolean run() throws Exception {

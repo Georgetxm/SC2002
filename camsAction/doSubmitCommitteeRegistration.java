@@ -10,7 +10,7 @@ import types.CampAspects;
 import types.Perms;
 import types.Role;
 
-public final class doSubmitComitteeRegistration extends Interaction {
+public final class doSubmitCommitteeRegistration extends Interaction {
 
 	@Override
 	protected Object run() throws Exception {

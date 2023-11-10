@@ -16,6 +16,7 @@ import entities.Enquiry;
 import entities.Student;
 import entities.User;
 import types.CampAspects;
+import types.Faculty;
 import types.Perms;
 import types.Role;
 
@@ -633,6 +634,24 @@ public class MainController implements CampController, UserController, Suggestio
 
 	@Override
 	public HashSet<String> getCampComittees(int campid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CampController filterVisible() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean toggleCampVisiblity(int campid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Faculty getUserFaculty(String userid) {
 		// TODO Auto-generated method stub
 		return null;
 	}

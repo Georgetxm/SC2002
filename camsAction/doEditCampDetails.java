@@ -9,7 +9,7 @@ import entities.Data;
 import interactions.Interaction;
 import types.CampAspects;
 
-public class doSubmitEdit extends Interaction {
+public class doEditCampDetails extends Interaction {
 
 	@Override
 	public final Boolean run() throws Exception {

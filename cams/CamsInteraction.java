@@ -9,7 +9,7 @@ import camsAction.doDeleteCamp;
 import camsAction.doDeleteSuggestion;
 import camsAction.doEditSuggestion;
 import camsAction.doSubmitCamp;
-import camsAction.doSubmitEdit;
+import camsAction.doEditCampDetails;
 import camsAction.doSubmitEnquiry;
 import camsAction.doSubmitSuggestion;
 import camsAction.queryFilterCampByMenu;
@@ -31,7 +31,7 @@ public class CamsInteraction{
 	filterCampBy		= new MenuChoice(Perms.DEFAULT, 					"Add Filter",				new queryFilterCampByMenu()),
 	removeCampFilter	= new MenuChoice(Perms.DEFAULT, 					"Remove Filter",			new queryViewAllCampsMenu()),
 	deleteCamp			= new MenuChoice(Perms.DELETE_CAMP,					"Delete this camp",			new doDeleteCamp()),
-	editCamp			= new MenuChoice(Perms.EDIT_CAMP,					"Edit this camp details",	new doSubmitEdit()),
+	editCamp			= new MenuChoice(Perms.EDIT_CAMP,					"Edit this camp details",	new doEditCampDetails()),
 	viewOwnEnquiry		= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"View your own enquiries",	new queryViewOwnEnquiryMenu()),
 	viewAllEnquiry		= new MenuChoice(Perms.VIEW_CAMP_ENQUIRY,			"View all enquiries",		new queryViewAllEnquiryMenu()),
 	submitEnquiry		= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"Submit a new enquiry",		new doSubmitEnquiry()),

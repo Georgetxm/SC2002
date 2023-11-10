@@ -29,9 +29,9 @@ public class queryViewAllCampsMenu extends UserMenu {
 			options.add(new MenuChoice(
 					Perms.DEFAULT, 
 					entry.getValue(),
-					GetData.isViewingOwnCamps() ?
-						new doNothing() : 
-						CamsInteraction.OwnCampMenu));
+					((CampController) control).getCampAttendees(entry.getKey()).contains(userid) ?
+						CamsInteraction.OwnCampMenu : 
+						new doNothing()));
 		}
 		choices = options;
 		while(true) {

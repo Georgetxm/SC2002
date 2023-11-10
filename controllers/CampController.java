@@ -18,7 +18,7 @@ public interface CampController extends Controller{
 	public boolean deleteEnquiry(int campid, int enquiryid);
 	public boolean deleteSuggestion(int campid, int suggestionid);
 	public CampController filterVisible();
-	public boolean toggleCampVisiblity(int campid);
+	public boolean toggleCampVisiblity(int campid); //true = visible, false = not visible
 	public HashMap<Integer, String> getCamps();
 	public CampInfo getCampDetails(int campid);
 	public String getCampStudentList(int campid);

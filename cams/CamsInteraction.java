@@ -14,6 +14,7 @@ import camsAction.doSubmitCommitteeRegistration;
 import camsAction.doEditCampDetails;
 import camsAction.doSubmitEnquiry;
 import camsAction.doSubmitSuggestion;
+import camsAction.doToggleVisibility;
 import camsAction.queryFilterCampByMenu;
 import camsAction.queryViewAllCampsMenu;
 import camsAction.queryViewAllEnquiryMenu;
@@ -38,6 +39,7 @@ public class CamsInteraction{
 	removeCampFilter	= new MenuChoice(Perms.DEFAULT, 					"Remove Filter",			new queryViewAllCampsMenu()),
 	deleteCamp			= new MenuChoice(Perms.DELETE_CAMP,					"Delete this camp",			new doDeleteCamp()),
 	editCamp			= new MenuChoice(Perms.EDIT_CAMP,					"Edit this camp details",	new doEditCampDetails()),
+	toggleVisibility	= new MenuChoice(Perms.EDIT_CAMP,					"Toggle camp visibility",	new doToggleVisibility()),
 	viewOwnEnquiry		= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"View your own enquiries",	new queryViewOwnEnquiryMenu()),
 	viewAllEnquiry		= new MenuChoice(Perms.VIEW_CAMP_ENQUIRY,			"View all enquiries",		new queryViewAllEnquiryMenu()),
 	submitEnquiry		= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"Submit a new enquiry",		new doSubmitEnquiry()),
@@ -60,6 +62,7 @@ public class CamsInteraction{
 	owncampchoices = Arrays.asList(
 		deleteCamp,
 		editCamp,
+		toggleVisibility,
 		viewOwnEnquiry,
 		viewAllEnquiry,
 		submitEnquiry,

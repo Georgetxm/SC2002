@@ -44,7 +44,7 @@ public class queryViewAllCampsMenu extends UserMenu {
 					entry.getValue(),
 					((CampController) control).getCampAttendees(entry.getKey()).contains(userid) ?
 						CamsInteraction.OwnCampMenu : 
-						new doNothing()));
+						CamsInteraction.OtherCampMenu));
 		}
 		choices = options;
 		

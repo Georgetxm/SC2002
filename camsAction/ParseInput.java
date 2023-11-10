@@ -94,10 +94,26 @@ final class ParseInput {
 		return new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.SLOTS,slots);
 	}
 	static final Entry<CampAspects,Integer>CampComitteeSlots(Scanner s){
-		return new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.COMMITTEESLOTS,10);
+		System.out.println("Please choose the number of committee slots");
+		Integer slots;
+		while(true) {
+			slots=s.nextInt();
+			s.nextLine();
+			if(slots<1) {
+				System.out.println("Too few slots");
+				continue;
+			}
+			break;
+		}
+		return new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.COMMITTEESLOTS,slots);
 	}
 	static final Entry<CampAspects,String>CampDescription(Scanner s){
 		System.out.println("Type Camp Description");
 		return new HashMap.SimpleEntry<CampAspects,String>(CampAspects.DESCRIPTION,s.nextLine());
+	}
+	static final Entry<CampAspects,String>CampStaffIC(Scanner s){
+		System.out.println("Type staff name");
+		String userid=s.nextLine();
+		return new HashMap.SimpleEntry<CampAspects,String>(CampAspects.DESCRIPTION,userid);
 	}
 }

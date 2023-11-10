@@ -27,10 +27,13 @@ public final class queryOwnSuggestionsMenu extends UserMenu {
 			options.add(new MenuChoice(Perms.DEFAULT, entry.getValue().getKey().name()+":\n"+GetData.FromObject(entry.getValue().getValue()),CamsInteraction.SingleSuggestionMenu));
 		}
 		choices = options;
-		int option = givechoices();
-		Data.put("CurrentItem", suggestionlist.get(option).getKey());
-		System.out.println(choices.get(option).text());
-		checkandrun(option);
+		while(true) {
+			int option = givechoices();
+			if(option<0) break;
+			Data.put("CurrentItem", suggestionlist.get(option).getKey());
+			System.out.println(">>"+choices.get(option).text());
+			checkandrun(option);
+		}
 		return true;
 	}
 

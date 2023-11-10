@@ -3,11 +3,14 @@ package camsAction;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 
 import entities.CampInfo;
 import entities.Data;
+import types.CampAspects;
 
 final class GetData {
 	static final String CurrentUser() throws Exception {
@@ -64,6 +67,16 @@ final class GetData {
 			throw new Exception("Invalid silenced tag");
 		}
 		return silenced;
+	}
+	@SuppressWarnings("unchecked")
+	static final HashMap<CampAspects,? extends Object> Filter() throws Exception{
+		HashMap<CampAspects, ? extends Object> filter;
+		if(!Data.containsKey("Filter")) throw new NoSuchElementException("Filter not found");
+		try {filter = (HashMap<CampAspects,? extends Object>) Data.get("Filter");}
+		catch(ClassCastException e) {
+			throw new Exception("Invalid silenced tag");
+		}
+		return filter;
 	}
 	//This is a function that recursively passes all constituent objects and turns them into strings.
 	static final String FromObject(Object value) throws Exception{

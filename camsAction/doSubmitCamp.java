@@ -38,7 +38,7 @@ public class doSubmitCamp extends Interaction {
 				(Entry<CampAspects, ? extends Object>) ParseInput.CampFaculty(s),
 				(Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s),
 				(Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s),
-				(Entry<CampAspects, ? extends Object>) ParseInput.CampComitteeSlots(s),
+				(Entry<CampAspects, ? extends Object>) new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.COMMITTEESLOTS,10),
 				(Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s),
 				new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.STAFFIC,userid)
 		))),userid);

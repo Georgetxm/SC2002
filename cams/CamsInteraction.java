@@ -35,8 +35,7 @@ public class CamsInteraction{
 		deleteSuggestion),
 	startmenuchoices = Arrays.asList(
 		createCamp,
-		viewAllCamps,
-		filterCampBy
+		viewAllCamps
 	);
 	
 	

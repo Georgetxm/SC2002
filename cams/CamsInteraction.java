@@ -6,13 +6,16 @@ import java.util.List;
 
 import camsAction.doApproveSuggestion;
 import camsAction.doDeleteCamp;
+import camsAction.doDeleteEnquiry;
 import camsAction.doDeleteSuggestion;
 import camsAction.doEditSuggestion;
 import camsAction.doSubmitAttendeeRegistration;
 import camsAction.doSubmitCamp;
 import camsAction.doSubmitCommitteeRegistration;
 import camsAction.doEditCampDetails;
+import camsAction.doEditEnquiry;
 import camsAction.doSubmitEnquiry;
+import camsAction.doSubmitReply;
 import camsAction.doSubmitSuggestion;
 import camsAction.doToggleVisibility;
 import camsAction.queryFilterCampByMenu;
@@ -32,8 +35,11 @@ public class CamsInteraction{
 	viewAllCamps 		= new MenuChoice(Perms.DEFAULT, 					"View All Camps", 			new queryViewAllCampsMenu()),
 	viewOwnCamps		= new MenuChoice(Perms.DEFAULT,						"View your own camps",		new queryViewOwnCampsMenu()),
 	approveSuggestion	= new MenuChoice(Perms.APPROVE_CAMP_SUGGESTION, 	"Approve Suggestion", 		new doApproveSuggestion()),
+	submitReply			= new MenuChoice(Perms.REPLY_CAMP_ENQUIRY,			"Reply to this enquiry",	new doSubmitReply()),
 	editSuggestion		= new MenuChoice(Perms.EDIT_CAMP_SUGGESTION,		"Edit this suggestion",		new doEditSuggestion()),
 	deleteSuggestion	= new MenuChoice(Perms.DELETE_CAMP_SUGGESTION,		"Delete this suggestion",	new doDeleteSuggestion()),
+	editEnquiry			= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"Edit this enquiry",		new doEditEnquiry()),
+	deleteEnquiry		= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"Delete this enquiry",		new doDeleteEnquiry()),
 	createCamp			= new MenuChoice(Perms.CREATE_CAMP,					"Create a new camp",		new doSubmitCamp()),
 	filterCampBy		= new MenuChoice(Perms.DEFAULT, 					"Add Filter",				new queryFilterCampByMenu()),
 	removeCampFilter	= new MenuChoice(Perms.DEFAULT, 					"Remove Filter",			new queryViewAllCampsMenu()),
@@ -53,6 +59,11 @@ public class CamsInteraction{
 		approveSuggestion,
 		editSuggestion,
 		deleteSuggestion),
+	singleenquirychoices = Arrays.asList(
+		editEnquiry,
+		deleteEnquiry,
+		submitReply
+	),
 	startmenuchoices = Arrays.asList(
 		createCamp,
 		viewAllCamps,
@@ -82,5 +93,6 @@ public class CamsInteraction{
 	startmenu = new StaticMenu("Welcome! What would you like to do", startmenuchoices),
 	OwnCampMenu = new StaticMenu("What would you like to do", owncampchoices),
 	OtherCampMenu = new StaticMenu("What would you like to do",othercampchoices),
-	SingleSuggestionMenu = new StaticMenu("What would you like to do with this suggestion?",singleSuggestionChoice);
+	SingleSuggestionMenu = new StaticMenu("What would you like to do with this suggestion?",singleSuggestionChoice),
+	SingleEnquiryMenu = new StaticMenu("What would you like to do with this enquiry?",singleenquirychoices);
 }

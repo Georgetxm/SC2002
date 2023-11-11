@@ -16,16 +16,6 @@ public class Camp {
     private HashSet<Integer> enquiries;
     private HashSet<Integer> suggestions;
 
-    // private String name;
-    // private String description;
-    // private ArrayList<LocalDate> campDates;
-    // private LocalDate registrationDeadline;
-    // private Location location;
-    // private int remaningSlots;
-    // private int remainingCommitteeSlots;
-    // private final Staff staffInCharge;
-    // private final Faculty userGroup;
-
     public Camp(CampInfo campInfo, HashSet<String> attendees, HashSet<String> campCommittee,
             boolean visibility, LocalDate creationDate) {
         this.campInfo = campInfo;
@@ -75,7 +65,7 @@ public class Camp {
         }
         this.attendees.add(userId);
         Integer currentAttendees = (Integer) this.campInfo.info().get(CampAspects.SLOTS);
-        this.campInfo.info().put(CampAspects.SLOTS, ((Integer)(currentAttendees + 1)));
+        this.campInfo.info().put(CampAspects.SLOTS, ((Integer) (currentAttendees + 1)));
 
         return true;
     }
@@ -88,6 +78,10 @@ public class Camp {
         Integer updatedAttendees = (Integer) this.campInfo.info().get(CampAspects.SLOTS) - 1;
         this.campInfo.info().put(CampAspects.SLOTS, updatedAttendees);
         return true;
+    }
+
+    public HashSet<String> getCampCommittee() {
+        return this.campCommittee;
     }
 
     public boolean isCampCommittee(String userId) {
@@ -153,7 +147,7 @@ public class Camp {
     }
 
     public boolean removeSuggestion(int suggestionId) {
-        this.suggestions.remove( suggestionId);
+        this.suggestions.remove(suggestionId);
         return true;
     }
 }

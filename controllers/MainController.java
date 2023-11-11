@@ -446,7 +446,7 @@ public class MainController implements CampController, UserController, Suggestio
 	}
 
 	@Override
-	public String[] getEnquiries() {
+	public HashMap<Integer, String> getEnquiries() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,10 +1,12 @@
 package controllers;
 
+import java.util.HashMap;
+
 public interface EnquiryController extends Controller{
 	int addEnquiry(String enquiry, String ownerid, int campid);
 	int editEnquiry(int enquiryid, String enquiry);
 	String getEnquiry(int enquiryid);
-	String[] getEnquiries(); //gets all suggestions that fulfill the filter, clears filter
+	HashMap<Integer,String> getEnquiries(); //gets all suggestions that fulfill the filter, clears filter
 	//EnquiryController.FilterCamp(campid).FilterUser(userid).getEnquiries();
 	Boolean deleteEnquiry(int enquiryid); //delete suggestion
 	Boolean finaliseEnquiry(int enquiryid); //mark as uneditable

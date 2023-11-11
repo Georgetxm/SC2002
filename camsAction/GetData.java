@@ -15,7 +15,7 @@ import types.CampAspects;
 final class GetData {
 	static final String CurrentUser() throws Exception {
 		String userid;
-		if(!Data.containsKey("CurrentUser")) throw new Exception("User not identified. Request Failed.");
+		if(!Data.containsKey("CurrentUser")) throw new NoSuchElementException("User not identified. Request Failed.");
 		try {userid = (String) Data.get("CurrentUser");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid User ID. Request Failed.");
@@ -24,7 +24,7 @@ final class GetData {
 	}
 	static final int CampID() throws Exception {
 		int campid;
-		if(!Data.containsKey("CurrentCamp")) throw new Exception("Did not select camp. Request Failed.");
+		if(!Data.containsKey("CurrentCamp")) throw new NoSuchElementException("Did not select camp. Request Failed.");
 		try {campid = (int) Data.get("CurrentCamp");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid Camp ID. Request Failed.");
@@ -34,7 +34,7 @@ final class GetData {
 	
 	static final int SuggestionID() throws Exception {
 		int suggestionid;
-		if(!Data.containsKey("CurrentItem")) throw new Exception("Did not select suggestion. Request Failed.");
+		if(!Data.containsKey("CurrentItem")) throw new NoSuchElementException("Did not select suggestion. Request Failed.");
 		try {suggestionid = (int) Data.get("CurrentItem");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid Suggestion ID. Request Failed.");
@@ -43,7 +43,7 @@ final class GetData {
 	}
 	static final int EnquiryID() throws Exception {
 		int enquiryid;
-		if(!Data.containsKey("CurrentItem")) throw new Exception("Did not select enquiry. Request Failed.");
+		if(!Data.containsKey("CurrentItem")) throw new NoSuchElementException("Did not select enquiry. Request Failed.");
 		try {enquiryid = (int) Data.get("CurrentItem");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid Enquiry ID. Request Failed.");
@@ -52,7 +52,7 @@ final class GetData {
 	}
 	static final CampInfo CampInfo() throws Exception{
 		CampInfo campinfo;
-		if(!Data.containsKey("CampInfo")) throw new Exception("Camp info not retrieved");
+		if(!Data.containsKey("CampInfo")) throw new NoSuchElementException("Camp info not retrieved");
 		try {campinfo = (CampInfo) Data.get("CampInfo");}
 		catch(ClassCastException e) {
 			throw new Exception("Invalid Camp Info. Request Failed.");

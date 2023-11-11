@@ -48,16 +48,16 @@ import types.Perms;
  * 
  */
 public class CamsInteraction{ //Menu choices
-	public static MenuChoice 
+	
 	/**
      * MenuChoice instance denoting the choice of viewing all camps
      */
-	viewAllCamps 		= new MenuChoice(Perms.DEFAULT, 					"View All Camps", 			new queryAllCampsMenu()),
+	public static MenuChoice viewAllCamps 	= new MenuChoice(Perms.DEFAULT, "View All Camps", new queryAllCampsMenu());
 	/**
      * MenuChoice instance denoting the choice of viewing camps stored in their own camp list 
      * This can be either participating camps for students, or managing camps for staff
      */
-	viewOwnCamps		= new MenuChoice(Perms.DEFAULT,						"View your own camps",		new queryOwnCampsMenu()),
+	public static MenuChoice viewOwnCamps		= new MenuChoice(Perms.DEFAULT,						"View your own camps",		new queryOwnCampsMenu()),
 	/**
      * MenuChoice instance denoting the choice of approving a specific provided camp suggestion
      * It is implied the menu and user know what suggestion is being approved

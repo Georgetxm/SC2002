@@ -388,7 +388,7 @@ public class MainController implements CampController, UserController, Suggestio
      */
 
     @Override
-    public boolean setCampComittee(int campId, String userId) {
+    public boolean setCampCommittee(int campId, String userId) {
         Camp camp = findCampById(campId);
         Student user = (Student) findUserById(userId);
         if (camp != null && camp.addCommittee(userId) && user.setCampComittee(campId)) {
@@ -652,6 +652,13 @@ public class MainController implements CampController, UserController, Suggestio
 
 	@Override
 	public Faculty getUserFaculty(String userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Integer getCampCommittee(String userId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -24,6 +24,10 @@ public final class doSubmitSuggestion extends Interaction{
 		
 		int campid = GetData.CampID();
 		String userid = GetData.CurrentUser();
+		if(campid!=((UserController) control).getCampCommittee(userid)) {
+			System.out.println("Not a committee memeber of this camp");
+			return -1;
+		}
 		//Asks campcontrol for the camp info and pulls out the info
 		TreeMap<CampAspects,? extends Object> info = ((CampController) control).getCampDetails(campid).info();
 

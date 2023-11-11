@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import camsAction.doApproveSuggestion;
+import camsAction.doDeleteAttendeeRegistration;
 import camsAction.doDeleteCamp;
 import camsAction.doDeleteEnquiry;
 import camsAction.doDeleteSuggestion;
@@ -52,6 +53,7 @@ public class CamsInteraction{
 	viewOwnSuggestion	= new MenuChoice(Perms.SUBMIT_CAMP_SUGGESTION,		"View your suggestions",	new queryViewOwnSuggestionsMenu()),
 	viewAllSuggestion	= new MenuChoice(Perms.VIEW_CAMP_SUGGESTION,		"View all suggestions",		new queryViewAllSuggestionsMenu()),
 	submitSuggestion	= new MenuChoice(Perms.SUBMIT_CAMP_SUGGESTION,		"Submit a new suggestion",	new doSubmitSuggestion()),
+	withdrawRegistration= new MenuChoice(Perms.WITHDRAW_AS_ATTENDEE,		"Withdraw from this camp",	new doDeleteAttendeeRegistration()),
 	registerAsAttendee	= new MenuChoice(Perms.REGISTER_AS_ATTENDEE,		"Register as an attendee",	new doSubmitAttendeeRegistration()),
 	registerAsCommittee	= new MenuChoice(Perms.REGISTER_AS_COMITTEE,		"Join the camp committee",	new doSubmitCommitteeRegistration());
 	private static List<MenuChoice>
@@ -79,7 +81,8 @@ public class CamsInteraction{
 		submitEnquiry,
 		viewAllSuggestion,
 		viewOwnSuggestion,
-		submitSuggestion
+		submitSuggestion,
+		withdrawRegistration
 	),
 	othercampchoices = Arrays.asList(
 		registerAsAttendee,

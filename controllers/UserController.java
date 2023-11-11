@@ -13,7 +13,8 @@ public interface UserController {
 	public boolean setCampComittee(String userid, String name, int campid);
 	public boolean joinCamp(String userid, String name, int campid);
 	public boolean leaveCamp(String userid, int campid); 
-	public boolean setCampComittee(int campId, String userId);
+	public boolean setCampCommittee(int campId, String userId);
+	public Integer getCampCommittee(String userId);
 	public HashMap<Integer,String> getCamp(int userid); //Returns id, name. 
 	public HashSet<Entry<Integer,Integer>> getUserEnquiries(int userid); //Returns campid, enquiryid
 	public HashSet<Entry<Integer,Integer>> getUserSuggestions(int userid); //Returns campid, suggestionid

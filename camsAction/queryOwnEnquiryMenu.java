@@ -2,7 +2,7 @@ package camsAction;
 
 import interactions.UserMenu;
 
-public class queryViewAllEnquiryMenu extends UserMenu {
+public class queryOwnEnquiryMenu extends UserMenu {
 
 	@Override
 	protected Object run() throws Exception {

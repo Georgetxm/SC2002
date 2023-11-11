@@ -2,10 +2,10 @@
 I think the current implementation of CampInfo is good. I plan to keep it that way.
 
 ## Major changes
-Implemented polymorphism and ensured consistency
+All menus implemented and linked
 
 # ToDo
 ## Awaits
-1. Action classes inheritance testing awaits methods in controllers
+1. Menus await respective controller method completion
 ## Jih How
-1. Start on static and query menus
+1. Working on documentation

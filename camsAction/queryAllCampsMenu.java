@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 
 import cams.CamsInteraction;
 import controllers.CampController;
-import controllers.Controller;
 import controllers.UserController;
+import controllers.Controller;
 import entities.Data;
 import interactions.MenuChoice;
 import interactions.UserMenu;
@@ -17,7 +17,7 @@ import types.CampAspects;
 import types.Faculty;
 import types.Perms;
 
-public final class queryViewCampsFilteredMenu extends UserMenu {
+public class queryAllCampsMenu extends UserMenu {
 
 	@Override
 	public final Boolean run() throws Exception {
@@ -33,14 +33,10 @@ public final class queryViewCampsFilteredMenu extends UserMenu {
 		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		options.add(CamsInteraction.filterCampBy);
-		options.add(CamsInteraction.removeCampFilter);
 		
 		if(GetData.isViewingOwnCamps()) ((Controller) control).FilterUser(userid);
-		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) 
+		if(!userperm.contains(Perms.VIEW_EVERY_CAMP))
 			((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.USERGROUP,userfaculty));
-		List<Entry<CampAspects, ? extends Object>> filterlist = new ArrayList<Entry<CampAspects, ? extends Object>>(GetData.Filter().entrySet());
-		for(Entry<CampAspects, ? extends Object> filter:filterlist)
-			((Controller) control).FilterAspect(filter);
 		List<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>(((CampController) control).getCamps().entrySet());
 		for(Entry<Integer, String> entry:camplist) {
 			options.add(new MenuChoice(
@@ -51,6 +47,7 @@ public final class queryViewCampsFilteredMenu extends UserMenu {
 						CamsInteraction.OtherCampMenu));
 		}
 		choices = options;
+		
 		while(true) {
 			int option = givechoices();
 			if(option<0) break;
@@ -58,16 +55,11 @@ public final class queryViewCampsFilteredMenu extends UserMenu {
 				checkandrun(option);
 				continue;
 			}
-			if(option==1) {
-				Data.clear("Filter");
-				checkandrun(option);
-				continue;
-			}
 			Data.put("CurrentCamp", camplist.get(option).getKey());
 			System.out.println(">>"+choices.get(option).text());
 			checkandrun(option);
-			continue;
 		}
+		if(GetData.isViewingOwnCamps()) Data.clear("isViewingOwnCamps");
 		return true;
 	}
 

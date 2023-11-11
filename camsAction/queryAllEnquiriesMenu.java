@@ -2,11 +2,9 @@ package camsAction;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Map.Entry;
 
 import cams.CamsInteraction;
-import controllers.Controller;
 import controllers.EnquiryController;
 import controllers.SuggestionController;
 import entities.Data;
@@ -22,11 +20,6 @@ public final class queryAllEnquiriesMenu extends UserMenu {
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new Exception("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
-		
-		int campid = -1;
-		try {campid = GetData.CampID();}
-		catch(NoSuchElementException e) {}
-		if(campid>=0) ((Controller) control).FilterCamp(campid);
 		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's controllerid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.

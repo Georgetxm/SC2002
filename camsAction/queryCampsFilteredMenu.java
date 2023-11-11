@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import Temp.CamsInteraction;
+import cams.CamsInteraction;
 import controllers.CampController;
 import controllers.Controller;
 import controllers.UserController;

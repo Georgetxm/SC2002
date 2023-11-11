@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Scanner;
 
-import Temp.CamsInteraction;
 import controllers.MainController;
 import entities.Camp;
 import entities.Data;

@@ -18,17 +18,27 @@ import types.Faculty;
 import types.Perms;
 import types.Role;
 
-public class MainController implements CampController, UserController, SuggestionController, EnquiryController {
+public class MainController implements CampController, UserController {
     private ArrayList<User> users;
     private ArrayList<Camp> camps;
     private ArrayList<Suggestion> suggestions;
     private ArrayList<Enquiry> enquiries;
+    private HashSet<Integer> visibleCamps;
+    private String userFilter;
+    private Integer campFilter;
+    private boolean visibleFilter;
+    private HashMap<CampAspects, Object> aspectFilter;
 
     public MainController(ArrayList<User> users, ArrayList<Camp> camps) {
         this.users = users;
         this.camps = camps;
         this.suggestions = new ArrayList<Suggestion>();
         this.enquiries = new ArrayList<Enquiry>();
+        this.visibleCamps = new HashSet<Integer>();
+        this.userFilter = null;
+        this.campFilter = null;
+        this.visibleFilter = false;
+        this.aspectFilter = new HashMap<CampAspects, Object>();
     }
 
     /**
@@ -299,6 +309,9 @@ public class MainController implements CampController, UserController, Suggestio
     /**
      * Overriden method from CampController
      * Toggles the visibility of a Camp object
+     * Adds the Camp's ID to the visibleCamps HashSet attribute if the Camp is
+     * Removes the Camp's ID from the visibleCamps HashSet attribute if the Camp is
+     * not
      * 
      * @param campid the Camp's ID
      * @return true if the Camp's visibility is successfully toggled, false
@@ -309,6 +322,12 @@ public class MainController implements CampController, UserController, Suggestio
         Camp camp = findCampById(campid);
         if (camp != null) {
             camp.setVisibility(!camp.getVisibility());
+
+            if (camp.getVisibility()) {
+                visibleCamps.add(campid);
+            } else {
+                visibleCamps.remove(campid);
+            }
             return true;
         }
         return false;
@@ -323,10 +342,50 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public HashMap<Integer, String> getCamps() {
         HashMap<Integer, String> campList = new HashMap<Integer, String>();
-        for (Camp camp : camps) {
-            campList.put(camp.getCampid(), camp.getCampInfo().info().get(CampAspects.NAME).toString());
+        if (visibleFilter) {
+            for (Integer camp : visibleCamps) {
+                Camp c = findCampById(camp);
+                if (c != null) {
+                    campList.put(c.getCampid(), c.getCampInfo().info().get(CampAspects.NAME).toString());
+                }
+            }
         }
-        return null;
+
+        if (userFilter != null) {
+            Student user = (Student) findUserById(userFilter);
+            for (Integer camp : user.getCamps()) {
+                Camp c = findCampById(camp);
+                if (c != null) {
+                    campList.put(c.getCampid(), c.getCampInfo().info().get(CampAspects.NAME).toString());
+                }
+            }
+        }
+
+        if (aspectFilter != null) {
+            for (Camp camp : camps) {
+                boolean match = true;
+                for (Entry<CampAspects, ? extends Object> aspect : aspectFilter.entrySet()) {
+                    if (camp.getCampInfo().info().get(aspect.getKey()) != aspect.getValue()) {
+                        match = false;
+                    }
+                }
+                if (match) {
+                    campList.put(camp.getCampid(), camp.getCampInfo().info().get(CampAspects.NAME).toString());
+                }
+            }
+        }
+
+        userFilter = null;
+        campFilter = null;
+        aspectFilter = null;
+        visibleFilter = false;
+
+        if (campList.size() > 0) {
+            return campList;
+        } else {
+            return null;
+        }
+
     }
 
     /**
@@ -520,7 +579,7 @@ public class MainController implements CampController, UserController, Suggestio
      */
 
     @Override
-    public boolean setCampCommittee(int campId, String userId) {
+    public boolean setCampCommittee(String userId, int campId) {
         Camp camp = findCampById(campId);
         Student user = (Student) findUserById(userId);
         if (camp != null && camp.addCommittee(userId) && user.setCampComittee(campId)) {
@@ -556,18 +615,33 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public HashMap<Integer, String> getCamp(String userId) {
         Student user = (Student) findUserById(userId);
-        if (user != null) {
-            HashMap<Integer, String> campList = new HashMap<Integer, String>();
+        if (user == null) {
+            return null;
+        }
+
+        HashMap<Integer, String> campList = new HashMap<Integer, String>();
+
+        if (campFilter == null) {
             for (Integer camp : user.getCamps()) {
                 campList.put(camp, findCampById(camp).getCampInfo().info().get(CampAspects.NAME).toString());
             }
-            if (user.getCampCommittee() != -1) {
+            if (user.getCampCommittee() == campFilter) {
                 campList.put(user.getCampCommittee(),
                         findCampById(user.getCampCommittee()).getCampInfo().info().get(CampAspects.NAME).toString());
             }
-            return campList;
+        } else {
+            if (user.getCamps().contains(campFilter)) {
+                campList.put(campFilter,
+                        findCampById(campFilter).getCampInfo().info().get(CampAspects.NAME).toString());
+            }
+            if (user.getCampCommittee() == campFilter) {
+                campList.put(campFilter,
+                        findCampById(campFilter).getCampInfo().info().get(CampAspects.NAME).toString());
+            }
         }
-        return null;
+
+        campFilter = null;
+        return campList;
     }
 
     /**
@@ -580,13 +654,26 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public HashSet<Entry<Integer, Integer>> getUserEnquiries(String userid) {
         Student user = (Student) findUserById(userid);
-        if (user != null) {
-            HashSet<Entry<Integer, Integer>> userEnquiries = new HashSet<Entry<Integer, Integer>>();
+        if (user == null) {
+            return null;
+        }
+
+        HashSet<Entry<Integer, Integer>> userEnquiries = new HashSet<Entry<Integer, Integer>>();
+        if (campFilter != null) {
+            for (Entry<Integer, Integer> enquiry : user.getEnquiries().entrySet()) {
+                if (enquiry.getKey() == campFilter) {
+                    userEnquiries.add(enquiry);
+                }
+            }
+            campFilter = null;
+        } else {
+
             for (Entry<Integer, Integer> enquiry : user.getEnquiries().entrySet()) {
                 userEnquiries.add(enquiry);
             }
         }
-        return null;
+
+        return userEnquiries;
 
     }
 
@@ -601,13 +688,26 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public HashSet<Entry<Integer, Integer>> getUserSuggestions(String userid) {
         Student user = (Student) findUserById(userid);
-        if (user != null) {
-            HashSet<Entry<Integer, Integer>> userSuggestions = new HashSet<Entry<Integer, Integer>>();
+        if (user == null) {
+            return null;
+        }
+
+        HashSet<Entry<Integer, Integer>> userSuggestions = new HashSet<Entry<Integer, Integer>>();
+
+        if (campFilter != null) {
+            for (Entry<Integer, Integer> suggestion : user.getSuggestions().entrySet()) {
+                if (suggestion.getKey() == campFilter) {
+                    userSuggestions.add(suggestion);
+                }
+            }
+            campFilter = null;
+        } else {
             for (Entry<Integer, Integer> suggestion : user.getSuggestions().entrySet()) {
                 userSuggestions.add(suggestion);
             }
         }
-        return null;
+
+        return userSuggestions;
     }
 
     /**
@@ -774,4 +874,24 @@ public class MainController implements CampController, UserController, Suggestio
         }
         return null;
     }
+
+    @Override
+    public Controller FilterUser(String userid) {
+        this.userFilter = userid;
+        return this;
+    }
+
+    @Override
+    public Controller FilterCamp(int campid) {
+        Integer typecastedCampid = campid;
+        this.campFilter = typecastedCampid;
+        return this;
+    }
+
+    @Override
+    public Controller FilterAspect(Entry<CampAspects, ? extends Object> filter) {
+        aspectFilter.put(filter.getKey(), filter.getValue());
+        return this;
+    }
+
 }

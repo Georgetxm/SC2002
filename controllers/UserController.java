@@ -11,13 +11,11 @@ import types.Perms;
 public interface UserController {
 	public Faculty getUserFaculty(String userid);
 
-	public boolean setCampComittee(String userid, String name, int campid);
-
 	public boolean joinCamp(String userid, int campid);
 
 	public boolean leaveCamp(String userid, int campid);
 
-	public boolean setCampCommittee(int campId, String userId);
+	public boolean setCampCommittee(String userid, int campid);
 
 	public Integer getCampCommitteeOfStudent(String userId);
 

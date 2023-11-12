@@ -474,28 +474,6 @@ public class MainController implements CampController, UserController, Suggestio
 
     /**
      * Overriden method from UserController
-     * Tags a User to a Camp object's committee HashMap attribute
-     * Tags a Camp to a Student object's campCommittee int attribute
-     * 
-     * @param campId the Camp this User belongs to
-     * 
-     * @param userId the User's ID
-     * 
-     * @return true if the User is successfully added to the Camp, false otherwise
-     */
-
-    @Override
-    public boolean setCampCommittee(int campId, String userId) {
-        Camp camp = findCampById(campId);
-        Student user = (Student) findUserById(userId);
-        if (camp != null && camp.addCommittee(userId) && user.setCampComittee(campId)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Overriden method from UserController
      * Adss a userId to a Camp object's attendees HashSet attribute
      * 
      * @param userId the User's ID
@@ -531,6 +509,28 @@ public class MainController implements CampController, UserController, Suggestio
 
     /**
      * Overriden method from UserController
+     * Tags a User to a Camp object's committee HashMap attribute
+     * Tags a Camp to a Student object's campCommittee int attribute
+     * 
+     * @param campId the Camp this User belongs to
+     * 
+     * @param userId the User's ID
+     * 
+     * @return true if the User is successfully added to the Camp, false otherwise
+     */
+
+    @Override
+    public boolean setCampCommittee(int campId, String userId) {
+        Camp camp = findCampById(campId);
+        Student user = (Student) findUserById(userId);
+        if (camp != null && camp.addCommittee(userId) && user.setCampComittee(campId)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Overriden method from UserController
      * Gets the Camp committee a student is in
      * 
      * @param userId the User's ID
@@ -547,25 +547,67 @@ public class MainController implements CampController, UserController, Suggestio
 
     /**
      * Overriden method from UserController
-     * Tags an enquiry to a Student object's enquiries HashMap
+     * Returns a HashMap of Camp Id and Camp Name a Student is in
+     * including the Camp committee the Student is in
      * 
-     * @param userId    the Student this enquiry belongs to
-     * 
-     * @param enquiryId the enquiry's ID
-     * 
-     * @return true if the enquiry is successfully added to the Student, false
+     * @param userId the User's ID
+     * @return HashMap of Camp Id and Camp Name a Student is in
      */
     @Override
-    public boolean addEnquiry(String userId, int enquiryId) {
+    public HashMap<Integer, String> getCamp(String userId) {
         Student user = (Student) findUserById(userId);
-        if (user == null) {
-            return false;
-        } else {
-            if (!user.addEnquiry(enquiryId)) {
-                return false;
+        if (user != null) {
+            HashMap<Integer, String> campList = new HashMap<Integer, String>();
+            for (Integer camp : user.getCamps()) {
+                campList.put(camp, findCampById(camp).getCampInfo().info().get(CampAspects.NAME).toString());
+            }
+            if (user.getCampCommittee() != -1) {
+                campList.put(user.getCampCommittee(),
+                        findCampById(user.getCampCommittee()).getCampInfo().info().get(CampAspects.NAME).toString());
+            }
+            return campList;
+        }
+        return null;
+    }
+
+    /**
+     * Overriden method from UserController
+     * Returns a HashSet of enquiries a Student has made
+     * 
+     * @param userId the User's ID
+     * @return HashSet of enquiries a Student has made
+     */
+    @Override
+    public HashSet<Entry<Integer, Integer>> getUserEnquiries(String userid) {
+        Student user = (Student) findUserById(userid);
+        if (user != null) {
+            HashSet<Entry<Integer, Integer>> userEnquiries = new HashSet<Entry<Integer, Integer>>();
+            for (Entry<Integer, Integer> enquiry : user.getEnquiries().entrySet()) {
+                userEnquiries.add(enquiry);
             }
         }
-        return true;
+        return null;
+
+    }
+
+    /**
+     * Overriden method from UserController
+     * Returns a HashSet of suggestions a Student has made
+     * 
+     * @param userId the User's ID
+     * 
+     * @return HashSet of suggestions a Student has made
+     */
+    @Override
+    public HashSet<Entry<Integer, Integer>> getUserSuggestions(String userid) {
+        Student user = (Student) findUserById(userid);
+        if (user != null) {
+            HashSet<Entry<Integer, Integer>> userSuggestions = new HashSet<Entry<Integer, Integer>>();
+            for (Entry<Integer, Integer> suggestion : user.getSuggestions().entrySet()) {
+                userSuggestions.add(suggestion);
+            }
+        }
+        return null;
     }
 
     /**
@@ -582,12 +624,12 @@ public class MainController implements CampController, UserController, Suggestio
      * @return true if the suggestion is successfully added, false otherwise
      */
     @Override
-    public boolean addSuggestion(String creatorId, int suggestionId) {
+    public boolean addSuggestion(String creatorId, int campid, int suggestionid) {
         Student user = (Student) findUserById(creatorId);
         if (user == null) {
             return false;
         } else {
-            if (!user.addSuggestion(suggestionId)) {
+            if (!user.addSuggestion(campid, suggestionid)) {
                 return false;
             }
         }
@@ -596,40 +638,140 @@ public class MainController implements CampController, UserController, Suggestio
 
     /**
      * Overriden method from UserController
-     * Removes an enquiry from a User object's enquiries HashSet
+     * Tags an enquiry to a Student object's enquiries HashMap
      * 
-     * @param creatorId the User's ID
+     * @param userId    the Student this enquiry belongs to
+     * 
+     * @param campId    the Camp this enquiry belongs to
      * 
      * @param enquiryId the enquiry's ID
      * 
-     * @return true if the enquiry is successfully deleted, false otherwise
+     * @return true if the enquiry is successfully added to the Student, false
      */
     @Override
-    public boolean deleteEnquiry(String creatorId, int enquiryId) {
-        Student user = (Student) findUserById(creatorId);
-        if (user != null && user.removeEnquiry(enquiryId)) {
-            return true;
+    public boolean addEnquiry(String userId, int campid, int enquiryId) {
+        Student user = (Student) findUserById(userId);
+        if (user == null) {
+            return false;
+        } else {
+            if (!user.addEnquiry(campid, enquiryId)) {
+                return false;
+            }
         }
-        return false;
+        return true;
     }
 
     /**
      * Overriden method from CampController
      * Removes an enquiry from a User object's enquiries HashSet
      * 
-     * @param creatorId  the User's ID
+     * @param creatorId    the User's ID
      * 
-     * @param suggestion the suggestion's ID
+     * @param campid       the Camp this enquiry belongs to
+     * 
+     * @param suggestionId the suggestion's ID
      * 
      * @return true if the suggestion is successfully deleted, false otherwise
      */
     @Override
-    public boolean deleteSuggestion(String creatorId, int suggestionId) {
+    public boolean deleteSuggestion(String creatorId, int campid, int suggestionId) {
         Student user = (Student) findUserById(creatorId);
-        if (user != null && user.removeSuggestion(suggestionId)) {
+        if (user != null && user.removeSuggestion(campid, suggestionId)) {
             return true;
         }
         return false;
     }
 
+    /**
+     * Overriden method from UserController
+     * Removes an enquiry from a User object's enquiries HashSet
+     * 
+     * @param creatorId the User's ID
+     * 
+     * @param campId    the Camp this enquiry belongs to
+     * 
+     * @param enquiryId the enquiry's ID
+     * 
+     * @return true if the enquiry is successfully deleted, false otherwise
+     */
+    @Override
+    public boolean deleteEnquiry(String creatorId, int campid, int enquiryId) {
+        Student user = (Student) findUserById(creatorId);
+        if (user != null && user.removeEnquiry(campid, enquiryId)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Overriden method from UserController
+     * Increaments a Student's points
+     * 
+     * @param userid the Student's ID
+     * @param points the points to be added
+     * @return the Student's new points
+     */
+    @Override
+    public int incrementPoints(String userid, int points) {
+        Student user = (Student) findUserById(userid);
+        if (user != null) {
+            user.incrementPoints(points);
+            return user.getPoints();
+        }
+        return -1;
+    }
+
+    /**
+     * Overriden method from UserController
+     * Grants a Student a set of permissions
+     * 
+     * @param userid   the Student's ID
+     * @param newperms the set of permissions to be granted
+     * @return the Student's new set of permissions
+     */
+    @Override
+    public EnumSet<Perms> grantPerms(String userid, EnumSet<Perms> newperms) {
+        Student user = (Student) findUserById(userid);
+        if (user != null) {
+            user.addPerms(newperms);
+            return user.getPerms();
+        }
+        return null;
+    }
+
+    /**
+     * Overriden method from UserController
+     * Denies a Student a set of permissions
+     * 
+     * @param userid       the Student's ID
+     * @param removedPerms the set of permissions to be denied
+     * @return the Student's new set of permissions
+     */
+    @Override
+    public EnumSet<Perms> denyPerms(String userid, EnumSet<Perms> removedPerms) {
+        Student user = (Student) findUserById(userid);
+        if (user != null) {
+            user.removePerms(removedPerms);
+            return user.getPerms();
+        }
+        return null;
+    }
+
+    /**
+     * Overriden method from UserController
+     * Replaces a Student's set of permissions
+     * 
+     * @param userid           the Student's ID
+     * @param replacementPerms the set of permissions to be replaced
+     * @return the Student's new set of permissions
+     */
+    @Override
+    public EnumSet<Perms> replacePerms(String userid, EnumSet<Perms> replacementPerms) {
+        Student user = (Student) findUserById(userid);
+        if (user != null) {
+            user.replacePerms(replacementPerms);
+            return user.getPerms();
+        }
+        return null;
+    }
 }

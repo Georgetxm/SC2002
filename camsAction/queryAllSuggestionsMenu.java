@@ -13,7 +13,13 @@ import interactions.MenuChoice;
 import interactions.UserMenu;
 import types.CampAspects;
 import types.Perms;
-
+/**
+ * Interaction that represents the action of offering users a list of suggestions from a single camp to choose from.
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public class queryAllSuggestionsMenu extends UserMenu {
 
 	@Override
@@ -23,9 +29,11 @@ public class queryAllSuggestionsMenu extends UserMenu {
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
 		
+		int campid = GetData.CampID();
+		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's suggestionid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
-		List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist = new ArrayList<>(((SuggestionController) control).getSuggestions().entrySet());
+		List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist = new ArrayList<>(((SuggestionController) ((SuggestionController) control).FilterCamp(campid)).getSuggestions().entrySet());
 		//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
 		for(Entry<Integer, Entry<CampAspects, ? extends Object>> entry : suggestionlist) {
 			options.add(new MenuChoice(Perms.DEFAULT, entry.getValue().getKey().name()+":\n"+GetData.FromObject(entry.getValue().getValue()),CamsInteraction.SingleSuggestionMenu));
@@ -38,7 +46,10 @@ public class queryAllSuggestionsMenu extends UserMenu {
 			Data.put("CurrentItem", suggestionid);
 			System.out.println(">>"+choices.get(option).text());
 			System.out.println(((SuggestionController) control).getSuggestion(suggestionid).getValue());
-			checkandrun(option);
+			try {checkandrun(option);}
+			catch(MissingRequestedDataException e) {
+				System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+			}
 		}
 		return true;
 	}

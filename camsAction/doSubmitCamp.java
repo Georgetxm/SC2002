@@ -16,7 +16,13 @@ import java.util.TreeMap;
 
 import interactions.Interaction;
 import types.CampAspects;
-
+/**
+ * Interaction that represents the creating and saving a camp into the database.
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public class doSubmitCamp extends Interaction {
 
 	@Override

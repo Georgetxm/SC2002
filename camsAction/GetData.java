@@ -10,8 +10,18 @@ import entities.CampInfo;
 import entities.Data;
 import entities.UserInfoMissingException;
 import types.CampAspects;
-
+/**
+ * Class that contains the error handling wrappers for Data exclusive to camsAction
+ * Checks and throws the required exceptions as needed.
+ * As this serves mainly as an error handling wrapper, classes in camsAction are free to access Data directly if they do not need error handling.
+ * This class is static and should not have any instances, and its constructor is private
+ * @see Data
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 final class GetData {
+	private GetData() {}
 	static final String CurrentUser() throws UserInfoMissingException {
 		String userid;
 		if(!Data.containsKey("CurrentUser")) throw new UserInfoMissingException("User not identified. Request Failed.");

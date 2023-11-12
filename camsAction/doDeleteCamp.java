@@ -9,7 +9,13 @@ import controllers.UserController;
 import entities.Data;
 import interactions.Interaction;
 import types.Perms;
-
+/**
+ * Interaction that represents the action of deleting a camp from the database
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public class doDeleteCamp extends Interaction {
 
 	@Override

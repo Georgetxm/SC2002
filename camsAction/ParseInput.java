@@ -11,8 +11,15 @@ import java.util.Map.Entry;
 import types.CampAspects;
 import types.Faculty;
 import types.Location;
-
+/**
+ * Contains the functions relating to string manipulation that are exclusively used by camsAction.
+ * This class is static, there should be no instances of this class, and the constructor is private
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 final class ParseInput {
+	private ParseInput() {}
 	static final Entry<CampAspects,String> CampName(Scanner s){
 		System.out.println("Type Camp Name\n");
 		return new HashMap.SimpleEntry<CampAspects,String>(CampAspects.NAME,s.nextLine());

@@ -11,7 +11,13 @@ import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import types.CampAspects;
-
+/**
+ * Interaction that represents the action of creating and saving a suggestion for some camp to the database.
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public final class doSubmitSuggestion extends Interaction {
 	// Currently using distinct control interfaces for dual inheritance
 	@Override

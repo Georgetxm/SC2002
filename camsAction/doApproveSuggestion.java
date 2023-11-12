@@ -7,30 +7,23 @@ import controllers.SuggestionController;
 import controllers.UserController;
 import entities.Data;
 import interactions.Interaction;
-import interactions.MenuChoice;
-import interactions.StaticMenu;
 /**
- * 
+ * Interaction that represents the action of approving a suggestion.
+ * Effectively serves as a function pointer
  * @author Tay Jih How
  * @version 1.0
  * @since 2021-11-01
  */
-/**
- * 
- */
-/**
- * 
- */
-/**
- * Requests the controller to edit camp details, based off a specific suggestion.
- * Requests the controller to increment points of the user by 1.
- * Onus is on the controller to ensure camp details are edited appropriately and whatever information is kept consistent.
- * @see Interaction
- * @see MenuChoice
- * @see StaticMenu
- */
 public final class doApproveSuggestion extends Interaction {
 	//Currently using new single umbrella class implementation for dual inheritance
+	/**
+	 * Requests the controller to edit a camp's details based off a suggestion.
+	 * Requests the controller to increment the points of the suggestion owner.
+	 *@return true if controller accepts the request(s)
+	 *@throws MissingRequestedDataException if camp to be edited cannot be found
+	 *@throws MissingRequestedDataException if suggestion to be implemented cannot be found
+	 *@throws MissingRequestedDataException if user to have points incremented cannot be found
+	 */
 	@Override
 	public final Boolean run() throws MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

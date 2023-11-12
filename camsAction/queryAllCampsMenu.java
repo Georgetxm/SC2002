@@ -18,7 +18,14 @@ import interactions.UserMenu;
 import types.CampAspects;
 import types.Faculty;
 import types.Perms;
-
+/**
+ * Interaction that represents the action of giving the user a list of camps to choose from, not filtered by any camp aspect.
+ * However, they can be filtered by user depending on past user data..
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public class queryAllCampsMenu extends UserMenu {
 
 	@Override

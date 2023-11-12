@@ -16,7 +16,14 @@ import interactions.MenuChoice;
 import interactions.UserMenu;
 import types.CampAspects;
 import types.Perms;
-
+/**
+ * Interaction that represents the action of offering users a list of on their list suggestions to choose from.
+ * Based on predefined conditions they might be filtered by camp.
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public final class queryOwnSuggestionsMenu extends UserMenu {
 	@Override
 	public final Boolean run() throws UserInfoMissingException {

@@ -9,7 +9,13 @@ import controllers.UserController;
 import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
-
+/**
+ * Interaction that represents the action of creating and saving an enquiry regarding some camp, to the database.
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public final class doSubmitEnquiry extends Interaction {
 	@Override
 	public final Integer run() throws UserInfoMissingException, MissingRequestedDataException {

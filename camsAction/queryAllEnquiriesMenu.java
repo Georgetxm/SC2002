@@ -13,7 +13,14 @@ import entities.UserInfoMissingException;
 import interactions.MenuChoice;
 import interactions.UserMenu;
 import types.Perms;
-
+/**
+ * Interaction that represents the action of offering the user a list of enquiries to choose from.
+ * These enquiries may be filtered by camp, depending on past data.
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public final class queryAllEnquiriesMenu extends UserMenu {
 
 	@Override

@@ -9,7 +9,13 @@ import controllers.CampController;
 import entities.Data;
 import interactions.Interaction;
 import types.CampAspects;
-
+/**
+ * Interaction that represents the action of changing the value of a single camp detail for a camp
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public class doEditCampDetails extends Interaction {
 
 	@Override

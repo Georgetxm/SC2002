@@ -12,11 +12,17 @@ import interactions.MenuChoice;
 import interactions.UserMenu;
 import types.CampAspects;
 import types.Perms;
-
+/**
+ * Interaction that represents the action of offering users a list of aspects to filter camps by
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public class queryFilterCampByMenu extends UserMenu {
 
 	/**
-	 * @throws UserInfoMissingException 
+	 * @throws UserInfoMissingException if if one of its child functions detect user information is incomplete (e.g. ill-formatted or missing userid, permissions
 	 *
 	 */
 	@SuppressWarnings("unchecked")

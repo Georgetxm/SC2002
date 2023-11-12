@@ -11,7 +11,13 @@ import entities.UserInfoMissingException;
 import interactions.Interaction;
 import types.Perms;
 import types.Role;
-
+/**
+ * Interaction that represents the action of adding a user to a camp as a camp committee member.
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public final class doSubmitCommitteeRegistration extends Interaction {
 
 	/**

@@ -6,7 +6,13 @@ import java.util.Scanner;
 import controllers.EnquiryController;
 import entities.Data;
 import interactions.Interaction;
-
+/**
+ * Interaction that represents the action of changing the contents of a submitted enquiry
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public final class doEditEnquiry extends Interaction {
 
 	@Override

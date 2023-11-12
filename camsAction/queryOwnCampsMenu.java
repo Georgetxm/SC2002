@@ -12,7 +12,13 @@ import entities.UserInfoMissingException;
 import interactions.MenuChoice;
 import interactions.UserMenu;
 import types.Perms;
-
+/**
+ * Interaction that represents the action of offering users a list of the camps in their list to choose from.
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public class queryOwnCampsMenu extends UserMenu {
 
 	@Override

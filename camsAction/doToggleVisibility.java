@@ -5,7 +5,13 @@ import java.util.NoSuchElementException;
 import controllers.CampController;
 import entities.Data;
 import interactions.Interaction;
-
+/**
+ * Interaction that represents the action of changing the visibility of a camp to a value other than its original value.
+ * Effectively serves as a function pointer
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-01
+ */
 public final class doToggleVisibility extends Interaction {
 
 	@Override

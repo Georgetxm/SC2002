@@ -11,10 +11,10 @@ public interface UserController {
 	//Feel free to change the return and parameter types, correcting on my end is not hard
 	public Faculty getUserFaculty(String userid);
 	public boolean setCampComittee(String userid, String name, int campid);
-	public boolean joinCamp(String userid, String name, int campid);
+	public boolean joinCamp(String userid, int campid);
 	public boolean leaveCamp(String userid, int campid); 
 	public boolean setCampCommittee(int campId, String userId);
-	public Integer getCampCommittee(String userId);
+	public Integer getCampCommitteeOfStudent(String userId);
 	public HashMap<Integer,String> getCamp(int userid); //Returns id, name. 
 	public HashSet<Entry<Integer,Integer>> getUserEnquiries(int userid); //Returns campid, enquiryid
 	public HashSet<Entry<Integer,Integer>> getUserSuggestions(int userid); //Returns campid, suggestionid

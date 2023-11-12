@@ -18,7 +18,7 @@ import types.Faculty;
 import types.Perms;
 import types.Role;
 
-public class MainController implements CampController, UserController {
+public class MainController implements CampController, UserController, SuggestionController, EnquiryController {
     private ArrayList<User> users;
     private ArrayList<Camp> camps;
     private ArrayList<Suggestion> suggestions;
@@ -893,5 +893,114 @@ public class MainController implements CampController, UserController {
         aspectFilter.put(filter.getKey(), filter.getValue());
         return this;
     }
+
+	@Override
+	public int addEnquiry(String enquiry, String ownerid, int campid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int editEnquiry(int enquiryid, String enquiry) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getEnquiry(int enquiryid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HashMap<Integer, String> getEnquiries() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean deleteEnquiry(int enquiryid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean finaliseEnquiry(int enquiryid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean isEnquiryEditable(int enquiryid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int saveReply(int enquiryid, String reply) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String[] getReply(int enquiryid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int addSuggestion(Entry<CampAspects, ? extends Object> suggestion, String rationale, String ownerid,
+			int campid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int editSuggestion(int id, Entry<CampAspects, ? extends Object> edited, String rationale) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Entry<Entry<CampAspects, ? extends Object>, String> getSuggestion(int suggestionid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HashMap<Integer, Entry<CampAspects, ? extends Object>> getSuggestions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean deleteSuggestion(int suggestionid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean finaliseSuggestion(int suggestionid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean isSuggestionEditable(int suggestionid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getOwner(int suggestionid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getHostCamp(int suggestionid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

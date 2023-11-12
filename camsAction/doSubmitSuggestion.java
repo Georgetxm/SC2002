@@ -1,25 +1,27 @@
 package camsAction;
 
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.TreeMap;
 import controllers.CampController;
 import controllers.SuggestionController;
 import controllers.UserController;
 import entities.Data;
+import entities.UserInfoMissingException;
 import interactions.Interaction;
 import types.CampAspects;
 
 public final class doSubmitSuggestion extends Interaction {
 	// Currently using distinct control interfaces for dual inheritance
 	@Override
-	public final Integer run() throws Exception {
+	public final Integer run() throws MissingRequestedDataException, UserInfoMissingException {
 		if (!Data.containsKey("Controller"))
-			throw new Exception("No controller found. Request Failed.");
+			throw new NoSuchElementException("No controller found. Request Failed.");
 		if (!CampController.class.isInstance(Data.get("Controller")) ||
 				!UserController.class.isInstance(Data.get("Controller")) ||
 				!SuggestionController.class.isInstance(Data.get("Controller")))
-			throw new Exception("Controller not able enough. Request Failed.");
+			throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
 
 		int campid = GetData.CampID();

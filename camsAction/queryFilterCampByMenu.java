@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import entities.Data;
+import entities.UserInfoMissingException;
 import interactions.MenuChoice;
 import interactions.UserMenu;
 import types.CampAspects;
@@ -16,11 +16,12 @@ import types.Perms;
 public class queryFilterCampByMenu extends UserMenu {
 
 	/**
+	 * @throws UserInfoMissingException 
 	 *
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public final Boolean run() throws Exception {
+	public final Boolean run() throws UserInfoMissingException {
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		for(CampAspects aspects:CampAspects.values()) {
 			options.add(new MenuChoice(Perms.DEFAULT, "Filter by "+aspects.name(),new queryCampsFilteredMenu()));
@@ -45,17 +46,23 @@ public class queryFilterCampByMenu extends UserMenu {
 			}
 			HashMap<CampAspects, ?extends Object> existingfilter = null;
 			try {existingfilter =  GetData.Filter();}
-			catch(NoSuchElementException e) {
+			catch(MissingRequestedDataException e) {
 				HashMap<CampAspects,Object> newfilter = new HashMap<CampAspects,Object>();
 				newfilter.put(edited.getKey(),edited.getValue());
 				Data.put("Filter", newfilter);
 				System.out.println(choices.get(option).text()+":\n"+GetData.FromObject(edited.getValue()));
-				checkandrun(option);
+				try {checkandrun(option);}
+				catch(MissingRequestedDataException e1) {
+					System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+				}
 				continue;
 			}
 			Data.put("Filter",((HashMap<CampAspects,Object>)existingfilter).put(edited.getKey(),edited.getValue()));
 			System.out.println("Filtering by "+choices.get(option).text());
-			checkandrun(option);
+			try {checkandrun(option);}
+			catch(MissingRequestedDataException e) {
+				System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+			}
 			continue;
 		}
 		return true;

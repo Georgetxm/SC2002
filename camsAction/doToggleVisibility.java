@@ -1,5 +1,7 @@
 package camsAction;
 
+import java.util.NoSuchElementException;
+
 import controllers.CampController;
 import entities.Data;
 import interactions.Interaction;
@@ -7,11 +9,11 @@ import interactions.Interaction;
 public final class doToggleVisibility extends Interaction {
 
 	@Override
-	public final Boolean run() throws Exception {
-		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	public final Boolean run() throws MissingRequestedDataException {
+		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(
 			!CampController.class.isInstance(Data.get("Controller"))
-		)	throw new Exception("Controller not able enough. Request Failed.");
+		)	throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
 		
 		int campid = GetData.CampID();

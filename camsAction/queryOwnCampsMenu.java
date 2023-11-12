@@ -3,10 +3,12 @@ package camsAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 
 import cams.CamsInteraction;
 import controllers.CampController;
 import entities.Data;
+import entities.UserInfoMissingException;
 import interactions.MenuChoice;
 import interactions.UserMenu;
 import types.Perms;
@@ -14,10 +16,10 @@ import types.Perms;
 public class queryOwnCampsMenu extends UserMenu {
 
 	@Override
-	public final Boolean run() throws Exception {
-		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	public final Boolean run() throws UserInfoMissingException {
+		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!CampController.class.isInstance(Data.get("Controller")))	
-			throw new Exception("Controller not able enough. Request Failed.");
+			throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
 		String userid = GetData.CurrentUser();
 		Data.put("isViewingOwnCamps", true);
@@ -33,12 +35,18 @@ public class queryOwnCampsMenu extends UserMenu {
 			int option = givechoices();
 			if(option<0) break;
 			if(option==0) {
-				checkandrun(option);
+				try {checkandrun(option);}
+				catch(MissingRequestedDataException e) {
+					System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+				}
 				continue;
 			}
 			Data.put("CurrentCamp", camplist.get(option).getKey());
 			System.out.println(">>"+choices.get(option).text());
-			checkandrun(option);
+			try {checkandrun(option);}
+			catch(MissingRequestedDataException e) {
+				System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+			}
 		}
 		Data.clear("isViewingOwnCamps");
 		return true;

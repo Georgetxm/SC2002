@@ -2,6 +2,8 @@ package camsAction;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
+
 import controllers.CampController;
 import controllers.UserController;
 import entities.Data;
@@ -13,13 +15,13 @@ import types.Role;
 public final class doSubmitCommitteeRegistration extends Interaction {
 
 	@Override
-	protected Object run() throws Exception {
-		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	protected Object run() {
+		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		Object control=Data.get("Controller");
 		if(
 			!CampController.class.isInstance(control)||
 			!UserController.class.isInstance(control)
-		)	throw new Exception("Controller not able enough. Request Failed.");
+		)	throw new NoSuchElementException("Controller not able enough. Request Failed.");
 
 		
 		String userid=GetData.CurrentUser();

@@ -5,12 +5,14 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 
 import cams.CamsInteraction;
 import controllers.CampController;
 import controllers.Controller;
 import controllers.UserController;
 import entities.Data;
+import entities.UserInfoMissingException;
 import interactions.MenuChoice;
 import interactions.UserMenu;
 import types.CampAspects;
@@ -20,10 +22,10 @@ import types.Perms;
 public final class queryCampsFilteredMenu extends UserMenu {
 
 	@Override
-	public final Boolean run() throws Exception {
-		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	public final Boolean run() throws MissingRequestedDataException, UserInfoMissingException {
+		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!CampController.class.isInstance(Data.get("Controller")))	
-			throw new Exception("Controller not able enough. Request Failed.");
+			throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
 		
 		String userid = GetData.CurrentUser();
@@ -55,17 +57,26 @@ public final class queryCampsFilteredMenu extends UserMenu {
 			int option = givechoices();
 			if(option<0) break;
 			if(option==0) {
-				checkandrun(option);
+				try {checkandrun(option);}
+				catch(MissingRequestedDataException e) {
+					System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+				}
 				continue;
 			}
 			if(option==1) {
 				Data.clear("Filter");
-				checkandrun(option);
+				try {checkandrun(option);}
+				catch(MissingRequestedDataException e) {
+					System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+				}
 				continue;
 			}
 			Data.put("CurrentCamp", camplist.get(option).getKey());
 			System.out.println(">>"+choices.get(option).text());
-			checkandrun(option);
+			try {checkandrun(option);}
+			catch(MissingRequestedDataException e) {
+				System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+			}
 			continue;
 		}
 		return true;

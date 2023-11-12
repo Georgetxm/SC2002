@@ -10,6 +10,7 @@ import controllers.Controller;
 import controllers.EnquiryController;
 import controllers.SuggestionController;
 import entities.Data;
+import entities.UserInfoMissingException;
 import interactions.MenuChoice;
 import interactions.UserMenu;
 import types.Perms;
@@ -18,15 +19,15 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 
 	
 	@Override
-	public final Boolean run() throws Exception {
-		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	public final Boolean run() throws UserInfoMissingException {
+		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
-			throw new Exception("Controller not able enough. Request Failed.");
+			throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
 		
 		int campid = -1;
 		try {campid = GetData.CampID();}
-		catch(NoSuchElementException e) {}
+		catch(MissingRequestedDataException e) {}
 		if(campid>=0) ((Controller) control).FilterCamp(campid);
 		
 		String userid = GetData.CurrentUser();
@@ -46,7 +47,10 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 			int enquiryid = enquirylist.get(option).getKey();
 			Data.put("CurrentItem", enquiryid);
 			System.out.println(">>"+choices.get(option).text());
-			checkandrun(option);
+			try {checkandrun(option);}
+			catch(MissingRequestedDataException e) {
+				System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+			}
 		}
 		return true;
 	}

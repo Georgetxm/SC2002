@@ -1,6 +1,7 @@
 package camsAction;
 
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import controllers.SuggestionController;
@@ -11,9 +12,9 @@ import types.CampAspects;
 public final class doEditSuggestion extends Interaction {
 	//Currently using distinct control interfaces for dual inheritance
 	@Override
-	public final Boolean run() throws Exception {
-		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
-		if(!SuggestionController.class.isInstance(Data.get("Controller")))	throw new Exception("Controller not able enough. Request Failed.");
+	public final Boolean run() throws MissingRequestedDataException {
+		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
+		if(!SuggestionController.class.isInstance(Data.get("Controller")))	throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		SuggestionController suggestioncontrol = (SuggestionController) Data.get("Controller");
 		
 		int suggestionid = GetData.SuggestionID();

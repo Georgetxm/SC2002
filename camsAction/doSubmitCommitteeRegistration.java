@@ -7,15 +7,18 @@ import java.util.NoSuchElementException;
 import controllers.CampController;
 import controllers.UserController;
 import entities.Data;
+import entities.UserInfoMissingException;
 import interactions.Interaction;
-import types.CampAspects;
 import types.Perms;
 import types.Role;
 
 public final class doSubmitCommitteeRegistration extends Interaction {
 
+	/**
+	 *
+	 */
 	@Override
-	protected Object run() {
+	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		Object control=Data.get("Controller");
 		if(
@@ -28,10 +31,8 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 		int campid=GetData.CampID();
 
 		HashMap<Integer, String> camplist = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
-		String campname = (String) ((CampController) control).getCampDetails(campid).info().get(CampAspects.NAME);
 		
 		if(camplist.keySet().contains(campid)) {
-			if(camplist.get(campid)!=campname) throw new Exception("Data error. CampID and CampName mismatch!");
 			System.out.println("Already registered");
 			return false;
 		}

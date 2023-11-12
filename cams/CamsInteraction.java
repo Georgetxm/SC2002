@@ -24,7 +24,7 @@ import camsAction.queryAllCampsMenu;
 import camsAction.queryAllEnquiriesMenu;
 import camsAction.queryAllSuggestionsMenu;
 import camsAction.queryOwnCampsMenu;
-import camsAction.queryOwnEnquiryMenu;
+import camsAction.queryOwnEnquriesMenu;
 import camsAction.queryOwnSuggestionsMenu;
 import interactions.MenuChoice;
 import types.Perms;
@@ -157,7 +157,7 @@ public final class CamsInteraction{ //Menu choices
 	 * This can either be for a particular camp, or in general
 	 * It is implied both the user and menu know if its for a particular camp, or in general due to past choice selection
 	 */
-	public static MenuChoice viewOwnEnquiry		= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"View your own enquiries",	new queryOwnEnquiryMenu());
+	public static MenuChoice viewOwnEnquiry		= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"View your own enquiries",	new queryOwnEnquriesMenu());
 	/**
 	 * MenuChoice instance denoting the choice of viewing all enquiries associated with a particular camp
 	 * <p>

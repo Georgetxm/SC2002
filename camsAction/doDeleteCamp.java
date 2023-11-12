@@ -2,6 +2,8 @@ package camsAction;
 
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
+
 import controllers.CampController;
 import controllers.UserController;
 import entities.Data;
@@ -11,12 +13,12 @@ import types.Perms;
 public class doDeleteCamp extends Interaction {
 
 	@Override
-	public final Boolean run() throws Exception {
-		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	public final Boolean run() throws MissingRequestedDataException {
+		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(
 			!CampController.class.isInstance(Data.get("Controller"))||
 			!UserController.class.isInstance(Data.get("Controller"))
-		)	throw new Exception("Controller not able enough. Request Failed.");
+		)	throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
 		
 		int campid = GetData.CampID();

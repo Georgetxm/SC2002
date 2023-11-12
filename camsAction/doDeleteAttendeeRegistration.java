@@ -1,19 +1,22 @@
 package camsAction;
 
+import java.util.NoSuchElementException;
+
 import controllers.CampController;
 import controllers.UserController;
 import entities.Data;
+import entities.UserInfoMissingException;
 import interactions.Interaction;
 
 public class doDeleteAttendeeRegistration extends Interaction {
 
 	@Override
-	public final Boolean run() throws Exception {
-		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
+		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(
 			!CampController.class.isInstance(Data.get("Controller"))||
 			!UserController.class.isInstance(Data.get("Controller"))
-		)	throw new Exception("Controller not able enough. Request Failed.");
+		)	throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
 		
 		String userid=GetData.CurrentUser();

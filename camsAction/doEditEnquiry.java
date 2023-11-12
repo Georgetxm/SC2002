@@ -1,5 +1,6 @@
 package camsAction;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import controllers.EnquiryController;
@@ -9,10 +10,10 @@ import interactions.Interaction;
 public final class doEditEnquiry extends Interaction {
 
 	@Override
-	public final Boolean run() throws Exception {
-		if(!Data.containsKey("Controller")) throw new Exception("No controller found. Request Failed.");
+	public final Boolean run() throws MissingRequestedDataException {
+		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!EnquiryController.class.isInstance(Data.get("Controller")))	
-			throw new Exception("Controller not able enough. Request Failed.");
+			throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		EnquiryController enquirycontrol = (EnquiryController) Data.get("Controller");
 		
 		int enquiryid = GetData.EnquiryID();

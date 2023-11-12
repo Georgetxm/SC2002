@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import types.Faculty;
@@ -52,31 +53,31 @@ public class Student extends User {
      * Enquiries that the Student has created
      * enquiries is an HashMap of form campId, enquiryId
      */
-    private HashSet<Integer> enquiries;
+    private HashMap<Integer, Integer> enquiries;
 
     /**
      * Suggestions that the Student has created
      * suggestions is an HashMap of form campId, suggestionId
      */
-    private HashSet<Integer> suggestions;
+    private HashMap<Integer, Integer> suggestions;
 
     public Student() {
         super();
         this.camps = new HashSet<Integer>();
         this.campCommittee = -1;
         this.points = 0;
-        this.enquiries = new HashSet<Integer>();
-        this.suggestions = new HashSet<Integer>();
+        this.enquiries = new HashMap<Integer, Integer>();
+        this.suggestions = new HashMap<Integer, Integer>();
     }
 
     /**
      * Creates new Student object with the given parameters
      * 
-     * @param userId the Student's userId
+     * @param userId      the Student's userId
      * 
-     * @param password the Student's password
+     * @param password    the Student's password
      * 
-     * @param faculty the Student's faculty, @see Faculty
+     * @param faculty     the Student's faculty, @see Faculty
      * 
      * @param permissions the Student's permissions, @see Perms
      *
@@ -86,8 +87,8 @@ public class Student extends User {
         this.camps = new HashSet<Integer>();
         this.campCommittee = -1;
         this.points = 0;
-        this.enquiries = new HashSet<Integer>();
-        this.suggestions = new HashSet<Integer>();
+        this.enquiries = new HashMap<Integer, Integer>();
+        this.suggestions = new HashMap<Integer, Integer>();
     }
 
     /**
@@ -171,7 +172,7 @@ public class Student extends User {
      * 
      * @return the list of enquiries this student has created
      */
-    public HashSet<Integer> getEnquiries() {
+    public HashMap<Integer, Integer> getEnquiries() {
         return this.enquiries;
     }
 
@@ -182,8 +183,8 @@ public class Student extends User {
      * 
      * @return true if the enquiryId is successfully added, false otherwise
      */
-    public boolean addEnquiry(int enquiryId) {
-        this.enquiries.add(enquiryId);
+    public boolean addEnquiry(int campid, int enquiryid) {
+        this.enquiries.put(campid, enquiryid);
         return true;
     }
 
@@ -194,8 +195,8 @@ public class Student extends User {
      * 
      * @return true if the enquiryId is successfully removed, false otherwise
      */
-    public boolean removeEnquiry(int enquiryId) {
-        this.enquiries.remove(enquiryId);
+    public boolean removeEnquiry(int campid, int enquiryId) {
+        this.enquiries.remove(campid, enquiryId);
         return true;
     }
 
@@ -204,7 +205,7 @@ public class Student extends User {
      * 
      * @return the list of suggestions this student has created
      */
-    public HashSet<Integer> getSuggestions() {
+    public HashMap<Integer, Integer> getSuggestions() {
         return this.suggestions;
     }
 
@@ -215,8 +216,8 @@ public class Student extends User {
      * 
      * @return true if the suggestionId is successfully added, false otherwise
      */
-    public boolean addSuggestion(int suggestionId) {
-        this.suggestions.add(suggestionId);
+    public boolean addSuggestion(int campid, int suggestionid) {
+        this.suggestions.put(campid, suggestionid);
         return true;
     }
 
@@ -227,8 +228,8 @@ public class Student extends User {
      * 
      * @return true if the suggestionId is successfully removed, false otherwise
      */
-    public boolean removeSuggestion(int suggestionId) {
-        this.suggestions.remove(suggestionId);
+    public boolean removeSuggestion(int campid, int suggestionId) {
+        this.suggestions.remove(campid, suggestionId);
         return true;
     }
 }

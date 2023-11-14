@@ -1,6 +1,7 @@
 package entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Enquiry {
     private final String creatorUserId;
@@ -11,6 +12,7 @@ public class Enquiry {
     private boolean seen;
     private final LocalDate creationDate;
     private LocalDate lastUpdateDate;
+    private ArrayList<String> replies;
 
     public Enquiry(String creatorUserId, int campId, String enquiryBody, boolean seen,
             LocalDate creationDate) {
@@ -21,6 +23,7 @@ public class Enquiry {
         this.seen = seen;
         this.creationDate = creationDate;
         this.lastUpdateDate = creationDate;
+        this.replies = new ArrayList<String>();
     }
 
     public String getCreatorUserId() {
@@ -66,7 +69,27 @@ public class Enquiry {
     }
 
     public int getCampId() {
-        return campId;
+        return this.campId;
+    }
+
+    public ArrayList<String> getReplies() {
+        return this.replies;
+    }
+
+    public boolean addReply(String reply) {
+        if (reply == null || reply.isEmpty()) {
+            throw new IllegalArgumentException("Reply cannot be null or empty");
+        }
+        this.replies.add(reply);
+        return true;
+    }
+
+    public boolean removeReply(String reply) {
+        if (reply == null || reply.isEmpty()) {
+            throw new IllegalArgumentException("Reply cannot be null or empty");
+        }
+        this.replies.remove(reply);
+        return true;
     }
 
 }

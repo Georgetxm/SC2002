@@ -53,8 +53,10 @@ public interface EnquiryController extends Controller {
 	 *      Clears the filter after getting the enquiries
 	 * 
 	 * @return a HashMap of enquiry id and enquiry text
+	 * @throws ControllerParamsException
+	 * @throws ControllerItemMissingException
 	 */
-	HashMap<Integer, String> getEnquiries();
+	HashMap<Integer, String> getEnquiries() throws ControllerParamsException, ControllerItemMissingException;
 
 	/**
 	 * Overriden methods from Enquiry Controller

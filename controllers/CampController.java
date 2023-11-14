@@ -29,7 +29,7 @@ public interface CampController extends Controller {
 
 	public boolean toggleCampVisiblity(int campid); // true = visible, false = not visible
 
-	public HashMap<Integer, String> getCamps();
+	public HashMap<Integer, String> getCamps() throws ControllerItemMissingException;
 
 	public CampInfo getCampDetails(int campid);
 

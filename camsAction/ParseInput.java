@@ -12,7 +12,7 @@ import types.CampAspects;
 import types.Faculty;
 import types.Location;
 /**
- * Contains the functions relating to string manipulation that are exclusively used by camsAction.
+ * Contains the functions relating to string manipulation of user inputs that are exclusively used by camsAction.
  * This class is static, there should be no instances of this class, and the constructor is private
  * @author Tay Jih How
  * @version 1.0
@@ -24,7 +24,7 @@ final class ParseInput {
 	 */
 	private ParseInput() {}
 	/**
-	 * 
+	 * Queries a user for camp name and creates the appropriate storage container to store it.
 	 * @param s Scanner to be used.
 	 * @return the hashmap entry denoting the a camp name
 	 */
@@ -32,6 +32,11 @@ final class ParseInput {
 		System.out.println("Type Camp Name\n");
 		return new HashMap.SimpleEntry<CampAspects,String>(CampAspects.NAME,s.nextLine());
 	}
+	/**
+	 * Queries a user for camp dates and creates the appropriate storage container to store it.
+	 * @param s Scanner to be used.
+	 * @return the hashmap entry denoting the a camp name
+	 */
 	static final Entry<CampAspects,HashSet<LocalDate>> CampDate(Scanner s){
 		System.out.println("Now please enter your camp dates.");
 		String input = "";
@@ -46,6 +51,11 @@ final class ParseInput {
 		}
 		return new HashMap.SimpleEntry<CampAspects,HashSet<LocalDate>>(CampAspects.DATE,datelist);
 	}
+	/**
+	 * Queries a user for the registration deadline and creates the appropriate storage container to store it.
+	 * @param s Scanner to be used.
+	 * @return the hashmap entry denoting the a camp name
+	 */
 	static final SimpleEntry<CampAspects, LocalDate> CampRegisterDate(Scanner s){
 		System.out.println("Now please enter the registration deadline");
 		LocalDate date;
@@ -60,6 +70,11 @@ final class ParseInput {
 		}
 		return new HashMap.SimpleEntry<CampAspects,LocalDate>(CampAspects.REGISTRATION_DEADLINE,date);
 	}
+	/**
+	 * Queries a user for the camp host faculty and creates the appropriate storage container to store it.
+	 * @param s Scanner to be used.
+	 * @return the hashmap entry denoting the a camp name
+	 */
 	static final Entry<CampAspects,Faculty> CampFaculty(Scanner s){
 		System.out.println("Please choose a host faculty");
 		Faculty[] facultylist = Faculty.class.getEnumConstants();
@@ -77,6 +92,11 @@ final class ParseInput {
 		}
 		return new HashMap.SimpleEntry<CampAspects,Faculty>(CampAspects.USERGROUP,facultylist[choice-1]);
 	}
+	/**
+	 * Queries a user for camp location and creates the appropriate storage container to store it.
+	 * @param s Scanner to be used.
+	 * @return the hashmap entry denoting the a camp name
+	 */
 	static final Entry<CampAspects,Location> CampLocation(Scanner s){
 		System.out.println("Please designate a camp location");
 		Location[] locationlist = Location.class.getEnumConstants();
@@ -93,7 +113,12 @@ final class ParseInput {
 			break;
 		}
 		return new HashMap.SimpleEntry<CampAspects,Location>(CampAspects.LOCATION,locationlist[choice-1]);
-	}
+	}	
+	/**
+	 * Queries a user for the number of camp attendee slots and creates the appropriate storage container to store it.
+	 * @param s Scanner to be used.
+	 * @return the hashmap entry denoting the a camp name
+	 */
 	static final Entry<CampAspects,Integer>CampSlots(Scanner s){
 		System.out.println("Please choose the number of participant slots");
 		Integer slots;
@@ -108,6 +133,11 @@ final class ParseInput {
 		}
 		return new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.SLOTS,slots);
 	}
+	/**
+	 * Queries a user for number of camp committee slots and creates the appropriate storage container to store it.
+	 * @param s Scanner to be used.
+	 * @return the hashmap entry denoting the a camp name
+	 */
 	static final Entry<CampAspects,Integer>CampComitteeSlots(Scanner s){
 		System.out.println("Please choose the number of committee slots");
 		Integer slots;
@@ -122,10 +152,20 @@ final class ParseInput {
 		}
 		return new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.COMMITTEESLOTS,slots);
 	}
+	/**
+	 * Queries a user for camp description and creates the appropriate storage container to store it.
+	 * @param s Scanner to be used.
+	 * @return the hashmap entry denoting the a camp name
+	 */
 	static final Entry<CampAspects,String>CampDescription(Scanner s){
 		System.out.println("Type Camp Description");
 		return new HashMap.SimpleEntry<CampAspects,String>(CampAspects.DESCRIPTION,s.nextLine());
 	}
+	/**
+	 * Queries a user for camp staff ic and creates the appropriate storage container to store it.
+	 * @param s Scanner to be used.
+	 * @return the hashmap entry denoting the a camp name
+	 */
 	static final Entry<CampAspects,String>CampStaffIC(Scanner s){
 		System.out.println("Type staff name");
 		String userid=s.nextLine();

@@ -628,7 +628,10 @@ public class MainController implements CampController, UserController, Suggestio
         }
         Camp camp = findCampById(campId);
         Student user = (Student) findUserById(userId);
-        if (camp != null && camp.addCommittee(userId) && user.setCampComittee(campId)) {
+        if (camp != null
+                && user.registerForCamp(campId)
+                && camp.addCommittee(userId)
+                && user.setCampComittee(campId)) {
             return true;
         }
         return false;

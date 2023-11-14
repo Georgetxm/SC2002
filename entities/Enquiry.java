@@ -7,19 +7,17 @@ public class Enquiry {
     private final int campId;
     private static int nextEnquiryId = 0;
     private final int enquiryId;
-    private String title;
-    private String description;
+    private String enquiryBody;
     private boolean seen;
     private final LocalDate creationDate;
     private LocalDate lastUpdateDate;
 
-    public Enquiry(String creatorUserId, int campId, String title, String description, boolean seen,
+    public Enquiry(String creatorUserId, int campId, String enquiryBody, boolean seen,
             LocalDate creationDate) {
         this.campId = campId;
         this.creatorUserId = creatorUserId;
         this.enquiryId = nextEnquiryId++;
-        this.title = title;
-        this.description = description;
+        this.enquiryBody = enquiryBody;
         this.seen = seen;
         this.creationDate = creationDate;
         this.lastUpdateDate = creationDate;
@@ -33,27 +31,15 @@ public class Enquiry {
         return this.enquiryId;
     }
 
-    public String getTitle() {
-        return this.title;
+    public String getEnquiryBody() {
+        return this.enquiryBody;
     }
 
-    public boolean setTitle(String newTitle) {
-        if (newTitle == null || newTitle.isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be null or empty");
-        }
-        this.title = newTitle;
-        return true;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public boolean setDescription(String newDescription) {
-        if (newDescription == null || newDescription.isEmpty()) {
+    public boolean setDescription(String newEnquiryBody) {
+        if (newEnquiryBody == null || newEnquiryBody.isEmpty()) {
             throw new IllegalArgumentException("Description cannot be null or empty");
         }
-        this.description = newDescription;
+        this.enquiryBody = newEnquiryBody;
         return true;
     }
 
@@ -79,8 +65,8 @@ public class Enquiry {
         return true;
     }
 
-	public int getCampId() {
-		return campId;
-	}
+    public int getCampId() {
+        return campId;
+    }
 
 }

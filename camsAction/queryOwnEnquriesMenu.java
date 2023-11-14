@@ -54,6 +54,7 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 			int enquiryid = enquirylist.get(option).getKey();
 			Data.put("CurrentItem", enquiryid);
 			System.out.println(">>"+choices.get(option).text());
+			for(String reply:((EnquiryController) control).getReply(enquiryid)) System.out.println(reply);
 			try {checkandrun(option);}
 			catch(MissingRequestedDataException e) {
 				System.out.println("Ran into an error. Please retry or return to main menu before retrying");

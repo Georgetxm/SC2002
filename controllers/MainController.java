@@ -217,6 +217,11 @@ public class MainController implements CampController, UserController, Suggestio
     /**
      * Overriden method from CampController
      * Deletes a Camp object from the camps ArrayList
+     * Resets a Student's campCommittee int attribute to -1 if student is in the
+     * committee of th deleted Camp
+     * Removes a Camp from a User object's camps HashSet
+     * Remove enquiries and suggestions of the Camp from the enquiries and
+     * suggestions ArrayList
      * 
      * @param campid the Camp's ID
      * 
@@ -226,6 +231,26 @@ public class MainController implements CampController, UserController, Suggestio
     public boolean deleteCamp(int campid) {
         Camp camp = findCampById(campid);
         if (camp != null) {
+            for (String student : camp.getAttendees()) {
+                Student user = (Student) findUserById(student);
+                user.withdrawFromCamp(campid);
+            }
+            for (String committee : camp.getCampCommittee()) {
+                Student user = (Student) findUserById(committee);
+                user.setCampComittee(-1);
+            }
+            for (Integer enquiry : camp.getEnquiries()) {
+                Enquiry e = findEnquiryById(campid, enquiry);
+                if (e != null) {
+                    enquiries.remove(e);
+                }
+            }
+            for (Integer suggestion : camp.getSuggestions()) {
+                Suggestion s = findSuggestionById(campid, suggestion);
+                if (s != null) {
+                    suggestions.remove(s);
+                }
+            }
             camps.remove(camp);
             return true;
         }
@@ -894,113 +919,113 @@ public class MainController implements CampController, UserController, Suggestio
         return this;
     }
 
-	@Override
-	public int addEnquiry(String enquiry, String ownerid, int campid) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int addEnquiry(String enquiry, String ownerid, int campid) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-	@Override
-	public int editEnquiry(int enquiryid, String enquiry) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int editEnquiry(int enquiryid, String enquiry) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-	@Override
-	public String getEnquiry(int enquiryid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getEnquiry(int enquiryid) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public HashMap<Integer, String> getEnquiries() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public HashMap<Integer, String> getEnquiries() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Boolean deleteEnquiry(int enquiryid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Boolean deleteEnquiry(int enquiryid) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Boolean finaliseEnquiry(int enquiryid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Boolean finaliseEnquiry(int enquiryid) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Boolean isEnquiryEditable(int enquiryid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Boolean isEnquiryEditable(int enquiryid) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public int saveReply(int enquiryid, String reply) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int saveReply(int enquiryid, String reply) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-	@Override
-	public String[] getReply(int enquiryid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String[] getReply(int enquiryid) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public int addSuggestion(Entry<CampAspects, ? extends Object> suggestion, String rationale, String ownerid,
-			int campid) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int addSuggestion(Entry<CampAspects, ? extends Object> suggestion, String rationale, String ownerid,
+            int campid) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-	@Override
-	public int editSuggestion(int id, Entry<CampAspects, ? extends Object> edited, String rationale) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int editSuggestion(int id, Entry<CampAspects, ? extends Object> edited, String rationale) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-	@Override
-	public Entry<Entry<CampAspects, ? extends Object>, String> getSuggestion(int suggestionid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Entry<Entry<CampAspects, ? extends Object>, String> getSuggestion(int suggestionid) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public HashMap<Integer, Entry<CampAspects, ? extends Object>> getSuggestions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public HashMap<Integer, Entry<CampAspects, ? extends Object>> getSuggestions() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Boolean deleteSuggestion(int suggestionid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Boolean deleteSuggestion(int suggestionid) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Boolean finaliseSuggestion(int suggestionid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Boolean finaliseSuggestion(int suggestionid) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Boolean isSuggestionEditable(int suggestionid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Boolean isSuggestionEditable(int suggestionid) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public String getOwner(int suggestionid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getOwner(int suggestionid) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public int getHostCamp(int suggestionid) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int getHostCamp(int suggestionid) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
 }

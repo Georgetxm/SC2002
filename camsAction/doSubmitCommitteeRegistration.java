@@ -43,7 +43,7 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 
 		HashMap<Integer, String> camplist = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
 		
-		if(((UserController) control).getCampCommitteeOfStudent(userid)<0) {
+		if(((UserController) control).getCampCommitteeOfStudent(userid)>=0) {
 			System.out.println("Already registered for an existing camp commitee");
 			return false;
 		}

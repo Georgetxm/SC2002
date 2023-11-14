@@ -276,7 +276,8 @@ public final class CamsInteraction{ //Menu choices
 		registerAsAttendee,
 		registerAsCommittee,
 		viewOwnEnquiry,
-		submitEnquiry
+		submitEnquiry,
+		deleteCamp
 	);
 	/**
 	 * Denotes a Static Menu instance representing the menu users first see.

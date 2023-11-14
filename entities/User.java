@@ -52,7 +52,7 @@ public class User {
      * Default constructor for User
      */
     public User() {
-        this.userId = "";
+        this.userId = "Name";
         this.password = "";
         this.faculty = Faculty.WHOLE_NTU;
         this.permission = EnumSet.noneOf(Perms.class);

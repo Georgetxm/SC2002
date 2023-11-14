@@ -16,7 +16,12 @@ import types.CampAspects;
  * @since 2021-11-01
  */
 public final class doEditSuggestion extends Interaction {
-	//Currently using distinct control interfaces for dual inheritance
+	/**
+	 * Requests the controller to change the content of a given suggestion.
+	 * Ask the controller if a suggestion may be edited before requesting the deletion.
+	 *@return true if controller accepts the request(s) and false if otherwise, or the suggestion cannot be deleted
+	 *@throws MissingRequestedDataException if suggestion to be deleted cannot be found.
+	 */
 	@Override
 	public final Boolean run() throws MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

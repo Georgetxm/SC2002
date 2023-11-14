@@ -17,7 +17,12 @@ import types.CampAspects;
  * @since 2021-11-01
  */
 public class doEditCampDetails extends Interaction {
-
+	/**
+	 * Requests the controller to change the values of one aspect in a camp's camp details.
+	 * Asks users for the aspect to be amended and the desired values to construct the controller request.
+	 *@return true if controller accepts the request(s) and false if otherwise, or the user attempted to edit an uneditable field.
+	 *@throws MissingRequestedDataException if camp whose camp details were to be edited cannot be found.
+	 */
 	@Override
 	public final Boolean run() throws MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

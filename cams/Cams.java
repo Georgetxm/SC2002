@@ -7,9 +7,9 @@ import java.util.Scanner;
 import controllers.MainController;
 import entities.Camp;
 import entities.Data;
+import entities.Student;
 import entities.User;
 import entities.UserInfoMissingException;
-import types.Faculty;
 import types.Perms;
 /**
  * The Java App class that contains main
@@ -24,13 +24,15 @@ public class Cams {
 	 * @throws UserInfoMissingException if user does not have enough valid information (i.e. userid, permissions)
 	 */
 	public static void main(String[] args) throws UserInfoMissingException {
-		EnumSet<Perms> defaultperms = EnumSet.of(Perms.DEFAULT, Perms.CREATE_CAMP);
-		User Armstrong = new User("Armstrong","",Faculty.ADM,defaultperms);
+		EnumSet<Perms> defaultperms = EnumSet.of(Perms.CREATE_CAMP);
+		User Armstrong = new Student();
 		ArrayList<User> userlist = new ArrayList<User>();
 		ArrayList<Camp> camplist = new ArrayList<Camp>();
 		userlist.add(Armstrong);
-		Data.put("Controller", new MainController(userlist,camplist));
-		Data.put("UserPerms", defaultperms);
+		MainController control = new MainController(userlist,camplist);
+		control.grantPerms("Armstrong", defaultperms);
+		Data.put("Controller", control);
+		Data.put("UserPerms", Armstrong.getPerms());
 		Data.put("Scanner", new Scanner(System.in));
 		Data.put("CurrentUser", "Armstrong");
 		CamsInteraction.startmenu.run();

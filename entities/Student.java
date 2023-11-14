@@ -62,7 +62,14 @@ public class Student extends User {
     private HashMap<Integer, Integer> suggestions;
 
     public Student() {
-        super();
+        super("Armstrong", "StrongPassword", Faculty.ADM, EnumSet.of(
+        		Perms.DEFAULT,
+        		Perms.SUBMIT_CAMP_ENQUIRY,
+        		Perms.VIEW_AVAILABLE_CAMP,
+        		Perms.REGISTER_AS_ATTENDEE,
+        		Perms.REGISTER_AS_COMITTEE,
+        		Perms.WITHDRAW_AS_ATTENDEE
+        ));
         this.camps = new HashSet<Integer>();
         this.campCommittee = -1;
         this.points = 0;

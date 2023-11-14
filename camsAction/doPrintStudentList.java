@@ -13,7 +13,12 @@ import interactions.Interaction;
  * @since 2021-11-01
  */
 public final class doPrintStudentList extends Interaction {
-
+	/**
+	 * Requests the controller to delete a given suggestion.
+	 * Ask the controller if a suggestion may be edited before requesting the deletion.
+	 *@return true if controller accepts the request(s) and false if otherwise, or the suggestion cannot be deleted
+	 *@throws MissingRequestedDataException if suggestion to be deleted cannot be found.
+	 */
 	@Override
 	final public Boolean run() throws MissingRequestedDataException {
 		CampController controller;

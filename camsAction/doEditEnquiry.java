@@ -14,7 +14,12 @@ import interactions.Interaction;
  * @since 2021-11-01
  */
 public final class doEditEnquiry extends Interaction {
-
+	/**
+	 * Requests the controller to modify the contents of a given enquiry.
+	 * Ask the controller if an enquiry may be edited before requesting the deletion.
+	 *@return true if controller accepts the request(s) and false if otherwise, or the enquiry cannot be deleted
+	 *@throws MissingRequestedDataException if the enquiry to be deleted cannot be found.
+	 */
 	@Override
 	public final Boolean run() throws MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

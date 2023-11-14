@@ -17,7 +17,12 @@ import types.Perms;
  * @since 2021-11-01
  */
 public class doDeleteCamp extends Interaction {
-
+	/**
+	 * Requests the controller to remove a camp from its database.
+	 * Controller is expected to cut off all links if any and ensure the database is consisten with no loose ends
+	 *@return true if controller accepts the request(s)
+	 *@throws MissingRequestedDataException if camp to be deleted cannot be found
+	 */
 	@Override
 	public final Boolean run() throws MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

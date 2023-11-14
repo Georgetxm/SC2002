@@ -21,7 +21,15 @@ import types.CampAspects;
  * @since 2021-11-01
  */
 final class GetData {
+	/**
+	 * Constructor is private as the class is static
+	 */
 	private GetData() {}
+	/**
+	 * Gets the user id of the current user from Data
+	 * @return user id
+	 * @throws UserInfoMissingException if user id cannot be found or is in the wrong format
+	 */
 	static final String CurrentUser() throws UserInfoMissingException {
 		String userid;
 		if(!Data.containsKey("CurrentUser")) throw new UserInfoMissingException("User not identified. Request Failed.");
@@ -31,6 +39,11 @@ final class GetData {
 		}
 		return userid;
 	}
+	/**
+	 * Gets the camp id of the camp selected by the user from Data
+	 * @return campid
+	 * @throws MissingRequestedDataException if camp id is missing or malformed.
+	 */
 	static final int CampID() throws MissingRequestedDataException {
 		int campid;
 		if(!Data.containsKey("CurrentCamp")) throw new MissingRequestedDataException("Did not select camp. Request Failed.");
@@ -40,7 +53,11 @@ final class GetData {
 		}
 		return campid;
 	}
-	
+	/**
+	 * Gets the requested suggestion id of the suggestion selected by the user from Data.
+	 * @return suggestion id
+	 * @throws MissingRequestedDataException if suggestion id is missing or malformed
+	 */
 	static final int SuggestionID() throws MissingRequestedDataException {
 		int suggestionid;
 		if(!Data.containsKey("CurrentItem")) throw new MissingRequestedDataException("Did not select suggestion. Request Failed.");
@@ -50,6 +67,11 @@ final class GetData {
 		}
 		return suggestionid;
 	}
+	/**
+	 * Gets the requested enquiry id of the enquiry selected by the user from Data.
+	 * @return enquiry id
+	 * @throws MissingRequestedDataException if enquiry id is missing or malformed
+	 */
 	static final int EnquiryID() throws MissingRequestedDataException {
 		int enquiryid;
 		if(!Data.containsKey("CurrentItem")) throw new MissingRequestedDataException("Did not select enquiry. Request Failed.");
@@ -59,7 +81,12 @@ final class GetData {
 		}
 		return enquiryid;
 	}
-	static final CampInfo CampInfo() throws Exception{
+	/**
+	 * Gets the requested camp details the camp selected by the user from Data.
+	 * @return camp details
+	 * @throws MissingRequestedDataException if camp details are missing or malformed
+	 */
+	static final CampInfo CampInfo() throws MissingRequestedDataException{
 		CampInfo campinfo;
 		if(!Data.containsKey("CampInfo")) throw new MissingRequestedDataException("Camp info not retrieved");
 		try {campinfo = (CampInfo) Data.get("CampInfo");}
@@ -68,6 +95,11 @@ final class GetData {
 		}
 		return campinfo;
 	}
+	/**
+	 * Checks Data to see if the tag "isViewingOwnCamps" exists.
+	 * @return true if the tag exists, and false if the tag does not exist
+	 * @throws MissingRequestedDataException if the tag exists, but is malformed.
+	 */
 	static final Boolean isViewingOwnCamps() throws MissingRequestedDataException{
 		Boolean isViewingOwnCamps;
 		if(!Data.containsKey("isViewingOwnCamps")) return false;
@@ -77,17 +109,26 @@ final class GetData {
 		}
 		return isViewingOwnCamps;
 	}
+	/**
+	 * Gets a hashmap of filters requested by the user from Data. If no filter is requested, returns empty hashmap.
+	 * @return filter list
+	 * @throws MissingRequestedDataException if filter list is malformed.
+	 */
 	@SuppressWarnings("unchecked")
 	static final HashMap<CampAspects,Object> Filter() throws MissingRequestedDataException{
 		HashMap<CampAspects,Object> filter;
-		if(!Data.containsKey("Filter")) throw new MissingRequestedDataException("Filter not found");
+		if(!Data.containsKey("Filter")) return new HashMap<CampAspects,Object>();
 		try {filter = (HashMap<CampAspects,Object>) Data.get("Filter");}
 		catch(ClassCastException e) {
 			throw new MissingRequestedDataException("Invalid filter type");
 		}
 		return filter;
 	}
-	//This is a function that recursively passes all constituent objects and turns them into strings.
+	/**
+	 * Recursively passes all constituent objects and turns them into strings
+	 * @param value
+	 * @return
+	 */
 	static final String FromObject(Object value){
 		String valuestring="";
 		if(Iterable.class.isInstance(value)) 

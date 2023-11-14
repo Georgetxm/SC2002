@@ -9,6 +9,10 @@ import interactions.Interaction;
  * @since 2021-11-01
  */
 public final class doNothing extends Interaction{
+	/**
+	 * Function does nothing.
+	 * @return true
+	 */
 	@Override
 	public final Boolean run(){
 		System.out.println("Nothing happened.");

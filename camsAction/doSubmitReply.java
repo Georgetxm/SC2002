@@ -16,7 +16,15 @@ import interactions.Interaction;
  * @since 2021-11-01
  */
 public final class doSubmitReply extends Interaction {
-
+	/**
+	 * Requests the controller to save a reply by the current user to a given enquiry into the database.
+	 * Requests the user to increment the points of the replier by 1
+	 * Prompts the current user for the reply before requesting.
+	 * Controller is expected to minimally make a link from the suggestion to the replies if applicable.
+	 *@return true if controller accepts the request(s) and false if otherwise.
+	 *@throws MissingRequestedDataException if the enquiry to be replied to cannot be found
+	 *@throws UserInfoMissingException if the user id of the current user cannot be found
+	 */
 	@Override
 	public final Boolean run() throws MissingRequestedDataException, UserInfoMissingException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

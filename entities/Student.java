@@ -32,11 +32,6 @@ import types.Perms;
  */
 public class Student extends User {
     /**
-     * camps is a HashSet of campIds that the Student is registered as an attendee
-     */
-    private HashSet<Integer> camps;
-
-    /**
      * campCommittee is the campId of the camp that the Student is a committee of
      * student can only be in one camp committee at a time
      * default value is -1, i.e. not in any camp committee
@@ -63,7 +58,6 @@ public class Student extends User {
 
     public Student() {
         super();
-        this.camps = new HashSet<Integer>();
         this.campCommittee = -1;
         this.points = 0;
         this.enquiries = new HashMap<Integer, Integer>();
@@ -82,22 +76,13 @@ public class Student extends User {
      * @param permissions the Student's permissions, @see Perms
      *
      */
-    public Student(String userId, String password, Faculty faculty, EnumSet<Perms> permissions) {
-        super(userId, password, faculty, permissions);
-        this.camps = new HashSet<Integer>();
+    public Student(String userId, String password, Faculty faculty, EnumSet<Perms> permissions,
+            HashSet<Integer> camps) {
+        super(userId, password, faculty, permissions, camps);
         this.campCommittee = -1;
         this.points = 0;
         this.enquiries = new HashMap<Integer, Integer>();
         this.suggestions = new HashMap<Integer, Integer>();
-    }
-
-    /**
-     * Returns the list of Student's camps
-     * 
-     * @return the list of Student's camps
-     */
-    public HashSet<Integer> getCamps() {
-        return this.camps;
     }
 
     /**
@@ -128,30 +113,6 @@ public class Student extends User {
      */
     public boolean setCampComittee(int campId) {
         this.campCommittee = campId;
-        return true;
-    }
-
-    /**
-     * Adds a campId to the Student's camps HashSet as an attendee
-     * 
-     * @param campId the campId to be added
-     * 
-     * @return true if the campId is successfully added, false otherwise
-     */
-    public boolean registerAsAttendee(Integer campId) {
-        this.camps.add(campId);
-        return true;
-    }
-
-    /**
-     * Removes a campId from the Student's camps HashSet as an attendee
-     * 
-     * @param campid the campId to be removed
-     * 
-     * @return true if the campId is successfully removed, false otherwise
-     */
-    public boolean withdrawFromCamp(int campid) {
-        this.camps.remove(campid);
         return true;
     }
 

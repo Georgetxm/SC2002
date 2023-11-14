@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.EnumSet;
+import java.util.HashSet;
 
 import types.Faculty;
 import types.Perms;
@@ -49,12 +50,18 @@ public class User {
     private EnumSet<Perms> permission;
 
     /**
+     * camps is a HashSet of campIds that the Student is registered as an attendee
+     */
+    private HashSet<Integer> camps;
+
+    /**
      * Default constructor for User
      */
     public User() {
         this.userId = "";
         this.password = "";
         this.faculty = Faculty.WHOLE_NTU;
+        this.camps = new HashSet<Integer>();
         this.permission = EnumSet.noneOf(Perms.class);
     }
 
@@ -66,11 +73,12 @@ public class User {
      * @param faculty
      * @param permission
      */
-    public User(String userId, String password, Faculty faculty, EnumSet<Perms> permission) {
+    public User(String userId, String password, Faculty faculty, EnumSet<Perms> permission, HashSet<Integer> camps) {
         this.userId = userId;
         this.password = password;
         this.faculty = faculty;
         this.permission = permission;
+        this.camps = camps;
     }
 
     /**
@@ -150,5 +158,38 @@ public class User {
      */
     public void changePassword(String newPassword) {
         this.password = newPassword;
+    }
+
+    /**
+     * Returns the list of Student's camps
+     * 
+     * @return the list of Student's camps
+     */
+    public HashSet<Integer> getCamps() {
+        return this.camps;
+    }
+
+    /**
+     * Adds a campId to the Student's camps HashSet as an attendee
+     * 
+     * @param campId the campId to be added
+     * 
+     * @return true if the campId is successfully added, false otherwise
+     */
+    public boolean registerForCamp(Integer campId) {
+        this.camps.add(campId);
+        return true;
+    }
+
+    /**
+     * Removes a campId from the Student's camps HashSet as an attendee
+     * 
+     * @param campid the campId to be removed
+     * 
+     * @return true if the campId is successfully removed, false otherwise
+     */
+    public boolean withdrawFromCamp(int campid) {
+        this.camps.remove(campid);
+        return true;
     }
 }

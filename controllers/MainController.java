@@ -1,5 +1,6 @@
 package controllers;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -11,6 +12,7 @@ import entities.Camp;
 import entities.CampInfo;
 import entities.Suggestion;
 import entities.Enquiry;
+import entities.Staff;
 import entities.Student;
 import entities.User;
 import types.CampAspects;
@@ -69,7 +71,13 @@ public class MainController implements CampController, UserController, Suggestio
     public User findUserById(String userId) {
         for (User user : users) {
             if (user.getUserId() == userId) {
-                return user;
+                if (user instanceof Student) {
+                    return (Student) user;
+                }
+                if (user instanceof Staff) {
+                    return (Staff) user;
+                }
+                ;
             }
         }
         return null;
@@ -152,16 +160,18 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean joinCamp(int campId, String userId, Role role) {
         Camp camp = findCampById(campId);
-        Student user = (Student) findUserById(userId);
+        User user = (User) findUserById(userId);
+
         if (camp != null) {
             if (role == Role.ATTENDEE &&
                     camp.addAttendee(userId) &&
-                    user.registerAsAttendee(campId)) {
+                    user.registerForCamp(campId)) {
                 return true;
             }
             if (role == Role.COMMITTEE
+                    && Student.class.isInstance(user)
                     && camp.addCommittee(userId)
-                    && user.setCampComittee(campId)) {
+                    && ((Student) user).setCampComittee(campId)) {
                 return true;
             }
         }
@@ -232,12 +242,14 @@ public class MainController implements CampController, UserController, Suggestio
         Camp camp = findCampById(campid);
         if (camp != null) {
             for (String student : camp.getAttendees()) {
-                Student user = (Student) findUserById(student);
+                User user = findUserById(student);
                 user.withdrawFromCamp(campid);
             }
             for (String committee : camp.getCampCommittee()) {
-                Student user = (Student) findUserById(committee);
-                user.setCampComittee(-1);
+                if (findUserById(committee) instanceof Student) {
+                    Student user = (Student) findUserById(committee);
+                    user.setCampComittee(-1);
+                }
             }
             for (Integer enquiry : camp.getEnquiries()) {
                 Enquiry e = findEnquiryById(campid, enquiry);
@@ -271,7 +283,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean removeAttendeeFromCamp(int campId, String userId) {
         Camp camp = findCampById(campId);
-        Student user = (Student) findUserById(userId);
+        User user = findUserById(userId);
         if (camp != null && user != null) {
             if (camp.removeAttendee(userId) && user.withdrawFromCamp(campId)) {
                 return true;
@@ -377,7 +389,7 @@ public class MainController implements CampController, UserController, Suggestio
         }
 
         if (userFilter != null) {
-            Student user = (Student) findUserById(userFilter);
+            User user = (User) findUserById(userFilter);
             for (Integer camp : user.getCamps()) {
                 Camp c = findCampById(camp);
                 if (c != null) {
@@ -605,6 +617,9 @@ public class MainController implements CampController, UserController, Suggestio
 
     @Override
     public boolean setCampCommittee(String userId, int campId) {
+        if (!Student.class.isInstance(findUserById(userId))) {
+            return false;
+        }
         Camp camp = findCampById(campId);
         Student user = (Student) findUserById(userId);
         if (camp != null && camp.addCommittee(userId) && user.setCampComittee(campId)) {
@@ -639,7 +654,7 @@ public class MainController implements CampController, UserController, Suggestio
      */
     @Override
     public HashMap<Integer, String> getCamp(String userId) {
-        Student user = (Student) findUserById(userId);
+        User user = (User) findUserById(userId);
         if (user == null) {
             return null;
         }
@@ -650,19 +665,19 @@ public class MainController implements CampController, UserController, Suggestio
             for (Integer camp : user.getCamps()) {
                 campList.put(camp, findCampById(camp).getCampInfo().info().get(CampAspects.NAME).toString());
             }
-            if (user.getCampCommittee() == campFilter) {
-                campList.put(user.getCampCommittee(),
-                        findCampById(user.getCampCommittee()).getCampInfo().info().get(CampAspects.NAME).toString());
-            }
+            // if (user.getCampCommittee() == campFilter) {
+            // campList.put(user.getCampCommittee(),
+            // findCampById(user.getCampCommittee()).getCampInfo().info().get(CampAspects.NAME).toString());
+            // }
         } else {
             if (user.getCamps().contains(campFilter)) {
                 campList.put(campFilter,
                         findCampById(campFilter).getCampInfo().info().get(CampAspects.NAME).toString());
             }
-            if (user.getCampCommittee() == campFilter) {
-                campList.put(campFilter,
-                        findCampById(campFilter).getCampInfo().info().get(CampAspects.NAME).toString());
-            }
+            // if (user.getCampCommittee() == campFilter) {
+            // campList.put(campFilter,
+            // findCampById(campFilter).getCampInfo().info().get(CampAspects.NAME).toString());
+            // }
         }
 
         campFilter = null;
@@ -856,7 +871,7 @@ public class MainController implements CampController, UserController, Suggestio
      */
     @Override
     public EnumSet<Perms> grantPerms(String userid, EnumSet<Perms> newperms) {
-        Student user = (Student) findUserById(userid);
+        User user = (User) findUserById(userid);
         if (user != null) {
             user.addPerms(newperms);
             return user.getPerms();
@@ -874,7 +889,7 @@ public class MainController implements CampController, UserController, Suggestio
      */
     @Override
     public EnumSet<Perms> denyPerms(String userid, EnumSet<Perms> removedPerms) {
-        Student user = (Student) findUserById(userid);
+        User user = (User) findUserById(userid);
         if (user != null) {
             user.removePerms(removedPerms);
             return user.getPerms();
@@ -892,7 +907,7 @@ public class MainController implements CampController, UserController, Suggestio
      */
     @Override
     public EnumSet<Perms> replacePerms(String userid, EnumSet<Perms> replacementPerms) {
-        Student user = (Student) findUserById(userid);
+        User user = (User) findUserById(userid);
         if (user != null) {
             user.replacePerms(replacementPerms);
             return user.getPerms();

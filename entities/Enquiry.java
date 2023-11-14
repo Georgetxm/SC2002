@@ -35,7 +35,7 @@ public class Enquiry {
         return this.enquiryBody;
     }
 
-    public boolean setDescription(String newEnquiryBody) {
+    public boolean setEnquiryBody(String newEnquiryBody) {
         if (newEnquiryBody == null || newEnquiryBody.isEmpty()) {
             throw new IllegalArgumentException("Description cannot be null or empty");
         }

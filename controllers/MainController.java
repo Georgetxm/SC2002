@@ -420,7 +420,7 @@ public class MainController implements CampController, UserController, Suggestio
 
         userFilter = null;
         campFilter = null;
-        aspectFilter = null;
+        aspectFilter.clear();
         visibleFilter = false;
 
         if (campList.size() > 0) {

@@ -24,7 +24,7 @@ public class Cams {
 	 * @throws UserInfoMissingException if user does not have enough valid information (i.e. userid, permissions)
 	 */
 	public static void main(String[] args) throws UserInfoMissingException {
-		EnumSet<Perms> defaultperms = EnumSet.of(Perms.CREATE_CAMP);
+		EnumSet<Perms> defaultperms = EnumSet.of(Perms.CREATE_CAMP,Perms.EDIT_CAMP);
 		User Armstrong = new Student();
 		ArrayList<User> userlist = new ArrayList<User>();
 		ArrayList<Camp> camplist = new ArrayList<Camp>();

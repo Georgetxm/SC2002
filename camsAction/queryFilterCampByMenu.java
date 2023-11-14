@@ -63,7 +63,8 @@ public class queryFilterCampByMenu extends UserMenu {
 				}
 				continue;
 			}
-			Data.put("Filter",((HashMap<CampAspects,Object>)existingfilter).put(edited.getKey(),edited.getValue()));
+			((HashMap<CampAspects,Object>)existingfilter).put(edited.getKey(),edited.getValue());
+			Data.put("Filter",existingfilter);
 			System.out.println("Filtering by "+choices.get(option).text());
 			try {checkandrun(option);}
 			catch(MissingRequestedDataException e) {

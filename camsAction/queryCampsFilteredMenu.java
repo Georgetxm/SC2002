@@ -49,14 +49,17 @@ public final class queryCampsFilteredMenu extends UserMenu {
 		List<Entry<CampAspects, ? extends Object>> filterlist = new ArrayList<Entry<CampAspects, ? extends Object>>(GetData.Filter().entrySet());
 		for(Entry<CampAspects, ? extends Object> filter:filterlist)
 			((Controller) control).FilterAspect(filter);
-		List<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>(((CampController) control).getCamps().entrySet());
-		for(Entry<Integer, String> entry:camplist) {
-			options.add(new MenuChoice(
-					Perms.DEFAULT, 
-					entry.getValue(),
-					((CampController) control).getCampAttendees(entry.getKey()).contains(userid) ?
-						CamsInteraction.OwnCampMenu : 
-						CamsInteraction.OtherCampMenu));
+		ArrayList<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>();
+		HashMap<Integer, String> campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+		if(campset!=null) {
+			for(Entry<Integer, String> entry:camplist) {
+				options.add(new MenuChoice(
+						Perms.DEFAULT, 
+						entry.getValue(),
+						((CampController) control).getCampAttendees(entry.getKey()).contains(userid) ?
+							CamsInteraction.OwnCampMenu : 
+							CamsInteraction.OtherCampMenu));
+			}
 		}
 		choices = options;
 		while(true) {

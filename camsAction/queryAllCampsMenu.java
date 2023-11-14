@@ -68,7 +68,7 @@ public class queryAllCampsMenu extends UserMenu {
 				checkandrun(option);
 				continue;
 			}
-			Data.put("CurrentCamp", camplist.get(option).getKey());
+			Data.put("CurrentCamp", camplist.get(option-1).getKey());
 			System.out.println(">>"+choices.get(option).text());
 			checkandrun(option);
 		}

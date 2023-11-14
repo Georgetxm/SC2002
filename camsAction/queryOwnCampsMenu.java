@@ -1,6 +1,7 @@
 package camsAction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
@@ -31,10 +32,13 @@ public class queryOwnCampsMenu extends UserMenu {
 		Data.put("isViewingOwnCamps", true);
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		options.add(CamsInteraction.filterCampBy);
-		List<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>(((CampController) ((CampController)
-				control).FilterUser(userid)).getCamps().entrySet());
-		for(Entry<Integer, String> entry:camplist) {
-			options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.OwnCampMenu));
+		ArrayList<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>();
+		HashMap<Integer, String> campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+		if(campset!=null) {
+				camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
+			for(Entry<Integer, String> entry:camplist) {
+				options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.OwnCampMenu));
+			}
 		}
 		choices = options;
 		while(true) {

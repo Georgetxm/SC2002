@@ -1,7 +1,6 @@
 package entities;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import types.Faculty;
@@ -14,7 +13,7 @@ public class Staff extends User {
     }
 
     public Staff(String userId, String password, Faculty faculty, EnumSet<Perms> permissions, HashSet<Integer> camps) {
-        super(userId, password, faculty, permissions, camps);
+        super(userId, password, faculty, permissions);
     }
 
     // public HashMap<Integer, String> getCampInCharge() {

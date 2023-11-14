@@ -73,12 +73,12 @@ public class User {
      * @param faculty
      * @param permission
      */
-    public User(String userId, String password, Faculty faculty, EnumSet<Perms> permission, HashSet<Integer> camps) {
+    public User(String userId, String password, Faculty faculty, EnumSet<Perms> permission) {
         this.userId = userId;
         this.password = password;
         this.faculty = faculty;
         this.permission = permission;
-        this.camps = camps;
+        this.camps = new HashSet<Integer>();
     }
 
     /**

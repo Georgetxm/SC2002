@@ -2,8 +2,6 @@ package entities;
 
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
-
 import types.Faculty;
 import types.Perms;
 
@@ -65,7 +63,6 @@ public class Student extends User {
         		Perms.REGISTER_AS_COMITTEE,
         		Perms.WITHDRAW_AS_ATTENDEE
         ));
-        this.camps = new HashSet<Integer>();
         this.campCommittee = -1;
         this.points = 0;
         this.enquiries = new HashMap<Integer, Integer>();
@@ -84,9 +81,8 @@ public class Student extends User {
      * @param permissions the Student's permissions, @see Perms
      *
      */
-    public Student(String userId, String password, Faculty faculty, EnumSet<Perms> permissions,
-            HashSet<Integer> camps) {
-        super(userId, password, faculty, permissions, camps);
+    public Student(String userId, String password, Faculty faculty, EnumSet<Perms> permissions) {
+        super(userId, password, faculty, permissions);
         this.campCommittee = -1;
         this.points = 0;
         this.enquiries = new HashMap<Integer, Integer>();

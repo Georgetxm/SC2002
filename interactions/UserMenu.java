@@ -2,24 +2,30 @@ package interactions;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import camsAction.MissingRequestedDataException;
+import controllers.UserController;
 import entities.Data;
 import entities.UserInfoMissingException;
 import types.Perms;
 
 public abstract class UserMenu extends Interaction{
 	protected List<MenuChoice> choices;
-	@SuppressWarnings("unchecked")
 	protected final int givechoices() throws UserInfoMissingException {
-		if(!Data.containsKey("UserPerms")) throw new UserInfoMissingException("User has no permissions! Menu cannot load without permissions.");
-		EnumSet<Perms> userperm;
-		try {
-			userperm = (EnumSet<Perms>) Data.get("UserPerms");
-		} catch (ClassCastException e) {
-			throw new UserInfoMissingException("User permissions in invalid format!");
+		if (!Data.containsKey("Controller"))
+			throw new NoSuchElementException("No controller found. Request Failed.");
+		if (!UserController.class.isInstance(Data.get("Controller")))
+			throw new NoSuchElementException("Controller not able enough. Request Failed.");
+		Object control = Data.get("Controller");
+		
+		String userid;
+		try{userid = (String) Data.get("CurrentUser");}
+		catch(ClassCastException e) {
+			throw new UserInfoMissingException("Missing ID from static menu");
 		}
+		EnumSet<Perms> userperm = ((UserController) control).grantPerms(userid, EnumSet.noneOf(Perms.class));
 		
 		while(true) {
 			int selected;

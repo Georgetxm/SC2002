@@ -46,14 +46,17 @@ public class queryAllCampsMenu extends UserMenu {
 		if(GetData.isViewingOwnCamps()) ((Controller) control).FilterUser(userid);
 		if(!userperm.contains(Perms.VIEW_EVERY_CAMP))
 			((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.USERGROUP,userfaculty));
-		List<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>(((CampController) control).getCamps().entrySet());
-		for(Entry<Integer, String> entry:camplist) {
-			options.add(new MenuChoice(
-					Perms.DEFAULT, 
-					entry.getValue(),
-					((CampController) control).getCampAttendees(entry.getKey()).contains(userid) ?
-						CamsInteraction.OwnCampMenu : 
-						CamsInteraction.OtherCampMenu));
+		List<Entry<Integer, String>> camplist = null;
+		if(((CampController) control).getCamps()!=null) {
+			camplist = new ArrayList<Entry<Integer, String>>(((CampController) control).getCamps().entrySet());
+			for(Entry<Integer, String> entry:camplist) {
+				options.add(new MenuChoice(
+						Perms.DEFAULT, 
+						entry.getValue(),
+						((CampController) control).getCampAttendees(entry.getKey()).contains(userid) ?
+							CamsInteraction.OwnCampMenu : 
+							CamsInteraction.OtherCampMenu));
+			}
 		}
 		choices = options;
 		

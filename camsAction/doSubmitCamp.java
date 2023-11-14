@@ -24,7 +24,12 @@ import types.CampAspects;
  * @since 2021-11-01
  */
 public class doSubmitCamp extends Interaction {
-
+	/**
+	 * Requests the controller to create and save a camp based off user submitted details.
+	 * Queries the user for details before submitting the request.
+	 *@return true if controller accepts the request(s) and false if otherwise.
+	 *@throws UserInfoMissingException if the user id cannot be found.
+	 */
 	@Override
 	public final Integer run() throws UserInfoMissingException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

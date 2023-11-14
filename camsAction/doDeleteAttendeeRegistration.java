@@ -15,7 +15,13 @@ import interactions.Interaction;
  * @since 2021-11-01
  */
 public class doDeleteAttendeeRegistration extends Interaction {
-
+	/**
+	 * Requests the controller to remove a bidirectional link between the current user and a camp specified.
+	 * Does not check if such a link already exists
+	 *@return true if controller accepts the request(s)
+	 *@throws MissingRequestedDataException if camp specified cannot be found.
+	 *@throws UserInfoMissingException if the current user's ID cannot be found
+	 */
 	@Override
 	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

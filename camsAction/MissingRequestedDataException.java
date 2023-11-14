@@ -11,6 +11,9 @@ package camsAction;
  * @since 2021-11-01
  */
 public class MissingRequestedDataException extends Exception {
+	/**
+	 * @param string to indicate the data requested that was missing or malformed, or any other comments.
+	 */
 	public MissingRequestedDataException(String string) {
 		super(string);
 	}

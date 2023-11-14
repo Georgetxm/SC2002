@@ -19,7 +19,14 @@ import types.CampAspects;
  * @since 2021-11-01
  */
 public final class doSubmitSuggestion extends Interaction {
-	// Currently using distinct control interfaces for dual inheritance
+	/**
+	 * Requests the controller to save a suggestion by the current user on a given camp to the database.
+	 * Then increments the points of the suggester by 1.
+	 * Asks the controller if the camp is full or the user has already joined before requesting.
+	 *@return true if controller accepts the request(s) and false if otherwise, or the camp is full, or the user is already registered
+	 *@throws MissingRequestedDataException if the camp to be registered for cannot be found
+	 *@throws UserInfoMissingException if the user id of the current user cannot be found
+	 */
 	@Override
 	public final Integer run() throws MissingRequestedDataException, UserInfoMissingException {
 		if (!Data.containsKey("Controller"))

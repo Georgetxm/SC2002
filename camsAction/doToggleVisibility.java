@@ -13,7 +13,11 @@ import interactions.Interaction;
  * @since 2021-11-01
  */
 public final class doToggleVisibility extends Interaction {
-
+	/**
+	 * Requests the controller to modify a camp's visibility between visible and not visible.
+	 *@return true if controller accepts the request(s) and false if otherwise.
+	 *@throws MissingRequestedDataException if the camp to be made visible or not visible cannot be found.
+	 */
 	@Override
 	public final Boolean run() throws MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

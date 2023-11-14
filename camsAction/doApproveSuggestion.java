@@ -15,10 +15,10 @@ import interactions.Interaction;
  * @since 2021-11-01
  */
 public final class doApproveSuggestion extends Interaction {
-	//Currently using new single umbrella class implementation for dual inheritance
 	/**
 	 * Requests the controller to edit a camp's details based off a suggestion.
 	 * Requests the controller to increment the points of the suggestion owner.
+	 * Requests the controller to delete the suggestion, as it has already been approved.
 	 *@return true if controller accepts the request(s)
 	 *@throws MissingRequestedDataException if camp to be edited cannot be found
 	 *@throws MissingRequestedDataException if suggestion to be implemented cannot be found
@@ -41,6 +41,7 @@ public final class doApproveSuggestion extends Interaction {
 		
 		((CampController) control).editCampDetails(campid, ((SuggestionController) control).getSuggestion(suggestionid).getKey());
 		((UserController) control).incrementPoints(ownerid, 1);
+		((SuggestionController) control).deleteSuggestion(suggestionid);
 		
 		System.out.println("Suggestion Approved");
 		

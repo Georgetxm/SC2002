@@ -17,6 +17,13 @@ import interactions.Interaction;
  * @since 2021-11-01
  */
 public final class doSubmitEnquiry extends Interaction {
+	/**
+	 * Prompts the user for an enquiry and requests the controller to save it.
+	 * Controller is expected to make the relevant bidirectional links with the host camp, the user etc.
+	 *@return true if controller accepts the request(s) and false if otherwise.
+	 *@throws MissingRequestedDataException if the camp the enquiry is part of cannot be found
+	 *@throws UserInfoMissingException if the user id of the current user cannot be found
+	 */
 	@Override
 	public final Integer run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

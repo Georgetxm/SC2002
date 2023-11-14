@@ -19,7 +19,15 @@ import types.Location;
  * @since 2021-11-01
  */
 final class ParseInput {
+	/**
+	 * Class is static, constructor thus private.
+	 */
 	private ParseInput() {}
+	/**
+	 * 
+	 * @param s Scanner to be used.
+	 * @return the hashmap entry denoting the a camp name
+	 */
 	static final Entry<CampAspects,String> CampName(Scanner s){
 		System.out.println("Type Camp Name\n");
 		return new HashMap.SimpleEntry<CampAspects,String>(CampAspects.NAME,s.nextLine());

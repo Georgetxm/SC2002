@@ -21,7 +21,12 @@ import types.Role;
 public final class doSubmitCommitteeRegistration extends Interaction {
 
 	/**
-	 *
+	 * Requests the controller to register the current user as a camp committee member of a given camp
+	 * Asks the controller if the camp committee is full or the user is already part of an existing camp committee or the user has already registered for this camp as another role before requesting.
+	 * Grants the user permissions afforded to a camp committee member, and removes the permission to reapply for a camp committee
+	 *@return true if controller accepts the request(s) and false if otherwise, or the camp is full, or the user is already an existing camp committee member, or the user has already registered for the given camp as another role.
+	 *@throws MissingRequestedDataException if the camp to be registered for cannot be found
+	 *@throws UserInfoMissingException if the user id of the current user cannot be found
 	 */
 	@Override
 	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
@@ -38,8 +43,13 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 
 		HashMap<Integer, String> camplist = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
 		
+		if(((UserController) control).getCampCommitteeOfStudent(userid)<0) {
+			System.out.println("Already registered for an existing camp commitee");
+			return false;
+		}
+		
 		if(camplist.keySet().contains(campid)) {
-			System.out.println("Already registered");
+			System.out.println("Already registered for this camp as an attendee.");
 			return false;
 		}
 		

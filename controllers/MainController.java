@@ -138,9 +138,15 @@ public class MainController implements CampController, UserController, Suggestio
      * @return the Camp's ID
      */
     @Override
-    public int addCamp(CampInfo info, String ownerid) {
+    public int addCamp(CampInfo info, String staffid) {
         Camp camp = new Camp(info, new HashSet<String>(), new HashSet<String>(), false, LocalDate.now());
         camps.add(camp);
+        // TODO: ADD EXCEPTION
+        if (!Staff.class.isInstance(findUserById(staffid))) {
+            return -1;
+        }
+        Staff user = (Staff) findUserById(staffid);
+        user.registerForCamp(camp.getCampid());
         return camp.getCampid();
     }
 

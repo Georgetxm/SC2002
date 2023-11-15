@@ -8,6 +8,8 @@ import java.util.NoSuchElementException;
 
 import cams.CamsInteraction;
 import controllers.Controller;
+import controllers.ControllerItemMissingException;
+import controllers.ControllerParamsException;
 import controllers.EnquiryController;
 import controllers.SuggestionController;
 import entities.Data;
@@ -47,7 +49,12 @@ public final class queryAllEnquiriesMenu extends UserMenu {
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		
 		List<Entry<Integer, String>> enquirylist = null;
-		HashMap<Integer, String> enquiryset = ((EnquiryController) control.FilterCamp(campid)).getEnquiries();
+		HashMap<Integer, String> enquiryset;
+		try {
+			enquiryset = ((EnquiryController) control.FilterCamp(campid)).getEnquiries();
+		} catch (ControllerParamsException | ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Invalid camp id");
+		}
 		if(enquiryset!=null) {
 			enquirylist = new ArrayList<Entry<Integer, String>>(enquiryset.entrySet());
 			for(Entry<Integer, String> entry : enquirylist)

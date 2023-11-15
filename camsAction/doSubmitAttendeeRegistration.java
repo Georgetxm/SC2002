@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 import controllers.CampController;
+import controllers.ControllerItemMissingException;
 import controllers.UserController;
 import entities.Data;
 import entities.UserInfoMissingException;
@@ -36,7 +37,13 @@ public final class doSubmitAttendeeRegistration extends Interaction {
 		String userid=GetData.CurrentUser();
 		int campid=GetData.CampID();
 		//Gets list of camps the owner is in to check if he alr attending
-		HashMap<Integer, String> camplist = ((CampController) ((CampController)control).FilterUser(userid)).getCamps();
+		HashMap<Integer, String> camplist;
+		try {
+			camplist = ((CampController) ((CampController)control).FilterUser(userid)).getCamps();
+		} catch (ControllerItemMissingException e) {
+			System.out.print("This user id cannot be found");
+			return false;
+		}
 		
 		if(camplist.keySet().contains(campid)) {
 			System.out.println("Already registered");

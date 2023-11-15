@@ -11,6 +11,7 @@ import cams.CamsInteraction;
 import controllers.CampController;
 import controllers.UserController;
 import controllers.Controller;
+import controllers.ControllerItemMissingException;
 import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.MenuChoice;
@@ -56,7 +57,12 @@ public class queryAllCampsMenu extends UserMenu {
 		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) //filter should return Controller. This may lead to issues.
 			((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.USERGROUP,userfaculty));
 		List<Entry<Integer, String>> camplist = null;
-		HashMap<Integer, String> campset = ((CampController) control).getCamps();
+		HashMap<Integer, String> campset;
+		try {
+			campset = ((CampController) control).getCamps();
+		} catch (ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Cannot find user");
+		}
 		if(campset!=null) {
 			camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
 			for(Entry<Integer, String> entry:camplist)

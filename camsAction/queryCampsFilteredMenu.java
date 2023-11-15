@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 import cams.CamsInteraction;
 import controllers.CampController;
 import controllers.Controller;
+import controllers.ControllerItemMissingException;
 import controllers.UserController;
 import entities.Data;
 import entities.UserInfoMissingException;
@@ -50,7 +51,12 @@ public final class queryCampsFilteredMenu extends UserMenu {
 		for(Entry<CampAspects, ? extends Object> filter:filterlist)
 			((Controller) control).FilterAspect(filter);
 		ArrayList<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>();
-		HashMap<Integer, String> campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+		HashMap<Integer, String> campset;
+		try {
+			campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+		} catch (ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Invalid user id, cannot find owned camps.");
+		}
 		if(campset!=null) {
 			for(Entry<Integer, String> entry:camplist) {
 				options.add(new MenuChoice(

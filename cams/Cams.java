@@ -43,6 +43,7 @@ public class Cams {
 		HashMap<Integer, Camp> camplist = new HashMap<Integer, Camp>();
 		HashSet<String> fakeAttendees = new HashSet<String>();
 		HashSet<String> fakeCampCommittee = new HashSet<String>();
+		
 		// Fake camp info
 		LocalDate fakeCreationDate = LocalDate.of(2021, 11, 11);
 		TreeMap<CampAspects, Object> fakeCampInfoMap = new TreeMap<CampAspects, Object>();
@@ -62,13 +63,7 @@ public class Cams {
 		Camp fakeCamp = new Camp(fakeCampInfo, fakeAttendees, fakeCampCommittee, false, fakeCreationDate);
 		camplist.put(fakeCamp.getCampid(), fakeCamp);
 		// end of fake camp info
-<<<<<<< HEAD
-		userlist.add(Armstrong);
 		
-		
-=======
-		userlist.put((String) "arm11", Armstrong);
->>>>>>> branch 'main' of https://github.com/Georgetxm/SC2002.git
 		MainController control = new MainController(userlist, camplist);
 		control.grantPerms("Armstrong", defaultperms);
 		Data.put("Controller", control);

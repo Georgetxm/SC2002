@@ -3,6 +3,7 @@ package camsAction;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import controllers.ControllerItemMissingException;
 import controllers.EnquiryController;
 import controllers.UserController;
 import entities.Data;
@@ -41,7 +42,11 @@ public final class doSubmitReply extends Interaction {
 		Scanner s = getScanner();
 		System.out.println("Please type your reply.");
 		
-		enquirycontrol.saveReply(enquiryid, s.nextLine());
+		try {
+			enquirycontrol.saveReply(enquiryid, s.nextLine());
+		} catch (ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("This enquiry cannot be found");
+		}
 		System.out.println("Reply Submitted");
 		usercontrol.incrementPoints(userid, 1);
 		return true;

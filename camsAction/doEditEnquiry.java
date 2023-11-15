@@ -3,6 +3,7 @@ package camsAction;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import controllers.ControllerItemMissingException;
 import controllers.EnquiryController;
 import entities.Data;
 import interactions.Interaction;
@@ -29,8 +30,13 @@ public final class doEditEnquiry extends Interaction {
 		
 		int enquiryid = GetData.EnquiryID();
 		
-		if(!enquirycontrol.isEnquiryEditable(enquiryid)) {
-			System.out.println("Enquiry has been seen and may not be edited");
+		try {
+			if(!enquirycontrol.isEnquiryEditable(enquiryid)) {
+				System.out.println("Enquiry has been seen and may not be edited");
+				return false;
+			}
+		} catch (ControllerItemMissingException e) {
+			System.out.println("This enquiry cannot be found");
 			return false;
 		}
 	

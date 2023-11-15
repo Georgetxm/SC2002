@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 
 import cams.CamsInteraction;
 import controllers.Controller;
+import controllers.ControllerItemMissingException;
+import controllers.ControllerParamsException;
 import controllers.EnquiryController;
 import controllers.SuggestionController;
 import entities.Data;
@@ -26,7 +28,7 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 
 	
 	@Override
-	public final Boolean run() throws UserInfoMissingException {
+	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
@@ -42,7 +44,12 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's controllerid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
-		List<Entry<Integer, String>> enquirylist = new ArrayList<>(((EnquiryController) control).getEnquiries().entrySet());
+		List<Entry<Integer, String>> enquirylist;
+		try {
+			enquirylist = new ArrayList<>(((EnquiryController) control).getEnquiries().entrySet());
+		} catch (ControllerParamsException | ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Enquiry filter is malformed");
+		}
 		//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
 		for(Entry<Integer, String> entry : enquirylist) {
 			options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.SingleEnquiryMenu));
@@ -54,7 +61,11 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 			int enquiryid = enquirylist.get(option).getKey();
 			Data.put("CurrentItem", enquiryid);
 			System.out.println(">>"+choices.get(option).text());
-			for(String reply:((EnquiryController) control).getReply(enquiryid)) System.out.println(reply);
+			try {
+				for(String reply:((EnquiryController) control).getReplies(enquiryid)) System.out.println(reply);
+			} catch (ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("Enquiry id is invalid");
+			}
 			try {checkandrun(option);}
 			catch(MissingRequestedDataException e) {
 				System.out.println("Ran into an error. Please retry or return to main menu before retrying");

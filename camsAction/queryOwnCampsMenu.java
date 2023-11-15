@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 
 import cams.CamsInteraction;
 import controllers.CampController;
+import controllers.ControllerItemMissingException;
 import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.MenuChoice;
@@ -23,7 +24,7 @@ import types.Perms;
 public class queryOwnCampsMenu extends UserMenu {
 
 	@Override
-	public final Boolean run() throws UserInfoMissingException {
+	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!CampController.class.isInstance(Data.get("Controller")))	
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
@@ -33,7 +34,12 @@ public class queryOwnCampsMenu extends UserMenu {
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		options.add(CamsInteraction.filterCampBy);
 		ArrayList<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>();
-		HashMap<Integer, String> campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+		HashMap<Integer, String> campset = null;
+		try {
+			campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+		} catch (ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Invalid user id, cannot find owned camps");
+		}
 		if(campset!=null) {
 				camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
 			for(Entry<Integer, String> entry:camplist) {

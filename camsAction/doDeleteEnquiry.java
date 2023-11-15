@@ -4,6 +4,7 @@ import java.lang.ModuleLayer.Controller;
 import java.util.NoSuchElementException;
 
 import controllers.CampController;
+import controllers.ControllerItemMissingException;
 import controllers.EnquiryController;
 import entities.Data;
 import interactions.Interaction;
@@ -31,8 +32,13 @@ public final class doDeleteEnquiry extends Interaction {
 		
 		int campid = GetData.CampID();
 		int enquiryid = GetData.EnquiryID();
-		if(!((EnquiryController) control).isEnquiryEditable(enquiryid)) {
-			System.out.println("This enquiry is finalised and cannot be deleted or edited!");
+		try {
+			if(!((EnquiryController) control).isEnquiryEditable(enquiryid)) {
+				System.out.println("This enquiry is finalised and cannot be deleted or edited!");
+				return false;
+			}
+		} catch (ControllerItemMissingException e) {
+			System.out.println("This enquiry cannot be found");
 			return false;
 		}
 		((CampController) control).deleteEnquiry(campid, enquiryid);

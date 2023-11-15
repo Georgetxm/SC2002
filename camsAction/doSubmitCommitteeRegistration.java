@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 import controllers.CampController;
+import controllers.ControllerItemMissingException;
 import controllers.UserController;
 import entities.Data;
 import entities.UserInfoMissingException;
@@ -41,7 +42,13 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 		String userid=GetData.CurrentUser();
 		int campid=GetData.CampID();
 
-		HashMap<Integer, String> camplist = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+		HashMap<Integer, String> camplist;
+		try {
+			camplist = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+		} catch (ControllerItemMissingException e) {
+			System.out.println("This userid cannot be found");
+			return false;
+		}
 		
 		if(((UserController) control).getCampCommitteeOfStudent(userid)>=0) {
 			System.out.println("Already registered for an existing camp commitee");

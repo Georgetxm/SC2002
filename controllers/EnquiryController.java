@@ -33,8 +33,9 @@ public interface EnquiryController extends Controller {
 	 * @param enquiryid the enquiry id to be edited
 	 * @param enquiry   the new enquiry text
 	 * @return the enquiry id if successful, -1 if not
+	 * @throws ControllerItemMissingException
 	 */
-	int editEnquiry(int enquiryid, String enquiry);
+	int editEnquiry(int enquiryid, String enquiry) throws ControllerItemMissingException;
 
 	/**
 	 * Get an enquiry text based on enquiry id

@@ -20,22 +20,22 @@ import types.Perms;
 import types.Role;
 
 public class MainController implements CampController, UserController, SuggestionController, EnquiryController {
-    private ArrayList<User> users;
-    private ArrayList<Camp> camps;
-    private ArrayList<Suggestion> suggestions;
-    private ArrayList<Enquiry> enquiries;
-    private HashSet<Integer> visibleCamps;
+    private HashMap<String, User> users;
+    private HashMap<Integer, Camp> camps;
+    private HashMap<Integer, Suggestion> suggestions;
+    private HashMap<Integer, Enquiry> enquiries;
+    private HashMap<Integer, Camp> visibleCamps;
     private String userFilter;
     private Integer campFilter;
     private boolean visibleFilter;
     private HashMap<CampAspects, Object> aspectFilter;
 
-    public MainController(ArrayList<User> users, ArrayList<Camp> camps) {
+    public MainController(HashMap<String, User> users, HashMap<Integer, Camp> camps) {
         this.users = users;
         this.camps = camps;
-        this.suggestions = new ArrayList<Suggestion>();
-        this.enquiries = new ArrayList<Enquiry>();
-        this.visibleCamps = new HashSet<Integer>();
+        this.suggestions = new HashMap<Integer, Suggestion>();
+        this.enquiries = new HashMap<Integer, Enquiry>();
+        this.visibleCamps = new HashMap<Integer, Camp>();
         this.userFilter = null;
         this.campFilter = null;
         this.visibleFilter = false;
@@ -51,10 +51,8 @@ public class MainController implements CampController, UserController, Suggestio
      */
 
     public Camp findCampById(int campId) {
-        for (Camp camp : camps) {
-            if (camp.getCampid() == campId) {
-                return camp;
-            }
+        if (camps.containsKey(campId)) {
+            return camps.get(campId);
         }
         return null;
     }
@@ -68,16 +66,11 @@ public class MainController implements CampController, UserController, Suggestio
      */
 
     public User findUserById(String userId) {
-        for (User user : users) {
-            if (user.getUserId() == userId) {
-                if (user instanceof Student) {
-                    return (Student) user;
-                }
-                if (user instanceof Staff) {
-                    return (Staff) user;
-                }
-                ;
-            }
+        if (users.containsKey(userId) && Student.class.isInstance(users.get(userId))) {
+            return (Student) users.get(userId);
+        }
+        if (users.containsKey(userId) && Staff.class.isInstance(users.get(userId))) {
+            return (Staff) users.get(userId);
         }
         return null;
     }
@@ -85,22 +78,13 @@ public class MainController implements CampController, UserController, Suggestio
     /**
      * Returns a Suggestion object given its ID
      * 
-     * @param campId
      * @param suggestionId
      * @return the Suggestion object with the given ID, null if not found
      */
 
     public Suggestion findSuggestionById(int campId, int suggestionId) {
-        Camp camp = findCampById(campId);
-        for (Integer suggestion : camp.getSuggestions()) {
-            if (suggestion == suggestionId) {
-                for (Suggestion s : suggestions) {
-                    if (s.getSuggestionId() == suggestionId) {
-                        return s;
-                    }
-                }
-            }
-
+        if (suggestions.containsKey(suggestionId)) {
+            return suggestions.get(suggestionId);
         }
         return null;
     }
@@ -108,21 +92,12 @@ public class MainController implements CampController, UserController, Suggestio
     /**
      * Returns an Enquiry object given its ID
      * 
-     * @param campId
      * @param enquiryId
      * @return the Enquiry object with the given ID, null if not found
      */
-    public Enquiry findEnquiryById(int campId, int enquiryId) {
-        Camp camp = findCampById(campId);
-        for (Integer enquiry : camp.getEnquiries()) {
-            if (enquiry == enquiryId) {
-                for (Enquiry e : enquiries) {
-                    if (e.getEnquiryId() == enquiryId) {
-                        return e;
-                    }
-                }
-            }
-
+    public Enquiry findEnquiryById(int enquiryId) {
+        if (enquiries.containsKey(enquiryId)) {
+            return enquiries.get(enquiryId);
         }
         return null;
     }
@@ -139,13 +114,15 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public int addCamp(CampInfo info, String staffid) {
         Camp camp = new Camp(info, new HashSet<String>(), new HashSet<String>(), false, LocalDate.now());
-        camps.add(camp);
+
+        camps.put((Integer) camp.getCampid(), camp);
         // TODO: ADD EXCEPTION
         if (!Staff.class.isInstance(findUserById(staffid))) {
             return -1;
         }
         Staff user = (Staff) findUserById(staffid);
         user.registerForCamp(camp.getCampid());
+
         return camp.getCampid();
     }
 
@@ -257,18 +234,18 @@ public class MainController implements CampController, UserController, Suggestio
                 }
             }
             for (Integer enquiry : camp.getEnquiries()) {
-                Enquiry e = findEnquiryById(campid, enquiry);
+                Enquiry e = findEnquiryById(enquiry);
                 if (e != null) {
-                    enquiries.remove(e);
+                    enquiries.remove(e.getEnquiryId(), e);
                 }
             }
             for (Integer suggestion : camp.getSuggestions()) {
                 Suggestion s = findSuggestionById(campid, suggestion);
                 if (s != null) {
-                    suggestions.remove(s);
+                    suggestions.remove(s.getSuggestionId(), s);
                 }
             }
-            camps.remove(camp);
+            camps.remove(camp.getCampid(), camp);
             return true;
         }
         return false;
@@ -339,13 +316,8 @@ public class MainController implements CampController, UserController, Suggestio
     }
 
     public CampController filterVisible() {
-        ArrayList<Camp> visibleCamps = new ArrayList<Camp>();
-        for (Camp camp : camps) {
-            if (camp.getVisibility()) {
-                visibleCamps.add(camp);
-            }
-        }
-        return new MainController(users, visibleCamps);
+        this.visibleFilter = true;
+        return this;
     }
 
     /**
@@ -366,7 +338,7 @@ public class MainController implements CampController, UserController, Suggestio
             camp.setVisibility(!camp.getVisibility());
 
             if (camp.getVisibility()) {
-                visibleCamps.add(campid);
+                visibleCamps.put(campid, camp);
             } else {
                 visibleCamps.remove(campid);
             }
@@ -377,44 +349,54 @@ public class MainController implements CampController, UserController, Suggestio
 
     /**
      * Overriden method from CampController
-     * Returns a HashMap of Camo Id and Camp Name
+     * First puts all the Camps' campId and camp name in the the controller's camps
+     * HashMap into the local variable HashMap "filteredCampList"
+     * then checks for the filters and removes the camps that do not match the
+     * filters
      * 
-     * @return HashMap of Camp Id and Camp Name
+     * @return HashMap of Camp Id and Camp Name that matches all specified filters
      */
     @Override
-    public HashMap<Integer, String> getCamps() {
-        HashMap<Integer, String> campList = new HashMap<Integer, String>();
+    public HashMap<Integer, String> getCamps() throws ControllerItemMissingException {
+        HashMap<Integer, String> filteredCampList = new HashMap<Integer, String>();
+
+        // Iterate through camps and add the campId and campName to the HashMap
+        this.camps.forEach((k, v) -> {
+            filteredCampList.put(k, v.getCampInfo().info().get(CampAspects.NAME).toString());
+        });
+
+        // If visibleFilter is true, intersect the HashMap with the visibleCamps
+        // HashSet which will omit the camps that are not visible
         if (visibleFilter) {
-            for (Integer camp : visibleCamps) {
-                Camp c = findCampById(camp);
-                if (c != null) {
-                    campList.put(c.getCampid(), c.getCampInfo().info().get(CampAspects.NAME).toString());
-                }
-            }
+            filteredCampList.keySet().retainAll(visibleCamps.keySet());
         }
 
+        // If userFilter get list of camp ids user has,
+        // intersect with filteredCampList to omit camps that specified userFilterId is
+        // not in
         if (userFilter != null) {
             User user = (User) findUserById(userFilter);
-            for (Integer camp : user.getCamps()) {
-                Camp c = findCampById(camp);
-                if (c != null) {
-                    campList.put(c.getCampid(), c.getCampInfo().info().get(CampAspects.NAME).toString());
-                }
+            if (user == null) {
+                throw new ControllerItemMissingException("User not found");
             }
+            HashSet<Integer> userCamps = user.getCamps();
+            filteredCampList.keySet().retainAll(userCamps);
         }
 
+        // If aspectFilter is not null, iterate through the HashMap and remove camps
+        // that do not match the aspectFilter
         if (aspectFilter != null) {
-            for (Camp camp : camps) {
+            filteredCampList.forEach((k, v) -> {
                 boolean match = true;
                 for (Entry<CampAspects, ? extends Object> aspect : aspectFilter.entrySet()) {
-                    if (camp.getCampInfo().info().get(aspect.getKey()) != aspect.getValue()) {
+                    if (findCampById(k).getCampInfo().info().get(aspect.getKey()) != aspect.getValue()) {
                         match = false;
                     }
                 }
-                if (match) {
-                    campList.put(camp.getCampid(), camp.getCampInfo().info().get(CampAspects.NAME).toString());
+                if (!match) {
+                    filteredCampList.remove(k);
                 }
-            }
+            });
         }
 
         userFilter = null;
@@ -422,8 +404,8 @@ public class MainController implements CampController, UserController, Suggestio
         aspectFilter.clear();
         visibleFilter = false;
 
-        if (campList.size() > 0) {
-            return campList;
+        if (filteredCampList.size() > 0) {
+            return filteredCampList;
         } else {
             return null;
         }
@@ -627,7 +609,10 @@ public class MainController implements CampController, UserController, Suggestio
         }
         Camp camp = findCampById(campId);
         Student user = (Student) findUserById(userId);
-        if (camp != null && camp.addCommittee(userId) && user.setCampComittee(campId)) {
+        if (camp != null
+                && user.registerForCamp(campId)
+                && camp.addCommittee(userId)
+                && user.setCampComittee(campId)) {
             return true;
         }
         return false;
@@ -939,58 +924,264 @@ public class MainController implements CampController, UserController, Suggestio
         return this;
     }
 
+    /**
+     * Overriden methods from Enquiry Controller
+     * addEnquiry adds an enquiry to the list of enquiries in MainController's
+     * attributes
+     * also tags the enquiry to the camp and user
+     * 
+     * @param enquiry the enquiry text to be added
+     * @param ownerid the owner of the enquiry, which should be a student
+     * @param campid  the camp the enquiry is about
+     * @return the enquiry id if successful, -1 if not
+     */
     @Override
     public int addEnquiry(String enquiry, String ownerid, int campid) {
-        // TODO Auto-generated method stub
-        return 0;
+        if (!Student.class.isInstance(findUserById(ownerid))) {
+            return -1;
+        }
+        Student user = (Student) findUserById(ownerid);
+
+        Camp camp = findCampById(campid);
+        if (camp == null) {
+            return -1;
+        }
+        Enquiry newEnquiry = new Enquiry(ownerid, campid, enquiry, false, LocalDate.now());
+        camp.addEnquiry(newEnquiry.getEnquiryId());
+        user.addEnquiry(campid, newEnquiry.getEnquiryId());
+        return newEnquiry.getEnquiryId();
     }
 
+    /**
+     * Overriden methods from Enquiry Controller
+     * Edit an enquiry
+     * 
+     * @param enquiryid the enquiry id to be edited
+     * @param enquiry   the new enquiry text
+     * @return the enquiry id if successful, -1 if not
+     */
     @Override
     public int editEnquiry(int enquiryid, String enquiry) {
-        // TODO Auto-generated method stub
-        return 0;
+        Enquiry enquiryToEdit = findEnquiryById(enquiryid);
+        if (enquiryToEdit == null) {
+            return -1;
+        }
+        enquiryToEdit.setEnquiryBody(enquiry);
+        return enquiryToEdit.getEnquiryId();
     }
 
+    /**
+     * Overriden methods from Enquiry Controller
+     * Get an enquiry text
+     * 
+     * @param enquiryid the enquiry id to be retrieved
+     * @return the enquiry text if successful, null if not
+     */
     @Override
     public String getEnquiry(int enquiryid) {
-        // TODO Auto-generated method stub
+        if (findEnquiryById(enquiryid) == null) {
+            return null;
+        }
+
+        return findEnquiryById(enquiryid).getEnquiryBody();
+    }
+
+    /**
+     * Get all enquiries that fulfill the filter specified from the filter methods
+     * 
+     * @see FilterCamp(int campid)
+     * @see FilterUser(String userid)
+     *      Can be filtered by campid and userid
+     *      Clears the filter after getting the enquiries
+     * 
+     * @return a HashMap of enquiry id and enquiry text
+     */
+    @Override
+    public HashMap<Integer, String> getEnquiries() throws ControllerParamsException, ControllerItemMissingException {
+        HashMap<Integer, Enquiry> filteredEnquiryList = this.enquiries;
+
+        if (!Student.class.isInstance(findUserById(userFilter))) {
+            throw new ControllerParamsException("Specified userFilter is not a student");
+        }
+
+        // If userFilter specified, get list of enquiry ids specified user has,
+        // intersect with filteredEnquiryList to omit enquiries that specified
+        // userFilterId is not in
+        if (userFilter != null) {
+            Student filteredUser = (Student) findUserById(userFilter);
+            if (filteredUser == null) {
+                throw new ControllerItemMissingException("User not found");
+            }
+            filteredEnquiryList.keySet().retainAll((filteredUser.getEnquiries().values()));
+        }
+
+        // If campFilter specified, get list of enquiry ids specified camp has,
+        // intersect with filteredEnquiryList to omit enquiries that specified
+        // campFilterId is not in
+        if (campFilter != null) {
+            Camp filteredCamp = findCampById(campFilter);
+            if (filteredCamp == null) {
+                throw new ControllerItemMissingException("Camp not found");
+            }
+            filteredEnquiryList.keySet().retainAll(filteredCamp.getEnquiries());
+        }
+
+        userFilter = null;
+        campFilter = null;
+
+        if (filteredEnquiryList.size() > 0) {
+            // Convert the HashMap of enquiry id and enquiry object to enquiry id and
+            // enquiry text
+            HashMap<Integer, String> filteredEnquiryListString = new HashMap<Integer, String>();
+            filteredEnquiryList.forEach((enquiryId, enquiryObj) -> {
+                filteredEnquiryListString.put(enquiryId, enquiryObj.getEnquiryBody());
+            });
+            return filteredEnquiryListString;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Overriden methods from Enquiry Controller
+     * Delete an enquiry
+     * Removes the enquiry id from the camp and user attribute
+     * 
+     * @param enquiryid the enquiry id to be deleted
+     * @return true if successful, controller item missing exception if not
+     * @throws ControllerItemMissingException
+     */
+    @Override
+    public Boolean deleteEnquiry(int enquiryid) throws ControllerItemMissingException {
+        Enquiry enquiry = findEnquiryById(enquiryid);
+        if (enquiry == null) {
+            throw new ControllerItemMissingException("Enquiry does not exist");
+        }
+
+        Camp camp = findCampById(enquiry.getCampId());
+        if (camp != null) {
+            camp.removeEnquiry(enquiryid);
+        }
+
+        if (Student.class.isInstance(findUserById(enquiry.getCreatorUserId()))) {
+            Student user = (Student) findUserById(enquiry.getCreatorUserId());
+            user.removeEnquiry(camp.getCampid(), enquiryid);
+        }
+
+        enquiries.remove(enquiryid);
+        return true;
+    }
+
+    /**
+     * Overriden methods from Enquiry Controller
+     * Finalise an enquiry by setting the seen attribute to true
+     * so that enquiry can be replied to and points allocated to the responding
+     * committee member
+     * 
+     * @param enquiryid the enquiry id to be finalised
+     * @return true if successful, controller item missing exception if not
+     */
+    @Override
+    public Boolean finaliseEnquiry(int enquiryid) throws ControllerItemMissingException {
+        if (!enquiries.containsKey(enquiryid)) {
+            throw new ControllerItemMissingException("Enquiry does not exist");
+        }
+        Enquiry enquiry = findEnquiryById(enquiryid);
+        enquiry.setSeen(true);
+        return true;
+    }
+
+    /**
+     * Overriden methods from Enquiry Controller
+     * Check if an enquiry is editable
+     * If an enquiry has been finalised, (i.e.seen attribute is true), it is not
+     * editable
+     * 
+     * @param enquiryid the enquiry id to be checked
+     * @return true if editable, throws controller item missing exception if not
+     */
+    @Override
+    public Boolean isEnquiryEditable(int enquiryid) throws ControllerItemMissingException {
+        if (!enquiries.containsKey(enquiryid)) {
+            throw new ControllerItemMissingException("Enquiry does not exist");
+        }
+        Enquiry enquiry = findEnquiryById(enquiryid);
+        return !enquiry.isSeen();
+    }
+
+    /**
+     * Overriden methods from Enquiry Controller
+     * Save the reply to an enquiry under the replies attribute
+     * 
+     * @param enquiryid the enquiry id to be replied to
+     * @param reply     the reply text
+     * @return the enquiry id if successful, -1 if not
+     */
+    @Override
+    public int saveReply(int enquiryid, String reply) throws ControllerItemMissingException {
+        if (!enquiries.containsKey(enquiryid)) {
+            throw new ControllerItemMissingException("Enquiry does not exist");
+        }
+        Enquiry enquiry = findEnquiryById(enquiryid);
+        if (enquiry.addReply(reply)) {
+            return enquiryid;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * Overriden methods from Enquiry Controller
+     * Get the replies to an enquiry
+     * 
+     * @param enquiryid the enquiry id to be retrieved
+     * @return the replies to an enquiry if successful, controller item missing
+     */
+    @Override
+    public ArrayList<String> getReplies(int enquiryid) throws ControllerItemMissingException {
+        if (!enquiries.containsKey(enquiryid)) {
+            throw new ControllerItemMissingException("Enquiry does not exist");
+        }
+        Enquiry enquiry = findEnquiryById(enquiryid);
+        return enquiry.getReplies();
+    }
+
+    /**
+     * Overriden methods from Enquiry Controller
+     * Get the owner of an enquiry
+     * 
+     * @param enquiryid the enquiry id to be retrieved
+     * @return the owner of an enquiry if successful, controller item missing
+     */
+    @Override
+    public String getEnquiryOwner(int enquiryid) throws ControllerItemMissingException {
+        if (!enquiries.containsKey(enquiryid)) {
+            throw new ControllerItemMissingException("Enquiry does not exist");
+        }
+        Enquiry enquiry = findEnquiryById(enquiryid);
+        if (enquiry != null) {
+            return enquiry.getCreatorUserId();
+        }
         return null;
     }
 
+    /**
+     * Overriden methods from Enquiry Controller
+     * Get the camp of an enquiry
+     * 
+     * @param enquiryid the enquiry id to be retrieved
+     * @return the camp of an enquiry if successful, controller item missing
+     */
     @Override
-    public HashMap<Integer, String> getEnquiries() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Boolean deleteEnquiry(int enquiryid) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Boolean finaliseEnquiry(int enquiryid) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Boolean isEnquiryEditable(int enquiryid) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public int saveReply(int enquiryid, String reply) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public String[] getReply(int enquiryid) {
-        // TODO Auto-generated method stub
-        return null;
+    public int getEnquiryHostCamp(int enquiryid) throws ControllerItemMissingException {
+        if (!enquiries.containsKey(enquiryid)) {
+            throw new ControllerItemMissingException("Enquiry does not exist");
+        }
+        Enquiry enquiry = findEnquiryById(enquiryid);
+        if (enquiry != null) {
+            return enquiry.getCampId();
+        }
+        return -1;
     }
 
     @Override
@@ -1036,6 +1227,9 @@ public class MainController implements CampController, UserController, Suggestio
         return null;
     }
 
+    /**
+     * Overriden methods from Suggestion Controller
+     */
     @Override
     public String getOwner(int suggestionid) {
         // TODO Auto-generated method stub

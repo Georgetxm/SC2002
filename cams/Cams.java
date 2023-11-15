@@ -1,8 +1,8 @@
 package cams;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -39,8 +39,8 @@ public class Cams {
 		//login
 		EnumSet<Perms> defaultperms = EnumSet.of(Perms.DELETE_CAMP,Perms.EDIT_CAMP);
 		User Armstrong = new Student();
-		ArrayList<User> userlist = new ArrayList<User>();
-		ArrayList<Camp> camplist = new ArrayList<Camp>();
+		HashMap<String, User> userlist = new HashMap<String, User>();
+		HashMap<Integer, Camp> camplist = new HashMap<Integer, Camp>();
 		HashSet<String> fakeAttendees = new HashSet<String>();
 		HashSet<String> fakeCampCommittee = new HashSet<String>();
 		// Fake camp info
@@ -59,11 +59,16 @@ public class Cams {
 		fakeAttendees.add("Brandon Wright");
 		fakeAttendees.add("Jokic Nikola");
 		fakeCampCommittee.add("LeBron James");
-		camplist.add(new Camp(fakeCampInfo, fakeAttendees, fakeCampCommittee, false, fakeCreationDate));
+		Camp fakeCamp = new Camp(fakeCampInfo, fakeAttendees, fakeCampCommittee, false, fakeCreationDate);
+		camplist.put(fakeCamp.getCampid(), fakeCamp);
 		// end of fake camp info
+<<<<<<< HEAD
 		userlist.add(Armstrong);
 		
 		
+=======
+		userlist.put((String) "arm11", Armstrong);
+>>>>>>> branch 'main' of https://github.com/Georgetxm/SC2002.git
 		MainController control = new MainController(userlist, camplist);
 		control.grantPerms("Armstrong", defaultperms);
 		Data.put("Controller", control);

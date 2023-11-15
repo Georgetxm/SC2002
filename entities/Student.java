@@ -56,13 +56,12 @@ public class Student extends User {
 
     public Student() {
         super("Armstrong", "StrongPassword", Faculty.ADM, EnumSet.of(
-        		Perms.DEFAULT,
-        		Perms.SUBMIT_CAMP_ENQUIRY,
-        		Perms.VIEW_AVAILABLE_CAMP,
-        		Perms.REGISTER_AS_ATTENDEE,
-        		Perms.REGISTER_AS_COMITTEE,
-        		Perms.WITHDRAW_AS_ATTENDEE
-        ));
+                Perms.DEFAULT,
+                Perms.SUBMIT_CAMP_ENQUIRY,
+                Perms.VIEW_AVAILABLE_CAMP,
+                Perms.REGISTER_AS_ATTENDEE,
+                Perms.REGISTER_AS_COMITTEE,
+                Perms.WITHDRAW_AS_ATTENDEE));
         this.campCommittee = -1;
         this.points = 0;
         this.enquiries = new HashMap<Integer, Integer>();
@@ -133,7 +132,8 @@ public class Student extends User {
     }
 
     /**
-     * Returns the list of enquiries this student has created
+     * Returns the list of enquiries this student has created in the form of
+     * HashMap of form campId, enquiryId
      * 
      * @return the list of enquiries this student has created
      */
@@ -166,7 +166,8 @@ public class Student extends User {
     }
 
     /**
-     * Returns the list of suggestions this student has created
+     * Returns the list of suggestions this student has created in the form of
+     * HashMap of form campId, suggestionId
      * 
      * @return the list of suggestions this student has created
      */

@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.TreeMap;
 import controllers.CampController;
+import controllers.ControllerItemMissingException;
 import controllers.SuggestionController;
 import controllers.UserController;
 import entities.Data;
@@ -26,9 +27,10 @@ public final class doSubmitSuggestion extends Interaction {
 	 *@return true if controller accepts the request(s) and false if otherwise, or the camp is full, or the user is already registered
 	 *@throws MissingRequestedDataException if the camp to be registered for cannot be found
 	 *@throws UserInfoMissingException if the user id of the current user cannot be found
+	 * @throws ControllerItemMissingException
 	 */
 	@Override
-	public final Integer run() throws MissingRequestedDataException, UserInfoMissingException {
+	public final Integer run() throws MissingRequestedDataException, UserInfoMissingException, ControllerItemMissingException {
 		if (!Data.containsKey("Controller"))
 			throw new NoSuchElementException("No controller found. Request Failed.");
 		if (!CampController.class.isInstance(Data.get("Controller")) ||

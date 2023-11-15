@@ -28,7 +28,7 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 
 	
 	@Override
-	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
+	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException, ControllerItemMissingException, ControllerParamsException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");

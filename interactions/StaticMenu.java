@@ -2,6 +2,8 @@ package interactions;
 import java.util.List;
 
 import camsAction.MissingRequestedDataException;
+import controllers.ControllerItemMissingException;
+import controllers.ControllerParamsException;
 import entities.UserInfoMissingException;
 
 public final class StaticMenu extends UserMenu{
@@ -10,7 +12,7 @@ public final class StaticMenu extends UserMenu{
 		this.choices=choice;
 	}
 	@Override
-	public final Boolean run() throws UserInfoMissingException{
+	public final Boolean run() throws UserInfoMissingException, ControllerItemMissingException, ControllerParamsException{
 		while(true) {
 			System.out.println(this.message);
 			int choice = this.givechoices();

@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import controllers.ControllerItemMissingException;
+import controllers.ControllerParamsException;
 import controllers.MainController;
 import entities.Camp;
 import entities.CampInfo;
@@ -33,8 +35,10 @@ public class Cams {
 	 * @param args is the default arguments for main()
 	 * @throws UserInfoMissingException if user does not have enough valid
 	 *                                  information (i.e. userid, permissions)
+	 * @throws ControllerParamsException
+	 * @throws ControllerItemMissingException
 	 */
-	public static void main(String[] args) throws UserInfoMissingException {
+	public static void main(String[] args) throws UserInfoMissingException, ControllerItemMissingException, ControllerParamsException {
 		//load in 
 		//login
 		EnumSet<Perms> defaultperms = EnumSet.of(Perms.DELETE_CAMP,Perms.EDIT_CAMP);

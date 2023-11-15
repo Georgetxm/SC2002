@@ -52,8 +52,12 @@ public class queryAllCampsMenu extends UserMenu {
 		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		options.add(CamsInteraction.filterCampBy);
-		
-		if(GetData.isViewingOwnCamps()) control.FilterUser(userid);
+
+		System.out.println(GetData.isViewingOwnCamps());
+		if(GetData.isViewingOwnCamps()) {
+			control.FilterUser(userid);
+			System.out.println("administered user filter");
+		}
 		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) //filter should return Controller. This may lead to issues.
 			((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.USERGROUP,userfaculty));
 		List<Entry<Integer, String>> camplist = null;

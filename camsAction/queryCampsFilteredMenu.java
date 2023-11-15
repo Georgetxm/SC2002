@@ -53,7 +53,7 @@ public final class queryCampsFilteredMenu extends UserMenu {
 		ArrayList<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>();
 		HashMap<Integer, String> campset;
 		try {
-			campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+			campset = ((CampController) control).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("Invalid user id, cannot find owned camps.");
 		}

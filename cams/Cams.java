@@ -37,12 +37,13 @@ public class Cams {
 	public static void main(String[] args) throws UserInfoMissingException {
 		//load in 
 		//login
-		EnumSet<Perms> defaultperms = EnumSet.of(Perms.DELETE_CAMP,Perms.EDIT_CAMP);
+		EnumSet<Perms> defaultperms = EnumSet.of(Perms.DELETE_CAMP,Perms.EDIT_CAMP,Perms.VIEW_EVERY_CAMP);
 		User Armstrong = new Student();
 		HashMap<String, User> userlist = new HashMap<String, User>();
 		HashMap<Integer, Camp> camplist = new HashMap<Integer, Camp>();
 		HashSet<String> fakeAttendees = new HashSet<String>();
 		HashSet<String> fakeCampCommittee = new HashSet<String>();
+		userlist.put("Armstrong", Armstrong);
 		
 		// Fake camp info
 		LocalDate fakeCreationDate = LocalDate.of(2021, 11, 11);

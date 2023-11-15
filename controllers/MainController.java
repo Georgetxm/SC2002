@@ -364,17 +364,22 @@ public class MainController implements CampController, UserController, Suggestio
         this.camps.forEach((k, v) -> {
             filteredCampList.put(k, v.getCampInfo().info().get(CampAspects.NAME).toString());
         });
-
+        System.out.println("Pre user filter");
+        System.out.println(filteredCampList);
+        System.out.println(userFilter);
         // If visibleFilter is true, intersect the HashMap with the visibleCamps
         // HashSet which will omit the camps that are not visible
         if (visibleFilter) {
             filteredCampList.keySet().retainAll(visibleCamps.keySet());
         }
-
+        System.out.println("After visible filter");
+        System.out.println(filteredCampList);
+        System.out.println(userFilter);
         // If userFilter get list of camp ids user has,
         // intersect with filteredCampList to omit camps that specified userFilterId is
         // not in
         if (userFilter != null) {
+        	System.out.println(userFilter);
             User user = (User) findUserById(userFilter);
             if (user == null) {
                 throw new ControllerItemMissingException("User not found");
@@ -382,7 +387,9 @@ public class MainController implements CampController, UserController, Suggestio
             HashSet<Integer> userCamps = user.getCamps();
             filteredCampList.keySet().retainAll(userCamps);
         }
-
+        System.out.println("Post user filter");
+        System.out.println(filteredCampList);
+        System.out.println(userFilter);
         // If aspectFilter is not null, iterate through the HashMap and remove camps
         // that do not match the aspectFilter
         if (aspectFilter != null) {

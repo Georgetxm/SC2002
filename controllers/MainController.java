@@ -7,6 +7,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import entities.Camp;
 import entities.CampInfo;
@@ -374,7 +375,6 @@ public class MainController implements CampController, UserController, Suggestio
         // intersect with filteredCampList to omit camps that specified userFilterId is
         // not in
         if (userFilter != null) {
-        	System.out.println(userFilter);
             User user = (User) findUserById(userFilter);
             if (user == null) {
                 throw new ControllerItemMissingException("User not found");
@@ -384,19 +384,13 @@ public class MainController implements CampController, UserController, Suggestio
         }
         // If aspectFilter is not null, iterate through the HashMap and remove camps
         // that do not match the aspectFilter
-        if (aspectFilter != null) {
-            filteredCampList.forEach((k, v) -> {
-                boolean match = true;
-                for (Entry<CampAspects, ? extends Object> aspect : aspectFilter.entrySet()) {
-                    if (findCampById(k).getCampInfo().info().get(aspect.getKey()) != aspect.getValue()) {
-                        match = false;
-                    }
-                }
-                if (!match) {
-                    filteredCampList.remove(k);
-                }
-            });
-        }
+        if (aspectFilter != null)
+        	for(Integer campid: Set.copyOf(filteredCampList.keySet())) 
+        	for (Entry<CampAspects, ? extends Object> aspect : aspectFilter.entrySet()) 
+        		if(!findCampById(campid).getCampInfo().info().get(aspect.getKey()).equals(aspect.getValue())) {
+        			filteredCampList.remove(campid);
+        			break;
+        		}		
 
         userFilter = null;
         campFilter = null;

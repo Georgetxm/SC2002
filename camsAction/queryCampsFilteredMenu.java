@@ -59,6 +59,7 @@ public final class queryCampsFilteredMenu extends UserMenu {
 			throw new MissingRequestedDataException("Invalid user id, cannot find owned camps.");
 		}
 		if(campset!=null) {
+			camplist = new ArrayList<>(campset.entrySet());
 			for(Entry<Integer, String> entry:camplist) {
 				options.add(new MenuChoice(
 						Perms.DEFAULT, 

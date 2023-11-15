@@ -51,9 +51,11 @@ public class Cams {
 		
 		// Fake camp info
 		LocalDate fakeCreationDate = LocalDate.of(2021, 11, 11);
+		HashSet<LocalDate> dateset = new HashSet<LocalDate>();
+		dateset.add(fakeCreationDate);
 		TreeMap<CampAspects, Object> fakeCampInfoMap = new TreeMap<CampAspects, Object>();
 		fakeCampInfoMap.put(CampAspects.NAME, (String) "Camp1");
-		fakeCampInfoMap.put(CampAspects.DATE, fakeCreationDate);
+		fakeCampInfoMap.put(CampAspects.DATE, dateset);
 		fakeCampInfoMap.put(CampAspects.REGISTRATION_DEADLINE, fakeCreationDate.plusDays(1));
 		fakeCampInfoMap.put(CampAspects.USERGROUP, Faculty.ADM);
 		fakeCampInfoMap.put(CampAspects.LOCATION, types.Location.ADM);

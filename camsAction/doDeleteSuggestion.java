@@ -26,10 +26,9 @@ public final class doDeleteSuggestion extends Interaction {
 	 *         the suggestion cannot be deleted
 	 * @throws MissingRequestedDataException  if suggestion to be deleted cannot be
 	 *                                        found.
-	 * @throws ControllerItemMissingException
 	 */
 	@Override
-	public final Boolean run() throws MissingRequestedDataException, ControllerItemMissingException {
+	public final Boolean run() throws MissingRequestedDataException {
 		if (!Data.containsKey("Controller"))
 			throw new NoSuchElementException("No controller found. Request Failed.");
 		if (!SuggestionController.class.isInstance(Data.get("Controller")) ||
@@ -38,14 +37,18 @@ public final class doDeleteSuggestion extends Interaction {
 		Object control = Data.get("Controller");
 
 		int suggestionid = GetData.SuggestionID();
-		if (((SuggestionController) control).isSuggestionEditable(suggestionid)) {
-			System.out.println("This suggestion is finalised and can no longer be edited or deleted");
-			return false;
-		}
-		String ownerid = ((SuggestionController) control).getSuggestionOwner(suggestionid);
+		try {
+			if (((SuggestionController) control).isSuggestionEditable(suggestionid)) {
+				System.out.println("This suggestion is finalised and can no longer be edited or deleted");
+				return false;
+			}
+			String ownerid = ((SuggestionController) control).getSuggestionOwner(suggestionid);
 
-		((UserController) control).incrementPoints(ownerid, -1);
-		((SuggestionController) control).deleteSuggestion(suggestionid);
+			((UserController) control).incrementPoints(ownerid, -1);
+			((SuggestionController) control).deleteSuggestion(suggestionid);
+		} catch (ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Suggestion Id is invalid");
+		}
 		System.out.println("Suggestion deleted. Points deducted accordingly");
 		return true;
 	}

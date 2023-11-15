@@ -28,7 +28,7 @@ import types.Perms;
  */
 public final class queryOwnSuggestionsMenu extends UserMenu {
 	@Override
-	public final Boolean run() throws UserInfoMissingException, ControllerParamsException, ControllerItemMissingException {
+	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
@@ -40,8 +40,13 @@ public final class queryOwnSuggestionsMenu extends UserMenu {
 		if(campid>=0) ((Controller) control).FilterCamp(campid);
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's suggestionid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
-		List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist = new ArrayList<>(((SuggestionController) ((SuggestionController)
-				control).FilterUser(GetData.CurrentUser())).getSuggestions().entrySet());
+		List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist;
+		try {
+			suggestionlist = new ArrayList<>(((SuggestionController) ((SuggestionController)
+					control).FilterUser(GetData.CurrentUser())).getSuggestions().entrySet());
+		} catch (ControllerParamsException | ControllerItemMissingException | UserInfoMissingException e) {
+			throw new MissingRequestedDataException("User info does not tally with one that has suggestions");
+		}
 		//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
 		for(Entry<Integer, Entry<CampAspects, ? extends Object>> entry : suggestionlist) {
 			options.add(new MenuChoice(Perms.DEFAULT, entry.getValue().getKey().name()+":\n"+GetData.FromObject(entry.getValue().getValue()),CamsInteraction.SingleSuggestionMenu));
@@ -53,7 +58,11 @@ public final class queryOwnSuggestionsMenu extends UserMenu {
 			int suggestionid = suggestionlist.get(option).getKey();
 			Data.put("CurrentItem", suggestionid);
 			System.out.println(">>"+choices.get(option).text());
-			System.out.println(((SuggestionController) control).getSuggestion(suggestionid).getValue());
+			try {
+				System.out.println(((SuggestionController) control).getSuggestion(suggestionid).getValue());
+			} catch (ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("Suggestion is invalid");
+			}
 			try {checkandrun(option);}
 			catch(MissingRequestedDataException e) {
 				System.out.println("Ran into an error. Please retry or return to main menu before retrying");

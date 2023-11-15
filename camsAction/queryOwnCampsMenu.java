@@ -9,7 +9,6 @@ import java.util.NoSuchElementException;
 import cams.CamsInteraction;
 import controllers.CampController;
 import controllers.ControllerItemMissingException;
-import controllers.ControllerParamsException;
 import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.MenuChoice;
@@ -25,7 +24,7 @@ import types.Perms;
 public class queryOwnCampsMenu extends UserMenu {
 
 	@Override
-	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException, ControllerItemMissingException, ControllerParamsException {
+	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!CampController.class.isInstance(Data.get("Controller")))	
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");

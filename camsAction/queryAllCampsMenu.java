@@ -12,7 +12,6 @@ import controllers.CampController;
 import controllers.UserController;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.ControllerParamsException;
 import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.MenuChoice;
@@ -38,11 +37,9 @@ public class queryAllCampsMenu extends UserMenu {
 	 *@return true if all controller requests succeed
 	 *@throws MissingRequestedDataException if the ViewingOwnCamps tag is malformed.
 	 *@throws UserInfoMissingException if the user or their perms cannot be identified.
-	 * @throws ControllerParamsException
-	 * @throws ControllerItemMissingException
 	 */
 	@Override
-	public final Boolean run() throws MissingRequestedDataException, UserInfoMissingException, ControllerItemMissingException, ControllerParamsException {
+	public final Boolean run() throws MissingRequestedDataException, UserInfoMissingException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!CampController.class.isInstance(Data.get("Controller")))	
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");

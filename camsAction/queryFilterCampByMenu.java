@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-
-import controllers.ControllerItemMissingException;
-import controllers.ControllerParamsException;
-
 import java.util.Scanner;
 
 import entities.Data;
@@ -27,13 +23,11 @@ public class queryFilterCampByMenu extends UserMenu {
 
 	/**
 	 * @throws UserInfoMissingException if if one of its child functions detect user information is incomplete (e.g. ill-formatted or missing userid, permissions
-	 * @throws ControllerParamsException
-	 * @throws ControllerItemMissingException
 	 *
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public final Boolean run() throws UserInfoMissingException, ControllerItemMissingException, ControllerParamsException {
+	public final Boolean run() throws UserInfoMissingException {
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		for(CampAspects aspects:CampAspects.values()) {
 			options.add(new MenuChoice(Perms.DEFAULT, "Filter by "+aspects.name(),new queryCampsFilteredMenu()));

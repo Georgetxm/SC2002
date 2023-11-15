@@ -27,7 +27,7 @@ import controllers.ControllerParamsException;
 public class queryAllSuggestionsMenu extends UserMenu {
 
 	@Override
-	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException, ControllerParamsException, ControllerItemMissingException {
+	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
@@ -38,7 +38,12 @@ public class queryAllSuggestionsMenu extends UserMenu {
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's suggestionid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
 		List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist = null;
-		HashMap<Integer, Entry<CampAspects, ? extends Object>> suggestionset = ((SuggestionController) control.FilterCamp(campid)).getSuggestions();
+		HashMap<Integer, Entry<CampAspects, ? extends Object>> suggestionset;
+		try {
+			suggestionset = ((SuggestionController) control.FilterCamp(campid)).getSuggestions();
+		} catch (ControllerParamsException | ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Camp id is invalid");
+		}
 		if(suggestionset!=null) {
 			suggestionlist = new ArrayList<>(suggestionset.entrySet());
 			//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
@@ -56,7 +61,11 @@ public class queryAllSuggestionsMenu extends UserMenu {
 			int suggestionid = suggestionlist.get(option).getKey();
 			Data.put("CurrentItem", suggestionid);
 			System.out.println(">>"+choices.get(option).text());
-			System.out.println(((SuggestionController) control).getSuggestion(suggestionid).getValue());
+			try {
+				System.out.println(((SuggestionController) control).getSuggestion(suggestionid).getValue());
+			} catch (ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("Suggestion id is invalid");
+			}
 			try {checkandrun(option);}
 			catch(MissingRequestedDataException e) {
 				System.out.println("Ran into an error. Please retry or return to main menu before retrying");

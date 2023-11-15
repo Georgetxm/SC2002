@@ -27,10 +27,9 @@ public final class doEditEnquiry extends Interaction {
 	 *         the enquiry cannot be deleted
 	 * @throws MissingRequestedDataException  if the enquiry to be deleted cannot be
 	 *                                        found.
-	 * @throws ControllerItemMissingException
 	 */
 	@Override
-	public final Boolean run() throws MissingRequestedDataException, ControllerItemMissingException {
+	public final Boolean run() throws MissingRequestedDataException {
 		if (!Data.containsKey("Controller"))
 			throw new NoSuchElementException("No controller found. Request Failed.");
 		if (!EnquiryController.class.isInstance(Data.get("Controller")))
@@ -51,7 +50,11 @@ public final class doEditEnquiry extends Interaction {
 
 		Scanner s = getScanner();
 		System.out.println("Please type your edited enquiry");
-		enquirycontrol.editEnquiry(enquiryid, s.nextLine());
+		try {
+			enquirycontrol.editEnquiry(enquiryid, s.nextLine());
+		} catch (ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Enquiry id is invalid");
+		}
 		System.out.println("Enquiry saved.");
 		return true;
 	}

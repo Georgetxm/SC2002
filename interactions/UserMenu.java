@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import camsAction.MissingRequestedDataException;
+import controllers.ControllerItemMissingException;
+import controllers.ControllerParamsException;
 import controllers.UserController;
 import entities.Data;
 import entities.UserInfoMissingException;
@@ -47,7 +49,7 @@ public abstract class UserMenu extends Interaction{
 			if(TLB.keySet().contains(selected)) return TLB.get(selected);
 		}
 	}
-	protected final void checkandrun(int choice) throws UserInfoMissingException,MissingRequestedDataException{
+	protected final void checkandrun(int choice) throws UserInfoMissingException,MissingRequestedDataException, ControllerItemMissingException, ControllerParamsException{
 		if(choice>=0) choices.get(choice).action().run();
 	}
 }

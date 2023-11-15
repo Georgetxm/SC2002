@@ -15,6 +15,8 @@ import interactions.UserMenu;
 import types.CampAspects;
 import types.Perms;
 import controllers.Controller;
+import controllers.ControllerItemMissingException;
+import controllers.ControllerParamsException;
 /**
  * Interaction that represents the action of offering users a list of suggestions from a single camp to choose from.
  * Effectively serves as a function pointer
@@ -25,7 +27,7 @@ import controllers.Controller;
 public class queryAllSuggestionsMenu extends UserMenu {
 
 	@Override
-	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
+	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException, ControllerParamsException, ControllerItemMissingException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");

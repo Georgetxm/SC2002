@@ -9,6 +9,8 @@ import cams.CamsInteraction;
 import java.util.NoSuchElementException;
 
 import controllers.Controller;
+import controllers.ControllerItemMissingException;
+import controllers.ControllerParamsException;
 import controllers.SuggestionController;
 import entities.Data;
 import entities.UserInfoMissingException;
@@ -26,7 +28,7 @@ import types.Perms;
  */
 public final class queryOwnSuggestionsMenu extends UserMenu {
 	@Override
-	public final Boolean run() throws UserInfoMissingException {
+	public final Boolean run() throws UserInfoMissingException, ControllerParamsException, ControllerItemMissingException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");

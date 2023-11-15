@@ -1,23 +1,28 @@
 package entities;
 
 import java.time.LocalDate;
+import java.util.Map.Entry;
+
+import types.CampAspects;
 
 public class Suggestion {
     private final String creatorUserId;
     private int nextSuggestionId = 0;
     private final int suggestionId;
-    private String title;
-    private String description;
+    private final int campId;
+    private String rationale;
+    private Entry<CampAspects, ? extends Object> suggestionAspect;
     private boolean accepted;
     private final LocalDate creationDate;
     private LocalDate lastUpdatedDate;
 
-    public Suggestion(String creatorUserId, String title, String description,
+    public Suggestion(String creatorUserId, int campid, String rationale,
+            Entry<CampAspects, ? extends Object> suggestionAspect,
             LocalDate creationDate) {
         this.creatorUserId = creatorUserId;
         this.suggestionId = nextSuggestionId++;
-        this.title = title;
-        this.description = description;
+        this.campId = campid;
+        this.suggestionAspect = suggestionAspect;
         this.accepted = false;
         this.creationDate = creationDate;
         this.lastUpdatedDate = creationDate;
@@ -31,27 +36,31 @@ public class Suggestion {
         return this.suggestionId;
     }
 
-    public String getTitle() {
-        return this.title;
+    public int getCampId() {
+        return this.campId;
     }
 
-    public boolean setTitle(String newTitle) {
-        if (newTitle == null || newTitle.isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be null or empty");
+    public Entry<CampAspects, ? extends Object> getSuggestionAspect() {
+        return this.suggestionAspect;
+    }
+
+    public boolean setSuggestionAspect(Entry<CampAspects, ? extends Object> newSuggestionAspect) {
+        if (newSuggestionAspect == null) {
+            throw new IllegalArgumentException("Suuggestion aspect cannot be null or empty");
         }
-        this.title = newTitle;
+        this.suggestionAspect = newSuggestionAspect;
         return true;
     }
 
-    public String getDescription() {
-        return this.description;
+    public String getRationale() {
+        return this.rationale;
     }
 
-    public boolean setDescription(String newDescription) {
-        if (newDescription == null || newDescription.isEmpty()) {
-            throw new IllegalArgumentException("Description cannot be null or empty");
+    public boolean setRationale(String newRationale) {
+        if (newRationale == null || newRationale.isEmpty()) {
+            throw new IllegalArgumentException("Rationale cannot be null or empty");
         }
-        this.description = newDescription;
+        this.rationale = newRationale;
         return true;
     }
 

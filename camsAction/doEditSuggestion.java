@@ -4,6 +4,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import controllers.ControllerItemMissingException;
 import controllers.SuggestionController;
 import entities.Data;
 import interactions.Interaction;
@@ -21,9 +22,10 @@ public final class doEditSuggestion extends Interaction {
 	 * Ask the controller if a suggestion may be edited before requesting the deletion.
 	 *@return true if controller accepts the request(s) and false if otherwise, or the suggestion cannot be deleted
 	 *@throws MissingRequestedDataException if suggestion to be deleted cannot be found.
+	 * @throws ControllerItemMissingException
 	 */
 	@Override
-	public final Boolean run() throws MissingRequestedDataException {
+	public final Boolean run() throws MissingRequestedDataException, ControllerItemMissingException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))	throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		SuggestionController suggestioncontrol = (SuggestionController) Data.get("Controller");

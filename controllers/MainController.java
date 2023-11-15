@@ -1,6 +1,7 @@
 package controllers;
 
 import java.time.LocalDate;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -82,7 +83,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @return the Suggestion object with the given ID, null if not found
      */
 
-    public Suggestion findSuggestionById(int campId, int suggestionId) {
+    public Suggestion findSuggestionById(int suggestionId) {
         if (suggestions.containsKey(suggestionId)) {
             return suggestions.get(suggestionId);
         }
@@ -240,7 +241,7 @@ public class MainController implements CampController, UserController, Suggestio
                 }
             }
             for (Integer suggestion : camp.getSuggestions()) {
-                Suggestion s = findSuggestionById(campid, suggestion);
+                Suggestion s = findSuggestionById(suggestion);
                 if (s != null) {
                     suggestions.remove(s.getSuggestionId(), s);
                 }
@@ -961,20 +962,26 @@ public class MainController implements CampController, UserController, Suggestio
 
     /**
      * Overriden methods from Enquiry Controller
-     * Edit an enquiry
+     * Edit an enquiry text
+     * Updates the last update date of the enquiry
      * 
      * @param enquiryid the enquiry id to be edited
      * @param enquiry   the new enquiry text
      * @return the enquiry id if successful, -1 if not
+     * @throws ControllerItemMissingException
      */
     @Override
-    public int editEnquiry(int enquiryid, String enquiry) {
+    public int editEnquiry(int enquiryid, String enquiry) throws ControllerItemMissingException {
         Enquiry enquiryToEdit = findEnquiryById(enquiryid);
         if (enquiryToEdit == null) {
+            throw new ControllerItemMissingException("Enquiry does not exist");
+        }
+        if (enquiryToEdit.setEnquiryBody(enquiry)) {
+            enquiryToEdit.updateLastUpdateDate(LocalDate.now());
+            return enquiryToEdit.getEnquiryId();
+        } else {
             return -1;
         }
-        enquiryToEdit.setEnquiryBody(enquiry);
-        return enquiryToEdit.getEnquiryId();
     }
 
     /**
@@ -1002,6 +1009,8 @@ public class MainController implements CampController, UserController, Suggestio
      *      Clears the filter after getting the enquiries
      * 
      * @return a HashMap of enquiry id and enquiry text
+     * @throws ControllerParamsException
+     * @throws ControllerItemMissingException
      */
     @Override
     public HashMap<Integer, String> getEnquiries() throws ControllerParamsException, ControllerItemMissingException {
@@ -1087,6 +1096,7 @@ public class MainController implements CampController, UserController, Suggestio
      * 
      * @param enquiryid the enquiry id to be finalised
      * @return true if successful, controller item missing exception if not
+     * @throws ControllerItemMissingException
      */
     @Override
     public Boolean finaliseEnquiry(int enquiryid) throws ControllerItemMissingException {
@@ -1106,6 +1116,7 @@ public class MainController implements CampController, UserController, Suggestio
      * 
      * @param enquiryid the enquiry id to be checked
      * @return true if editable, throws controller item missing exception if not
+     * @throws ControllerItemMissingException
      */
     @Override
     public Boolean isEnquiryEditable(int enquiryid) throws ControllerItemMissingException {
@@ -1123,6 +1134,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @param enquiryid the enquiry id to be replied to
      * @param reply     the reply text
      * @return the enquiry id if successful, -1 if not
+     * @throws ControllerItemMissingException
      */
     @Override
     public int saveReply(int enquiryid, String reply) throws ControllerItemMissingException {
@@ -1143,6 +1155,7 @@ public class MainController implements CampController, UserController, Suggestio
      * 
      * @param enquiryid the enquiry id to be retrieved
      * @return the replies to an enquiry if successful, controller item missing
+     * @throws ControllerItemMissingException
      */
     @Override
     public ArrayList<String> getReplies(int enquiryid) throws ControllerItemMissingException {
@@ -1159,6 +1172,7 @@ public class MainController implements CampController, UserController, Suggestio
      * 
      * @param enquiryid the enquiry id to be retrieved
      * @return the owner of an enquiry if successful, controller item missing
+     * @throws ControllerItemMissingException
      */
     @Override
     public String getEnquiryOwner(int enquiryid) throws ControllerItemMissingException {
@@ -1178,6 +1192,7 @@ public class MainController implements CampController, UserController, Suggestio
      * 
      * @param enquiryid the enquiry id to be retrieved
      * @return the camp of an enquiry if successful, controller item missing
+     * @throws ControllerItemMissingException
      */
     @Override
     public int getEnquiryHostCamp(int enquiryid) throws ControllerItemMissingException {
@@ -1191,62 +1206,229 @@ public class MainController implements CampController, UserController, Suggestio
         return -1;
     }
 
+    /**
+     * Overriden methods from Suggestion Controller
+     * Creates a new suggestion, each suggestion contains only one aspect of
+     * CampInfo @see CampInfo
+     * i.e. Multiple suggestions are separate entries in the suggestions HashMap
+     * adds it to the list of suggestions in MainController's attributes
+     * also tags the suggestion to the camp and user
+     * 
+     * @param suggestion the suggestion aspect text to be added
+     * @param ownerid    the owner of the suggestion, which should be a student
+     * @throws ControllerItemMissingException
+     */
     @Override
     public int addSuggestion(Entry<CampAspects, ? extends Object> suggestion, String rationale, String ownerid,
-            int campid) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+            int campid) throws ControllerItemMissingException {
+        Camp camp = findCampById(campid);
+        if (camp == null) {
+            throw new ControllerItemMissingException("Camp does not exist");
+        }
+        Suggestion newSuggestion = new Suggestion(ownerid, campid, rationale, suggestion, LocalDate.now());
+        this.suggestions.put(newSuggestion.getSuggestionId(), newSuggestion);
+        camp.addSuggestion(newSuggestion.getSuggestionId());
 
-    @Override
-    public int editSuggestion(int id, Entry<CampAspects, ? extends Object> edited, String rationale) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+        if (Student.class.isInstance(findUserById(ownerid))) {
+            Student user = (Student) findUserById(ownerid);
+            user.addSuggestion(campid, newSuggestion.getSuggestionId());
+        }
 
-    @Override
-    public Entry<Entry<CampAspects, ? extends Object>, String> getSuggestion(int suggestionid) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public HashMap<Integer, Entry<CampAspects, ? extends Object>> getSuggestions() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Boolean deleteSuggestion(int suggestionid) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Boolean finaliseSuggestion(int suggestionid) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Boolean isSuggestionEditable(int suggestionid) {
-        // TODO Auto-generated method stub
-        return null;
+        return newSuggestion.getSuggestionId();
     }
 
     /**
      * Overriden methods from Suggestion Controller
+     * Edit a suggestion based on the suggestion id
+     * Updates the suggestion aspect and rationale
+     * Updates the last updated date
+     * 
+     * @param id        the suggestion id to be edited
+     * @param edited    the new suggestion aspect object
+     * @param rationale the new rationale
+     * @return the suggestion id if successful throws controller item missing
+     *         exception if not
+     * @throws ControllerItemMissingException
      */
     @Override
-    public String getOwner(int suggestionid) {
-        // TODO Auto-generated method stub
+    public int editSuggestion(int id, Entry<CampAspects, ? extends Object> edited, String rationale)
+            throws ControllerItemMissingException {
+        Suggestion suggestionToBeEdited = findSuggestionById(id);
+        if (suggestionToBeEdited == null) {
+            throw new ControllerItemMissingException("Suggestion does not exist");
+        }
+
+        if (suggestionToBeEdited.setSuggestionAspect(edited) && suggestionToBeEdited.setRationale(rationale)) {
+            suggestionToBeEdited.setLastUpdatedDate(LocalDate.now());
+            return suggestionToBeEdited.getSuggestionId();
+        } else {
+            throw new ControllerItemMissingException("Suggestion not edited");
+        }
+    }
+
+    /**
+     * Gets a suggestion by its id
+     * 
+     * @param suggestionid the suggestion id to be retrieved
+     * @return the suggestion object if successful, controller item missing
+     *         exception if not
+     * @throws ControllerItemMissingException
+     * 
+     */
+    @Override
+    public Entry<Entry<CampAspects, ? extends Object>, String> getSuggestion(int suggestionid)
+            throws ControllerItemMissingException {
+        Suggestion suggestion = findSuggestionById(suggestionid);
+        if (suggestion == null) {
+            throw new ControllerItemMissingException("Suggestion does not exist");
+        } else {
+            Entry<Entry<CampAspects, ? extends Object>, String> suggestionEntry = new AbstractMap.SimpleEntry<Entry<CampAspects, ? extends Object>, String>(
+                    suggestion.getSuggestionAspect(), suggestion.getRationale());
+            return suggestionEntry;
+        }
+    }
+
+    /**
+     * Overriden methods from Suggestion Controller
+     * 
+     * Get all suggestions that fulfill the filter specified from the filter methods
+     * 
+     * @see FilterCamp(int campid)
+     * @see FilterUser(String userid)
+     *      Can be filtered by campid and userid
+     *      Clears the filter after getting the suggetions
+     * 
+     * @return a HashMap of suggestion id and suggestion aspect
+     * @throws ControllerParamsException
+     * @throws ControllerItemMissingException
+     */
+    @Override
+    public HashMap<Integer, Entry<CampAspects, ? extends Object>> getSuggestions()
+            throws ControllerParamsException, ControllerItemMissingException {
+        HashMap<Integer, Suggestion> filteredSuggestionList = this.suggestions;
+
+        if (!Student.class.isInstance(findUserById(userFilter))) {
+            throw new ControllerParamsException("Specified userFilter is not a student");
+        }
+
+        // If userFilter specified, get list of suggestions ids specified user has,
+        // intersect with filteredEnquiryList to omit suggestions that specified
+        // userFilterId is not in
+        if (userFilter != null) {
+            Student filteredUser = (Student) findUserById(userFilter);
+            if (filteredUser == null) {
+                throw new ControllerItemMissingException("User not found");
+            }
+            filteredSuggestionList.keySet().retainAll((filteredUser.getSuggestions().values()));
+        }
+
+        // If campFilter specified, get list of enquiry ids specified camp has,
+        // intersect with filteredEnquiryList to omit enquiries that specified
+        // campFilterId is not in
+        if (campFilter != null) {
+            Camp filteredCamp = findCampById(campFilter);
+            if (filteredCamp == null) {
+                throw new ControllerItemMissingException("Camp not found");
+            }
+            filteredSuggestionList.keySet().retainAll(filteredCamp.getSuggestions());
+        }
+
+        userFilter = null;
+        campFilter = null;
+
+        if (filteredSuggestionList.size() > 0) {
+            // Convert the HashMap of suggestion ids and suggestion objects
+            // to suggestion id and suggestion aspect
+            HashMap<Integer, Entry<CampAspects, ? extends Object>> filteredSuggestionHashMap = new HashMap<Integer, Entry<CampAspects, ? extends Object>>();
+            filteredSuggestionList.forEach((suggestionId, suggestionObj) -> {
+                filteredSuggestionHashMap.put(suggestionId, suggestionObj.getSuggestionAspect());
+            });
+            return filteredSuggestionHashMap;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Boolean deleteSuggestion(int suggestionid) throws ControllerItemMissingException {
+        Suggestion suggestionToDelete = findSuggestionById(suggestionid);
+        if (suggestionToDelete == null) {
+            throw new ControllerItemMissingException("Suggestion does not exist");
+        }
+
+        Camp camp = findCampById(suggestionToDelete.getCampId());
+        if (camp != null) {
+            camp.removeSuggestion(suggestionid);
+        }
+
+        if (Student.class.isInstance(findUserById(suggestionToDelete.getCreatorUserId()))) {
+            Student user = (Student) findUserById(suggestionToDelete.getCreatorUserId());
+            user.removeSuggestion(camp.getCampid(), suggestionid);
+        }
+
+        suggestions.remove(suggestionid);
+        return true;
+    }
+
+    /**
+     * Overriden methods from Suggestion Controller
+     * Sets a suggestion to be accepted so that the suggestion is finalised
+     */
+    @Override
+    public Boolean finaliseSuggestion(int suggestionid) throws ControllerItemMissingException {
+        Suggestion suggestion = findSuggestionById(suggestionid);
+        if (suggestion == null) {
+            throw new ControllerItemMissingException("Suggestion does not exist");
+        }
+        suggestion.setAccepted(true);
+        if (Student.class.isInstance(findUserById(suggestion.getCreatorUserId()))) {
+            Student user = (Student) findUserById(suggestion.getCreatorUserId());
+            user.incrementPoints(1);
+        }
         return null;
     }
 
     @Override
-    public int getHostCamp(int suggestionid) {
-        // TODO Auto-generated method stub
-        return 0;
+    public Boolean isSuggestionEditable(int suggestionid) throws ControllerItemMissingException {
+        Suggestion suggestion = findSuggestionById(suggestionid);
+        if (suggestion == null) {
+            throw new ControllerItemMissingException("Suggestion does not exist");
+        }
+        return !suggestion.isAccepted();
+    }
+
+    /**
+     * Overriden methods from Suggestion Controller
+     * Get the owner of a suggestion
+     * 
+     * @param suggestionid the suggestion id to be retrieved
+     * @return the owner of a suggestion if successful, controller item missing
+     * 
+     * @throws ControllerItemMissingException
+     */
+    @Override
+    public String getSuggestionOwner(int suggestionid) throws ControllerItemMissingException {
+        Suggestion suggestion = findSuggestionById(suggestionid);
+        if (suggestion == null) {
+            throw new ControllerItemMissingException("Suggestion does not exist");
+        }
+        return suggestion.getCreatorUserId();
+    }
+
+    /**
+     * Overriden methods from Suggestion Controller
+     * Get the camp id of a suggestion
+     * 
+     * @param suggestionid the suggestion id to be retrieved
+     * @return the camp id of a suggestion if successful, controller item missing
+     */
+    @Override
+    public int getHostCamp(int suggestionid) throws ControllerItemMissingException {
+        Suggestion suggestion = findSuggestionById(suggestionid);
+        if (suggestion == null) {
+            throw new ControllerItemMissingException("Suggestion does not exist");
+        }
+        return suggestion.getCampId();
     }
 
 }

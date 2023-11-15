@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import javax.tools.JavaFileManager.Location;
-
 import controllers.MainController;
 import entities.Camp;
 import entities.CampInfo;
@@ -37,6 +35,8 @@ public class Cams {
 	 *                                  information (i.e. userid, permissions)
 	 */
 	public static void main(String[] args) throws UserInfoMissingException {
+		//load in 
+		//login
 		EnumSet<Perms> defaultperms = EnumSet.of(Perms.DELETE_CAMP,Perms.EDIT_CAMP);
 		User Armstrong = new Student();
 		ArrayList<User> userlist = new ArrayList<User>();
@@ -62,6 +62,8 @@ public class Cams {
 		camplist.add(new Camp(fakeCampInfo, fakeAttendees, fakeCampCommittee, false, fakeCreationDate));
 		// end of fake camp info
 		userlist.add(Armstrong);
+		
+		
 		MainController control = new MainController(userlist, camplist);
 		control.grantPerms("Armstrong", defaultperms);
 		Data.put("Controller", control);

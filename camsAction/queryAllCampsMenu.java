@@ -27,13 +27,22 @@ import types.Perms;
  * @since 2021-11-01
  */
 public class queryAllCampsMenu extends UserMenu {
-
+	
+	/**
+	 *Represents a menu displaying various camps for the user to choose, and an option to filter that list.
+	 *<p>
+	 *If the user had previously selected to view only the camps linked to them, it will be filtered to reflect that.
+	 *If the user does not have the view all camps perms, only visible camps belonging to his faculty will be shown.
+	 *@return true if all controller requests succeed
+	 *@throws MissingRequestedDataException if the ViewingOwnCamps tag is malformed.
+	 *@throws UserInfoMissingException if the user or their perms cannot be identified.
+	 */
 	@Override
 	public final Boolean run() throws MissingRequestedDataException, UserInfoMissingException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!CampController.class.isInstance(Data.get("Controller")))	
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		Object control = Data.get("Controller");
+		Controller control = (Controller) Data.get("Controller");
 		
 		String userid = GetData.CurrentUser();
 		Faculty userfaculty = ((UserController) control).getUserFaculty(userid);
@@ -43,21 +52,21 @@ public class queryAllCampsMenu extends UserMenu {
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		options.add(CamsInteraction.filterCampBy);
 		
-		if(GetData.isViewingOwnCamps()) ((Controller) control).FilterUser(userid);
-		if(!userperm.contains(Perms.VIEW_EVERY_CAMP))
+		if(GetData.isViewingOwnCamps()) control.FilterUser(userid);
+		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) //filter should return Controller. This may lead to issues.
 			((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.USERGROUP,userfaculty));
 		List<Entry<Integer, String>> camplist = null;
 		HashMap<Integer, String> campset = ((CampController) control).getCamps();
 		if(campset!=null) {
 			camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
-			for(Entry<Integer, String> entry:camplist) {
+			for(Entry<Integer, String> entry:camplist)
 				options.add(new MenuChoice(
 						Perms.DEFAULT, 
 						entry.getValue(),
 						((CampController) control).getCampAttendees(entry.getKey()).contains(userid) ?
 							CamsInteraction.OwnCampMenu : 
-							CamsInteraction.OtherCampMenu));
-			}
+							CamsInteraction.OtherCampMenu)
+				);
 		}
 		choices = options;
 		
@@ -65,12 +74,18 @@ public class queryAllCampsMenu extends UserMenu {
 			int option = givechoices();
 			if(option<0) break;
 			if(option==0) {
-				checkandrun(option);
+				try {checkandrun(option);}
+				catch(MissingRequestedDataException e) {
+					System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+				}
 				continue;
 			}
 			Data.put("CurrentCamp", camplist.get(option-1).getKey());
 			System.out.println(">>"+choices.get(option).text());
-			checkandrun(option);
+			try {checkandrun(option);}
+			catch(MissingRequestedDataException e) {
+				System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+			}
 		}
 		if(GetData.isViewingOwnCamps()) Data.clear("isViewingOwnCamps");
 		return true;

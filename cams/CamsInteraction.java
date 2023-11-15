@@ -250,7 +250,8 @@ public final class CamsInteraction{ //Menu choices
 		createCamp,
 		viewAllCamps,
 		viewOwnCamps,
-		viewOwnSuggestion
+		viewOwnSuggestion,
+		viewOwnEnquiry
 	);
 	/**
 	 * List of menu choices to be used for the own camp menu

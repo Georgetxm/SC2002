@@ -1,6 +1,7 @@
 package camsAction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
@@ -13,6 +14,7 @@ import interactions.MenuChoice;
 import interactions.UserMenu;
 import types.CampAspects;
 import types.Perms;
+import controllers.Controller;
 /**
  * Interaction that represents the action of offering users a list of suggestions from a single camp to choose from.
  * Effectively serves as a function pointer
@@ -27,16 +29,23 @@ public class queryAllSuggestionsMenu extends UserMenu {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		Object control = Data.get("Controller");
+		Controller control = (Controller) Data.get("Controller");
 		
 		int campid = GetData.CampID();
 		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's suggestionid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
-		List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist = new ArrayList<>(((SuggestionController) ((SuggestionController) control).FilterCamp(campid)).getSuggestions().entrySet());
-		//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
-		for(Entry<Integer, Entry<CampAspects, ? extends Object>> entry : suggestionlist) {
-			options.add(new MenuChoice(Perms.DEFAULT, entry.getValue().getKey().name()+":\n"+GetData.FromObject(entry.getValue().getValue()),CamsInteraction.SingleSuggestionMenu));
+		List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist = null;
+		HashMap<Integer, Entry<CampAspects, ? extends Object>> suggestionset = ((SuggestionController) control.FilterCamp(campid)).getSuggestions();
+		if(suggestionset!=null) {
+			suggestionlist = new ArrayList<>(suggestionset.entrySet());
+			//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
+			for(Entry<Integer, Entry<CampAspects, ? extends Object>> entry : suggestionlist)
+				options.add(new MenuChoice(
+						Perms.DEFAULT, 
+						entry.getValue().getKey().name()+":\n"+GetData.FromObject(entry.getValue().getValue()),
+						CamsInteraction.SingleSuggestionMenu)
+				);
 		}
 		choices = options;
 		while(true) {

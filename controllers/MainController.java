@@ -374,7 +374,7 @@ public class MainController implements CampController, UserController, Suggestio
         // If userFilter get list of camp ids user has,
         // intersect with filteredCampList to omit camps that specified userFilterId is
         // not in
-        if (!userFilter.equals(null)) {
+        if (userFilter != null && !userFilter.equals("")) {
             User user = (User) findUserById(userFilter);
             if (user.equals(null)) {
                 throw new ControllerItemMissingException("User not found");
@@ -384,13 +384,13 @@ public class MainController implements CampController, UserController, Suggestio
         }
         // If aspectFilter is not null, iterate through the HashMap and remove camps
         // that do not match the aspectFilter
-        if (aspectFilter != null)
-        	for(Integer campid: Set.copyOf(filteredCampList.keySet())) 
-        	for (Entry<CampAspects, ? extends Object> aspect : aspectFilter.entrySet()) 
-        		if(!findCampById(campid).getCampInfo().info().get(aspect.getKey()).equals(aspect.getValue())) {
-        			filteredCampList.remove(campid);
-        			break;
-        		}		
+        if (!aspectFilter.equals(null))
+            for (Integer campid : Set.copyOf(filteredCampList.keySet()))
+                for (Entry<CampAspects, ? extends Object> aspect : aspectFilter.entrySet())
+                    if (!findCampById(campid).getCampInfo().info().get(aspect.getKey()).equals(aspect.getValue())) {
+                        filteredCampList.remove(campid);
+                        break;
+                    }
 
         userFilter = null;
         campFilter = null;
@@ -1000,7 +1000,7 @@ public class MainController implements CampController, UserController, Suggestio
         // If userFilter specified, get list of enquiry ids specified user has,
         // intersect with filteredEnquiryList to omit enquiries that specified
         // userFilterId is not in
-        if (!userFilter.equals(null)) {
+        if (userFilter != null && !userFilter.equals("")) {
             Student filteredUser = (Student) findUserById(userFilter);
             if (filteredUser.equals(null)) {
                 throw new ControllerItemMissingException("User not found");
@@ -1291,7 +1291,7 @@ public class MainController implements CampController, UserController, Suggestio
         // If userFilter specified, get list of suggestions ids specified user has,
         // intersect with filteredEnquiryList to omit suggestions that specified
         // userFilterId is not in
-        if (!userFilter.equals(null)) {
+        if (userFilter != null && !userFilter.equals("")) {
             Student filteredUser = (Student) findUserById(userFilter);
             if (filteredUser.equals(null)) {
                 throw new ControllerItemMissingException("User not found");

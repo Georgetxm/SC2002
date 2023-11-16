@@ -7,6 +7,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import entities.Camp;
 import entities.CampInfo;
@@ -365,13 +366,11 @@ public class MainController implements CampController, UserController, Suggestio
         this.camps.forEach((k, v) -> {
             filteredCampList.put(k, v.getCampInfo().info().get(CampAspects.NAME).toString());
         });
-
         // If visibleFilter is true, intersect the HashMap with the visibleCamps
         // HashSet which will omit the camps that are not visible
         if (visibleFilter) {
             filteredCampList.keySet().retainAll(visibleCamps.keySet());
         }
-
         // If userFilter get list of camp ids user has,
         // intersect with filteredCampList to omit camps that specified userFilterId is
         // not in
@@ -383,21 +382,15 @@ public class MainController implements CampController, UserController, Suggestio
             HashSet<Integer> userCamps = user.getCamps();
             filteredCampList.keySet().retainAll(userCamps);
         }
-
         // If aspectFilter is not null, iterate through the HashMap and remove camps
         // that do not match the aspectFilter
-        if (!aspectFilter.equals(null)) {
-            filteredCampList.entrySet().removeIf(entry -> {
-                boolean match = true;
-                for (Entry<CampAspects, ? extends Object> aspect : aspectFilter.entrySet()) {
-                    if (!findCampById(entry.getKey()).getCampInfo().info().get(aspect.getKey())
-                            .equals(aspect.getValue())) {
-                        match = false;
-                    }
-                }
-                return !match;
-            });
-        }
+        if (aspectFilter != null)
+        	for(Integer campid: Set.copyOf(filteredCampList.keySet())) 
+        	for (Entry<CampAspects, ? extends Object> aspect : aspectFilter.entrySet()) 
+        		if(!findCampById(campid).getCampInfo().info().get(aspect.getKey()).equals(aspect.getValue())) {
+        			filteredCampList.remove(campid);
+        			break;
+        		}		
 
         userFilter = null;
         campFilter = null;

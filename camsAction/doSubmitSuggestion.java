@@ -27,10 +27,9 @@ public final class doSubmitSuggestion extends Interaction {
 	 *@return true if controller accepts the request(s) and false if otherwise, or the camp is full, or the user is already registered
 	 *@throws MissingRequestedDataException if the camp to be registered for cannot be found
 	 *@throws UserInfoMissingException if the user id of the current user cannot be found
-	 * @throws ControllerItemMissingException
 	 */
 	@Override
-	public final Integer run() throws MissingRequestedDataException, UserInfoMissingException, ControllerItemMissingException {
+	public final Integer run() throws MissingRequestedDataException, UserInfoMissingException {
 		if (!Data.containsKey("Controller"))
 			throw new NoSuchElementException("No controller found. Request Failed.");
 		if (!CampController.class.isInstance(Data.get("Controller")) ||
@@ -90,7 +89,12 @@ public final class doSubmitSuggestion extends Interaction {
 		System.out.println("Please type your rationale:");
 		reason = s.nextLine();
 
-		int suggestionid = ((SuggestionController) control).addSuggestion(edited, reason, userid, campid);
+		int suggestionid;
+		try {
+			suggestionid = ((SuggestionController) control).addSuggestion(edited, reason, userid, campid);
+		} catch (ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Camp id is invalid");
+		}
 		System.out.println("Your suggestion has been submitted.");
 
 		((UserController) control).incrementPoints(userid, 1);

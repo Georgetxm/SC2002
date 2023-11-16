@@ -27,15 +27,13 @@ import types.Perms;
  */
 public final class queryAllEnquiriesMenu extends UserMenu {
 	/**
-	 * 
+	 * Provides users a list of all enquiries for a given camp to choose from.
 	 * @return true if all controller request succeeds and false if otherwise.
 	 * @throws UserInfoMissingException
 	 * @throws MissingRequestedDataException
-	 * @throws ControllerParamsException
-	 * @throws ControllerItemMissingException
 	 */
 	@Override
-	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException, ControllerItemMissingException, ControllerParamsException {
+	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException{
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");

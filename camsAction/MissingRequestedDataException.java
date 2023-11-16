@@ -4,7 +4,7 @@ package camsAction;
  * Interactions pass data to each other via Data.
  * If a request to Data fails, it will usually raise this exception.
  * This is usually handled by GetData, which contains error handling wrapper functions for interacting with Data
- * @see Data
+ * @see entities.Data
  * @see GetData
  * @author Tay Jih How
  * @version 1.0

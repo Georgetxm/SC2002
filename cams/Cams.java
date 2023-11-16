@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import controllers.ControllerItemMissingException;
-import controllers.ControllerParamsException;
 import controllers.MainController;
 import entities.Camp;
 import entities.CampInfo;
@@ -35,24 +33,25 @@ public class Cams {
 	 * @param args is the default arguments for main()
 	 * @throws UserInfoMissingException if user does not have enough valid
 	 *                                  information (i.e. userid, permissions)
-	 * @throws ControllerParamsException
-	 * @throws ControllerItemMissingException
 	 */
-	public static void main(String[] args) throws UserInfoMissingException, ControllerItemMissingException, ControllerParamsException {
+	public static void main(String[] args) throws UserInfoMissingException{
 		//load in 
 		//login
-		EnumSet<Perms> defaultperms = EnumSet.of(Perms.DELETE_CAMP,Perms.EDIT_CAMP);
+		EnumSet<Perms> defaultperms = EnumSet.of(Perms.DELETE_CAMP,Perms.EDIT_CAMP,Perms.VIEW_EVERY_CAMP);
 		User Armstrong = new Student();
 		HashMap<String, User> userlist = new HashMap<String, User>();
 		HashMap<Integer, Camp> camplist = new HashMap<Integer, Camp>();
 		HashSet<String> fakeAttendees = new HashSet<String>();
 		HashSet<String> fakeCampCommittee = new HashSet<String>();
+		userlist.put("Armstrong", Armstrong);
 		
 		// Fake camp info
 		LocalDate fakeCreationDate = LocalDate.of(2021, 11, 11);
+		HashSet<LocalDate> dateset = new HashSet<LocalDate>();
+		dateset.add(fakeCreationDate);
 		TreeMap<CampAspects, Object> fakeCampInfoMap = new TreeMap<CampAspects, Object>();
 		fakeCampInfoMap.put(CampAspects.NAME, (String) "Camp1");
-		fakeCampInfoMap.put(CampAspects.DATE, fakeCreationDate);
+		fakeCampInfoMap.put(CampAspects.DATE, dateset);
 		fakeCampInfoMap.put(CampAspects.REGISTRATION_DEADLINE, fakeCreationDate.plusDays(1));
 		fakeCampInfoMap.put(CampAspects.USERGROUP, Faculty.ADM);
 		fakeCampInfoMap.put(CampAspects.LOCATION, types.Location.ADM);

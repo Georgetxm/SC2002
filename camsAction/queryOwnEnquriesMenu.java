@@ -1,6 +1,7 @@
 package camsAction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Map.Entry;
@@ -26,9 +27,16 @@ import types.Perms;
  */
 public final class queryOwnEnquriesMenu extends UserMenu {
 
-	
+	/**
+	 * Represents a menu of the user's own enquiries for them to choose.
+	 * <p>
+	 * These enquiries can either be for a given camp, or across camps depending on whether the user has selected a camp.
+	 * @return true if all requests succeed, false if otherwise
+	 * @throws entities.UserInfoMissingException if the current usrid cannot be found
+	 * @throws MissingRequestedDataException if the user cannot have enquiries, or the enquiry selected has an invalid id
+	 */
 	@Override
-	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException, ControllerItemMissingException, ControllerParamsException {
+	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
@@ -44,15 +52,18 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's controllerid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
-		List<Entry<Integer, String>> enquirylist;
+		List<Entry<Integer, String>> enquirylist = null;
+		HashMap<Integer, String> enquiryset;
 		try {
-			enquirylist = new ArrayList<>(((EnquiryController) control).getEnquiries().entrySet());
+			enquiryset = ((EnquiryController) control).getEnquiries();
 		} catch (ControllerParamsException | ControllerItemMissingException e) {
-			throw new MissingRequestedDataException("Enquiry filter is malformed");
+			throw new MissingRequestedDataException("Enquiry filters are malformed");
 		}
-		//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
-		for(Entry<Integer, String> entry : enquirylist) {
-			options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.SingleEnquiryMenu));
+		if(enquiryset!=null) {
+			enquirylist = new ArrayList<>(enquiryset.entrySet());
+			//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
+			for(Entry<Integer, String> entry : enquirylist) 
+				options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.SingleEnquiryMenu));
 		}
 		choices = options;
 		while(true) {

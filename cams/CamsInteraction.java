@@ -48,7 +48,7 @@ import types.Perms;
  * The objective of these multilevel menus is to inform the user and figure out his exact intention.
  * Once we know what the user exactly intends to do we can execute the relevant commands (e.g. add user A to camp B), prompting the user for parameters if needed.
  * Not all menus have their choices predefined, but those that do are initialised at compile time in this class
- * @see interaction.Interaction
+ * @see interactions.Interaction
  * @see MenuChoice
  * @see StaticMenu
  */
@@ -165,7 +165,7 @@ public final class CamsInteraction{ //Menu choices
 	 * If one wishes to allow users to do so, they would have to declare a new permission
 	 * @see Perms
 	 * They would also need to ensure both intra and intercamp possibilities are handled
-	 * @see queryOwnEnquiriesMenu
+	 * @see camsAction.queryOwnEnquiriesMenu
 	 */
 	public static MenuChoice viewAllEnquiry		= new MenuChoice(Perms.VIEW_CAMP_ENQUIRY,			"View all enquiries",		new queryAllEnquiriesMenu());
 	/**

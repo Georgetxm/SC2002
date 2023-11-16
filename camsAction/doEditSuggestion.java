@@ -22,23 +22,27 @@ public final class doEditSuggestion extends Interaction {
 	 * Ask the controller if a suggestion may be edited before requesting the deletion.
 	 *@return true if controller accepts the request(s) and false if otherwise, or the suggestion cannot be deleted
 	 *@throws MissingRequestedDataException if suggestion to be deleted cannot be found.
-	 * @throws ControllerItemMissingException
 	 */
 	@Override
-	public final Boolean run() throws MissingRequestedDataException, ControllerItemMissingException {
+	public final Boolean run() throws MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))	throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		SuggestionController suggestioncontrol = (SuggestionController) Data.get("Controller");
 		
 		int suggestionid = GetData.SuggestionID();
 		Scanner s = getScanner();
-		
-		if(!suggestioncontrol.isSuggestionEditable(suggestionid)) {
-			System.out.println("Suggestion has been viewed and may not be edited");
-			return false;
+		CampAspects chosenaspect = null;
+		try {
+			if(!suggestioncontrol.isSuggestionEditable(suggestionid)) {
+				System.out.println("Suggestion has been viewed and may not be edited");
+				return false;
+			}
+			 chosenaspect = suggestioncontrol.getSuggestion(suggestionid).getKey().getKey();
+		} catch (ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Suggestion id is invalid");
 		}
 		
-		CampAspects chosenaspect = suggestioncontrol.getSuggestion(suggestionid).getKey().getKey();
+
 		Entry<CampAspects, ? extends Object> edited;
 		
 		switch(chosenaspect) { //Depending on the aspect chosen, request data from user
@@ -51,7 +55,11 @@ public final class doEditSuggestion extends Interaction {
 		}
 		
 		System.out.println("Please type your rationale:");
-		suggestioncontrol.editSuggestion(suggestionid, edited, s.nextLine());
+		try {
+			suggestioncontrol.editSuggestion(suggestionid, edited, s.nextLine());
+		} catch (ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Suggestion id is invalid");
+		}
 		
 		System.out.println("Edits have been saved");
 		return null;

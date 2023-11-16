@@ -30,10 +30,9 @@ public final class doApproveSuggestion extends Interaction {
 	 *                                        be found
 	 * @throws MissingRequestedDataException  if user to have points incremented
 	 *                                        cannot be found
-	 * @throws ControllerItemMissingException
 	 */
 	@Override
-	public final Boolean run() throws MissingRequestedDataException, ControllerItemMissingException {
+	public final Boolean run() throws MissingRequestedDataException {
 		if (!Data.containsKey("Controller"))
 			throw new NoSuchElementException("No controller found. Request Failed.");
 		if (!CampController.class.isInstance(Data.get("Controller")) ||
@@ -44,13 +43,16 @@ public final class doApproveSuggestion extends Interaction {
 
 		int campid = GetData.CampID();
 		int suggestionid = GetData.SuggestionID();
-		String ownerid = ((SuggestionController) control).getSuggestionOwner(suggestionid);
-
-		((CampController) control).editCampDetails(campid,
-				((SuggestionController) control).getSuggestion(suggestionid).getKey());
-		((UserController) control).incrementPoints(ownerid, 1);
-		((SuggestionController) control).deleteSuggestion(suggestionid);
-
+		String ownerid;
+		try {
+			ownerid = ((SuggestionController) control).getSuggestionOwner(suggestionid);
+			((CampController) control).editCampDetails(campid,
+			((SuggestionController) control).getSuggestion(suggestionid).getKey());
+			((UserController) control).incrementPoints(ownerid, 1);
+			((SuggestionController) control).deleteSuggestion(suggestionid);
+		} catch (ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Suggestion ccannot be found");
+		}
 		System.out.println("Suggestion Approved");
 
 		return true;

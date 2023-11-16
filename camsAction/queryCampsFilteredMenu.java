@@ -11,7 +11,6 @@ import cams.CamsInteraction;
 import controllers.CampController;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.ControllerParamsException;
 import controllers.UserController;
 import entities.Data;
 import entities.UserInfoMissingException;
@@ -28,9 +27,18 @@ import types.Perms;
  * @since 2021-11-01
  */
 public final class queryCampsFilteredMenu extends UserMenu {
-
+	/**
+	 * Represents a menu of user camps for them to choose after applying filters as necessary
+	 * <p>
+	 * If ViewingOwnCamps tag is true, only shows the user their own camps
+	 * Provides an option to remove filters
+	 * Checks whether the user is part of the camp or not and sends it to OwnCampMenu or OtherCampMenu as appropriate
+	 * @return true if all requests succeed, false if otherwise
+	 * @throws entities.UserInfoMissingException if the current usrid cannot be found
+	 * @throws MissingRequestedDataException if the user cannot have suggestions, or the suggestion selected has an invalid id
+	 */
 	@Override
-	public final Boolean run() throws MissingRequestedDataException, UserInfoMissingException, ControllerItemMissingException, ControllerParamsException {
+	public final Boolean run() throws MissingRequestedDataException, UserInfoMissingException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!CampController.class.isInstance(Data.get("Controller")))	
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
@@ -54,11 +62,12 @@ public final class queryCampsFilteredMenu extends UserMenu {
 		ArrayList<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>();
 		HashMap<Integer, String> campset;
 		try {
-			campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+			campset = ((CampController) control).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("Invalid user id, cannot find owned camps.");
 		}
 		if(campset!=null) {
+			camplist = new ArrayList<>(campset.entrySet());
 			for(Entry<Integer, String> entry:camplist) {
 				options.add(new MenuChoice(
 						Perms.DEFAULT, 
@@ -87,7 +96,7 @@ public final class queryCampsFilteredMenu extends UserMenu {
 				}
 				continue;
 			}
-			Data.put("CurrentCamp", camplist.get(option).getKey());
+			Data.put("CurrentCamp", camplist.get(option-2).getKey());
 			System.out.println(">>"+choices.get(option).text());
 			try {checkandrun(option);}
 			catch(MissingRequestedDataException e) {

@@ -22,8 +22,9 @@ import types.Perms;
 public class queryFilterCampByMenu extends UserMenu {
 
 	/**
+	 * Offers users a menu of filters to choose from, and prompts the user to enter the required value.
+	 * @return true if all requests succeed, false if otherwise
 	 * @throws UserInfoMissingException if if one of its child functions detect user information is incomplete (e.g. ill-formatted or missing userid, permissions
-	 *
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

@@ -25,7 +25,12 @@ import controllers.ControllerParamsException;
  * @since 2021-11-01
  */
 public class queryAllSuggestionsMenu extends UserMenu {
-
+	/**
+	 * Provides users with a menu of suggestions from a given camp to choose from.
+	 * @return true if all requests succeed and false if otherwise
+	 * @throws UserInfoMissingException if user id is invalid
+	 * @throws MissingRequestedDataException if campid or suggestion id is invalid
+	 */
 	@Override
 	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

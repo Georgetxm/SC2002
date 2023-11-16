@@ -30,7 +30,6 @@ public final class doApproveSuggestion extends Interaction {
 	 *                                        be found
 	 * @throws MissingRequestedDataException  if user to have points incremented
 	 *                                        cannot be found
-	 * @throws ControllerItemMissingException
 	 */
 	@Override
 	public final Boolean run() throws MissingRequestedDataException {

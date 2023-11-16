@@ -27,7 +27,16 @@ import types.Perms;
  * @since 2021-11-01
  */
 public final class queryCampsFilteredMenu extends UserMenu {
-
+	/**
+	 * Represents a menu of user camps for them to choose after applying filters as necessary
+	 * <p>
+	 * If ViewingOwnCamps tag is true, only shows the user their own camps
+	 * Provides an option to remove filters
+	 * Checks whether the user is part of the camp or not and sends it to OwnCampMenu or OtherCampMenu as appropriate
+	 * @return true if all requests succeed, false if otherwise
+	 * @throws entities.UserInfoMissingException if the current usrid cannot be found
+	 * @throws MissingRequestedDataException if the user cannot have suggestions, or the suggestion selected has an invalid id
+	 */
 	@Override
 	public final Boolean run() throws MissingRequestedDataException, UserInfoMissingException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
@@ -87,7 +96,7 @@ public final class queryCampsFilteredMenu extends UserMenu {
 				}
 				continue;
 			}
-			Data.put("CurrentCamp", camplist.get(option).getKey());
+			Data.put("CurrentCamp", camplist.get(option-2).getKey());
 			System.out.println(">>"+choices.get(option).text());
 			try {checkandrun(option);}
 			catch(MissingRequestedDataException e) {

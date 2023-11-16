@@ -22,7 +22,14 @@ import types.Perms;
  * @since 2021-11-01
  */
 public class queryOwnCampsMenu extends UserMenu {
-
+	/**
+	 * Represents a menu of the user's own camps for them to choose
+	 * <p>
+	 * Sets the ViewingOwnCamps tag for all child menus and removes it for all parent menus
+	 * @return true if all requests succeed, false if otherwise
+	 * @throws UserInfoMissingException if the current usrid cannot be found
+	 * @throws MissingRequestedDataException if the user cannot have camps, or the camp selected has an invalid id
+	 */
 	@Override
 	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

@@ -27,7 +27,14 @@ import types.Perms;
  */
 public final class queryOwnEnquriesMenu extends UserMenu {
 
-	
+	/**
+	 * Represents a menu of the user's own enquiries for them to choose.
+	 * <p>
+	 * These enquiries can either be for a given camp, or across camps depending on whether the user has selected a camp.
+	 * @return true if all requests succeed, false if otherwise
+	 * @throws entities.UserInfoMissingException if the current usrid cannot be found
+	 * @throws MissingRequestedDataException if the user cannot have enquiries, or the enquiry selected has an invalid id
+	 */
 	@Override
 	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");

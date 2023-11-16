@@ -154,7 +154,9 @@ public class MainController implements CampController, UserController, Suggestio
             }
             if (role.equals(Role.COMMITTEE)
                     && Student.class.isInstance(user)
+                    && camp.addAttendee(userId)
                     && camp.addCommittee(userId)
+                    && user.registerForCamp(campId)
                     && ((Student) user).setCampComittee(campId)) {
                 return true;
             }
@@ -397,13 +399,7 @@ public class MainController implements CampController, UserController, Suggestio
         campFilter = null;
         aspectFilter.clear();
         visibleFilter = false;
-
-        if (filteredCampList.size() > 0) {
-            return filteredCampList;
-        } else {
-            return null;
-        }
-
+        return filteredCampList;
     }
 
     /**
@@ -829,11 +825,13 @@ public class MainController implements CampController, UserController, Suggestio
      */
     @Override
     public int incrementPoints(String userid, int points) {
-        Student user = (Student) findUserById(userid);
-        if (!user.equals(null)) {
-            user.incrementPoints(points);
-            return user.getPoints();
-        }
+    	if(Student.class.isInstance(findUserById(userid))) {
+    		Student user = (Student) findUserById(userid);
+	        if (!user.equals(null)) {
+	            user.incrementPoints(points);
+	            return user.getPoints();
+	        }
+    	}
         return -1;
     }
 
@@ -933,6 +931,7 @@ public class MainController implements CampController, UserController, Suggestio
             return -1;
         }
         Enquiry newEnquiry = new Enquiry(ownerid, campid, enquiry, false, LocalDate.now());
+        this.enquiries.put(newEnquiry.getEnquiryId(), newEnquiry);
         camp.addEnquiry(newEnquiry.getEnquiryId());
         user.addEnquiry(campid, newEnquiry.getEnquiryId());
         return newEnquiry.getEnquiryId();
@@ -993,15 +992,13 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public HashMap<Integer, String> getEnquiries() throws ControllerParamsException, ControllerItemMissingException {
         HashMap<Integer, Enquiry> filteredEnquiryList = this.enquiries;
-
-        if (!Student.class.isInstance(findUserById(userFilter))) {
-            throw new ControllerParamsException("Specified userFilter is not a student");
-        }
-
         // If userFilter specified, get list of enquiry ids specified user has,
         // intersect with filteredEnquiryList to omit enquiries that specified
         // userFilterId is not in
         if (userFilter != null && !userFilter.equals("")) {
+        	if (!Student.class.isInstance(findUserById(userFilter))) {
+                throw new ControllerParamsException("Specified userFilter is not a student");
+            }
             Student filteredUser = (Student) findUserById(userFilter);
             if (filteredUser.equals(null)) {
                 throw new ControllerItemMissingException("User not found");

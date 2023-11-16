@@ -67,13 +67,17 @@ public class queryAllCampsMenu extends UserMenu {
 		if(campset!=null) {
 			camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
 			for(Entry<Integer, String> entry:camplist)
-				options.add(new MenuChoice(
-						Perms.DEFAULT, 
-						entry.getValue(),
-						((CampController) control).getCampAttendees(entry.getKey()).contains(userid) ?
-							CamsInteraction.OwnCampMenu : 
-							CamsInteraction.OtherCampMenu)
-				);
+				try {
+					options.add(new MenuChoice(
+							Perms.DEFAULT, 
+							entry.getValue(),
+							((CampController) control.FilterUser(userid)).getCamps().keySet().contains(entry.getKey())?
+								CamsInteraction.OwnCampMenu : 
+								CamsInteraction.OtherCampMenu)
+					);
+				} catch (ControllerItemMissingException e) {
+					continue;
+				}
 		}
 		choices = options;
 		

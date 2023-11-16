@@ -42,7 +42,7 @@ public class doDeleteCamp extends Interaction {
 					Perms.EDIT_CAMP_SUGGESTION,
 					Perms.DELETE_CAMP_SUGGESTION
 				));
-			((UserController)control).grantPerms(participant, EnumSet.of(Perms.REGISTER_AS_COMITTEE));
+			((UserController)control).grantPerms(participant, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
 		}
 		((CampController)control).deleteCamp(campid);
 		System.out.println("Camp has been deleted. This change will be reflected for participants");

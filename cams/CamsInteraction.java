@@ -223,7 +223,7 @@ public final class CamsInteraction{ //Menu choices
 	 * It is implied both the user and the menu know which camp the registration is for
 	 * Usually a user would have already selected a camp before this choice is given
 	 */
-	public static MenuChoice registerAsCommittee	= new MenuChoice(Perms.REGISTER_AS_COMITTEE,		"Join the camp committee",	new doSubmitCommitteeRegistration());
+	public static MenuChoice registerAsCommittee	= new MenuChoice(Perms.REGISTER_AS_COMMITTEE,		"Join the camp committee",	new doSubmitCommitteeRegistration());
 	/**
 	 * List of menu choices to be used for the single suggestion menu
 	 * <p>
@@ -277,8 +277,7 @@ public final class CamsInteraction{ //Menu choices
 		registerAsAttendee,
 		registerAsCommittee,
 		viewOwnEnquiry,
-		submitEnquiry,
-		deleteCamp
+		submitEnquiry
 	);
 	/**
 	 * Denotes a Static Menu instance representing the menu users first see.

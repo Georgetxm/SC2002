@@ -45,7 +45,7 @@ public final class doSubmitAttendeeRegistration extends Interaction {
 			return false;
 		}
 		
-		if(camplist.keySet().contains(campid)) {
+		if(camplist!=null&&camplist.keySet().contains(campid)) {
 			System.out.println("Already registered");
 			return false;
 		}

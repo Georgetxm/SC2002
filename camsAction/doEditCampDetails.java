@@ -41,7 +41,7 @@ public class doEditCampDetails extends Interaction {
 			System.out.println("What would you like to amend:");
 			int counter = 1;
 			for(CampAspects aspect:info.keySet())// For each aspect, print aspect
-				System.out.printf("%d: %s\n",counter,GetData.FromObject(info.get(aspect)));
+				System.out.printf("%d: %s\n",counter++,GetData.FromObject(info.get(aspect)));
 			choice = s.nextInt(); //user chooses an aspect, see if choice is valid
 			if(choice<1||choice>info.keySet().size()) {
 				System.out.println("Invalid option");
@@ -54,6 +54,7 @@ public class doEditCampDetails extends Interaction {
 		CampAspects chosenaspect = (CampAspects) info.keySet().toArray()[choice-1];
 		switch(chosenaspect) { //Depending on the aspect chosen, request data from user
 		case DATE: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
+		case USERGROUP:			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampFaculty(s); 		break;
 		case REGISTRATION_DEADLINE: 	edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);break;
 		case LOCATION: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
 		case SLOTS: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;

@@ -1,6 +1,7 @@
 package camsAction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -48,17 +49,23 @@ public final class queryOwnSuggestionsMenu extends UserMenu {
 		if(campid>=0) ((Controller) control).FilterCamp(campid);
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's suggestionid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
-		List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist;
+		List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist = null;
+		HashMap<Integer,Entry<CampAspects,? extends Object>> suggestionset;
 		try {
-			suggestionlist = new ArrayList<>(((SuggestionController) ((SuggestionController)
-					control).FilterUser(GetData.CurrentUser())).getSuggestions().entrySet());
+			suggestionset = ((SuggestionController) ((SuggestionController)
+					control).FilterUser(GetData.CurrentUser())).getSuggestions();
 		} catch (ControllerParamsException | ControllerItemMissingException | UserInfoMissingException e) {
 			throw new MissingRequestedDataException("User info does not tally with one that has suggestions");
 		}
 		//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
-		for(Entry<Integer, Entry<CampAspects, ? extends Object>> entry : suggestionlist) {
-			options.add(new MenuChoice(Perms.DEFAULT, entry.getValue().getKey().name()+":\n"+GetData.FromObject(entry.getValue().getValue()),CamsInteraction.SingleSuggestionMenu));
+		if(suggestionset!=null) {
+			suggestionlist = new ArrayList<>(suggestionset.entrySet());
+			for(Entry<Integer, Entry<CampAspects, ? extends Object>> entry : suggestionlist)
+				options.add(new MenuChoice(Perms.DEFAULT, 
+						entry.getValue().getKey().name()+":\n"+GetData.FromObject(entry.getValue().getValue()),
+						CamsInteraction.SingleSuggestionMenu));
 		}
+		
 		choices = options;
 		while(true) {
 			int option = givechoices();

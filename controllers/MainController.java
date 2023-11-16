@@ -341,10 +341,11 @@ public class MainController implements CampController, UserController, Suggestio
 
             if (camp.getVisibility()) {
                 visibleCamps.put(campid, camp);
+                return true;
             } else {
                 visibleCamps.remove(campid);
+                return false;
             }
-            return true;
         }
         return false;
     }

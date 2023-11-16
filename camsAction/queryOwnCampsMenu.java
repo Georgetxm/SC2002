@@ -64,7 +64,7 @@ public class queryOwnCampsMenu extends UserMenu {
 				}
 				continue;
 			}
-			Data.put("CurrentCamp", camplist.get(option).getKey());
+			Data.put("CurrentCamp", camplist.get(option-1).getKey());
 			System.out.println(">>"+choices.get(option).text());
 			try {checkandrun(option);}
 			catch(MissingRequestedDataException e) {

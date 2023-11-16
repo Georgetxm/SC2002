@@ -60,7 +60,7 @@ public class Student extends User {
                 Perms.SUBMIT_CAMP_ENQUIRY,
                 Perms.VIEW_AVAILABLE_CAMP,
                 Perms.REGISTER_AS_ATTENDEE,
-                Perms.REGISTER_AS_COMITTEE,
+                Perms.REGISTER_AS_COMMITTEE,
                 Perms.WITHDRAW_AS_ATTENDEE));
         this.campCommittee = -1;
         this.points = 0;
@@ -80,8 +80,14 @@ public class Student extends User {
      * @param permissions the Student's permissions, @see Perms
      *
      */
-    public Student(String userId, String password, Faculty faculty, EnumSet<Perms> permissions) {
-        super(userId, password, faculty, permissions);
+    public Student(String userId, String password, Faculty faculty) {
+        super("Armstrong", "StrongPassword", Faculty.ADM, EnumSet.of(
+                Perms.DEFAULT,
+                Perms.SUBMIT_CAMP_ENQUIRY,
+                Perms.VIEW_AVAILABLE_CAMP,
+                Perms.REGISTER_AS_ATTENDEE,
+                Perms.REGISTER_AS_COMMITTEE,
+                Perms.WITHDRAW_AS_ATTENDEE));
         this.campCommittee = -1;
         this.points = 0;
         this.enquiries = new HashMap<Integer, Integer>();

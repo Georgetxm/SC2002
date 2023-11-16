@@ -9,12 +9,12 @@ public class Camp {
     private CampInfo campInfo;
     private final int campid;
     private static int nextCampId = 0;
-    private HashSet<String> attendees;
-    private HashSet<String> campCommittee;
+    private HashSet<String> attendees = new HashSet<String>();
+    private HashSet<String> campCommittee = new HashSet<String>();
     private boolean visibility;
     private final LocalDate creationDate;
-    private HashSet<Integer> enquiries;
-    private HashSet<Integer> suggestions;
+    private HashSet<Integer> enquiries = new HashSet<Integer>();
+    private HashSet<Integer> suggestions = new HashSet<Integer>();
 
     public Camp(CampInfo campInfo, HashSet<String> attendees, HashSet<String> campCommittee,
             boolean visibility, LocalDate creationDate) {

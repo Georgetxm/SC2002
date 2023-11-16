@@ -55,7 +55,7 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 			return false;
 		}
 		
-		if(camplist.keySet().contains(campid)) {
+		if(camplist!=null&&camplist.keySet().contains(campid)) {
 			System.out.println("Already registered for this camp as an attendee.");
 			return false;
 		}
@@ -70,7 +70,7 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 			Perms.EDIT_CAMP_SUGGESTION,
 			Perms.DELETE_CAMP_SUGGESTION
 		));
-		((UserController) control).denyPerms(userid, EnumSet.of(Perms.REGISTER_AS_COMITTEE));
+		((UserController) control).denyPerms(userid, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
 		System.out.println("Registered successfully as a comittee member.");
 		
 		return true;

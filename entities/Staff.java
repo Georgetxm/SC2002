@@ -1,19 +1,37 @@
 package entities;
 
 import java.util.EnumSet;
-import java.util.HashSet;
-
 import types.Faculty;
 import types.Perms;
 
 public class Staff extends User {
 
     public Staff() {
-        super();
+        super("Staffname", "", Faculty.WHOLE_NTU, EnumSet.of(
+                Perms.DEFAULT,
+                Perms.CREATE_CAMP,
+                Perms.DELETE_CAMP,
+                Perms.EDIT_CAMP,
+                Perms.APPROVE_CAMP_SUGGESTION,
+                Perms.REPLY_CAMP_ENQUIRY,
+                Perms.VIEW_CAMP_ENQUIRY,
+                Perms.VIEW_CAMP_SUGGESTION,
+                Perms.VIEW_EVERY_CAMP,
+                Perms.VIEW_CAMP_STUDENT_INFORMATION));
     }
 
-    public Staff(String userId, String password, Faculty faculty, EnumSet<Perms> permissions, HashSet<Integer> camps) {
-        super(userId, password, faculty, permissions);
+    public Staff(String userId, String password) {
+        super(userId, password, Faculty.WHOLE_NTU, EnumSet.of(
+                Perms.DEFAULT,
+                Perms.CREATE_CAMP,
+                Perms.DELETE_CAMP,
+                Perms.EDIT_CAMP,
+                Perms.APPROVE_CAMP_SUGGESTION,
+                Perms.REPLY_CAMP_ENQUIRY,
+                Perms.VIEW_CAMP_ENQUIRY,
+                Perms.VIEW_CAMP_SUGGESTION,
+                Perms.VIEW_EVERY_CAMP,
+                Perms.VIEW_CAMP_STUDENT_INFORMATION));
     }
 
     // public HashMap<Integer, String> getCampInCharge() {

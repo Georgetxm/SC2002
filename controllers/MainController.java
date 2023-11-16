@@ -155,6 +155,7 @@ public class MainController implements CampController, UserController, Suggestio
             if (role.equals(Role.COMMITTEE)
                     && Student.class.isInstance(user)
                     && camp.addCommittee(userId)
+                    && ((Student) user).registerForCamp(campId)
                     && ((Student) user).setCampComittee(campId)) {
                 return true;
             }

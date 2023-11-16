@@ -156,7 +156,11 @@ public class MainController implements CampController, UserController, Suggestio
                     && Student.class.isInstance(user)
                     && camp.addAttendee(userId)
                     && camp.addCommittee(userId)
+<<<<<<< HEAD
                     && user.registerForCamp(campId)
+=======
+                    && ((Student) user).registerForCamp(campId)
+>>>>>>> branch 'main' of https://github.com/Georgetxm/SC2002.git
                     && ((Student) user).setCampComittee(campId)) {
                 return true;
             }

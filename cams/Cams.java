@@ -67,13 +67,11 @@ public class Cams {
 		// end of fake camp info
 		
 		MainController control = new MainController(userlist, camplist);
-
+		Scanner s = new Scanner(System.in);
 		Data.put("Controller", control);
-		Data.put("Scanner", new Scanner(System.in));
+		Data.put("Scanner",s);
 		while(true) {
-			Data.put("CurrentUser", "Aldrin");
-			CamsInteraction.startmenu.run();
-			Data.put("CurrentUser", "Armstrong");
+			Data.put("CurrentUser",Login.getCurrentUser(s,userlist));
 			CamsInteraction.startmenu.run();
 		}
 	}

@@ -47,7 +47,6 @@ public final class queryCampsFilteredMenu extends UserMenu {
 		while(true) {
 			String userid = GetData.CurrentUser();
 			Faculty userfaculty = ((UserController) control).getUserFaculty(userid);
-			@SuppressWarnings("unchecked")
 			EnumSet<Perms> userperm= ((UserController) control).grantPerms(userid,EnumSet.noneOf(Perms.class));
 			
 			List<MenuChoice> options = new ArrayList<MenuChoice>();

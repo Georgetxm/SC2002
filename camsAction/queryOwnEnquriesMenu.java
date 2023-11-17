@@ -54,7 +54,7 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 			List<MenuChoice> options = new ArrayList<MenuChoice>();
 			//Gets the dictionary of a user's controllerid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
 			List<Entry<Integer, String>> enquirylist = null;
-			HashMap<Integer, String> enquiryset;
+			HashMap<Integer, String> enquiryset=null;
 			try {
 				enquiryset = ((EnquiryController) control).getEnquiries();
 			} catch (ControllerParamsException | ControllerItemMissingException e) {

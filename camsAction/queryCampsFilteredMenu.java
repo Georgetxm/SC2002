@@ -48,7 +48,7 @@ public final class queryCampsFilteredMenu extends UserMenu {
 			String userid = GetData.CurrentUser();
 			Faculty userfaculty = ((UserController) control).getUserFaculty(userid);
 			@SuppressWarnings("unchecked")
-			EnumSet<Perms> userperm=(EnumSet<Perms>) Data.get("UserPerms");
+			EnumSet<Perms> userperm= ((UserController) control).grantPerms(userid,EnumSet.noneOf(Perms.class));
 			
 			List<MenuChoice> options = new ArrayList<MenuChoice>();
 			options.add(CamsInteraction.filterCampBy);

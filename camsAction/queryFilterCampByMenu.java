@@ -29,12 +29,12 @@ public class queryFilterCampByMenu extends UserMenu {
 	@SuppressWarnings("unchecked")
 	@Override
 	public final Boolean run() throws UserInfoMissingException {
-		List<MenuChoice> options = new ArrayList<MenuChoice>();
-		for(CampAspects aspects:CampAspects.values()) {
-			options.add(new MenuChoice(Perms.DEFAULT, "Filter by "+aspects.name(),new queryCampsFilteredMenu()));
-		}
-		choices=options;
 		while(true) {
+			List<MenuChoice> options = new ArrayList<MenuChoice>();
+			for(CampAspects aspects:CampAspects.values()) {
+				options.add(new MenuChoice(Perms.DEFAULT, "Filter by "+aspects.name(),new queryCampsFilteredMenu()));
+			}
+			choices=options;
 			int option = givechoices();
 			if(option<0) break;
 			Scanner s = getScanner();

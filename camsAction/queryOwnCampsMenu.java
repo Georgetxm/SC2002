@@ -36,25 +36,26 @@ public class queryOwnCampsMenu extends UserMenu {
 		if(!CampController.class.isInstance(Data.get("Controller")))	
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
-		String userid = GetData.CurrentUser();
-		Data.put("isViewingOwnCamps", true);
-		List<MenuChoice> options = new ArrayList<MenuChoice>();
-		options.add(CamsInteraction.filterCampBy);
-		ArrayList<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>();
-		HashMap<Integer, String> campset = null;
-		try {
-			campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
-		} catch (ControllerItemMissingException e) {
-			throw new MissingRequestedDataException("Invalid user id, cannot find owned camps");
-		}
-		if(campset!=null) {
-				camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
-			for(Entry<Integer, String> entry:camplist) {
-				options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.OwnCampMenu));
-			}
-		}
-		choices = options;
+
 		while(true) {
+			String userid = GetData.CurrentUser();
+			Data.put("isViewingOwnCamps", true);
+			List<MenuChoice> options = new ArrayList<MenuChoice>();
+			options.add(CamsInteraction.filterCampBy);
+			ArrayList<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>();
+			HashMap<Integer, String> campset = null;
+			try {
+				campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+			} catch (ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("Invalid user id, cannot find owned camps");
+			}
+			if(campset!=null) {
+					camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
+				for(Entry<Integer, String> entry:camplist) {
+					options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.OwnCampMenu));
+				}
+			}
+			choices = options;
 			int option = givechoices();
 			if(option<0) break;
 			if(option==0) {

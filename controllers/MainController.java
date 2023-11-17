@@ -154,14 +154,10 @@ public class MainController implements CampController, UserController, Suggestio
             }
             if (role.equals(Role.COMMITTEE)
                     && Student.class.isInstance(user)
-                    && camp.addAttendee(userId)
-                    && camp.addCommittee(userId)
-<<<<<<< HEAD
+                    && ((Student) user).setCampComittee(campId)
                     && user.registerForCamp(campId)
-=======
-                    && ((Student) user).registerForCamp(campId)
->>>>>>> branch 'main' of https://github.com/Georgetxm/SC2002.git
-                    && ((Student) user).setCampComittee(campId)) {
+                    && camp.addAttendee(userId)
+                    && camp.addCommittee(userId)) {
                 return true;
             }
         }
@@ -621,10 +617,12 @@ public class MainController implements CampController, UserController, Suggestio
      */
     @Override
     public Integer getCampCommitteeOfStudent(String userId) {
-        Student user = (Student) findUserById(userId);
-        if (!user.equals(null)) {
-            return user.getCampCommittee();
-        }
+    	if(Student.class.isInstance(findUserById(userId))) {
+    		Student user = (Student) findUserById(userId);
+            if (!user.equals(null))
+                return user.getCampCommittee();
+    	}
+        
         return null;
     }
 

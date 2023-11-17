@@ -1,9 +1,10 @@
 package camsAction;
 
-import java.lang.ModuleLayer.Controller;
+
 import java.util.NoSuchElementException;
 
 import controllers.CampController;
+import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.EnquiryController;
 import entities.Data;
@@ -28,7 +29,7 @@ public final class doDeleteEnquiry extends Interaction {
 		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
 		if(!CampController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		Object control = (Controller) Data.get("Controller");
+		Controller control = (Controller) Data.get("Controller");
 		
 		int campid = GetData.CampID();
 		int enquiryid = GetData.EnquiryID();

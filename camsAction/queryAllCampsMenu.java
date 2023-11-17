@@ -45,43 +45,43 @@ public class queryAllCampsMenu extends UserMenu {
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Controller control = (Controller) Data.get("Controller");
 		
-		String userid = GetData.CurrentUser();
-		Faculty userfaculty = ((UserController) control).getUserFaculty(userid);
-		EnumSet<Perms> userperm= ((UserController) control).grantPerms(userid,EnumSet.noneOf(Perms.class));
-		
-		List<MenuChoice> options = new ArrayList<MenuChoice>();
-		options.add(CamsInteraction.filterCampBy);
-		if(GetData.isViewingOwnCamps()) {
-			control.FilterUser(userid);
-			System.out.println("administered user filter");
-		}
-		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) //filter should return Controller. This may lead to issues.
-			((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.USERGROUP,userfaculty));
-		List<Entry<Integer, String>> camplist = null;
-		HashMap<Integer, String> campset;
-		try {
-			campset = ((CampController) control).getCamps();
-		} catch (ControllerItemMissingException e) {
-			throw new MissingRequestedDataException("Cannot find user");
-		}
-		if(campset!=null) {
-			camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
-			for(Entry<Integer, String> entry:camplist)
-				try {
-					options.add(new MenuChoice(
-							Perms.DEFAULT, 
-							entry.getValue(),
-							((CampController) control.FilterUser(userid)).getCamps().keySet().contains(entry.getKey())?
-								CamsInteraction.OwnCampMenu : 
-								CamsInteraction.OtherCampMenu)
-					);
-				} catch (ControllerItemMissingException e) {
-					continue;
-				}
-		}
-		choices = options;
-		
 		while(true) {
+			String userid = GetData.CurrentUser();
+			Faculty userfaculty = ((UserController) control).getUserFaculty(userid);
+			EnumSet<Perms> userperm= ((UserController) control).grantPerms(userid,EnumSet.noneOf(Perms.class));
+			
+			List<MenuChoice> options = new ArrayList<MenuChoice>();
+			options.add(CamsInteraction.filterCampBy);
+			if(GetData.isViewingOwnCamps()) {
+				control.FilterUser(userid);
+				System.out.println("administered user filter");
+			}
+			if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) //filter should return Controller. This may lead to issues.
+				((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.USERGROUP,userfaculty));
+			List<Entry<Integer, String>> camplist = null;
+			HashMap<Integer, String> campset;
+			try {
+				campset = ((CampController) control).getCamps();
+			} catch (ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("Cannot find user");
+			}
+			if(campset!=null) {
+				camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
+				for(Entry<Integer, String> entry:camplist)
+					try {
+						options.add(new MenuChoice(
+								Perms.DEFAULT, 
+								entry.getValue(),
+								((CampController) control.FilterUser(userid)).getCamps().keySet().contains(entry.getKey())?
+									CamsInteraction.OwnCampMenu : 
+									CamsInteraction.OtherCampMenu)
+						);
+					} catch (ControllerItemMissingException e) {
+						continue;
+					}
+			}
+			choices = options;
+			
 			int option = givechoices();
 			if(option<0) break;
 			if(option==0) {

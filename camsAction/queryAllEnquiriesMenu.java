@@ -38,36 +38,45 @@ public final class queryAllEnquiriesMenu extends UserMenu {
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Controller control = (Controller) Data.get("Controller");
-		
-		int campid;
-		try {
-			campid = GetData.CampID();
-		} catch (MissingRequestedDataException e) {
-			System.out.println("Missing camp id! Maybe restart from the main menu?");
-			return false;
-		}
-		List<MenuChoice> options = new ArrayList<MenuChoice>();
-		
-		List<Entry<Integer, String>> enquirylist = null;
-		HashMap<Integer, String> enquiryset;
-		try {
-			enquiryset = ((EnquiryController) control.FilterCamp(campid)).getEnquiries();
-		} catch (ControllerParamsException | ControllerItemMissingException e) {
-			throw new MissingRequestedDataException("Invalid camp id");
-		}
-		if(enquiryset!=null) {
-			enquirylist = new ArrayList<Entry<Integer, String>>(enquiryset.entrySet());
-			for(Entry<Integer, String> entry : enquirylist)
-				options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.SingleEnquiryMenu));
-		}
-		choices = options;
+
 		while(true) {
+			int campid;
+			try {
+				campid = GetData.CampID();
+			} catch (MissingRequestedDataException e) {
+				System.out.println("Missing camp id! Maybe restart from the main menu?");
+				return false;
+			}
+			List<MenuChoice> options = new ArrayList<MenuChoice>();
+			
+			List<Entry<Integer, String>> enquirylist = null;
+			HashMap<Integer, String> enquiryset;
+			try {
+				enquiryset = ((EnquiryController) control.FilterCamp(campid)).getEnquiries();
+			} catch (ControllerParamsException | ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("Invalid camp id");
+			}
+			if(enquiryset!=null) {
+				enquirylist = new ArrayList<Entry<Integer, String>>(enquiryset.entrySet());
+				for(Entry<Integer, String> entry : enquirylist)
+					options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.SingleEnquiryMenu));
+			}
+			choices = options;
 			int option = givechoices();
 			if(option<0) break;
 			int enquiryid = enquirylist.get(option).getKey();
 			Data.put("CurrentItem", enquiryid);
 			System.out.println(">>"+choices.get(option).text());
-			checkandrun(option);
+			try {
+				for(String reply:((EnquiryController) control).getReplies(enquiryid)) System.out.println(reply);
+				((EnquiryController) control).finaliseEnquiry(enquiryid);
+			} catch (ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("Enquiry id is invalid");
+			}
+			try {checkandrun(option);}
+			catch(MissingRequestedDataException e) {
+				System.out.println("Ran into an error. Please retry or return to main menu before retrying");
+			}
 		}
 		return true;
 	}

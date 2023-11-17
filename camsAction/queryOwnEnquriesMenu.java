@@ -41,32 +41,32 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 		if(!SuggestionController.class.isInstance(Data.get("Controller")))
 			throw new NoSuchElementException("Controller not able enough. Request Failed.");
 		Object control = Data.get("Controller");
-		
-		int campid = -1;
-		try {campid = GetData.CampID();}
-		catch(MissingRequestedDataException e) {}
-		if(campid>=0) ((Controller) control).FilterCamp(campid);
-		
-		String userid = GetData.CurrentUser();
-		((Controller) control).FilterUser(userid);
-		
-		List<MenuChoice> options = new ArrayList<MenuChoice>();
-		//Gets the dictionary of a user's controllerid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
-		List<Entry<Integer, String>> enquirylist = null;
-		HashMap<Integer, String> enquiryset;
-		try {
-			enquiryset = ((EnquiryController) control).getEnquiries();
-		} catch (ControllerParamsException | ControllerItemMissingException e) {
-			throw new MissingRequestedDataException("Enquiry filters are malformed");
-		}
-		if(enquiryset!=null) {
-			enquirylist = new ArrayList<>(enquiryset.entrySet());
-			//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
-			for(Entry<Integer, String> entry : enquirylist) 
-				options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.SingleEnquiryMenu));
-		}
-		choices = options;
+
 		while(true) {
+			int campid = -1;
+			try {campid = GetData.CampID();}
+			catch(MissingRequestedDataException e) {}
+			if(campid>=0) ((Controller) control).FilterCamp(campid);
+			
+			String userid = GetData.CurrentUser();
+			((Controller) control).FilterUser(userid);
+			
+			List<MenuChoice> options = new ArrayList<MenuChoice>();
+			//Gets the dictionary of a user's controllerid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
+			List<Entry<Integer, String>> enquirylist = null;
+			HashMap<Integer, String> enquiryset;
+			try {
+				enquiryset = ((EnquiryController) control).getEnquiries();
+			} catch (ControllerParamsException | ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("Enquiry filters are malformed");
+			}
+			if(enquiryset!=null) {
+				enquirylist = new ArrayList<>(enquiryset.entrySet());
+				//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
+				for(Entry<Integer, String> entry : enquirylist) 
+					options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.SingleEnquiryMenu));
+			}
+			choices = options;
 			int option = givechoices();
 			if(option<0) break;
 			int enquiryid = enquirylist.get(option).getKey();
@@ -74,6 +74,7 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 			System.out.println(">>"+choices.get(option).text());
 			try {
 				for(String reply:((EnquiryController) control).getReplies(enquiryid)) System.out.println(reply);
+				((EnquiryController) control).finaliseEnquiry(enquiryid);
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Enquiry id is invalid");
 			}

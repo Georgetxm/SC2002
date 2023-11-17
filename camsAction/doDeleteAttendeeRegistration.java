@@ -3,6 +3,8 @@ package camsAction;
 import java.util.NoSuchElementException;
 
 import controllers.CampController;
+import controllers.Controller;
+import controllers.ControllerItemMissingException;
 import controllers.UserController;
 import entities.Data;
 import entities.UserInfoMissingException;
@@ -33,6 +35,18 @@ public class doDeleteAttendeeRegistration extends Interaction {
 		
 		String userid=GetData.CurrentUser();
 		int campid=GetData.CampID();
+		try {
+			if(!((CampController) ((Controller) control).FilterUser(userid)).getCamps().keySet().contains(campid)) {
+				System.out.println("You cannot withdraw from a camp you are not in");
+				return false;
+			}
+		} catch (ControllerItemMissingException e) {
+			throw new MissingRequestedDataException("Camp invalid");
+		}
+		if(((UserController) control).getCampCommitteeOfStudent(userid)==campid) {
+			System.out.println("Cannot withdraw from camp as a camp committee member");
+			return false;
+		}
 		
 		((CampController)control).removeAttendeeFromCamp(campid, userid);
 		System.out.println("Withdrawn Successfully");

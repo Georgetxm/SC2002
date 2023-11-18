@@ -1,11 +1,11 @@
 package entities;
 import java.util.TreeMap;
 
-import types.CampAspects;
+import types.CampAspect;
 
-public record CampInfo( TreeMap<CampAspects,Object> info) {
+public record CampInfo( TreeMap<CampAspect,Object> info) {
 	public CampInfo {
-        if (info.size()!= CampAspects.values().length) 
+        if (info.size()!= CampAspect.values().length) 
         throw new java.lang.IllegalArgumentException("CampInfo not complete");
     }
 }

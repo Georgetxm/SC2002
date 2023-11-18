@@ -8,7 +8,7 @@ import controllers.ControllerItemMissingException;
 import controllers.SuggestionController;
 import entities.Data;
 import interactions.Interaction;
-import types.CampAspects;
+import types.CampAspect;
 /**
  * Interaction that represents the action of changing the contents of a submitted suggestion
  * Effectively serves as a function pointer
@@ -31,7 +31,7 @@ public final class doEditSuggestion extends Interaction {
 		
 		int suggestionid = GetData.SuggestionID();
 		Scanner s = getScanner();
-		CampAspects chosenaspect = null;
+		CampAspect chosenaspect = null;
 		try {
 			if(!suggestioncontrol.isSuggestionEditable(suggestionid)) {
 				System.out.println("Suggestion has been viewed and may not be edited");
@@ -43,14 +43,14 @@ public final class doEditSuggestion extends Interaction {
 		}
 		
 
-		Entry<CampAspects, ? extends Object> edited;
+		Entry<CampAspect, ? extends Object> edited;
 		
 		switch(chosenaspect) { //Depending on the aspect chosen, request data from user
-		case DATE: 					edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
-		case REGISTRATION_DEADLINE: edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);	break;
-		case LOCATION: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
-		case SLOTS: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
-		case DESCRIPTION: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); 	break;
+		case DATE: 					edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampDate(s); 		break;
+		case REGISTRATION_DEADLINE: edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampRegisterDate(s);	break;
+		case LOCATION: 				edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampLocation(s); 	break;
+		case SLOTS: 				edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampSlots(s); 		break;
+		case DESCRIPTION: 			edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampDescription(s); 	break;
 		default: System.out.println("Change to this field is no longer permitted. As such your suggestion cannot be amended."); return false;
 		}
 		

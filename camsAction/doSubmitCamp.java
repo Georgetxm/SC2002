@@ -15,7 +15,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import interactions.Interaction;
-import types.CampAspects;
+import types.CampAspect;
 /**
  * Interaction that represents the creating and saving a camp into the database.
  * Effectively serves as a function pointer
@@ -45,15 +45,15 @@ public class doSubmitCamp extends Interaction {
 		//These are then compiled and given to campcontrol so it can register a camp
 		//Typecasts are done when necessary
 		int campid = ((CampController)control).addCamp(new CampInfo(new TreeMap<>(Map.ofEntries(
-				(Entry<CampAspects, ? extends Object>) ParseInput.CampName(s),
-				(Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s),
-				(Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s),
-				(Entry<CampAspects, ? extends Object>) ParseInput.CampFaculty(s),
-				(Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s),
-				(Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s),
-				(Entry<CampAspects, ? extends Object>) new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.COMMITTEESLOTS,10),
-				(Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s),
-				new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.STAFFIC,userid)
+				(Entry<CampAspect, ? extends Object>) ParseInput.CampName(s),
+				(Entry<CampAspect, ? extends Object>) ParseInput.CampDate(s),
+				(Entry<CampAspect, ? extends Object>) ParseInput.CampRegisterDate(s),
+				(Entry<CampAspect, ? extends Object>) ParseInput.CampFaculty(s),
+				(Entry<CampAspect, ? extends Object>) ParseInput.CampLocation(s),
+				(Entry<CampAspect, ? extends Object>) ParseInput.CampSlots(s),
+				(Entry<CampAspect, ? extends Object>) new HashMap.SimpleEntry<CampAspect,Integer>(CampAspect.COMMITTEESLOTS,10),
+				(Entry<CampAspect, ? extends Object>) ParseInput.CampDescription(s),
+				new HashMap.SimpleEntry<CampAspect, Object>(CampAspect.STAFFIC,userid)
 		))),userid);
 		
 		System.out.println("Camp has been created.");

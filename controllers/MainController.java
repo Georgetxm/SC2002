@@ -16,7 +16,7 @@ import entities.Enquiry;
 import entities.Staff;
 import entities.Student;
 import entities.User;
-import types.CampAspects;
+import types.CampAspect;
 import types.Faculty;
 import types.Perms;
 import types.Role;
@@ -30,7 +30,7 @@ public class MainController implements CampController, UserController, Suggestio
     private String userFilter;
     private Integer campFilter;
     private boolean visibleFilter;
-    private HashMap<CampAspects, Object> aspectFilter;
+    private HashMap<CampAspect, Object> aspectFilter;
 
     public MainController(HashMap<String, User> users, HashMap<Integer, Camp> camps) {
         this.users = users;
@@ -41,7 +41,7 @@ public class MainController implements CampController, UserController, Suggestio
         this.userFilter = null;
         this.campFilter = null;
         this.visibleFilter = false;
-        this.aspectFilter = new HashMap<CampAspects, Object>();
+        this.aspectFilter = new HashMap<CampAspect, Object>();
     }
 
     /**
@@ -367,7 +367,7 @@ public class MainController implements CampController, UserController, Suggestio
 
         // Iterate through camps and add the campId and campName to the HashMap
         this.camps.forEach((k, v) -> {
-            filteredCampList.put(k, v.getCampInfo().info().get(CampAspects.NAME).toString());
+            filteredCampList.put(k, v.getCampInfo().info().get(CampAspect.NAME).toString());
         });
         // If visibleFilter is true, intersect the HashMap with the visibleCamps
         // HashSet which will omit the camps that are not visible
@@ -389,7 +389,7 @@ public class MainController implements CampController, UserController, Suggestio
         // that do not match the aspectFilter
         if (!aspectFilter.equals(null))
             for (Integer campid : Set.copyOf(filteredCampList.keySet()))
-                for (Entry<CampAspects, ? extends Object> aspect : aspectFilter.entrySet())
+                for (Entry<CampAspect, ? extends Object> aspect : aspectFilter.entrySet())
                     if (!findCampById(campid).getCampInfo().info().get(aspect.getKey()).equals(aspect.getValue())) {
                         filteredCampList.remove(campid);
                         break;
@@ -487,7 +487,7 @@ public class MainController implements CampController, UserController, Suggestio
      */
 
     @Override
-    public boolean editCampDetails(int campid, Entry<CampAspects, ? extends Object> detail) {
+    public boolean editCampDetails(int campid, Entry<CampAspect, ? extends Object> detail) {
         Camp camp = findCampById(campid);
         if (!camp.equals(null)) {
             camp.getCampInfo().info().replace(detail.getKey(), detail.getValue());
@@ -645,12 +645,12 @@ public class MainController implements CampController, UserController, Suggestio
 
         if (campFilter.equals(null)) {
             for (Integer camp : user.getCamps()) {
-                campList.put(camp, findCampById(camp).getCampInfo().info().get(CampAspects.NAME).toString());
+                campList.put(camp, findCampById(camp).getCampInfo().info().get(CampAspect.NAME).toString());
             }
         } else {
             if (user.getCamps().contains(campFilter)) {
                 campList.put(campFilter,
-                        findCampById(campFilter).getCampInfo().info().get(CampAspects.NAME).toString());
+                        findCampById(campFilter).getCampInfo().info().get(CampAspect.NAME).toString());
             }
         }
 
@@ -905,7 +905,7 @@ public class MainController implements CampController, UserController, Suggestio
     }
 
     @Override
-    public Controller FilterAspect(Entry<CampAspects, ? extends Object> filter) {
+    public Controller FilterAspect(Entry<CampAspect, ? extends Object> filter) {
         aspectFilter.put(filter.getKey(), filter.getValue());
         return this;
     }
@@ -1196,7 +1196,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @throws ControllerItemMissingException
      */
     @Override
-    public int addSuggestion(Entry<CampAspects, ? extends Object> suggestion, String rationale, String ownerid,
+    public int addSuggestion(Entry<CampAspect, ? extends Object> suggestion, String rationale, String ownerid,
             int campid) throws ControllerItemMissingException {
         Camp camp = findCampById(campid);
         if (camp.equals(null)) {
@@ -1228,7 +1228,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @throws ControllerItemMissingException
      */
     @Override
-    public int editSuggestion(int id, Entry<CampAspects, ? extends Object> edited, String rationale)
+    public int editSuggestion(int id, Entry<CampAspect, ? extends Object> edited, String rationale)
             throws ControllerItemMissingException {
         Suggestion suggestionToBeEdited = findSuggestionById(id);
         if (suggestionToBeEdited.equals(null)) {
@@ -1253,13 +1253,13 @@ public class MainController implements CampController, UserController, Suggestio
      * 
      */
     @Override
-    public Entry<Entry<CampAspects, ? extends Object>, String> getSuggestion(int suggestionid)
+    public Entry<Entry<CampAspect, ? extends Object>, String> getSuggestion(int suggestionid)
             throws ControllerItemMissingException {
         Suggestion suggestion = findSuggestionById(suggestionid);
         if (suggestion.equals(null)) {
             throw new ControllerItemMissingException("Suggestion does not exist");
         } else {
-            Entry<Entry<CampAspects, ? extends Object>, String> suggestionEntry = new AbstractMap.SimpleEntry<Entry<CampAspects, ? extends Object>, String>(
+            Entry<Entry<CampAspect, ? extends Object>, String> suggestionEntry = new AbstractMap.SimpleEntry<Entry<CampAspect, ? extends Object>, String>(
                     suggestion.getSuggestionAspect(), suggestion.getRationale());
             return suggestionEntry;
         }
@@ -1280,7 +1280,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @throws ControllerItemMissingException
      */
     @Override
-    public HashMap<Integer, Entry<CampAspects, ? extends Object>> getSuggestions()
+    public HashMap<Integer, Entry<CampAspect, ? extends Object>> getSuggestions()
             throws ControllerParamsException, ControllerItemMissingException {
         HashMap<Integer, Suggestion> filteredSuggestionList = this.suggestions;
 
@@ -1316,7 +1316,7 @@ public class MainController implements CampController, UserController, Suggestio
         if (filteredSuggestionList.size() > 0) {
             // Convert the HashMap of suggestion ids and suggestion objects
             // to suggestion id and suggestion aspect
-            HashMap<Integer, Entry<CampAspects, ? extends Object>> filteredSuggestionHashMap = new HashMap<Integer, Entry<CampAspects, ? extends Object>>();
+            HashMap<Integer, Entry<CampAspect, ? extends Object>> filteredSuggestionHashMap = new HashMap<Integer, Entry<CampAspect, ? extends Object>>();
             filteredSuggestionList.forEach((suggestionId, suggestionObj) -> {
                 filteredSuggestionHashMap.put(suggestionId, suggestionObj.getSuggestionAspect());
             });

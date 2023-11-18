@@ -15,7 +15,7 @@ import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.MenuChoice;
 import interactions.UserMenu;
-import types.CampAspects;
+import types.CampAspect;
 import types.Faculty;
 import types.Perms;
 /**
@@ -54,9 +54,9 @@ public final class queryCampsFilteredMenu extends UserMenu {
 			
 			if(GetData.isViewingOwnCamps()) ((CampController) control).FilterUser(userid);
 			if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) 
-				((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.USERGROUP,userfaculty));
-			List<Entry<CampAspects, ? extends Object>> filterlist = new ArrayList<Entry<CampAspects, ? extends Object>>(GetData.Filter().entrySet());
-			for(Entry<CampAspects, ? extends Object> filter:filterlist)
+				((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspect, Object>(CampAspect.USERGROUP,userfaculty));
+			List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(GetData.Filter().entrySet());
+			for(Entry<CampAspect, ? extends Object> filter:filterlist)
 				((CampController) control).FilterAspect(filter);
 			ArrayList<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>();
 			HashMap<Integer, String> campset;

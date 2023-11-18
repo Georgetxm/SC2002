@@ -14,7 +14,7 @@ import entities.Staff;
 import entities.Student;
 import entities.User;
 import entities.UserInfoMissingException;
-import types.CampAspects;
+import types.CampAspect;
 import types.Faculty;
 
 /**
@@ -49,16 +49,16 @@ public class Cams {
 		LocalDate fakeCreationDate = LocalDate.of(2021, 11, 11);
 		HashSet<LocalDate> dateset = new HashSet<LocalDate>();
 		dateset.add(fakeCreationDate);
-		TreeMap<CampAspects, Object> fakeCampInfoMap = new TreeMap<CampAspects, Object>();
-		fakeCampInfoMap.put(CampAspects.NAME, (String) "Camp1");
-		fakeCampInfoMap.put(CampAspects.DATE, dateset);
-		fakeCampInfoMap.put(CampAspects.REGISTRATION_DEADLINE, fakeCreationDate.plusDays(1));
-		fakeCampInfoMap.put(CampAspects.USERGROUP, Faculty.ADM);
-		fakeCampInfoMap.put(CampAspects.LOCATION, types.Location.ADM);
-		fakeCampInfoMap.put(CampAspects.SLOTS, (Integer) 200);
-		fakeCampInfoMap.put(CampAspects.COMMITTEESLOTS, (Integer) 10);
-		fakeCampInfoMap.put(CampAspects.DESCRIPTION, "Some Descriptions");
-		fakeCampInfoMap.put(CampAspects.STAFFIC, (String) "Abdul Bari");
+		TreeMap<CampAspect, Object> fakeCampInfoMap = new TreeMap<CampAspect, Object>();
+		fakeCampInfoMap.put(CampAspect.NAME, (String) "Camp1");
+		fakeCampInfoMap.put(CampAspect.DATE, dateset);
+		fakeCampInfoMap.put(CampAspect.REGISTRATION_DEADLINE, fakeCreationDate.plusDays(1));
+		fakeCampInfoMap.put(CampAspect.USERGROUP, Faculty.ADM);
+		fakeCampInfoMap.put(CampAspect.LOCATION, types.Location.ADM);
+		fakeCampInfoMap.put(CampAspect.SLOTS, (Integer) 200);
+		fakeCampInfoMap.put(CampAspect.COMMITTEESLOTS, (Integer) 10);
+		fakeCampInfoMap.put(CampAspect.DESCRIPTION, "Some Descriptions");
+		fakeCampInfoMap.put(CampAspect.STAFFIC, (String) "Abdul Bari");
 		CampInfo fakeCampInfo = new CampInfo(fakeCampInfoMap);
 		fakeAttendees.add("Brandon Wright");
 		fakeAttendees.add("Jokic Nikola");

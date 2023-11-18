@@ -16,7 +16,7 @@ import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.MenuChoice;
 import interactions.UserMenu;
-import types.CampAspects;
+import types.CampAspect;
 import types.Perms;
 /**
  * Interaction that represents the action of offering users a list of on their list suggestions to choose from.
@@ -48,8 +48,8 @@ public final class queryOwnSuggestionsMenu extends UserMenu {
 			if(campid>=0) ((SuggestionController) control).FilterCamp(campid);
 			List<MenuChoice> options = new ArrayList<MenuChoice>();
 			//Gets the dictionary of a user's suggestionid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
-			List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist = null;
-			HashMap<Integer,Entry<CampAspects,? extends Object>> suggestionset;
+			List<Entry<Integer, Entry<CampAspect, ? extends Object>>> suggestionlist = null;
+			HashMap<Integer,Entry<CampAspect,? extends Object>> suggestionset;
 			try {
 				suggestionset = ((SuggestionController) ((SuggestionController)
 						control).FilterUser(GetData.CurrentUser())).getSuggestions();
@@ -59,7 +59,7 @@ public final class queryOwnSuggestionsMenu extends UserMenu {
 			//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
 			if(suggestionset!=null) {
 				suggestionlist = new ArrayList<>(suggestionset.entrySet());
-				for(Entry<Integer, Entry<CampAspects, ? extends Object>> entry : suggestionlist)
+				for(Entry<Integer, Entry<CampAspect, ? extends Object>> entry : suggestionlist)
 					options.add(new MenuChoice(Perms.DEFAULT, 
 							entry.getValue().getKey().name()+":\n"+GetData.FromObject(entry.getValue().getValue()),
 							CamsInteraction.SingleSuggestionMenu));

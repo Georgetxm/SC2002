@@ -2,7 +2,7 @@ package controllers;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-import types.CampAspects;
+import types.CampAspect;
 
 public interface SuggestionController extends Controller {
 	/**
@@ -16,15 +16,15 @@ public interface SuggestionController extends Controller {
 	 * @param suggestion the suggestion aspect text to be added
 	 * @param ownerid    the owner of the suggestion, which should be a student
 	 */
-	int addSuggestion(Entry<CampAspects, ? extends Object> suggestion, String rationale, String ownerid, int campid)
+	int addSuggestion(Entry<CampAspect, ? extends Object> suggestion, String rationale, String ownerid, int campid)
 			throws ControllerItemMissingException;
 
 		
-	int editSuggestion(int id, Entry<CampAspects, ? extends Object> edited, String rationale) throws ControllerItemMissingException;
+	int editSuggestion(int id, Entry<CampAspect, ? extends Object> edited, String rationale) throws ControllerItemMissingException;
 
-	Entry<Entry<CampAspects, ? extends Object>, String> getSuggestion(int suggestionid) throws ControllerItemMissingException;
+	Entry<Entry<CampAspect, ? extends Object>, String> getSuggestion(int suggestionid) throws ControllerItemMissingException;
 
-	HashMap<Integer, Entry<CampAspects, ? extends Object>> getSuggestions() throws ControllerParamsException, ControllerItemMissingException;
+	HashMap<Integer, Entry<CampAspect, ? extends Object>> getSuggestions() throws ControllerParamsException, ControllerItemMissingException;
 
 	Boolean deleteSuggestion(int suggestionid) throws ControllerItemMissingException; // delete suggestion
 

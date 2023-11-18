@@ -12,7 +12,7 @@ import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.MenuChoice;
 import interactions.UserMenu;
-import types.CampAspects;
+import types.CampAspect;
 import types.Perms;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
@@ -43,8 +43,8 @@ public class queryAllSuggestionsMenu extends UserMenu {
 			
 			List<MenuChoice> options = new ArrayList<MenuChoice>();
 			//Gets the dictionary of a user's suggestionid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
-			List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist = null;
-			HashMap<Integer, Entry<CampAspects, ? extends Object>> suggestionset;
+			List<Entry<Integer, Entry<CampAspect, ? extends Object>>> suggestionlist = null;
+			HashMap<Integer, Entry<CampAspect, ? extends Object>> suggestionset;
 			try {
 				suggestionset = ((SuggestionController) ((SuggestionController) control).FilterCamp(campid)).getSuggestions();
 			} catch (ControllerParamsException | ControllerItemMissingException e) {
@@ -53,7 +53,7 @@ public class queryAllSuggestionsMenu extends UserMenu {
 			if(suggestionset!=null) {
 				suggestionlist = new ArrayList<>(suggestionset.entrySet());
 				//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
-				for(Entry<Integer, Entry<CampAspects, ? extends Object>> entry : suggestionlist)
+				for(Entry<Integer, Entry<CampAspect, ? extends Object>> entry : suggestionlist)
 					options.add(new MenuChoice(
 							Perms.DEFAULT, 
 							entry.getValue().getKey().name()+":\n"+GetData.FromObject(entry.getValue().getValue()),

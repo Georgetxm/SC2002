@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 
 import entities.CampInfo;
-import types.CampAspects;
+import types.CampAspect;
 import types.Role;
 
 public interface CampController extends Controller {
@@ -39,12 +39,12 @@ public interface CampController extends Controller {
 
 	public HashSet<String> getCampComittees(int campid);
 
-	public boolean editCampDetails(int campid, Entry<CampAspects, ? extends Object> detail);
+	public boolean editCampDetails(int campid, Entry<CampAspect, ? extends Object> detail);
 
 	public boolean isAttendeeFull(int campid);
 
 	public boolean isCommiteeFull(int campid);
 
 	public Controller FilterUser(String userid);
-	public Controller FilterAspect(Entry<CampAspects,? extends Object> filter);
+	public Controller FilterAspect(Entry<CampAspect,? extends Object> filter);
 }

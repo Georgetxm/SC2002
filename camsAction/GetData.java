@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import entities.CampInfo;
 import entities.Data;
 import entities.UserInfoMissingException;
-import types.CampAspects;
+import types.CampAspect;
 /**
  * Class that contains the error handling wrappers for Data exclusive to camsAction
  * Checks and throws the required exceptions as needed.
@@ -115,10 +115,10 @@ final class GetData {
 	 * @throws MissingRequestedDataException if filter list is malformed.
 	 */
 	@SuppressWarnings("unchecked")
-	static final HashMap<CampAspects,Object> Filter() throws MissingRequestedDataException{
-		HashMap<CampAspects,Object> filter;
-		if(!Data.containsKey("Filter")) return new HashMap<CampAspects,Object>();
-		try {filter = (HashMap<CampAspects,Object>) Data.get("Filter");}
+	static final HashMap<CampAspect,Object> Filter() throws MissingRequestedDataException{
+		HashMap<CampAspect,Object> filter;
+		if(!Data.containsKey("Filter")) return new HashMap<CampAspect,Object>();
+		try {filter = (HashMap<CampAspect,Object>) Data.get("Filter");}
 		catch(ClassCastException e) {
 			throw new MissingRequestedDataException("Invalid filter type");
 		}

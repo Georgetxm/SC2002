@@ -16,7 +16,7 @@ import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.MenuChoice;
 import interactions.UserMenu;
-import types.CampAspects;
+import types.CampAspect;
 import types.Faculty;
 import types.Perms;
 /**
@@ -57,7 +57,7 @@ public class queryAllCampsMenu extends UserMenu {
 				System.out.println("administered user filter");
 			}
 			if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) //filter should return Controller. This may lead to issues.
-				((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.USERGROUP,userfaculty));
+				((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspect, Object>(CampAspect.USERGROUP,userfaculty));
 			List<Entry<Integer, String>> camplist = null;
 			HashMap<Integer, String> campset;
 			try {

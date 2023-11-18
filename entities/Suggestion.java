@@ -3,7 +3,7 @@ package entities;
 import java.time.LocalDate;
 import java.util.Map.Entry;
 
-import types.CampAspects;
+import types.CampAspect;
 
 public class Suggestion {
     private final String creatorUserId;
@@ -11,13 +11,13 @@ public class Suggestion {
     private final int suggestionId;
     private final int campId;
     private String rationale;
-    private Entry<CampAspects, ? extends Object> suggestionAspect;
+    private Entry<CampAspect, ? extends Object> suggestionAspect;
     private boolean accepted;
     private final LocalDate creationDate;
     private LocalDate lastUpdatedDate;
 
     public Suggestion(String creatorUserId, int campid, String rationale,
-            Entry<CampAspects, ? extends Object> suggestionAspect,
+            Entry<CampAspect, ? extends Object> suggestionAspect,
             LocalDate creationDate) {
         this.creatorUserId = creatorUserId;
         this.suggestionId = nextSuggestionId++;
@@ -40,11 +40,11 @@ public class Suggestion {
         return this.campId;
     }
 
-    public Entry<CampAspects, ? extends Object> getSuggestionAspect() {
+    public Entry<CampAspect, ? extends Object> getSuggestionAspect() {
         return this.suggestionAspect;
     }
 
-    public boolean setSuggestionAspect(Entry<CampAspects, ? extends Object> newSuggestionAspect) {
+    public boolean setSuggestionAspect(Entry<CampAspect, ? extends Object> newSuggestionAspect) {
         if (newSuggestionAspect == null) {
             throw new IllegalArgumentException("Suuggestion aspect cannot be null or empty");
         }

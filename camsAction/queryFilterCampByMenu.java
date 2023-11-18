@@ -10,7 +10,7 @@ import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.MenuChoice;
 import interactions.UserMenu;
-import types.CampAspects;
+import types.CampAspect;
 import types.Perms;
 /**
  * Interaction that represents the action of offering users a list of aspects to filter camps by
@@ -31,30 +31,30 @@ public class queryFilterCampByMenu extends UserMenu {
 	public final Boolean run() throws UserInfoMissingException {
 		while(true) {
 			List<MenuChoice> options = new ArrayList<MenuChoice>();
-			for(CampAspects aspects:CampAspects.values()) {
+			for(CampAspect aspects:CampAspect.values()) {
 				options.add(new MenuChoice(Perms.DEFAULT, "Filter by "+aspects.name(),new queryCampsFilteredMenu()));
 			}
 			choices=options;
 			int option = givechoices();
 			if(option<0) break;
 			Scanner s = getScanner();
-			Entry<CampAspects, ? extends Object> edited;
-			switch(CampAspects.values()[option]) { //Depending on the aspect chosen, request data from user
-			case NAME:					edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampName(s); 		break;
-			case DATE: 					edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDate(s); 		break;
-			case REGISTRATION_DEADLINE: edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampRegisterDate(s);	break;
-			case USERGROUP:				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampFaculty(s);		break;
-			case LOCATION: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampLocation(s); 	break;
-			case SLOTS: 				edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampSlots(s); 		break;
-			case DESCRIPTION: 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampDescription(s); 	break;
-			case COMMITTEESLOTS:		edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampComitteeSlots(s);break;
-			case STAFFIC:	 			edited = (Entry<CampAspects, ? extends Object>) ParseInput.CampStaffIC(s);	 	break;
+			Entry<CampAspect, ? extends Object> edited;
+			switch(CampAspect.values()[option]) { //Depending on the aspect chosen, request data from user
+			case NAME:					edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampName(s); 		break;
+			case DATE: 					edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampDate(s); 		break;
+			case REGISTRATION_DEADLINE: edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampRegisterDate(s);	break;
+			case USERGROUP:				edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampFaculty(s);		break;
+			case LOCATION: 				edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampLocation(s); 	break;
+			case SLOTS: 				edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampSlots(s); 		break;
+			case DESCRIPTION: 			edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampDescription(s); 	break;
+			case COMMITTEESLOTS:		edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampComitteeSlots(s);break;
+			case STAFFIC:	 			edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampStaffIC(s);	 	break;
 			default: System.out.println("Cannot search by this field"); return false;
 			}
-			HashMap<CampAspects, ?extends Object> existingfilter = null;
+			HashMap<CampAspect, ?extends Object> existingfilter = null;
 			try {existingfilter =  GetData.Filter();}
 			catch(MissingRequestedDataException e) {
-				HashMap<CampAspects,Object> newfilter = new HashMap<CampAspects,Object>();
+				HashMap<CampAspect,Object> newfilter = new HashMap<CampAspect,Object>();
 				newfilter.put(edited.getKey(),edited.getValue());
 				Data.put("Filter", newfilter);
 				System.out.println(choices.get(option).text()+":\n"+GetData.FromObject(edited.getValue()));
@@ -64,7 +64,7 @@ public class queryFilterCampByMenu extends UserMenu {
 				}
 				continue;
 			}
-			((HashMap<CampAspects,Object>)existingfilter).put(edited.getKey(),edited.getValue());
+			((HashMap<CampAspect,Object>)existingfilter).put(edited.getKey(),edited.getValue());
 			Data.put("Filter",existingfilter);
 			System.out.println("Filtering by "+choices.get(option).text());
 			try {checkandrun(option);}

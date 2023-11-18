@@ -3,7 +3,7 @@ package entities;
 import java.time.LocalDate;
 import java.util.HashSet;
 
-import types.CampAspects;
+import types.CampAspect;
 
 public class Camp {
     private CampInfo campInfo;
@@ -56,7 +56,7 @@ public class Camp {
     }
 
     public boolean isCampAttendeeFull() {
-        return this.attendees.size() >= (int) this.campInfo.info().get(CampAspects.SLOTS);
+        return this.attendees.size() >= (int) this.campInfo.info().get(CampAspect.SLOTS);
     }
 
     public boolean addAttendee(String userId) {
@@ -64,8 +64,8 @@ public class Camp {
             return false;
         }
         this.attendees.add(userId);
-        Integer currentAttendees = (Integer) this.campInfo.info().get(CampAspects.SLOTS);
-        this.campInfo.info().put(CampAspects.SLOTS, ((Integer) (currentAttendees + 1)));
+        Integer currentAttendees = (Integer) this.campInfo.info().get(CampAspect.SLOTS);
+        this.campInfo.info().put(CampAspect.SLOTS, ((Integer) (currentAttendees + 1)));
 
         return true;
     }
@@ -75,8 +75,8 @@ public class Camp {
             return false;
         }
         this.attendees.remove(userId);
-        Integer updatedAttendees = (Integer) this.campInfo.info().get(CampAspects.SLOTS) - 1;
-        this.campInfo.info().put(CampAspects.SLOTS, updatedAttendees);
+        Integer updatedAttendees = (Integer) this.campInfo.info().get(CampAspect.SLOTS) - 1;
+        this.campInfo.info().put(CampAspect.SLOTS, updatedAttendees);
         return true;
     }
 
@@ -89,7 +89,7 @@ public class Camp {
     }
 
     public boolean isCampCommitteeFull() {
-        return this.campCommittee.size() >= (int) this.campInfo.info().get(CampAspects.COMMITTEESLOTS);
+        return this.campCommittee.size() >= (int) this.campInfo.info().get(CampAspect.COMMITTEESLOTS);
     }
 
     public boolean addCommittee(String userId) {
@@ -107,7 +107,7 @@ public class Camp {
         // Integer currentAttendees = (Integer)
         // this.campInfo.info().get(CampAspects.COMMITTEESLOTS);
         // this.campInfo.info().put(CampAspects.SLOTS, currentAttendees + 1);
-        this.campInfo.info().compute(CampAspects.SLOTS,
+        this.campInfo.info().compute(CampAspect.SLOTS,
                 (key, value) -> (value == null) ? (Integer) 1 : (Integer) value + 1);
 
         return true;
@@ -118,8 +118,8 @@ public class Camp {
             return false;
         }
         this.campCommittee.remove(userId);
-        Integer currentAttendees = (Integer) this.campInfo.info().get(CampAspects.SLOTS);
-        this.campInfo.info().put(CampAspects.SLOTS, currentAttendees - 1);
+        Integer currentAttendees = (Integer) this.campInfo.info().get(CampAspect.SLOTS);
+        this.campInfo.info().put(CampAspect.SLOTS, currentAttendees - 1);
         return true;
     }
 

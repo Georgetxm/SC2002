@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Map.Entry;
 
-import types.CampAspects;
+import types.CampAspect;
 import types.Faculty;
 import types.Location;
 /**
@@ -28,16 +28,16 @@ final class ParseInput {
 	 * @param s Scanner to be used.
 	 * @return the hashmap entry denoting the a camp name
 	 */
-	static final Entry<CampAspects,String> CampName(Scanner s){
+	static final Entry<CampAspect,String> CampName(Scanner s){
 		System.out.println("Type Camp Name\n");
-		return new HashMap.SimpleEntry<CampAspects,String>(CampAspects.NAME,s.nextLine());
+		return new HashMap.SimpleEntry<CampAspect,String>(CampAspect.NAME,s.nextLine());
 	}
 	/**
 	 * Queries a user for camp dates and creates the appropriate storage container to store it.
 	 * @param s Scanner to be used.
 	 * @return the hashmap entry denoting the a camp name
 	 */
-	static final Entry<CampAspects,HashSet<LocalDate>> CampDate(Scanner s){
+	static final Entry<CampAspect,HashSet<LocalDate>> CampDate(Scanner s){
 		System.out.println("Now please enter your camp dates.");
 		String input = "";
 		HashSet<LocalDate> datelist = new HashSet<LocalDate>();
@@ -49,14 +49,14 @@ final class ParseInput {
 			catch(DateTimeParseException e) {System.out.println("Date format is wrong");}
 			System.out.println("Date saved. Enter more dates or press enter to exit");
 		}
-		return new HashMap.SimpleEntry<CampAspects,HashSet<LocalDate>>(CampAspects.DATE,datelist);
+		return new HashMap.SimpleEntry<CampAspect,HashSet<LocalDate>>(CampAspect.DATE,datelist);
 	}
 	/**
 	 * Queries a user for the registration deadline and creates the appropriate storage container to store it.
 	 * @param s Scanner to be used.
 	 * @return the hashmap entry denoting the a camp name
 	 */
-	static final SimpleEntry<CampAspects, LocalDate> CampRegisterDate(Scanner s){
+	static final SimpleEntry<CampAspect, LocalDate> CampRegisterDate(Scanner s){
 		System.out.println("Now please enter the registration deadline");
 		LocalDate date;
 		while(true) {
@@ -68,14 +68,14 @@ final class ParseInput {
 			}
 			break;
 		}
-		return new HashMap.SimpleEntry<CampAspects,LocalDate>(CampAspects.REGISTRATION_DEADLINE,date);
+		return new HashMap.SimpleEntry<CampAspect,LocalDate>(CampAspect.REGISTRATION_DEADLINE,date);
 	}
 	/**
 	 * Queries a user for the camp host faculty and creates the appropriate storage container to store it.
 	 * @param s Scanner to be used.
 	 * @return the hashmap entry denoting the a camp name
 	 */
-	static final Entry<CampAspects,Faculty> CampFaculty(Scanner s){
+	static final Entry<CampAspect,Faculty> CampFaculty(Scanner s){
 		System.out.println("Please choose a host faculty");
 		Faculty[] facultylist = Faculty.class.getEnumConstants();
 		int choice = 0;
@@ -90,14 +90,14 @@ final class ParseInput {
 			}
 			break;
 		}
-		return new HashMap.SimpleEntry<CampAspects,Faculty>(CampAspects.USERGROUP,facultylist[choice-1]);
+		return new HashMap.SimpleEntry<CampAspect,Faculty>(CampAspect.USERGROUP,facultylist[choice-1]);
 	}
 	/**
 	 * Queries a user for camp location and creates the appropriate storage container to store it.
 	 * @param s Scanner to be used.
 	 * @return the hashmap entry denoting the a camp name
 	 */
-	static final Entry<CampAspects,Location> CampLocation(Scanner s){
+	static final Entry<CampAspect,Location> CampLocation(Scanner s){
 		System.out.println("Please designate a camp location");
 		Location[] locationlist = Location.class.getEnumConstants();
 		int choice = 0;
@@ -112,14 +112,14 @@ final class ParseInput {
 			}
 			break;
 		}
-		return new HashMap.SimpleEntry<CampAspects,Location>(CampAspects.LOCATION,locationlist[choice-1]);
+		return new HashMap.SimpleEntry<CampAspect,Location>(CampAspect.LOCATION,locationlist[choice-1]);
 	}	
 	/**
 	 * Queries a user for the number of camp attendee slots and creates the appropriate storage container to store it.
 	 * @param s Scanner to be used.
 	 * @return the hashmap entry denoting the a camp name
 	 */
-	static final Entry<CampAspects,Integer>CampSlots(Scanner s){
+	static final Entry<CampAspect,Integer>CampSlots(Scanner s){
 		System.out.println("Please choose the number of participant slots");
 		Integer slots;
 		while(true) {
@@ -131,14 +131,14 @@ final class ParseInput {
 			}
 			break;
 		}
-		return new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.SLOTS,slots);
+		return new HashMap.SimpleEntry<CampAspect,Integer>(CampAspect.SLOTS,slots);
 	}
 	/**
 	 * Queries a user for number of camp committee slots and creates the appropriate storage container to store it.
 	 * @param s Scanner to be used.
 	 * @return the hashmap entry denoting the a camp name
 	 */
-	static final Entry<CampAspects,Integer>CampComitteeSlots(Scanner s){
+	static final Entry<CampAspect,Integer>CampComitteeSlots(Scanner s){
 		System.out.println("Please choose the number of committee slots");
 		Integer slots;
 		while(true) {
@@ -150,25 +150,25 @@ final class ParseInput {
 			}
 			break;
 		}
-		return new HashMap.SimpleEntry<CampAspects,Integer>(CampAspects.COMMITTEESLOTS,slots);
+		return new HashMap.SimpleEntry<CampAspect,Integer>(CampAspect.COMMITTEESLOTS,slots);
 	}
 	/**
 	 * Queries a user for camp description and creates the appropriate storage container to store it.
 	 * @param s Scanner to be used.
 	 * @return the hashmap entry denoting the a camp name
 	 */
-	static final Entry<CampAspects,String>CampDescription(Scanner s){
+	static final Entry<CampAspect,String>CampDescription(Scanner s){
 		System.out.println("Type Camp Description");
-		return new HashMap.SimpleEntry<CampAspects,String>(CampAspects.DESCRIPTION,s.nextLine());
+		return new HashMap.SimpleEntry<CampAspect,String>(CampAspect.DESCRIPTION,s.nextLine());
 	}
 	/**
 	 * Queries a user for camp staff ic and creates the appropriate storage container to store it.
 	 * @param s Scanner to be used.
 	 * @return the hashmap entry denoting the a camp name
 	 */
-	static final Entry<CampAspects,String>CampStaffIC(Scanner s){
+	static final Entry<CampAspect,String>CampStaffIC(Scanner s){
 		System.out.println("Type staff name");
 		String userid=s.nextLine();
-		return new HashMap.SimpleEntry<CampAspects,String>(CampAspects.DESCRIPTION,userid);
+		return new HashMap.SimpleEntry<CampAspect,String>(CampAspect.DESCRIPTION,userid);
 	}
 }

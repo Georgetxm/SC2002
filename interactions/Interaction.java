@@ -1,9 +1,11 @@
 package interactions;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import camsAction.MissingRequestedDataException;
 import entities.Data;
 import entities.UserInfoMissingException;
+import types.CampAspect;
 
 /**
  * 
@@ -19,6 +21,7 @@ public abstract class Interaction {
 	 * For an example of how setter injection allows us to specify dependencies at runtime, check queryAllCampsMenu
 	 * @see camsAction.queryAllCampsMenu
 	 */
+	protected Interaction next;
 	protected String message;
 	/**
 	 * Function to be run
@@ -31,9 +34,9 @@ public abstract class Interaction {
 	 * Gets the global scanner if initialised, if not initialises and returns the global scanner.
 	 * @return Scanner
 	 */
-	protected static Scanner getScanner(){
-		if(Data.containsKey("Scanner")&&Scanner.class.isInstance(Data.get("Scanner")))
-		return (Scanner) Data.get("Scanner");
-		return new Scanner(System.in);
-	}
+	protected abstract Interaction user(String id);
+	protected abstract Interaction camp(int id);
+	protected abstract Interaction suggestion(int id);
+	protected abstract Interaction enquiry(int id);
+	protected abstract Interaction filter(Entry<CampAspect, Object> filter);
 }

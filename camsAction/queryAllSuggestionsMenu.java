@@ -46,7 +46,7 @@ public class queryAllSuggestionsMenu extends UserMenu {
 			List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist = null;
 			HashMap<Integer, Entry<CampAspects, ? extends Object>> suggestionset;
 			try {
-				suggestionset = ((SuggestionController) control.FilterCamp(campid)).getSuggestions();
+				suggestionset = ((SuggestionController) ((SuggestionController) control).FilterCamp(campid)).getSuggestions();
 			} catch (ControllerParamsException | ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Camp id is invalid");
 			}

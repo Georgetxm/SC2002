@@ -40,4 +40,6 @@ public interface UserController {
 	public EnumSet<Perms> denyPerms(String userid, EnumSet<Perms> removedperms); // Returns new perms
 
 	public EnumSet<Perms> replacePerms(String userid, EnumSet<Perms> replacementperms); // Returns new perms
+
+	public Controller FilterCamp(int campid);
 }

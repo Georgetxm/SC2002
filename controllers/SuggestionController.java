@@ -36,4 +36,7 @@ public interface SuggestionController extends Controller {
 
 	int getHostCamp(int suggestionid) throws ControllerItemMissingException;
 
+	public Controller FilterUser(String userid); //
+	public Controller FilterCamp(int campid);
+
 }

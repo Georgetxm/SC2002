@@ -129,4 +129,7 @@ public interface EnquiryController extends Controller {
 	 */
 
 	ArrayList<String> getReplies(int enquiryid) throws ControllerItemMissingException;
+
+	public Controller FilterUser(String userid); //
+	public Controller FilterCamp(int campid); //adds user filter
 }

@@ -36,7 +36,7 @@ public class doDeleteAttendeeRegistration extends Interaction {
 		String userid=GetData.CurrentUser();
 		int campid=GetData.CampID();
 		try {
-			if(!((CampController) ((Controller) control).FilterUser(userid)).getCamps().keySet().contains(campid)) {
+			if(!((CampController) ((CampController) ((Controller) control)).FilterUser(userid)).getCamps().keySet().contains(campid)) {
 				System.out.println("You cannot withdraw from a camp you are not in");
 				return false;
 			}

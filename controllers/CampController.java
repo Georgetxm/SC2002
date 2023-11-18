@@ -44,4 +44,7 @@ public interface CampController extends Controller {
 	public boolean isAttendeeFull(int campid);
 
 	public boolean isCommiteeFull(int campid);
+
+	public Controller FilterUser(String userid);
+	public Controller FilterAspect(Entry<CampAspects,? extends Object> filter);
 }

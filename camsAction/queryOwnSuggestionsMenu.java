@@ -9,7 +9,6 @@ import cams.CamsInteraction;
 
 import java.util.NoSuchElementException;
 
-import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.ControllerParamsException;
 import controllers.SuggestionController;
@@ -46,7 +45,7 @@ public final class queryOwnSuggestionsMenu extends UserMenu {
 			int campid = -1;
 			try {campid = GetData.CampID();}
 			catch(MissingRequestedDataException e) {}
-			if(campid>=0) ((Controller) control).FilterCamp(campid);
+			if(campid>=0) ((SuggestionController) control).FilterCamp(campid);
 			List<MenuChoice> options = new ArrayList<MenuChoice>();
 			//Gets the dictionary of a user's suggestionid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
 			List<Entry<Integer, Entry<CampAspects, ? extends Object>>> suggestionlist = null;

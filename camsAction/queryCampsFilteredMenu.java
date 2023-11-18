@@ -9,7 +9,6 @@ import java.util.NoSuchElementException;
 
 import cams.CamsInteraction;
 import controllers.CampController;
-import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.UserController;
 import entities.Data;
@@ -53,12 +52,12 @@ public final class queryCampsFilteredMenu extends UserMenu {
 			options.add(CamsInteraction.filterCampBy);
 			options.add(CamsInteraction.removeCampFilter);
 			
-			if(GetData.isViewingOwnCamps()) ((Controller) control).FilterUser(userid);
+			if(GetData.isViewingOwnCamps()) ((CampController) control).FilterUser(userid);
 			if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) 
 				((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspects, Object>(CampAspects.USERGROUP,userfaculty));
 			List<Entry<CampAspects, ? extends Object>> filterlist = new ArrayList<Entry<CampAspects, ? extends Object>>(GetData.Filter().entrySet());
 			for(Entry<CampAspects, ? extends Object> filter:filterlist)
-				((Controller) control).FilterAspect(filter);
+				((CampController) control).FilterAspect(filter);
 			ArrayList<Entry<Integer, String>> camplist = new ArrayList<Entry<Integer, String>>();
 			HashMap<Integer, String> campset;
 			try {

@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 import java.util.Map.Entry;
 
 import cams.CamsInteraction;
-import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.ControllerParamsException;
 import controllers.EnquiryController;
@@ -46,10 +45,10 @@ public final class queryOwnEnquriesMenu extends UserMenu {
 			int campid = -1;
 			try {campid = GetData.CampID();}
 			catch(MissingRequestedDataException e) {}
-			if(campid>=0) ((Controller) control).FilterCamp(campid);
+			if(campid>=0) ((EnquiryController) control).FilterCamp(campid);
 			
 			String userid = GetData.CurrentUser();
-			((Controller) control).FilterUser(userid);
+			((EnquiryController) control).FilterUser(userid);
 			
 			List<MenuChoice> options = new ArrayList<MenuChoice>();
 			//Gets the dictionary of a user's controllerid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.

@@ -52,7 +52,7 @@ public final class queryAllEnquiriesMenu extends UserMenu {
 			List<Entry<Integer, String>> enquirylist = null;
 			HashMap<Integer, String> enquiryset;
 			try {
-				enquiryset = ((EnquiryController) control.FilterCamp(campid)).getEnquiries();
+				enquiryset = ((EnquiryController) ((EnquiryController) control).FilterCamp(campid)).getEnquiries();
 			} catch (ControllerParamsException | ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Invalid camp id");
 			}

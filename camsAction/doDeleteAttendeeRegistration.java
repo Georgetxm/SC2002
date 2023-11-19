@@ -47,7 +47,7 @@ public class doDeleteAttendeeRegistration extends Interaction {
 		else{
 			((CampController)control).removeAttendeeFromCamp(campid, currentuser);
 			System.out.println("Withdrawn Successfully");
-			next = CamsInteraction.OwnCampMenu(campid,currentuser);
+			next = CamsInteraction.OtherCampMenu(campid,currentuser);
 		}
 		if(this.userid!=null) next = next.withuser(userid);
 		if(this.filters!=null) next = next.withfilter(filters);

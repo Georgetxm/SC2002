@@ -81,13 +81,13 @@ public final class queryEnquriesMenu extends UserMenu {
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Enquiry id is invalid");
 			}
-			next = CamsInteraction.SingleEnquiryMenu(enquiryid);
+			next = CamsInteraction.SingleEnquiryMenu(enquiryid).withenquiry(enquiryid);
 		}
 		
 		if(userid!=null) next = next.withuser(userid);
 		if(campid!=null) next = next.withcamp(campid);
 		if(filters!=null) next = next.withfilter(filters);
 		if(this.ownerid!=null) next = next.withowner(this.ownerid);
-		return next.withenquiry(enquiryid);
+		return next;
 	}
 }

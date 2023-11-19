@@ -35,7 +35,7 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 		next = null;
 		HashMap<Integer, String> camplist = null;
 		try {
-			camplist = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+			camplist = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new UserInfoMissingException("This userid cannot be found");
 		}
@@ -57,6 +57,11 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 			));
 			((UserController) control).denyPerms(userid, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
 			System.out.println("Registered successfully as a comittee member.");
+		}
+		try {
+			camplist = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+		} catch (ControllerItemMissingException e) {
+			throw new UserInfoMissingException("This userid cannot be found");
 		}
 		next = (camplist!=null&&camplist.keySet().contains(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 		if(this.userid!=null) next = next.withuser(userid);

@@ -1,8 +1,5 @@
 package interactions;
-<<<<<<< HEAD
 import java.util.HashMap;
-=======
->>>>>>> branch 'main' of https://github.com/Georgetxm/SC2002.git
 import java.util.Scanner;
 
 import camsAction.MissingRequestedDataException;

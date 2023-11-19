@@ -1,5 +1,8 @@
 package interactions;
+<<<<<<< HEAD
 import java.util.HashMap;
+=======
+>>>>>>> branch 'main' of https://github.com/Georgetxm/SC2002.git
 import java.util.Scanner;
 
 import camsAction.MissingRequestedDataException;
@@ -36,10 +39,7 @@ public abstract class Interaction {
 	 * @throws MissingRequestedDataException if the function requested data from the controller or Data, and it was invalid or missing.
 	 */
 	public abstract Interaction run(String currentuser, Scanner s, Controller control) throws UserInfoMissingException,MissingRequestedDataException;
-	/**
-	 * Gets the global scanner if initialised, if not initialises and returns the global scanner.
-	 * @return Scanner
-	 */
+
 	public final Interaction withuser(String id) {
 		this.userid = id;
 		return this;

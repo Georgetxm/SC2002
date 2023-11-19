@@ -1,12 +1,12 @@
 package camsAction;
 
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import cams.CamsInteraction;
+import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.EnquiryController;
 import controllers.UserController;
-import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
@@ -25,31 +25,23 @@ public final class doSubmitReply extends Interaction {
 	 *@return true if controller accepts the request(s) and false if otherwise.
 	 *@throws MissingRequestedDataException if the enquiry to be replied to cannot be found
 	 *@throws UserInfoMissingException if the user id of the current user cannot be found
-	 */
-	@Override
-	public final Boolean run() throws MissingRequestedDataException, UserInfoMissingException {
-		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
-		if(
-			!EnquiryController.class.isInstance(Data.get("Controller"))||
-			!UserController.class.isInstance(Data.get("Controller"))
-		)	throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		EnquiryController enquirycontrol = (EnquiryController) Data.get("Controller");
-		UserController usercontrol = (UserController) Data.get("Controller");
-		
-		int enquiryid = GetData.EnquiryID();
-		String userid = GetData.CurrentUser();
-		
-		Scanner s = getScanner();
+	 */@Override
+	public Interaction run(String currentuser, Scanner s, Controller control)
+			throws UserInfoMissingException, MissingRequestedDataException {
 		System.out.println("Please type your reply.");
-		
 		try {
-			enquirycontrol.saveReply(enquiryid, s.nextLine());
+			((EnquiryController) control).saveReply(enquiryid, s.nextLine());
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("This enquiry cannot be found");
 		}
 		System.out.println("Reply Submitted");
-		usercontrol.incrementPoints(userid, 1);
-		return true;
+		((UserController) control).incrementPoints(currentuser, 1);
+		next = CamsInteraction.SingleEnquiryMenu(enquiryid);
+		if(this.userid!=null) next = next.withuser(userid);
+		if(this.campid!=null) next = next.withcamp(campid);
+		if(this.filters!=null) next = next.withfilter(filters);
+		if(this.ownerid!=null) next = next.withowner(this.ownerid);
+		return next.withenquiry(enquiryid);
 	}
 
 }

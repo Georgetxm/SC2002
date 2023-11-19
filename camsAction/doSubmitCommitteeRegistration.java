@@ -2,12 +2,13 @@ package camsAction;
 
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
+import java.util.Scanner;
 
+import cams.CamsInteraction;
 import controllers.CampController;
+import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.UserController;
-import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import types.Perms;
@@ -28,54 +29,40 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 	 *@return true if controller accepts the request(s) and false if otherwise, or the camp is full, or the user is already an existing camp committee member, or the user has already registered for the given camp as another role.
 	 *@throws MissingRequestedDataException if the camp to be registered for cannot be found
 	 *@throws UserInfoMissingException if the user id of the current user cannot be found
-	 */
-	@Override
-	public final Boolean run() throws UserInfoMissingException, MissingRequestedDataException {
-		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
-		Object control=Data.get("Controller");
-		if(
-			!CampController.class.isInstance(control)||
-			!UserController.class.isInstance(control)
-		)	throw new NoSuchElementException("Controller not able enough. Request Failed.");
-
-		
-		String userid=GetData.CurrentUser();
-		int campid=GetData.CampID();
-
-		HashMap<Integer, String> camplist;
+	 */@Override
+	public Interaction run(String currentuser, Scanner s, Controller control)
+			throws UserInfoMissingException, MissingRequestedDataException {
+		next = null;
+		HashMap<Integer, String> camplist = null;
 		try {
 			camplist = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
 		} catch (ControllerItemMissingException e) {
-			System.out.println("This userid cannot be found");
-			return false;
+			throw new UserInfoMissingException("This userid cannot be found");
 		}
-		
-		if(((UserController) control).getCampCommitteeOfStudent(userid)>=0) {
-			System.out.println("Already registered for an existing camp commitee");
-			return false;
-		}
-		
-		if(camplist!=null&&camplist.keySet().contains(campid)) {
-			System.out.println("Already registered for this camp as an attendee.");
-			return false;
-		}
-		
 		if(((CampController) control).isCommiteeFull(campid)) {
 			System.out.println("Committee is full. Please apply again next time.");
-			return false;
 		}
-		((CampController) control).joinCamp(campid, userid, Role.COMMITTEE);
-		((UserController) control).grantPerms(userid, EnumSet.of(
-			Perms.SUBMIT_CAMP_SUGGESTION,
-			Perms.EDIT_CAMP_SUGGESTION,
-			Perms.DELETE_CAMP_SUGGESTION,
-			Perms.VIEW_CAMP_ENQUIRY,
-			Perms.REPLY_CAMP_ENQUIRY
-		));
-		((UserController) control).denyPerms(userid, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
-		System.out.println("Registered successfully as a comittee member.");
-		
-		return true;
+		else if(((UserController) control).getCampCommitteeOfStudent(userid)!=null&&((UserController) control).getCampCommitteeOfStudent(userid)>=0)
+				System.out.println("Already registered for an existing camp commitee");
+		else if(camplist!=null&&camplist.keySet().contains(campid)) 
+				System.out.println("Already registered for this camp as an attendee.");
+		else {
+			((CampController) control).joinCamp(campid, userid, Role.COMMITTEE);
+			((UserController) control).grantPerms(userid, EnumSet.of(
+				Perms.SUBMIT_CAMP_SUGGESTION,
+				Perms.EDIT_CAMP_SUGGESTION,
+				Perms.DELETE_CAMP_SUGGESTION,
+				Perms.VIEW_CAMP_ENQUIRY,
+				Perms.REPLY_CAMP_ENQUIRY
+			));
+			((UserController) control).denyPerms(userid, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
+			System.out.println("Registered successfully as a comittee member.");
+		}
+		next = (camplist!=null&&camplist.keySet().contains(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+		if(this.userid!=null) next = next.withuser(userid);
+		if(this.campid!=null) next = next.withcamp(campid);
+		if(this.filters!=null) next = next.withfilter(filters);
+		return next;
 	}
 
 }

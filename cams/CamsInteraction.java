@@ -10,6 +10,7 @@ import camsAction.doDeleteCamp;
 import camsAction.doDeleteEnquiry;
 import camsAction.doDeleteSuggestion;
 import camsAction.doEditSuggestion;
+import camsAction.doNothing;
 import camsAction.doSubmitAttendeeRegistration;
 import camsAction.doSubmitCamp;
 import camsAction.doSubmitCommitteeRegistration;
@@ -20,12 +21,9 @@ import camsAction.doSubmitReply;
 import camsAction.doSubmitSuggestion;
 import camsAction.doToggleVisibility;
 import camsAction.queryFilterCampByMenu;
-import camsAction.queryAllCampsMenu;
-import camsAction.queryAllEnquiriesMenu;
-import camsAction.queryAllSuggestionsMenu;
-import camsAction.queryOwnCampsMenu;
-import camsAction.queryOwnEnquriesMenu;
-import camsAction.queryOwnSuggestionsMenu;
+import camsAction.queryCampsMenu;
+import camsAction.queryEnquriesMenu;
+import camsAction.querySuggestionsMenu;
 import interactions.MenuChoice;
 import types.Perms;
 /**
@@ -60,59 +58,73 @@ public final class CamsInteraction{ //Menu choices
 	/**
      * MenuChoice instance denoting the choice of viewing all camps
      */
-	public static MenuChoice viewAllCamps 	= new MenuChoice(Perms.DEFAULT, "View All Camps", new queryAllCampsMenu());
+	public static MenuChoice viewAllCamps=new MenuChoice(Perms.DEFAULT, "View All Camps", new queryCampsMenu());
 	/**
      * MenuChoice instance denoting the choice of viewing camps stored in their own camp list 
      * <p>
      * This can be either participating camps for students, or managing camps for staff
      */
-	public static MenuChoice viewOwnCamps		= new MenuChoice(Perms.DEFAULT,						"View your own camps",		new queryOwnCampsMenu());
+	public static MenuChoice viewOwnCamps(String userid) {
+		return new MenuChoice(Perms.DEFAULT,"View your own camps",new queryCampsMenu().withuser(userid));
+	}
 	/**
      * MenuChoice instance denoting the choice of approving a specific provided camp suggestion
      * <p>
      * It is implied the menu and user know what suggestion is being approved
      * Usually a user would have already selected a suggestion before this choice is given
      */	
-	public static MenuChoice approveSuggestion	= new MenuChoice(Perms.APPROVE_CAMP_SUGGESTION, 	"Approve Suggestion", 		new doApproveSuggestion());
+	public static MenuChoice approveSuggestion(Integer suggestionid) {
+		return new MenuChoice(Perms.APPROVE_CAMP_SUGGESTION, "Approve Suggestion", new doApproveSuggestion().withsuggestion(suggestionid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of replying to a specific provided enquiry on the camp
 	 * <p>
 	 * It is implied the menu and user know what enquiry is being approved
      * Usually a user would have already selected a enquiry before this choice is given
 	 */
-	public static MenuChoice 	submitReply			= new MenuChoice(Perms.REPLY_CAMP_ENQUIRY,			"Reply to this enquiry",	new doSubmitReply());
+	public static MenuChoice submitReply(Integer enquiryid) {
+		return new MenuChoice(Perms.REPLY_CAMP_ENQUIRY,			"Reply to this enquiry",	new doSubmitReply().withenquiry(enquiryid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of editing a specific provided camp suggestion
 	 * <p>
      * It is implied the menu and user know what suggestion is being edited
      * Usually a user would have already selected a suggestion before this choice is given
 	 */
-	public static MenuChoice 	editSuggestion		= new MenuChoice(Perms.EDIT_CAMP_SUGGESTION,		"Edit this suggestion",		new doEditSuggestion());
+	public static MenuChoice editSuggestion(Integer suggestionid) {
+		return new MenuChoice(Perms.EDIT_CAMP_SUGGESTION,"Edit this suggestion",new doEditSuggestion().withsuggestion(suggestionid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of deleting a specific provided camp suggestion
 	 * <p>
      * It is implied the menu and user know what suggestion is being deleted
      * Usually a user would have already selected a suggestion before this choice is given
 	 */
-	public static MenuChoice 	deleteSuggestion	= new MenuChoice(Perms.DELETE_CAMP_SUGGESTION,		"Delete this suggestion",	new doDeleteSuggestion());
+	public static MenuChoice 	deleteSuggestion(Integer suggestionid) {
+		return new MenuChoice(Perms.DELETE_CAMP_SUGGESTION,		"Delete this suggestion",	new doDeleteSuggestion().withsuggestion(suggestionid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of editing a specific provided enquiry on the camp
 	 * <p>
 	 * It is implied the menu and user know what enquiry is being edited
      * Usually a user would have already selected a enquiry before this choice is given
 	 */
-	public static MenuChoice editEnquiry			= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"Edit this enquiry",		new doEditEnquiry());
+	public static MenuChoice editEnquiry(Integer enquiryid) {
+		return new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"Edit this enquiry",		new doEditEnquiry().withenquiry(enquiryid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of replying to a specific provided enquiry on the camp
 	 * <p>
 	 * It is implied the menu and user know what enquiry is being approved
      * Usually a user would have already selected a enquiry before this choice is given
 	 */
-	public static MenuChoice deleteEnquiry		= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"Delete this enquiry",		new doDeleteEnquiry());
+	public static MenuChoice deleteEnquiry(Integer enquiryid) {
+		return new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"Delete this enquiry",		new doDeleteEnquiry().withenquiry(enquiryid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of creating an entire new camp
 	 */
-	public static MenuChoice createCamp			= new MenuChoice(Perms.CREATE_CAMP,					"Create a new camp",		new doSubmitCamp());
+	public static MenuChoice createCamp = new MenuChoice(Perms.CREATE_CAMP,"Create a new camp",new doSubmitCamp());
 	/**
 	 * MenuChoice instance denoting the choice of adding a filter of choice to the existing list of camps viewed
 	 * <p>
@@ -125,7 +137,7 @@ public final class CamsInteraction{ //Menu choices
 	 * This list does not include filter by camps owned as that itself is its own choice
 	 * @see viewOwnCamps
 	 */
-	public static MenuChoice removeCampFilter	= new MenuChoice(Perms.DEFAULT, 					"Remove Filter",			new queryAllCampsMenu());
+	public static MenuChoice removeCampFilter	= new MenuChoice(Perms.DEFAULT, 					"Remove Filter",			new queryCampsMenu());
 	/**
 	 * MenuChoice instance denoting the choice of deleting a camp.
 	 * <p>
@@ -133,7 +145,9 @@ public final class CamsInteraction{ //Menu choices
 	 * It is assumed the points earned via past enquiries and suggestions will be retained
 	 * This is because this coder believes the camp being deleted does not devalue work the committee already spent on the camp
 	 */
-	public static MenuChoice deleteCamp			= new MenuChoice(Perms.DELETE_CAMP,					"Delete this camp",			new doDeleteCamp());
+	public static MenuChoice deleteCamp(Integer campid) {
+		return new MenuChoice(Perms.DELETE_CAMP,"Delete this camp",	new doDeleteCamp().withcamp(campid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of editing camp details
 	 * <p>
@@ -142,7 +156,9 @@ public final class CamsInteraction{ //Menu choices
 	 * Except for camp name, since camp name is also used as an additional layer of data integrity check
 	 * Editing the camp name would require editing the camp name in all user camp lists
 	 */
-	public static MenuChoice editCamp			= new MenuChoice(Perms.EDIT_CAMP,					"Edit this camp details",	new doEditCampDetails());
+	public static MenuChoice editCamp(Integer campid) {
+		return new MenuChoice(Perms.EDIT_CAMP,"Edit this camp details",	new doEditCampDetails().withcamp(campid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of toggling the visibility of a camp 
 	 * <p>
@@ -150,14 +166,18 @@ public final class CamsInteraction{ //Menu choices
 	 * Check the camp initialisation for the default visibility state
 	 * @see entities.Camp
 	 */
-	public static MenuChoice toggleVisibility	= new MenuChoice(Perms.EDIT_CAMP,					"Toggle camp visibility",	new doToggleVisibility());
+	public static MenuChoice toggleVisibility(Integer campid) {
+		return new MenuChoice(Perms.EDIT_CAMP,	"Toggle camp visibility",	new doToggleVisibility().withcamp(campid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of viewing one's own enquiries
 	 * <p>
 	 * This can either be for a particular camp, or in general
 	 * It is implied both the user and menu know if its for a particular camp, or in general due to past choice selection
 	 */
-	public static MenuChoice viewOwnEnquiry		= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"View your own enquiries",	new queryOwnEnquriesMenu());
+	public static MenuChoice viewOwnEnquiry(String userid) {
+		return new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,	"View your own enquiries",	new queryEnquriesMenu().withowner(userid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of viewing all enquiries associated with a particular camp
 	 * <p>
@@ -167,21 +187,25 @@ public final class CamsInteraction{ //Menu choices
 	 * They would also need to ensure both intra and intercamp possibilities are handled
 	 * @see camsAction.queryOwnEnquiriesMenu
 	 */
-	public static MenuChoice viewAllEnquiry		= new MenuChoice(Perms.VIEW_CAMP_ENQUIRY,			"View all enquiries",		new queryAllEnquiriesMenu());
+	public static MenuChoice viewAllEnquiry	= new MenuChoice(Perms.VIEW_CAMP_ENQUIRY,"View all enquiries",new queryEnquriesMenu());
 	/**
 	 * MenuChoice instance denoting the choice of submitting an enquiry to a camp
 	 * <p>
 	 * It is implied both the user and the menu know which camp the enquiry is being submitted for
 	 * Usually a user would have already selected a camp before this choice is given
 	 */
-	public static MenuChoice submitEnquiry		= new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,			"Submit a new enquiry",		new doSubmitEnquiry());
+	public static MenuChoice submitEnquiry(Integer campid) {
+		return new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,	"Submit a new enquiry",	new doSubmitEnquiry().withcamp(campid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of viewing one's own suggestions
 	 * <p>
 	 * This can either be for a particular camp, or in general
 	 * It is implied both the user and menu know if its for a particular camp, or in general due to past choice selection
 	 */
-	public static MenuChoice viewOwnSuggestion	= new MenuChoice(Perms.SUBMIT_CAMP_SUGGESTION,		"View your suggestions",	new queryOwnSuggestionsMenu());
+	public static MenuChoice viewOwnSuggestion(String userid) {
+		return new MenuChoice(Perms.SUBMIT_CAMP_SUGGESTION,		"View your suggestions",	new querySuggestionsMenu().withowner(userid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of viewing all enquiries associated with a particular camp
 	 * <p>
@@ -189,16 +213,18 @@ public final class CamsInteraction{ //Menu choices
 	 * If one wishes to allow users to do so, they would have to declare a new permission
 	 * @see Perms
 	 * They would also need to ensure both intra and intercamp possibilities are handled
-	 * @see queryOwnSuggestionsMenu
+	 * @see querySuggestionsMenu
 	 */
-	public static MenuChoice viewAllSuggestion	= new MenuChoice(Perms.VIEW_CAMP_SUGGESTION,		"View all suggestions",		new queryAllSuggestionsMenu());
+	public static MenuChoice viewAllSuggestion	= new MenuChoice(Perms.VIEW_CAMP_SUGGESTION,		"View all suggestions",		new querySuggestionsMenu());
 	/**
 	 * MenuChoice instance denoting the choice of submitting a suggestion to a camp
 	 * <p>
 	 * It is implied both the user and the menu know which camp the suggestion is being submitted for
 	 * Usually a user would have already selected a camp before this choice is given
 	 */
-	public static MenuChoice submitSuggestion	= new MenuChoice(Perms.SUBMIT_CAMP_SUGGESTION,		"Submit a new suggestion",	new doSubmitSuggestion());
+	public static MenuChoice submitSuggestion(Integer campid) {
+		return new MenuChoice(Perms.SUBMIT_CAMP_SUGGESTION,		"Submit a new suggestion",	new doSubmitSuggestion().withcamp(campid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of withdrawing from a camp as an attendee
 	 * <p>
@@ -209,98 +235,125 @@ public final class CamsInteraction{ //Menu choices
 	 * @see Perms
 	 * They would also need to ensure newly affected user groups are handled
 	 */
-	public static MenuChoice withdrawRegistration= new MenuChoice(Perms.WITHDRAW_AS_ATTENDEE,		"Withdraw from this camp",	new doDeleteAttendeeRegistration());
+	public static MenuChoice withdrawRegistration(Integer campid) {
+		return new MenuChoice(Perms.WITHDRAW_AS_ATTENDEE,"Withdraw from this camp",	new doDeleteAttendeeRegistration().withcamp(campid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of registering for a camp as an attendee.
 	 * <p>
 	 * It is implied both the user and the menu know which camp the registration is for
 	 * Usually a user would have already selected a camp before this choice is given
 	 */
-	public static MenuChoice registerAsAttendee	= new MenuChoice(Perms.REGISTER_AS_ATTENDEE,		"Register as an attendee",	new doSubmitAttendeeRegistration());
+	public static MenuChoice registerAsAttendee (Integer campid) {
+		return new MenuChoice(Perms.REGISTER_AS_ATTENDEE,"Register as an attendee",	new doSubmitAttendeeRegistration().withcamp(campid));
+	}
 	/**
 	 * MenuChoice instance denoting the choice of registering for a camp as a committee.
 	 * <p>
 	 * It is implied both the user and the menu know which camp the registration is for
 	 * Usually a user would have already selected a camp before this choice is given
 	 */
-	public static MenuChoice registerAsCommittee	= new MenuChoice(Perms.REGISTER_AS_COMMITTEE,		"Join the camp committee",	new doSubmitCommitteeRegistration());
+	public static MenuChoice registerAsCommittee(Integer campid) {
+		return new MenuChoice(Perms.REGISTER_AS_COMMITTEE,	"Join the camp committee",	new doSubmitCommitteeRegistration().withcamp(campid));
+	}
+
 	/**
 	 * List of menu choices to be used for the single suggestion menu
 	 * <p>
 	 * Users will be given these choices once they have selected a suggestion
 	 */
-	private static List<MenuChoice>singlesuggestionchoice = Arrays.asList(
-		approveSuggestion,
-		editSuggestion,
-		deleteSuggestion);
+	private static List<MenuChoice>singlesuggestionchoice(int suggestionid){ 
+		return 	Arrays.asList(
+			approveSuggestion(suggestionid),
+			editSuggestion(suggestionid),
+			deleteSuggestion(suggestionid));
+	}
+		
 	/**
 	 * List of menu choices to be used for the single enquiry menu
 	 * Users will be given these choices once they have selected an enquiry
 	 */
-	private static List<MenuChoice> singleenquirychoices = Arrays.asList(
-		editEnquiry,
-		deleteEnquiry,
-		submitReply
-	);
+	private static List<MenuChoice> singleenquirychoices(int enquiryid){
+		return Arrays.asList(
+			editEnquiry(enquiryid),
+			deleteEnquiry(enquiryid),
+			submitReply(enquiryid)
+		);
+	}
 	/**
 	 * List of menu choices to be used for the start menu
 	 * Users will be given these choices immediately after logging in
 	 */
-	private static List<MenuChoice> startmenuchoices = Arrays.asList(
-		createCamp,
-		viewAllCamps,
-		viewOwnCamps,
-		viewOwnSuggestion,
-		viewOwnEnquiry
-	);
+	private static List<MenuChoice> startmenuchoices(String userid){
+		return Arrays.asList(
+			createCamp,
+			viewAllCamps,
+			viewOwnCamps(userid),
+			viewOwnSuggestion(userid),
+			viewOwnEnquiry(userid)
+	);}
 	/**
 	 * List of menu choices to be used for the own camp menu
 	 * Users will be given these choices if they have selected a camp on their camp list
 	 */
-	private static List<MenuChoice> owncampchoices = Arrays.asList(
-		deleteCamp,
-		editCamp,
-		toggleVisibility,
-		viewOwnEnquiry,
+	private static List<MenuChoice> owncampchoices(Integer campid,String userid){
+		return Arrays.asList(
+		deleteCamp(campid),
+		editCamp(campid),
+		toggleVisibility(campid),
+		viewOwnEnquiry(userid),
 		viewAllEnquiry,
-		submitEnquiry,
+		submitEnquiry(campid),
 		viewAllSuggestion,
-		viewOwnSuggestion,
-		submitSuggestion,
-		withdrawRegistration
+		viewOwnSuggestion(userid),
+		submitSuggestion(campid),
+		withdrawRegistration(campid)
 	);
+	}
 	/**
 	 * List of menu choices to be used for the other camp menu
 	 * Users will be given these choices if they have selected a camp not on their camp list
 	 */
-	private static List<MenuChoice> othercampchoices = Arrays.asList(
-		registerAsAttendee,
-		registerAsCommittee,
-		viewOwnEnquiry,
-		submitEnquiry
-	);
+	private static List<MenuChoice> othercampchoices(Integer campid, String userid){
+		return Arrays.asList(
+			registerAsAttendee(campid),
+			registerAsCommittee(campid),
+			viewOwnEnquiry(userid),
+			submitEnquiry(campid)
+		);
+	}	
 	/**
 	 * Denotes a Static Menu instance representing the menu users first see.
 	 * @see startmenuchoices
 	 */
-	public static StaticMenu startmenu = new StaticMenu("Welcome! What would you like to do", startmenuchoices);
+	public static StaticMenu startmenu(String userid) {
+		return new StaticMenu("Welcome! What would you like to do", startmenuchoices(userid), new doNothing());
+	}
 	/**
 	 * Denotes a Static Menu instance representing the menu users see after they have selected a camp on their camp list
 	 * @see owncampchoices
 	 */
-	public static StaticMenu OwnCampMenu = new StaticMenu("What would you like to do", owncampchoices);
+	public static StaticMenu OwnCampMenu(Integer campid, String userid) {
+		return new StaticMenu("What would you like to do", owncampchoices(campid,userid),new queryCampsMenu());
+	}
 	/**
 	 * Denotes a Static Menu instance representing the menu users see after they have selected a camp not on their camp list
 	 * @see othercampchoices
 	 */
-	public static StaticMenu OtherCampMenu = new StaticMenu("What would you like to do",othercampchoices);
+	public static StaticMenu OtherCampMenu(Integer campid,String userid) {
+		return new StaticMenu("What would you like to do",othercampchoices(campid,userid),new queryCampsMenu());
+	}
 	/**
 	 * Denotes a Static Menu instance representing the menu users see after they have selected a suggestion
 	 * @see singlesuggestionchoice
 	 */
-	public static StaticMenu SingleSuggestionMenu = new StaticMenu("What would you like to do with this suggestion?",singlesuggestionchoice);
+	public static StaticMenu SingleSuggestionMenu(int suggestionid) {
+		return new StaticMenu("What would you like to do with this suggestion?",singlesuggestionchoice(suggestionid),new querySuggestionsMenu());
+	}
 	/**
 	 * Denotes a Static Menu instance representing the menu users see after they have selected an enquiry
 	 */
-	public static StaticMenu SingleEnquiryMenu = new StaticMenu("What would you like to do with this enquiry?",singleenquirychoices);
+	public static StaticMenu SingleEnquiryMenu(int enquiryid) {
+		return new StaticMenu("What would you like to do with this enquiry?",singleenquirychoices(enquiryid), new queryEnquriesMenu());
+	}
 }

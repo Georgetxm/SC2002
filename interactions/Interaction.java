@@ -1,9 +1,9 @@
 package interactions;
-import java.util.Map.Entry;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import camsAction.MissingRequestedDataException;
-import entities.Data;
+import controllers.Controller;
 import entities.UserInfoMissingException;
 import types.CampAspect;
 
@@ -19,9 +19,15 @@ public abstract class Interaction {
 	 * As this is an interface, we cannot specify a constructor (and it would be terrible to do so anyway).
 	 * As such we will be relying on setter injection.
 	 * For an example of how setter injection allows us to specify dependencies at runtime, check queryAllCampsMenu
-	 * @see camsAction.queryAllCampsMenu
+	 * @see camsAction.queryCampsMenu
 	 */
 	protected Interaction next;
+	protected String userid;
+	protected Integer campid;
+	protected Integer suggestionid;
+	protected Integer enquiryid;
+	protected String ownerid;
+	protected HashMap<CampAspect,Object> filters;
 	protected String message;
 	/**
 	 * Function to be run
@@ -29,14 +35,33 @@ public abstract class Interaction {
 	 * @throws UserInfoMissingException if the user id of the current user cannot be found
 	 * @throws MissingRequestedDataException if the function requested data from the controller or Data, and it was invalid or missing.
 	 */
-	protected abstract Object run() throws UserInfoMissingException,MissingRequestedDataException;
+	public abstract Interaction run(String currentuser, Scanner s, Controller control) throws UserInfoMissingException,MissingRequestedDataException;
 	/**
 	 * Gets the global scanner if initialised, if not initialises and returns the global scanner.
 	 * @return Scanner
 	 */
-	protected abstract Interaction user(String id);
-	protected abstract Interaction camp(int id);
-	protected abstract Interaction suggestion(int id);
-	protected abstract Interaction enquiry(int id);
-	protected abstract Interaction filter(Entry<CampAspect, Object> filter);
+	public final Interaction withuser(String id) {
+		this.userid = id;
+		return this;
+	}
+	public final Interaction withcamp(int id) {
+		this.campid = id;
+		return this;
+	}
+	public final Interaction withsuggestion(int id) {
+		this.suggestionid=id;
+		return this;
+	}
+	public final Interaction withenquiry(int id) {
+		this.enquiryid = id;
+		return this;
+	}
+	public final Interaction withfilter(HashMap<CampAspect, Object> filter) {
+		this.filters = filter;
+		return this;
+	}
+	public final Interaction withowner(String id) {
+		this.ownerid=id;
+		return this;
+	}
 }

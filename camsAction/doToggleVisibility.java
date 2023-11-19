@@ -1,9 +1,13 @@
 package camsAction;
 
-import java.util.NoSuchElementException;
+import java.util.HashMap;
+import java.util.Scanner;
 
+import cams.CamsInteraction;
 import controllers.CampController;
-import entities.Data;
+import controllers.Controller;
+import controllers.ControllerItemMissingException;
+import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
  * Interaction that represents the action of changing the visibility of a camp to a value other than its original value.
@@ -16,21 +20,24 @@ public final class doToggleVisibility extends Interaction {
 	/**
 	 * Requests the controller to modify a camp's visibility between visible and not visible.
 	 *@return true if controller accepts the request(s) and false if otherwise.
+	 * @throws UserInfoMissingException 
 	 *@throws MissingRequestedDataException if the camp to be made visible or not visible cannot be found.
 	 */
-	@Override
-	public final Boolean run() throws MissingRequestedDataException {
-		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
-		if(
-			!CampController.class.isInstance(Data.get("Controller"))
-		)	throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		Object control = Data.get("Controller");
-		
-		int campid = GetData.CampID();
-		
+@Override
+	public Interaction run(String currentuser, Scanner s, Controller control) throws UserInfoMissingException{
 		System.out.println("Camp visibility changed. Camp is now:");
 		System.out.println(((CampController) control).toggleCampVisiblity(campid)?"Visible":"Not Visible");
-		return true;
+		HashMap<Integer, String> usercamps = null;
+		try {
+			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+		} catch (ControllerItemMissingException e) {
+			throw new UserInfoMissingException("User id not valid");
+		}
+		next = (usercamps!=null&&usercamps.containsKey(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+		if(this.userid!=null) next = next.withuser(userid);
+		if(this.campid!=null) next = next.withcamp(campid);
+		if(this.filters!=null) next = next.withfilter(filters);
+		return next;
 	}
 
 }

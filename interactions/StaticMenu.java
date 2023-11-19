@@ -1,7 +1,9 @@
 package interactions;
 import java.util.List;
+import java.util.Scanner;
 
 import camsAction.MissingRequestedDataException;
+import controllers.Controller;
 import entities.UserInfoMissingException;
 
 /**
@@ -15,30 +17,30 @@ public final class StaticMenu extends UserMenu{
 	 * @param title the message to be printed at the top before choices are given
 	 * @param choice the list of choices offered
 	 */
-	public StaticMenu(String title,List<MenuChoice> choice) {
+	public StaticMenu(String title,List<MenuChoice> choice, Interaction back) {
 		this.message=title;
 		this.choices=choice;
+		this.next = back;
 	}
-	/**
-	 * Offers users the choice declared, and runs the function associated with the choice the user makes.
-	 * The simplest implementation of a user menu.
-	 * <p>
-	 * 1. choices is populated on instantiation.<p>
-	 * 2. The user is given the choices, and picks one<p>
-	 * 3. As no flags or data is set, can immediately run the Interaction associated with the choice.<p>
-	 * 4. As no flags or data has to be cleared, immediately returns once the selected Interaction returns
-	 */
 	@Override
-	public final Boolean run() throws UserInfoMissingException{
-		while(true) {
-			System.out.println(this.message);
-			int choice = this.givechoices();
-			if(choice<0) break;
-			try {checkandrun(choice);}
-			catch(MissingRequestedDataException e) {
-				System.out.println("Ran into an error. Please retry or return to main menu before retrying");
-			}
-		}
-		return true;
+	protected void populate(String currentuser, Scanner s, Controller control) {}
+	@Override
+	public
+	final Interaction run(String currentuser, Scanner s, Controller control)
+			throws UserInfoMissingException, MissingRequestedDataException {
+		int choice = givechoices(currentuser,s,control);
+		if(choice>=0) next = choices.get(choice).action();
+		if(this.userid!=null) next = next.withuser(userid);
+		if(this.campid!=null) next = next.withcamp(campid);
+		if(this.suggestionid!=null) next = next.withsuggestion(suggestionid);
+		if(this.enquiryid!=null) next = next.withenquiry(enquiryid);
+		if(this.filters!=null) next = next.withfilter(filters);
+		this.userid = null;
+		this.campid = null;
+		this.suggestionid = null;
+		this.enquiryid = null;
+		this.filters = null;
+		return next;
 	}
+	
 }

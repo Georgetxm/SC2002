@@ -1,12 +1,13 @@
 package camsAction;
 
-import java.util.NoSuchElementException;
+import java.util.HashMap;
 import java.util.Scanner;
 
+import cams.CamsInteraction;
 import controllers.CampController;
+import controllers.Controller;
+import controllers.ControllerItemMissingException;
 import controllers.EnquiryController;
-import controllers.UserController;
-import entities.Data;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
@@ -25,25 +26,24 @@ public final class doSubmitEnquiry extends Interaction {
 	 *@throws UserInfoMissingException if the user id of the current user cannot be found
 	 */
 	@Override
-	public final Integer run() throws UserInfoMissingException, MissingRequestedDataException {
-		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
-		if(
-			!CampController.class.isInstance(Data.get("Controller"))||
-			!UserController.class.isInstance(Data.get("Controller"))||
-			!EnquiryController.class.isInstance(Data.get("Controller"))
-		)
-			throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		Object control = Data.get("Controller");
-		
-		int campid = GetData.CampID();
-		String userid = GetData.CurrentUser();
-		Scanner s = getScanner();
-		
+	public Interaction run(String currentuser, Scanner s, Controller control)
+			throws UserInfoMissingException, MissingRequestedDataException {
+		if(campid==null) throw new MissingRequestedDataException("Camp ID wrong");
 		System.out.println("Please type your enquiry:");
-		int enquiryid = ((EnquiryController)control).addEnquiry(s.nextLine(),userid,campid);
+		((EnquiryController)control).addEnquiry(s.nextLine(),currentuser,campid);
 		System.out.println("Your enquiry has been submitted.");
-		
-		return enquiryid;
+		HashMap<Integer, String> usercamps = null;
+		try {
+			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+		} catch (ControllerItemMissingException e) {
+			throw new UserInfoMissingException("User id not valid");
+		}
+		next = (usercamps!=null&&usercamps.containsKey(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+		if(this.userid!=null) next = next.withuser(userid);
+		if(this.campid!=null) next = next.withcamp(campid);
+		if(this.filters!=null) next = next.withfilter(filters);
+		if(this.ownerid!=null) next = next.withowner(this.ownerid);
+		return next;
 	}
 
 }

@@ -1,12 +1,12 @@
 package camsAction;
 
-import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 import controllers.CampController;
+import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.SuggestionController;
 import controllers.UserController;
-import entities.Data;
 import interactions.Interaction;
 
 /**
@@ -31,22 +31,16 @@ public final class doApproveSuggestion extends Interaction {
 	 * @throws MissingRequestedDataException  if user to have points incremented
 	 *                                        cannot be found
 	 */
-	@Override
-	public final Boolean run() throws MissingRequestedDataException {
-		if (!Data.containsKey("Controller"))
-			throw new NoSuchElementException("No controller found. Request Failed.");
-		if (!CampController.class.isInstance(Data.get("Controller")) ||
-				!UserController.class.isInstance(Data.get("Controller")) ||
-				!SuggestionController.class.isInstance(Data.get("Controller")))
-			throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		Object control = Data.get("Controller");
-
-		int campid = GetData.CampID();
-		int suggestionid = GetData.SuggestionID();
+@Override
+	public Interaction run(String currentuser, Scanner s, Controller control)
+			throws MissingRequestedDataException {
+		
+		if(suggestionid==null) throw new MissingRequestedDataException("Missing suggestionid");
+		
 		String ownerid;
 		try {
 			ownerid = ((SuggestionController) control).getSuggestionOwner(suggestionid);
-			((CampController) control).editCampDetails(campid,
+			((CampController) control).editCampDetails(((SuggestionController) control).getHostCamp(suggestionid),
 			((SuggestionController) control).getSuggestion(suggestionid).getKey());
 			((UserController) control).incrementPoints(ownerid, 1);
 			((SuggestionController) control).deleteSuggestion(suggestionid);
@@ -54,8 +48,12 @@ public final class doApproveSuggestion extends Interaction {
 			throw new MissingRequestedDataException("Suggestion ccannot be found");
 		}
 		System.out.println("Suggestion Approved");
-
-		return true;
+		next = new querySuggestionsMenu();
+		if(userid!=null) next = next.withuser(userid);
+		if(campid!=null) next = next.withcamp(campid);
+		if(filters!=null) next = next.withfilter(filters);
+		if(this.ownerid!=null) next = next.withowner(this.ownerid);
+		return next.withsuggestion(suggestionid);
 	}
 
 }

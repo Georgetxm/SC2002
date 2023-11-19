@@ -2,11 +2,11 @@ package camsAction;
 
 import java.util.EnumSet;
 import java.util.HashSet;
-import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 import controllers.CampController;
+import controllers.Controller;
 import controllers.UserController;
-import entities.Data;
 import interactions.Interaction;
 import types.Perms;
 /**
@@ -22,18 +22,10 @@ public class doDeleteCamp extends Interaction {
 	 * Controller is expected to cut off all links if any and ensure the database is consisten with no loose ends
 	 *@return true if controller accepts the request(s)
 	 *@throws MissingRequestedDataException if camp to be deleted cannot be found
-	 */
-	@Override
-	public final Boolean run() throws MissingRequestedDataException {
-		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
-		if(
-			!CampController.class.isInstance(Data.get("Controller"))||
-			!UserController.class.isInstance(Data.get("Controller"))
-		)	throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		Object control = Data.get("Controller");
-		
-		int campid = GetData.CampID();
-		//Remove the camp from all participants data
+	 */@Override
+	public Interaction run(String currentuser, Scanner s, Controller control)
+			throws MissingRequestedDataException {
+		if(campid==null) throw new MissingRequestedDataException("Camp id is invalid");
 		HashSet<String> participantlist = ((CampController)control).getCampComittees(campid);
 		for(String participant:participantlist) {
 			//Remove committee perms, but allow him to re-apply
@@ -46,7 +38,10 @@ public class doDeleteCamp extends Interaction {
 		}
 		((CampController)control).deleteCamp(campid);
 		System.out.println("Camp has been deleted. This change will be reflected for participants");
-		return true;
+		next = new queryCampsMenu();
+		if(this.userid!=null) next = next.withuser(userid);
+		if(this.filters!=null) next = next.withfilter(filters);
+		return next;
 	}
 
 }

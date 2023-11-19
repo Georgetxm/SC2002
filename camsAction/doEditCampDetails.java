@@ -1,12 +1,15 @@
 package camsAction;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
-import java.util.Map.Entry;
-import java.util.NoSuchElementException;
 
+import cams.CamsInteraction;
 import controllers.CampController;
-import entities.Data;
+import controllers.Controller;
+import controllers.ControllerItemMissingException;
+import entities.UserInfoMissingException;
 import interactions.Interaction;
 import types.CampAspect;
 /**
@@ -22,20 +25,11 @@ public class doEditCampDetails extends Interaction {
 	 * Asks users for the aspect to be amended and the desired values to construct the controller request.
 	 *@return true if controller accepts the request(s) and false if otherwise, or the user attempted to edit an uneditable field.
 	 *@throws MissingRequestedDataException if camp whose camp details were to be edited cannot be found.
-	 */
-	@Override
-	public final Boolean run() throws MissingRequestedDataException {
-		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
-		if(
-			!CampController.class.isInstance(Data.get("Controller"))
-		)	throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		Object control = Data.get("Controller");
-		
-		int campid = GetData.CampID();
-		//Asks campcontrol for the camp info and pulls out the info
+	 */@Override
+	public Interaction run(String currentuser, Scanner s, Controller control)
+			throws UserInfoMissingException, MissingRequestedDataException {
+		if(campid==null||userid==null) throw new MissingRequestedDataException("Camp or user editing not found");
 		TreeMap<CampAspect,? extends Object> info = ((CampController) control).getCampDetails(campid).info();
-
-		Scanner s = getScanner();
 		int choice=0;
 		while(true) {
 			System.out.println("What would you like to amend:");
@@ -50,7 +44,7 @@ public class doEditCampDetails extends Interaction {
 			break;
 		}
 
-		Entry<CampAspect, ? extends Object> edited;
+		Entry<CampAspect, ? extends Object> edited=null;
 		CampAspect chosenaspect = (CampAspect) info.keySet().toArray()[choice-1];
 		switch(chosenaspect) { //Depending on the aspect chosen, request data from user
 		case DATE: 				edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampDate(s); 		break;
@@ -59,10 +53,19 @@ public class doEditCampDetails extends Interaction {
 		case LOCATION: 			edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampLocation(s); 	break;
 		case SLOTS: 			edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampSlots(s); 		break;
 		case DESCRIPTION: 		edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampDescription(s); break;
-		default: System.out.println("This field cannot be changed."); return false;
+		default: System.out.println("This field cannot be changed.");
 		}
-		
-		((CampController) control).editCampDetails(campid,edited);
-		return true;
+		if(edited!=null)((CampController) control).editCampDetails(campid,edited);
+		HashMap<Integer, String> usercamps = null;
+		try {
+			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+		} catch (ControllerItemMissingException e) {
+			throw new UserInfoMissingException("User id not valid");
+		}
+		next = (usercamps!=null&&usercamps.containsKey(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+		if(this.userid!=null) next = next.withuser(userid);
+		if(this.filters!=null) next = next.withfilter(filters);
+		return next.withcamp(campid);
 	}
 }
+

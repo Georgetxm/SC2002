@@ -1,11 +1,10 @@
 package camsAction;
 
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.EnquiryController;
-import entities.Data;
 import interactions.Interaction;
 
 /**
@@ -27,36 +26,27 @@ public final class doEditEnquiry extends Interaction {
 	 *         the enquiry cannot be deleted
 	 * @throws MissingRequestedDataException  if the enquiry to be deleted cannot be
 	 *                                        found.
-	 */
-	@Override
-	public final Boolean run() throws MissingRequestedDataException {
-		if (!Data.containsKey("Controller"))
-			throw new NoSuchElementException("No controller found. Request Failed.");
-		if (!EnquiryController.class.isInstance(Data.get("Controller")))
-			throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		EnquiryController enquirycontrol = (EnquiryController) Data.get("Controller");
-
-		int enquiryid = GetData.EnquiryID();
-
+	 */@Override
+	public Interaction run(String currentuser, Scanner s, Controller control)
+			throws MissingRequestedDataException {
+		if(enquiryid==null) throw new MissingRequestedDataException("Enquiry is invalid");
 		try {
-			if (!enquirycontrol.isEnquiryEditable(enquiryid)) {
+			if (!((EnquiryController) control).isEnquiryEditable(enquiryid))
 				System.out.println("Enquiry has been seen and may not be edited");
-				return false;
+			else {
+				System.out.println("Please type your edited enquiry");
+				((EnquiryController) control).editEnquiry(enquiryid, s.nextLine());
+				System.out.println("Enquiry saved.");
 			}
 		} catch (ControllerItemMissingException e) {
 			System.out.println("This enquiry cannot be found");
-			return false;
 		}
-
-		Scanner s = getScanner();
-		System.out.println("Please type your edited enquiry");
-		try {
-			enquirycontrol.editEnquiry(enquiryid, s.nextLine());
-		} catch (ControllerItemMissingException e) {
-			throw new MissingRequestedDataException("Enquiry id is invalid");
-		}
-		System.out.println("Enquiry saved.");
-		return true;
+		next = new queryEnquriesMenu();
+		if(this.userid!=null) next = next.withuser(userid);
+		if(this.campid!=null) next = next.withcamp(campid);
+		if(this.filters!=null) next = next.withfilter(filters);
+		if(this.ownerid!=null) next = next.withowner(this.ownerid);
+		return next.withenquiry(enquiryid);
 	}
 
 }

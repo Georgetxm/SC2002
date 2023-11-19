@@ -21,7 +21,7 @@ public interface CampController extends Controller {
 
 	public boolean removeAttendeeFromCamp(int campid, String userid);
 
-	public boolean deleteEnquiry(int campid, int enquiryid);
+	public Boolean deleteEnquiry(int campid,int enquiryid);
 
 	public boolean deleteSuggestion(int campid, int suggestionid);
 

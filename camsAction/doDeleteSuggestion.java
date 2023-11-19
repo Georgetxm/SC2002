@@ -1,11 +1,11 @@
 package camsAction;
 
-import java.util.NoSuchElementException;
+import java.util.Scanner;
 
+import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.SuggestionController;
 import controllers.UserController;
-import entities.Data;
 import interactions.Interaction;
 
 /**
@@ -26,31 +26,27 @@ public final class doDeleteSuggestion extends Interaction {
 	 *         the suggestion cannot be deleted
 	 * @throws MissingRequestedDataException  if suggestion to be deleted cannot be
 	 *                                        found.
-	 */
-	@Override
-	public final Boolean run() throws MissingRequestedDataException {
-		if (!Data.containsKey("Controller"))
-			throw new NoSuchElementException("No controller found. Request Failed.");
-		if (!SuggestionController.class.isInstance(Data.get("Controller")) ||
-				!UserController.class.isInstance(Data.get("Controller")))
-			throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		Object control = Data.get("Controller");
-
-		int suggestionid = GetData.SuggestionID();
+	 */@Override
+	public Interaction run(String currentuser, Scanner s, Controller control)
+			throws MissingRequestedDataException {
+		if(suggestionid==null) throw new MissingRequestedDataException("Invalid suggestion id");
 		try {
-			if (((SuggestionController) control).isSuggestionEditable(suggestionid)) {
+			if (!((SuggestionController) control).isSuggestionEditable(suggestionid)) 
 				System.out.println("This suggestion is finalised and can no longer be edited or deleted");
-				return false;
+			else{
+				((UserController) control).incrementPoints(((SuggestionController) control).getSuggestionOwner(suggestionid), -1);
+				((SuggestionController) control).deleteSuggestion(suggestionid);
+				System.out.println("Suggestion deleted. Points deducted accordingly");
 			}
-			String ownerid = ((SuggestionController) control).getSuggestionOwner(suggestionid);
-
-			((UserController) control).incrementPoints(ownerid, -1);
-			((SuggestionController) control).deleteSuggestion(suggestionid);
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("Suggestion Id is invalid");
 		}
-		System.out.println("Suggestion deleted. Points deducted accordingly");
-		return true;
+		next = new querySuggestionsMenu();
+		if(this.userid!=null) next = next.withuser(userid);
+		if(this.campid!=null) next = next.withcamp(campid);
+		if(this.filters!=null) next = next.withfilter(filters);
+		if(this.ownerid!=null) next = next.withowner(this.ownerid);
+		return next.withsuggestion(suggestionid);
 	}
 
 }

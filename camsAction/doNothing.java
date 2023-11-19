@@ -1,4 +1,7 @@
 package camsAction;
+import java.util.Scanner;
+
+import controllers.Controller;
 import interactions.Interaction;
 /**
  * Interaction that represents the no action.
@@ -11,11 +14,10 @@ import interactions.Interaction;
 public final class doNothing extends Interaction{
 	/**
 	 * Function does nothing.
-	 * @return true
+	 * @return null
 	 */
 	@Override
-	public final Boolean run(){
-		System.out.println("Nothing happened.");
-		return true;
+	public Interaction run(String currentuser, Scanner s, Controller control){
+		return null;
 	}
 }

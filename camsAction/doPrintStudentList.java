@@ -1,9 +1,13 @@
 package camsAction;
 
-import java.util.NoSuchElementException;
+import java.util.HashMap;
+import java.util.Scanner;
 
+import cams.CamsInteraction;
 import controllers.CampController;
-import entities.Data;
+import controllers.Controller;
+import controllers.ControllerItemMissingException;
+import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
  * Interaction that represents the action of generating and printing a camp report.
@@ -18,18 +22,22 @@ public final class doPrintStudentList extends Interaction {
 	 * Ask the controller if a suggestion may be edited before requesting the deletion.
 	 *@return true if controller accepts the request(s) and false if otherwise, or the suggestion cannot be deleted
 	 *@throws MissingRequestedDataException if suggestion to be deleted cannot be found.
-	 */
-	@Override
-	final public Boolean run() throws MissingRequestedDataException {
-		CampController controller;
-		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
-		try {controller = (CampController) Data.get("Controller");}
-		catch(ClassCastException e) {
-			throw new NoSuchElementException("Controller lacking required methods. Request Failed.");
+	 */@Override
+	public Interaction run(String currentuser, Scanner s, Controller control)
+			throws UserInfoMissingException, MissingRequestedDataException {
+		if(campid==null) throw new MissingRequestedDataException("Camp is not valid");
+		System.out.println(((CampController) control).getCampStudentList(campid));
+		HashMap<Integer, String> usercamps = null;
+		try {
+			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+		} catch (ControllerItemMissingException e) {
+			throw new UserInfoMissingException("User id not valid");
 		}
-		int campid = GetData.CampID();
-		System.out.println(controller.getCampStudentList(campid));
-		return true;
+		next = (usercamps!=null&&usercamps.containsKey(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+		if(this.userid!=null) next = next.withuser(userid);
+		if(this.campid!=null) next = next.withcamp(campid);
+		if(this.filters!=null) next = next.withfilter(filters);
+		return next;
 	}
 
 }

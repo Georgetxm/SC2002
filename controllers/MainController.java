@@ -146,7 +146,7 @@ public class MainController implements CampController, UserController, Suggestio
         Camp camp = findCampById(campId);
         User user = (User) findUserById(userId);
 
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             if (role.equals(Role.ATTENDEE) &&
                     camp.addAttendee(userId) &&
                     user.registerForCamp(campId)) {
@@ -177,7 +177,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean addEnquiry(int campId, int enquiryId) {
         Camp camp = findCampById(campId);
-        if (camp.equals(null)) {
+        if (camp== null) {
             return false;
         } else {
             if (!camp.addEnquiry(enquiryId)) {
@@ -200,7 +200,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean addSuggestion(int campId, int suggestionId) {
         Camp camp = findCampById(campId);
-        if (camp.equals(null)) {
+        if (camp== null) {
             return false;
         } else {
             if (!camp.addSuggestion(suggestionId)) {
@@ -226,7 +226,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean deleteCamp(int campid) {
         Camp camp = findCampById(campid);
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             for (String student : camp.getAttendees()) {
                 User user = findUserById(student);
                 user.withdrawFromCamp(campid);
@@ -239,13 +239,13 @@ public class MainController implements CampController, UserController, Suggestio
             }
             for (Integer enquiry : camp.getEnquiries()) {
                 Enquiry e = findEnquiryById(enquiry);
-                if (!e.equals(null)) {
+                if (!(e== null)) {
                     enquiries.remove(e.getEnquiryId(), e);
                 }
             }
             for (Integer suggestion : camp.getSuggestions()) {
                 Suggestion s = findSuggestionById(suggestion);
-                if (!s.equals(null)) {
+                if (!(s== null)) {
                     suggestions.remove(s.getSuggestionId(), s);
                 }
             }
@@ -270,7 +270,7 @@ public class MainController implements CampController, UserController, Suggestio
     public boolean removeAttendeeFromCamp(int campId, String userId) {
         Camp camp = findCampById(campId);
         User user = findUserById(userId);
-        if (!camp.equals(null) && !user.equals(null)) {
+        if (!(camp== null) && !(user== null)) {
             if (camp.removeAttendee(userId) && user.withdrawFromCamp(campId)) {
                 return true;
             }
@@ -292,9 +292,9 @@ public class MainController implements CampController, UserController, Suggestio
      * @return true if the enquiry is successfully deleted, false otherwise
      */
     @Override
-    public boolean deleteEnquiry(int campId, int enquiryId) {
+    public Boolean deleteEnquiry(int campId, int enquiryId) {
         Camp camp = findCampById(campId);
-        if (!camp.equals(null) && camp.removeEnquiry(enquiryId)) {
+        if (!(camp== null) && camp.removeEnquiry(enquiryId)) {
             return true;
         }
         return false;
@@ -313,7 +313,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean deleteSuggestion(int campId, int suggestionId) {
         Camp camp = findCampById(campId);
-        if (!camp.equals(null) && camp.removeSuggestion(suggestionId)) {
+        if (!(camp== null) && camp.removeSuggestion(suggestionId)) {
             return true;
         }
         return false;
@@ -338,7 +338,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean toggleCampVisiblity(int campid) {
         Camp camp = findCampById(campid);
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             camp.setVisibility(!camp.getVisibility());
 
             if (camp.getVisibility()) {
@@ -377,9 +377,13 @@ public class MainController implements CampController, UserController, Suggestio
         // If userFilter get list of camp ids user has,
         // intersect with filteredCampList to omit camps that specified userFilterId is
         // not in
-        if (userFilter != null && !userFilter.equals("")) {
+        if (userFilter != null) {
             User user = (User) findUserById(userFilter);
-            if (user.equals(null)) {
+            if (user== null) {
+                userFilter = null;
+                campFilter = null;
+                aspectFilter.clear();
+                visibleFilter = false;
                 throw new ControllerItemMissingException("User not found");
             }
             HashSet<Integer> userCamps = user.getCamps();
@@ -387,7 +391,7 @@ public class MainController implements CampController, UserController, Suggestio
         }
         // If aspectFilter is not null, iterate through the HashMap and remove camps
         // that do not match the aspectFilter
-        if (!aspectFilter.equals(null))
+        if (!(aspectFilter== null))
             for (Integer campid : Set.copyOf(filteredCampList.keySet()))
                 for (Entry<CampAspect, ? extends Object> aspect : aspectFilter.entrySet())
                     if (!findCampById(campid).getCampInfo().info().get(aspect.getKey()).equals(aspect.getValue())) {
@@ -414,7 +418,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public CampInfo getCampDetails(int campId) {
         Camp camp = findCampById(campId);
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             return camp.getCampInfo();
         }
         return null;
@@ -431,7 +435,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public HashMap<String, Role> getCampStudentList(int campid) {
         Camp camp = findCampById(campid);
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             HashMap<String, Role> studentList = new HashMap<String, Role>();
             for (String student : camp.getAttendees()) {
                 studentList.put(student, Role.ATTENDEE);
@@ -454,7 +458,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public HashSet<String> getCampAttendees(int campId) {
         Camp camp = findCampById(campId);
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             return camp.getAttendees();
         }
         return null;
@@ -471,7 +475,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public HashSet<String> getCampComittees(int campid) {
         Camp camp = findCampById(campid);
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             return camp.getCampCommittee();
         }
         return null;
@@ -489,7 +493,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean editCampDetails(int campid, Entry<CampAspect, ? extends Object> detail) {
         Camp camp = findCampById(campid);
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             camp.getCampInfo().info().replace(detail.getKey(), detail.getValue());
             return true;
         }
@@ -506,7 +510,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean isAttendeeFull(int campid) {
         Camp camp = findCampById(campid);
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             return camp.isCampAttendeeFull();
         }
         return false;
@@ -522,7 +526,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean isCommiteeFull(int campid) {
         Camp camp = findCampById(campid);
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             return camp.isCampCommitteeFull();
         }
         return false;
@@ -539,7 +543,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public Faculty getUserFaculty(String userid) {
         User user = findUserById(userid);
-        if (!user.equals(null)) {
+        if (!(user== null)) {
             return user.getFaculty();
         }
         return null;
@@ -599,7 +603,7 @@ public class MainController implements CampController, UserController, Suggestio
         }
         Camp camp = findCampById(campId);
         Student user = (Student) findUserById(userId);
-        if (!camp.equals(null)
+        if (!(camp== null)
                 && user.registerForCamp(campId)
                 && camp.addCommittee(userId)
                 && user.setCampComittee(campId)) {
@@ -619,7 +623,7 @@ public class MainController implements CampController, UserController, Suggestio
     public Integer getCampCommitteeOfStudent(String userId) {
     	if(Student.class.isInstance(findUserById(userId))) {
     		Student user = (Student) findUserById(userId);
-            if (!user.equals(null))
+            if (!(user== null))
                 return user.getCampCommittee();
     	}
         
@@ -637,13 +641,13 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public HashMap<Integer, String> getCamp(String userId) {
         User user = (User) findUserById(userId);
-        if (user.equals(null)) {
+        if (user== null) {
             return null;
         }
 
         HashMap<Integer, String> campList = new HashMap<Integer, String>();
 
-        if (campFilter.equals(null)) {
+        if (campFilter== null) {
             for (Integer camp : user.getCamps()) {
                 campList.put(camp, findCampById(camp).getCampInfo().info().get(CampAspect.NAME).toString());
             }
@@ -668,12 +672,12 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public HashSet<Entry<Integer, Integer>> getUserEnquiries(String userid) {
         Student user = (Student) findUserById(userid);
-        if (user.equals(null)) {
+        if (user== null) {
             return null;
         }
 
         HashSet<Entry<Integer, Integer>> userEnquiries = new HashSet<Entry<Integer, Integer>>();
-        if (!campFilter.equals(null)) {
+        if (!(campFilter== null)) {
             for (Entry<Integer, Integer> enquiry : user.getEnquiries().entrySet()) {
                 if (enquiry.getKey().equals(campFilter)) {
                     userEnquiries.add(enquiry);
@@ -702,13 +706,13 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public HashSet<Entry<Integer, Integer>> getUserSuggestions(String userid) {
         Student user = (Student) findUserById(userid);
-        if (user.equals(null)) {
+        if (user== null) {
             return null;
         }
 
         HashSet<Entry<Integer, Integer>> userSuggestions = new HashSet<Entry<Integer, Integer>>();
 
-        if (!campFilter.equals(null)) {
+        if (!(campFilter== null)) {
             for (Entry<Integer, Integer> suggestion : user.getSuggestions().entrySet()) {
                 if (suggestion.getKey().equals(campFilter)) {
                     userSuggestions.add(suggestion);
@@ -740,7 +744,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean addSuggestion(String creatorId, int campid, int suggestionid) {
         Student user = (Student) findUserById(creatorId);
-        if (user.equals(null)) {
+        if (user== null) {
             return false;
         } else {
             if (!user.addSuggestion(campid, suggestionid)) {
@@ -765,7 +769,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean addEnquiry(String userId, int campid, int enquiryId) {
         Student user = (Student) findUserById(userId);
-        if (user.equals(null)) {
+        if (user== null) {
             return false;
         } else {
             if (!user.addEnquiry(campid, enquiryId)) {
@@ -790,7 +794,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean deleteSuggestion(String creatorId, int campid, int suggestionId) {
         Student user = (Student) findUserById(creatorId);
-        if (!user.equals(null) && user.removeSuggestion(campid, suggestionId)) {
+        if (!(user== null) && user.removeSuggestion(campid, suggestionId)) {
             return true;
         }
         return false;
@@ -811,7 +815,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public boolean deleteEnquiry(String creatorId, int campid, int enquiryId) {
         Student user = (Student) findUserById(creatorId);
-        if (!user.equals(null) && user.removeEnquiry(campid, enquiryId)) {
+        if (!(user== null) && user.removeEnquiry(campid, enquiryId)) {
             return true;
         }
         return false;
@@ -829,7 +833,7 @@ public class MainController implements CampController, UserController, Suggestio
     public int incrementPoints(String userid, int points) {
     	if(Student.class.isInstance(findUserById(userid))) {
     		Student user = (Student) findUserById(userid);
-	        if (!user.equals(null)) {
+	        if (!(user== null)) {
 	            user.incrementPoints(points);
 	            return user.getPoints();
 	        }
@@ -848,7 +852,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public EnumSet<Perms> grantPerms(String userid, EnumSet<Perms> newperms) {
         User user = (User) findUserById(userid);
-        if (!user.equals(null)) {
+        if (!(user== null)) {
             user.addPerms(newperms);
             return user.getPerms();
         }
@@ -866,7 +870,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public EnumSet<Perms> denyPerms(String userid, EnumSet<Perms> removedPerms) {
         User user = (User) findUserById(userid);
-        if (!user.equals(null)) {
+        if (!(user== null)) {
             user.removePerms(removedPerms);
             return user.getPerms();
         }
@@ -884,7 +888,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public EnumSet<Perms> replacePerms(String userid, EnumSet<Perms> replacementPerms) {
         User user = (User) findUserById(userid);
-        if (!user.equals(null)) {
+        if (!(user== null)) {
             user.replacePerms(replacementPerms);
             return user.getPerms();
         }
@@ -929,7 +933,7 @@ public class MainController implements CampController, UserController, Suggestio
         Student user = (Student) findUserById(ownerid);
 
         Camp camp = findCampById(campid);
-        if (camp.equals(null)) {
+        if (camp== null) {
             return -1;
         }
         Enquiry newEnquiry = new Enquiry(ownerid, campid, enquiry, false, LocalDate.now());
@@ -952,7 +956,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public int editEnquiry(int enquiryid, String enquiry) throws ControllerItemMissingException {
         Enquiry enquiryToEdit = findEnquiryById(enquiryid);
-        if (enquiryToEdit.equals(null)) {
+        if (enquiryToEdit== null) {
             throw new ControllerItemMissingException("Enquiry does not exist");
         }
         if (enquiryToEdit.setEnquiryBody(enquiry)) {
@@ -972,7 +976,7 @@ public class MainController implements CampController, UserController, Suggestio
      */
     @Override
     public String getEnquiry(int enquiryid) {
-        if (findEnquiryById(enquiryid).equals(null)) {
+        if (findEnquiryById(enquiryid)== null) {
             return null;
         }
 
@@ -997,12 +1001,12 @@ public class MainController implements CampController, UserController, Suggestio
         // If userFilter specified, get list of enquiry ids specified user has,
         // intersect with filteredEnquiryList to omit enquiries that specified
         // userFilterId is not in
-        if (userFilter != null && !userFilter.equals("")) {
+        if (userFilter != null) {
         	if (!Student.class.isInstance(findUserById(userFilter))) {
                 throw new ControllerParamsException("Specified userFilter is not a student");
             }
             Student filteredUser = (Student) findUserById(userFilter);
-            if (filteredUser.equals(null)) {
+            if (filteredUser== null) {
                 throw new ControllerItemMissingException("User not found");
             }
             filteredEnquiryList.keySet().retainAll((filteredUser.getEnquiries().values()));
@@ -1011,9 +1015,9 @@ public class MainController implements CampController, UserController, Suggestio
         // If campFilter specified, get list of enquiry ids specified camp has,
         // intersect with filteredEnquiryList to omit enquiries that specified
         // campFilterId is not in
-        if (!campFilter.equals(null)) {
+        if (!(campFilter==null)) {
             Camp filteredCamp = findCampById(campFilter);
-            if (filteredCamp.equals(null)) {
+            if (filteredCamp== null) {
                 throw new ControllerItemMissingException("Camp not found");
             }
             filteredEnquiryList.keySet().retainAll(filteredCamp.getEnquiries());
@@ -1021,6 +1025,7 @@ public class MainController implements CampController, UserController, Suggestio
 
         userFilter = null;
         campFilter = null;
+        aspectFilter.clear();
 
         if (filteredEnquiryList.size() > 0) {
             // Convert the HashMap of enquiry id and enquiry object to enquiry id and
@@ -1047,12 +1052,12 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public Boolean deleteEnquiry(int enquiryid) throws ControllerItemMissingException {
         Enquiry enquiry = findEnquiryById(enquiryid);
-        if (enquiry.equals(null)) {
+        if (enquiry== null) {
             throw new ControllerItemMissingException("Enquiry does not exist");
         }
 
         Camp camp = findCampById(enquiry.getCampId());
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             camp.removeEnquiry(enquiryid);
         }
 
@@ -1157,7 +1162,7 @@ public class MainController implements CampController, UserController, Suggestio
             throw new ControllerItemMissingException("Enquiry does not exist");
         }
         Enquiry enquiry = findEnquiryById(enquiryid);
-        if (!enquiry.equals(null)) {
+        if (!(enquiry== null)) {
             return enquiry.getCreatorUserId();
         }
         return null;
@@ -1177,7 +1182,7 @@ public class MainController implements CampController, UserController, Suggestio
             throw new ControllerItemMissingException("Enquiry does not exist");
         }
         Enquiry enquiry = findEnquiryById(enquiryid);
-        if (!enquiry.equals(null)) {
+        if (!(enquiry== null)) {
             return enquiry.getCampId();
         }
         return -1;
@@ -1199,7 +1204,7 @@ public class MainController implements CampController, UserController, Suggestio
     public int addSuggestion(Entry<CampAspect, ? extends Object> suggestion, String rationale, String ownerid,
             int campid) throws ControllerItemMissingException {
         Camp camp = findCampById(campid);
-        if (camp.equals(null)) {
+        if (camp== null) {
             throw new ControllerItemMissingException("Camp does not exist");
         }
         Suggestion newSuggestion = new Suggestion(ownerid, campid, rationale, suggestion, LocalDate.now());
@@ -1231,7 +1236,7 @@ public class MainController implements CampController, UserController, Suggestio
     public int editSuggestion(int id, Entry<CampAspect, ? extends Object> edited, String rationale)
             throws ControllerItemMissingException {
         Suggestion suggestionToBeEdited = findSuggestionById(id);
-        if (suggestionToBeEdited.equals(null)) {
+        if (suggestionToBeEdited== null) {
             throw new ControllerItemMissingException("Suggestion does not exist");
         }
 
@@ -1256,7 +1261,7 @@ public class MainController implements CampController, UserController, Suggestio
     public Entry<Entry<CampAspect, ? extends Object>, String> getSuggestion(int suggestionid)
             throws ControllerItemMissingException {
         Suggestion suggestion = findSuggestionById(suggestionid);
-        if (suggestion.equals(null)) {
+        if (suggestion== null) {
             throw new ControllerItemMissingException("Suggestion does not exist");
         } else {
             Entry<Entry<CampAspect, ? extends Object>, String> suggestionEntry = new AbstractMap.SimpleEntry<Entry<CampAspect, ? extends Object>, String>(
@@ -1293,7 +1298,7 @@ public class MainController implements CampController, UserController, Suggestio
         // userFilterId is not in
         if (userFilter != null && !userFilter.equals("")) {
             Student filteredUser = (Student) findUserById(userFilter);
-            if (filteredUser.equals(null)) {
+            if (filteredUser== null) {
                 throw new ControllerItemMissingException("User not found");
             }
             filteredSuggestionList.keySet().retainAll((filteredUser.getSuggestions().values()));
@@ -1302,9 +1307,9 @@ public class MainController implements CampController, UserController, Suggestio
         // If campFilter specified, get list of enquiry ids specified camp has,
         // intersect with filteredEnquiryList to omit enquiries that specified
         // campFilterId is not in
-        if (!campFilter.equals(null)) {
+        if (!(campFilter== null)) {
             Camp filteredCamp = findCampById(campFilter);
-            if (filteredCamp.equals(null)) {
+            if (filteredCamp== null) {
                 throw new ControllerItemMissingException("Camp not found");
             }
             filteredSuggestionList.keySet().retainAll(filteredCamp.getSuggestions());
@@ -1329,12 +1334,12 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public Boolean deleteSuggestion(int suggestionid) throws ControllerItemMissingException {
         Suggestion suggestionToDelete = findSuggestionById(suggestionid);
-        if (suggestionToDelete.equals(null)) {
+        if (suggestionToDelete== null) {
             throw new ControllerItemMissingException("Suggestion does not exist");
         }
 
         Camp camp = findCampById(suggestionToDelete.getCampId());
-        if (!camp.equals(null)) {
+        if (!(camp== null)) {
             camp.removeSuggestion(suggestionid);
         }
 
@@ -1354,7 +1359,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public Boolean finaliseSuggestion(int suggestionid) throws ControllerItemMissingException {
         Suggestion suggestion = findSuggestionById(suggestionid);
-        if (suggestion.equals(null)) {
+        if (suggestion== null) {
             throw new ControllerItemMissingException("Suggestion does not exist");
         }
         suggestion.setAccepted(true);
@@ -1368,7 +1373,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public Boolean isSuggestionEditable(int suggestionid) throws ControllerItemMissingException {
         Suggestion suggestion = findSuggestionById(suggestionid);
-        if (suggestion.equals(null)) {
+        if (suggestion== null) {
             throw new ControllerItemMissingException("Suggestion does not exist");
         }
         return !suggestion.isAccepted();
@@ -1386,7 +1391,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public String getSuggestionOwner(int suggestionid) throws ControllerItemMissingException {
         Suggestion suggestion = findSuggestionById(suggestionid);
-        if (suggestion.equals(null)) {
+        if (suggestion== null) {
             throw new ControllerItemMissingException("Suggestion does not exist");
         }
         return suggestion.getCreatorUserId();
@@ -1402,7 +1407,7 @@ public class MainController implements CampController, UserController, Suggestio
     @Override
     public int getHostCamp(int suggestionid) throws ControllerItemMissingException {
         Suggestion suggestion = findSuggestionById(suggestionid);
-        if (suggestion.equals(null)) {
+        if (suggestion== null) {
             throw new ControllerItemMissingException("Suggestion does not exist");
         }
         return suggestion.getCampId();

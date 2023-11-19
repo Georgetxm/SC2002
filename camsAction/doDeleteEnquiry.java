@@ -1,13 +1,11 @@
 package camsAction;
 
 
-import java.util.NoSuchElementException;
+import java.util.Scanner;
 
-import controllers.CampController;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.EnquiryController;
-import entities.Data;
 import interactions.Interaction;
 /**
  * Interaction that represents the action of deleting an enquiry
@@ -23,28 +21,31 @@ public final class doDeleteEnquiry extends Interaction {
 	 * Controller is expected to ensure all links to the enquiry are also removed, and the database remainds consistent with no loose ends.
 	 *@return true if controller accepts the request(s) or false if enquiry is already finalised, or does not accept any request.
 	 *@throws MissingRequestedDataException if the enquiryid cannot be found
-	 */
-	@Override
-	public final Boolean run() throws MissingRequestedDataException {
-		if(!Data.containsKey("Controller")) throw new NoSuchElementException("No controller found. Request Failed.");
-		if(!CampController.class.isInstance(Data.get("Controller")))
-			throw new NoSuchElementException("Controller not able enough. Request Failed.");
-		Controller control = (Controller) Data.get("Controller");
-		
-		int campid = GetData.CampID();
-		int enquiryid = GetData.EnquiryID();
+	 */@Override
+	public Interaction run(String currentuser, Scanner s, Controller control)
+			throws MissingRequestedDataException {
+		if(enquiryid==null) throw new MissingRequestedDataException("Invalid enquiry");
+		Boolean iseditable=false;
 		try {
-			if(!((EnquiryController) control).isEnquiryEditable(enquiryid)) {
-				System.out.println("This enquiry is finalised and cannot be deleted or edited!");
-				return false;
-			}
+			iseditable = ((EnquiryController) control).isEnquiryEditable(enquiryid);
 		} catch (ControllerItemMissingException e) {
-			System.out.println("This enquiry cannot be found");
-			return false;
+			throw new MissingRequestedDataException("This enquiry cannot be found");
 		}
-		((CampController) control).deleteEnquiry(campid, enquiryid);
-		System.out.println("Enquiry deleted");
-		return null;
+		if(!iseditable) System.out.println("This enquiry is finalised and cannot be deleted or edited!");
+		else {
+			try {
+				((EnquiryController) control).deleteEnquiry(enquiryid);
+			} catch (ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("This enquiry is malformed");
+			}
+			System.out.println("Enquiry deleted");
+		}
+		next = new queryEnquriesMenu();
+		if(this.userid!=null) next = next.withuser(userid);
+		if(this.campid!=null) next = next.withcamp(campid);
+		if(this.filters!=null) next = next.withfilter(filters);
+		if(this.ownerid!=null) next = next.withowner(this.ownerid);
+		return next.withenquiry(enquiryid);
 	}
 
 }

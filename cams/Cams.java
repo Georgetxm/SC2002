@@ -6,10 +6,10 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import camsAction.MissingRequestedDataException;
 import controllers.MainController;
 import entities.Camp;
 import entities.CampInfo;
-import entities.Data;
 import entities.Staff;
 import entities.Student;
 import entities.User;
@@ -68,11 +68,21 @@ public class Cams {
 		
 		MainController control = new MainController(userlist, camplist);
 		Scanner s = new Scanner(System.in);
-		Data.put("Controller", control);
-		Data.put("Scanner",s);
 		while(true) {
-			Data.put("CurrentUser",Login.getCurrentUser(s,userlist));
-			CamsInteraction.startmenu.run();
+			String currentuser = Login.getCurrentUser(s,userlist);
+			interactions.Interaction next = CamsInteraction.startmenu(currentuser);
+			interactions.Interaction current;
+			while(next!=null) {
+				current = next;
+				try {
+					next = next.run(currentuser, s, control);
+				} catch (UserInfoMissingException e) {
+					break;
+				} catch (MissingRequestedDataException e) {
+					next = current;
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

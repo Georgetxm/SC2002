@@ -15,29 +15,41 @@ import types.Faculty;
  * The Class that contains function to read and write
  * the "staff_list" and "student_list" CSV files.
  * 
- * 
  * @author Teo Xuan Ming
  * @version 1.0
  * @since 2021-11-20
  */
 public final class ReadWriteUserCSV {
+
+    /**
+     * Read user CSV.
+     * Expected CSV format: name,userId,faculty,password
+     * 
+     * @param userList
+     * @param pathName
+     */
     public static final void readUserCSV(HashMap<String, User> userList, String pathName) {
 
-        // Read CSV files from lists folder
+        // Read all files from lists folder
         File folder = new File(pathName);
         File[] files = folder.listFiles();
 
+        // Check not empty directory
         if (files != null) {
+            // Iterate through files
             for (File file : files) {
+                // If file name ends with csv and starts with staff or with student
                 if (file.isFile()
                         && file.getName().endsWith(".csv")
                         && (file.getName().startsWith("staff") || file.getName().endsWith("student"))) {
                     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                        String line = br.readLine(); // Skip header line
+                        // Skip header line i.e. first row
+                        String line = br.readLine();
 
+                        // Read each line of the file
                         while ((line = br.readLine()) != null) {
                             String[] values = line.split(",");
-                            String userId = values[1].split("@")[0];
+                            String userId = values[1].split("@")[0]; // Remove @e.ntu.edu
                             String password = values[3];
                             Faculty faculty = Faculty.valueOf(values[2]);
 

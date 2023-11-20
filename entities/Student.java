@@ -18,16 +18,6 @@ import types.Perms;
  * @version 1.0
  * @since 2021-11-06
  */
-
-/**
- * 
- */
-/**
- * 
- */
-/**
- * 
- */
 public class Student extends User {
     /**
      * campCommittee is the campId of the camp that the Student is a committee of

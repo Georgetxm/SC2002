@@ -5,6 +5,20 @@ import java.util.Map.Entry;
 
 import types.CampAspect;
 
+/**
+ * Represents a Suggestion Object
+ * 
+ * A Suggestion has the base attributres of a campId, rationale,
+ * suggestionAspect (the CampAspect to alter @see CampAspect),
+ * accepted (whether the suggestion has been accepted by the camp committee),
+ * creationDate and lastUpdatedDate
+ * Each suggestions has a unique suggestionId which is an auto-incremented
+ * static attribute
+ * 
+ * @author Teo Xuan Ming
+ * @version 1.0
+ * @since 2021-11-12
+ */
 public class Suggestion {
     private final String creatorUserId;
     private int nextSuggestionId = 0;
@@ -16,6 +30,15 @@ public class Suggestion {
     private final LocalDate creationDate;
     private LocalDate lastUpdatedDate;
 
+    /**
+     * Constructor for Suggestion. Intended use is for creating a new suggestion
+     * 
+     * @param creatorUserId
+     * @param campid
+     * @param rationale
+     * @param suggestionAspect
+     * @param creationDate
+     */
     public Suggestion(String creatorUserId, int campid, String rationale,
             Entry<CampAspect, ? extends Object> suggestionAspect,
             LocalDate creationDate) {

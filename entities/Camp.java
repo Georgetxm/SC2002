@@ -26,6 +26,16 @@ public class Camp {
         this.creationDate = creationDate;
     }
 
+    public Camp(CampInfo campInfo, HashSet<String> attendees, HashSet<String> campCommittee,
+            boolean visibility, LocalDate creationDate, HashSet<Integer> enquiries, HashSet<Integer> suggestions) {
+        this.campInfo = campInfo;
+        this.campid = nextCampId++;
+        this.attendees = attendees;
+        this.campCommittee = campCommittee;
+        this.visibility = visibility;
+        this.creationDate = creationDate;
+    }
+
     public int getCampid() {
         return this.campid;
     }

@@ -36,32 +36,8 @@ public class Cams {
 		HashMap<String, User> userlist = new HashMap<String, User>();
 		HashMap<Integer, Camp> camplist = new HashMap<Integer, Camp>();
 		// Read CSV files from lists folder
-		ReadWriteCSV.readUserCSV(userlist, "lists");
-
-		// login
-		HashSet<String> fakeAttendees = new HashSet<String>();
-		HashSet<String> fakeCampCommittee = new HashSet<String>();
-
-		// Fake camp info
-		LocalDate fakeCreationDate = LocalDate.of(2021, 11, 11);
-		HashSet<LocalDate> dateset = new HashSet<LocalDate>();
-		dateset.add(fakeCreationDate);
-		TreeMap<CampAspect, Object> fakeCampInfoMap = new TreeMap<CampAspect, Object>();
-		fakeCampInfoMap.put(CampAspect.NAME, (String) "Camp1");
-		fakeCampInfoMap.put(CampAspect.DATE, dateset);
-		fakeCampInfoMap.put(CampAspect.REGISTRATION_DEADLINE, fakeCreationDate.plusDays(1));
-		fakeCampInfoMap.put(CampAspect.USERGROUP, Faculty.ADM);
-		fakeCampInfoMap.put(CampAspect.LOCATION, types.Location.ADM);
-		fakeCampInfoMap.put(CampAspect.SLOTS, (Integer) 200);
-		fakeCampInfoMap.put(CampAspect.COMMITTEESLOTS, (Integer) 10);
-		fakeCampInfoMap.put(CampAspect.DESCRIPTION, "Some Descriptions");
-		fakeCampInfoMap.put(CampAspect.STAFFIC, (String) "Abdul Bari");
-		CampInfo fakeCampInfo = new CampInfo(fakeCampInfoMap);
-		fakeAttendees.add("Brandon Wright");
-		fakeAttendees.add("Jokic Nikola");
-		fakeCampCommittee.add("LeBron James");
-		Camp fakeCamp = new Camp(fakeCampInfo, fakeAttendees, fakeCampCommittee, false, fakeCreationDate);
-		// end of fake camp info
+		ReadWriteUserCSV.readUserCSV(userlist, "lists");
+		ReadWriteCampCSV.readCampCSV(camplist, "lists");
 
 		MainController control = new MainController(userlist, camplist);
 		Scanner s = new Scanner(System.in);

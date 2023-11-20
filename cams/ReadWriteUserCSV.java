@@ -3,6 +3,7 @@ package cams;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -23,7 +24,7 @@ public final class ReadWriteUserCSV {
 
     /**
      * Read user CSV.
-     * Expected CSV format: name,userId,faculty,password
+     * Expected CSV format: name,email,faculty,password
      * 
      * @param userList
      * @param pathName
@@ -70,4 +71,27 @@ public final class ReadWriteUserCSV {
         }
     }
 
+    /**
+     * Write user CSV.
+     * Output CSV format: name,email,faculty,password
+     * 
+     * @param userList         the user list
+     * @param fileNameWithPath e.g. /lists/staff_list.csv
+     * @return true, if successful
+     */
+    public static final boolean writeUserCSV(HashMap<String, User> userList, String fileNameWithPath) {
+        try (FileWriter writer = new FileWriter(fileNameWithPath)) {
+            // header row
+            writer.append("name,email,faculty,password\n");
+
+            for (User user : userList.values()) {
+                writer.append(user.getUserId() + "," + user.getUserId() + "," + user.getFaculty() + ","
+                        + user.getPassword() + "\n");
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

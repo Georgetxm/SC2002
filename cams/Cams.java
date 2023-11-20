@@ -1,5 +1,6 @@
 package cams;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,8 +11,6 @@ import camsAction.MissingRequestedDataException;
 import controllers.MainController;
 import entities.Camp;
 import entities.CampInfo;
-import entities.Staff;
-import entities.Student;
 import entities.User;
 import entities.UserInfoMissingException;
 import types.CampAspect;
@@ -33,18 +32,16 @@ public class Cams {
 	 * @throws UserInfoMissingException if user does not have enough valid
 	 *                                  information (i.e. userid, permissions)
 	 */
-	public static void main(String[] args) throws UserInfoMissingException{
-		//load in 
-		//login
+	public static void main(String[] args) throws UserInfoMissingException {
 		HashMap<String, User> userlist = new HashMap<String, User>();
 		HashMap<Integer, Camp> camplist = new HashMap<Integer, Camp>();
+		// Read CSV files from lists folder
+		ReadWriteCSV.readUserCSV(userlist, "lists");
+
+		// login
 		HashSet<String> fakeAttendees = new HashSet<String>();
 		HashSet<String> fakeCampCommittee = new HashSet<String>();
 
-		Student Armstrong = new Student("Armstrong","Password",Faculty.ADM);
-		Staff Aldrin = new Staff("Aldrin","Password");
-		userlist.put("Armstrong", Armstrong);
-		userlist.put("Aldrin", Aldrin);
 		// Fake camp info
 		LocalDate fakeCreationDate = LocalDate.of(2021, 11, 11);
 		HashSet<LocalDate> dateset = new HashSet<LocalDate>();
@@ -65,14 +62,14 @@ public class Cams {
 		fakeCampCommittee.add("LeBron James");
 		Camp fakeCamp = new Camp(fakeCampInfo, fakeAttendees, fakeCampCommittee, false, fakeCreationDate);
 		// end of fake camp info
-		
+
 		MainController control = new MainController(userlist, camplist);
 		Scanner s = new Scanner(System.in);
-		while(true) {
-			String currentuser = Login.getCurrentUser(s,userlist);
+		while (true) {
+			String currentuser = Login.getCurrentUser(s, userlist);
 			interactions.Interaction next = CamsInteraction.startmenu(currentuser);
 			interactions.Interaction current;
-			while(next!=null) {
+			while (next != null) {
 				current = next;
 				try {
 					next = next.run(currentuser, s, control);

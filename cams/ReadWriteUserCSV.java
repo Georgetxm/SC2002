@@ -42,7 +42,7 @@ public final class ReadWriteUserCSV {
                 // If file name ends with csv and starts with staff or with student
                 if (file.isFile()
                         && file.getName().endsWith(".csv")
-                        && (file.getName().startsWith("staff") || file.getName().endsWith("student"))) {
+                        && (file.getName().startsWith("staff") || file.getName().startsWith("student"))) {
                     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                         // Skip header line i.e. first row
                         String line = br.readLine();

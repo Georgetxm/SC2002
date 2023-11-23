@@ -5,8 +5,6 @@ import java.util.Scanner;
 import cams.CamsInteraction;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.EnquiryControlInterface;
-import controllers.UserControlInterface;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
@@ -30,12 +28,12 @@ public final class doSubmitReply extends Interaction {
 			throws UserInfoMissingException, MissingRequestedDataException {
 		System.out.println("Please type your reply.");
 		try {
-			((EnquiryControlInterface) control).saveReply(enquiryid, s.nextLine());
+			control.Enquiry().saveReply(enquiryid, s.nextLine());
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("This enquiry cannot be found");
 		}
 		System.out.println("Reply Submitted");
-		((UserControlInterface) control).incrementPoints(currentuser, 1);
+		control.User().incrementPoints(currentuser, 1);
 		next = CamsInteraction.SingleEnquiryMenu(enquiryid);
 		if(this.userid!=null) next = next.withuser(userid);
 		if(this.campid!=null) next = next.withcamp(campid);

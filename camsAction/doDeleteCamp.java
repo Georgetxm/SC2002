@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 import controllers.Controller;
+import controllers.ControllerItemMissingException;
 import entities.Student;
 import interactions.Interaction;
 import types.Perms;
@@ -39,6 +40,19 @@ public class doDeleteCamp extends Interaction {
 					));
 				control.User().grantPerms((String)name, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
 			}
+		
+		for(Serializable id: control.Directory().sync().with(entities.Camp.class, campid).get(entities.Enquiry.class)) {
+			control.Enquiry().delete((int)id);
+			control.Directory().sync().remove(entities.Enquiry.class, id);
+		}
+		for(Serializable id: control.Directory().sync().with(entities.Camp.class, campid).get(entities.Suggestion.class)) {
+			try {
+				control.Suggestion().delete((int)id);
+			} catch (ControllerItemMissingException e) {
+				System.out.println("Suggestion already deleted.");
+			}
+			control.Directory().sync().remove(entities.Enquiry.class, id);
+		}
 		control.Camp().delete(campid);
 		control.Directory().sync().remove(entities.Camp.class, campid);
 		System.out.println("Camp has been deleted. This change will be reflected for participants");

@@ -1,16 +1,16 @@
 package camsAction;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
 
 import cams.CamsInteraction;
-import controllers.CampControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.SuggestionControlInterface;
-import controllers.UserControlInterface;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import types.CampAspect;
@@ -34,11 +34,11 @@ public final class doSubmitSuggestion extends Interaction {
 			throws UserInfoMissingException, MissingRequestedDataException {
 		if(campid==null) throw new MissingRequestedDataException("Camp not found");
 		Entry<CampAspect, ? extends Object> edited = null;
-		if (campid != ((UserControlInterface) control).getCampCommitteeOfStudent(currentuser))
+		if (campid != control.User().getCampCommitteeOfStudent(currentuser))
 			System.out.println("Not a committee member of this camp");
 		else {
 			// Asks campcontrol for the camp info and pulls out the info
-			TreeMap<CampAspect, ? extends Object> info = ((CampControlInterface) control).details(campid).info();
+			TreeMap<CampAspect, ? extends Object> info = control.Camp().details(campid).info();
 			int choice = 0;
 			while (true) {
 				System.out.println("What would you like to amend:");
@@ -78,21 +78,23 @@ public final class doSubmitSuggestion extends Interaction {
 			System.out.println("Please type your rationale:");
 			reason = s.nextLine();
 			try {
-				((SuggestionControlInterface) control).add(edited, reason, currentuser, campid);
+				int thissuggestion = control.Suggestion().add(edited, reason);
+				control.Directory().add(entities.Suggestion.class, thissuggestion);
+				control.Directory().sync().link(Arrays.asList(
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser),
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Enquiry.class,thissuggestion)
+				));
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Camp id is invalid");
 			}
 			System.out.println("Your suggestion has been submitted.");
-			((UserControlInterface) control).incrementPoints(currentuser, 1);
+			control.User().incrementPoints(currentuser, 1);
 			System.out.println("Your points have been incremented");
 		}
-		HashMap<Integer, String> usercamps = null;
-		try {
-			usercamps = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
-		} catch (ControllerItemMissingException e) {
-			throw new UserInfoMissingException("User id not valid");
-		}
-		next = (usercamps!=null&&usercamps.containsKey(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+		HashSet<Serializable> usercamps = null;
+		usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
+		next = (usercamps!=null&&usercamps.contains(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 		if(this.userid!=null) next = next.withuser(userid);
 		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);

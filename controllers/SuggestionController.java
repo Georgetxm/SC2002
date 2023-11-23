@@ -7,7 +7,7 @@ import types.CampAspect;
 public class SuggestionController implements SuggestionControlInterface {
 
 	@Override
-	public int add(Entry<CampAspect, ? extends Object> suggestion, String rationale, String ownerid, int campid)
+	public int add(Entry<CampAspect, ? extends Object> suggestion, String rationale)
 			throws ControllerItemMissingException {
 		// TODO Auto-generated method stub
 		return 0;

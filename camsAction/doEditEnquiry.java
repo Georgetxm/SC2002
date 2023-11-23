@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.EnquiryControlInterface;
 import interactions.Interaction;
 
 /**
@@ -31,11 +30,11 @@ public final class doEditEnquiry extends Interaction {
 			throws MissingRequestedDataException {
 		if(enquiryid==null) throw new MissingRequestedDataException("Enquiry is invalid");
 		try {
-			if (!((EnquiryControlInterface) control).isEditable(enquiryid))
+			if (!control.Enquiry().isEditable(enquiryid))
 				System.out.println("Enquiry has been seen and may not be edited");
 			else {
 				System.out.println("Please type your edited enquiry");
-				((EnquiryControlInterface) control).edit(enquiryid, s.nextLine());
+				control.Enquiry().edit(enquiryid, s.nextLine());
 				System.out.println("Enquiry saved.");
 			}
 		} catch (ControllerItemMissingException e) {

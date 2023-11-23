@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.SuggestionControlInterface;
 import interactions.Interaction;
 import types.CampAspect;
 /**
@@ -21,15 +20,16 @@ public final class doEditSuggestion extends Interaction {
 	 * Ask the controller if a suggestion may be edited before requesting the deletion.
 	 *@return true if controller accepts the request(s) and false if otherwise, or the suggestion cannot be deleted
 	 *@throws MissingRequestedDataException if suggestion to be deleted cannot be found.
-	 */@Override
+	 */@SuppressWarnings("unchecked")
+	@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws MissingRequestedDataException {
 		if(suggestionid==null) throw new MissingRequestedDataException("Suggstion id invalid");
 		CampAspect chosenaspect = null;
 		try {
-			if(!((SuggestionControlInterface) control).isEditable(suggestionid))
+			if(control.Suggestion().isEditable(suggestionid))
 				System.out.println("Suggestion has been viewed and may not be edited");
-			else chosenaspect = ((SuggestionControlInterface) control).get(suggestionid).getKey().getKey();
+			else chosenaspect = control.Suggestion().get(suggestionid).getKey().getKey();
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("Suggestion id is invalid");
 		}
@@ -46,7 +46,7 @@ public final class doEditSuggestion extends Interaction {
 		if(edited!=null) {
 			System.out.println("Please type your rationale:");
 			try {
-				((SuggestionControlInterface) control).editSuggestion(suggestionid, edited, s.nextLine());
+				control.Suggestion().edit(suggestionid, (Entry<CampAspect,Object>) edited, s.nextLine());
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Suggestion id is invalid");
 			}

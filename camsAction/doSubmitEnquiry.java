@@ -1,13 +1,13 @@
 package camsAction;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampControlInterface;
 import controllers.Controller;
-import controllers.ControllerItemMissingException;
-import controllers.EnquiryControlInterface;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
@@ -30,15 +30,17 @@ public final class doSubmitEnquiry extends Interaction {
 			throws UserInfoMissingException, MissingRequestedDataException {
 		if(campid==null) throw new MissingRequestedDataException("Camp ID wrong");
 		System.out.println("Please type your enquiry:");
-		((EnquiryControlInterface)control).add(s.nextLine(),currentuser,campid);
+		int thisenquiry = control.Enquiry().add(s.nextLine(),currentuser,campid);
+		control.Directory().sync().add(entities.Enquiry.class, thisenquiry);
+		control.Directory().sync().link(Arrays.asList(
+				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
+				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser),
+				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Enquiry.class,thisenquiry)
+		));
 		System.out.println("Your enquiry has been submitted.");
-		HashMap<Integer, String> usercamps = null;
-		try {
-			usercamps = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
-		} catch (ControllerItemMissingException e) {
-			throw new UserInfoMissingException("User id not valid");
-		}
-		next = (usercamps!=null&&usercamps.containsKey(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+		HashSet<Serializable> usercamps = null;
+		usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
+		next = (usercamps!=null&&usercamps.contains(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 		if(this.userid!=null) next = next.withuser(userid);
 		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);

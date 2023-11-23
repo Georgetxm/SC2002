@@ -15,7 +15,7 @@ public interface SuggestionControlInterface{
 	 * @param suggestion the suggestion aspect text to be added
 	 * @param ownerid    the owner of the suggestion, which should be a student
 	 */
-	int add(Entry<CampAspect, ? extends Object> suggestion, String rationale, String ownerid, int campid)
+	int add(Entry<CampAspect, ? extends Object> suggestion, String rationale)
 			throws ControllerItemMissingException;
 	int edit(int id, Entry<CampAspect, ? extends Object> edited, String rationale) throws ControllerItemMissingException;
 

@@ -1,11 +1,12 @@
 package camsAction;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.SuggestionControlInterface;
-import controllers.UserControlInterface;
 import interactions.Interaction;
 
 /**
@@ -31,11 +32,14 @@ public final class doDeleteSuggestion extends Interaction {
 			throws MissingRequestedDataException {
 		if(suggestionid==null) throw new MissingRequestedDataException("Invalid suggestion id");
 		try {
-			if (!((SuggestionControlInterface) control).isEditable(suggestionid)) 
+			if (!control.Suggestion().isEditable(suggestionid)) 
 				System.out.println("This suggestion is finalised and can no longer be edited or deleted");
 			else{
-				((UserControlInterface) control).incrementPoints(((SuggestionControlInterface) control).getSuggestionOwner(suggestionid), -1);
-				((SuggestionControlInterface) control).delete(suggestionid);
+				HashSet<Serializable> owners = control.Directory().sync().with(entities.Suggestion.class, suggestionid).get(entities.User.class);
+				String owner = (String) new ArrayList<Serializable>(owners).get(0);
+				control.User().incrementPoints(owner, -1);
+				control.Suggestion().delete(suggestionid);
+				control.Directory().sync().remove(entities.Suggestion.class, suggestionid);
 				System.out.println("Suggestion deleted. Points deducted accordingly");
 			}
 		} catch (ControllerItemMissingException e) {

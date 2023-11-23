@@ -1,12 +1,12 @@
 package camsAction;
 
+import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Scanner;
 
-import controllers.CampControlInterface;
 import controllers.Controller;
-import controllers.UserControlInterface;
+import entities.Student;
 import interactions.Interaction;
 import types.Perms;
 /**
@@ -26,17 +26,21 @@ public class doDeleteCamp extends Interaction {
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws MissingRequestedDataException {
 		if(campid==null) throw new MissingRequestedDataException("Camp id is invalid");
-		HashSet<String> participantlist = ((CampControlInterface)control).getCampComittees(campid);
-		for(String participant:participantlist) {
-			//Remove committee perms, but allow him to re-apply
-			((UserControlInterface)control).denyPerms(participant, EnumSet.of(
-					Perms.SUBMIT_CAMP_SUGGESTION,
-					Perms.EDIT_CAMP_SUGGESTION,
-					Perms.DELETE_CAMP_SUGGESTION
-				));
-			((UserControlInterface)control).grantPerms(participant, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
-		}
-		((CampControlInterface)control).delete(campid);
+		
+		//Get everyone, staff, committee or whatever associated with the camp. Is a set of strings.
+		HashSet<Serializable> everyone = control.Directory().sync().with(entities.Camp.class, campid).get(entities.User.class);
+		for(Serializable name: everyone)
+			//If dude is a student and camp committee of this camp
+			if(control.User().getClass((String) name)==Student.class&&control.User().getCampCommitteeOfStudent((String) name)==campid) {
+				control.User().denyPerms((String)name, EnumSet.of(
+						Perms.SUBMIT_CAMP_SUGGESTION,
+						Perms.EDIT_CAMP_SUGGESTION,
+						Perms.DELETE_CAMP_SUGGESTION
+					));
+				control.User().grantPerms((String)name, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
+			}
+		control.Camp().delete(campid);
+		control.Directory().sync().remove(entities.Camp.class, campid);
 		System.out.println("Camp has been deleted. This change will be reflected for participants");
 		next = new queryCampsMenu();
 		if(this.userid!=null) next = next.withuser(userid);

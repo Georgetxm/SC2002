@@ -75,4 +75,6 @@ public interface EnquiryControlInterface{
 	 */
 
 	ArrayList<String> getReplies(int enquiryid) throws ControllerItemMissingException;
+
+	Boolean delete(int enquiryid);
 }

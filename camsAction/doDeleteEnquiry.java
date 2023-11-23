@@ -27,14 +27,14 @@ public final class doDeleteEnquiry extends Interaction {
 		if(enquiryid==null) throw new MissingRequestedDataException("Invalid enquiry");
 		Boolean iseditable=false;
 		try {
-			iseditable = ((EnquiryControlInterface) control).isEditable(enquiryid);
+			iseditable = control.Enquiry().isEditable(enquiryid);
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("This enquiry cannot be found");
 		}
 		if(!iseditable) System.out.println("This enquiry is finalised and cannot be deleted or edited!");
 		else {
 			try {
-				((EnquiryControlInterface) control).delete(enquiryid);
+				control.Enquiry().delete(enquiryid);
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("This enquiry is malformed");
 			}

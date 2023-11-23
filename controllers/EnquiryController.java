@@ -46,4 +46,10 @@ public class EnquiryController implements EnquiryControlInterface {
 		return null;
 	}
 
+	@Override
+	public Boolean delete(int enquiryid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

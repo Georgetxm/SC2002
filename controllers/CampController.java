@@ -18,10 +18,7 @@ import types.Role;
 
 public class CampController implements CampControlInterface {
 
-	private HashMap<String, User> users;
 	private HashMap<Integer, Camp> camps;
-	private HashMap<Integer, Suggestion> suggestions;
-	private HashMap<Integer, Enquiry> enquiries;
 
 	/**
 	 * Constructor for CampController
@@ -29,32 +26,9 @@ public class CampController implements CampControlInterface {
 	 * @param userList
 	 * @param campList
 	 */
-	public CampController(HashMap<String, User> userList,
-			HashMap<Integer, Camp> campList,
-			HashMap<Integer, Suggestion> suggestions,
-			HashMap<Integer, Enquiry> enquiries) {
-		this.users = userList;
+	public CampController(
+			HashMap<Integer, Camp> campList) {
 		this.camps = campList;
-		this.suggestions = suggestions;
-		this.enquiries = enquiries;
-	}
-
-	/**
-	 * Returns a User object given its ID
-	 * 
-	 * @param userId the User's ID
-	 * 
-	 * @return the User object with the given ID, null if not found
-	 */
-
-	public User findUserById(String userId) {
-		if (users.containsKey(userId) && Student.class.isInstance(users.get(userId))) {
-			return (Student) users.get(userId);
-		}
-		if (users.containsKey(userId) && Staff.class.isInstance(users.get(userId))) {
-			return (Staff) users.get(userId);
-		}
-		return null;
 	}
 
 	/**
@@ -73,33 +47,6 @@ public class CampController implements CampControlInterface {
 	}
 
 	/**
-	 * Returns a Suggestion object given its ID
-	 * 
-	 * @param suggestionId
-	 * @return the Suggestion object with the given ID, null if not found
-	 */
-
-	public Suggestion findSuggestionById(int suggestionId) {
-		if (suggestions.containsKey(suggestionId)) {
-			return suggestions.get(suggestionId);
-		}
-		return null;
-	}
-
-	/**
-	 * Returns an Enquiry object given its ID
-	 * 
-	 * @param enquiryId
-	 * @return the Enquiry object with the given ID, null if not found
-	 */
-	public Enquiry findEnquiryById(int enquiryId) {
-		if (enquiries.containsKey(enquiryId)) {
-			return enquiries.get(enquiryId);
-		}
-		return null;
-	}
-
-	/**
 	 * Create a new Camp Object based on the given CampInfo object
 	 * Adds the Camp object to the camps ArrayList
 	 * 
@@ -109,16 +56,10 @@ public class CampController implements CampControlInterface {
 	 * @return the Camp's ID
 	 */
 	@Override
-	public int add(CampInfo info, String staffid) {
+	public int add(CampInfo info) {
 		Camp camp = new Camp(info, new HashSet<String>(), new HashSet<String>(), false, LocalDate.now());
 
 		camps.put((Integer) camp.getCampid(), camp);
-		// TODO: ADD EXCEPTION
-		if (!Staff.class.isInstance(findUserById(staffid))) {
-			return -1;
-		}
-		Staff user = (Staff) findUserById(staffid);
-		user.registerForCamp(camp.getCampid());
 
 		return camp.getCampid();
 	}
@@ -140,28 +81,6 @@ public class CampController implements CampControlInterface {
 	public boolean delete(int campid) {
 		Camp camp = findCampById(campid);
 		if (!(camp == null)) {
-			for (String student : camp.getAttendees()) {
-				User user = findUserById(student);
-				user.withdrawFromCamp(campid);
-			}
-			for (String committee : camp.getCampCommittee()) {
-				if (findUserById(committee) instanceof Student) {
-					Student user = (Student) findUserById(committee);
-					user.setCampComittee(-1);
-				}
-			}
-			for (Integer enquiry : camp.getEnquiries()) {
-				Enquiry e = findEnquiryById(enquiry);
-				if (!(e == null)) {
-					enquiries.remove(e.getEnquiryId(), e);
-				}
-			}
-			for (Integer suggestion : camp.getSuggestions()) {
-				Suggestion s = findSuggestionById(suggestion);
-				if (!(s == null)) {
-					suggestions.remove(s.getSuggestionId(), s);
-				}
-			}
 			camps.remove(camp.getCampid(), camp);
 			return true;
 		}
@@ -235,7 +154,7 @@ public class CampController implements CampControlInterface {
 	 * @return true if the Camp's committee is full, false otherwise
 	 */
 	@Override
-	public boolean isCommiteeFull(int campid) {
+	public boolean isCommitteeFull(int campid) {
 		Camp camp = findCampById(campid);
 		if (!(camp == null)) {
 			return camp.isCampCommitteeFull();

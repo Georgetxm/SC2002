@@ -39,7 +39,7 @@ public class Cams {
 		System.out.println(userlist);
 		Scanner s = new Scanner(System.in);
 		Controller control = Controller.INSTANCE;
-		control.setCamp(new controllers.CampController(userlist, camplist, suggestions, enquiries));
+		control.setCamp(new controllers.CampController(camplist));
 		control.setEnquiry(new controllers.EnquiryController());
 		control.setSuggestion(new controllers.SuggestionController());
 		control.setUser(new controllers.UserController(userlist, camplist));

@@ -35,7 +35,7 @@ public class Lookup implements Directory{
 		regularfilters.clear();
 		visibilityfilter = false;
 		return returnset;
-	}public void add(Class<?> type, Serializable id) {
+	}public Lookup add(Class<?> type, Serializable id) {
 		if(!classes.contains(type)) {
 			classes.add(type);
 			for(HashMap<Class<?>,HashSet<Serializable>> node : network.values())
@@ -48,28 +48,32 @@ public class Lookup implements Directory{
 			entry.put(eachtype, new HashSet<Serializable>());
 		network.put(new HashMap.SimpleEntry<Class<?>,Serializable>(type,id), entry);
 		update();
+		return this;
 	}
-	public void remove(Class<?> type, Serializable id) {
+	public Lookup remove(Class<?> type, Serializable id) {
 		for(Entry<Class<?>,HashSet<Serializable>> neighbourclass: network.get(new HashMap.SimpleEntry<Class<?>,Serializable>(type,id)).entrySet())
 			for(Serializable neighbour: neighbourclass.getValue())
 				network.remove(new HashMap.SimpleEntry<Class<?>,Serializable>(neighbourclass.getKey(),neighbour));
 		network.remove(new HashMap.SimpleEntry<Class<?>,Serializable>(type,id));
 		store.get(type).remove(id);
 		update();
+		return this;
 	}
-	public void link(List<Entry<Class<?>, Serializable>> items) {
+	public Lookup link(List<Entry<Class<?>, Serializable>> items) {
 		for(int i=0;i<items.size()-1;i++) for(int j=i+1;j<items.size();j++) {
 			network.get(new HashMap.SimpleEntry<Class<?>,Serializable>(items.get(i).getKey(),items.get(i).getValue())).get(items.get(j).getKey()).add(items.get(j).getValue());
 			network.get(new HashMap.SimpleEntry<Class<?>,Serializable>(items.get(j).getKey(),items.get(j).getValue())).get(items.get(i).getKey()).add(items.get(i).getValue());
 		}
 		update();
+		return this;
 	}
-	public void delink(List<Entry<Class<?>, Serializable>> items) {
+	public Lookup delink(List<Entry<Class<?>, Serializable>> items) {
 		for(int i=0;i<items.size()-1;i++) for(int j=i+1;j<items.size();j++) {
 			network.get(new HashMap.SimpleEntry<Class<?>,Serializable>(items.get(i).getKey(),items.get(i).getValue())).get(items.get(j).getKey()).remove(items.get(j).getValue());
 			network.get(new HashMap.SimpleEntry<Class<?>,Serializable>(items.get(j).getKey(),items.get(j).getValue())).get(items.get(i).getKey()).remove(items.get(i).getValue());
 		}
 		update();
+		return this;
 	}
 	public void update() {
 		try {

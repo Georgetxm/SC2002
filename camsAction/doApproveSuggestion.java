@@ -38,10 +38,10 @@ public final class doApproveSuggestion extends Interaction {
 		if(suggestionid==null) throw new MissingRequestedDataException("Missing suggestionid");
 		try {
 			//Get owner of suggestion
-			HashSet<Serializable> owners = control.Directory().with(entities.Suggestion.class,suggestionid).get(entities.User.class);
+			HashSet<Serializable> owners = control.Directory().sync().with(entities.Suggestion.class,suggestionid).get(entities.User.class);
 			String ownerid = (String) (new ArrayList<Serializable>(owners)).get(0);
 			//Get host camp of suggestion
-			HashSet<Serializable> hosts = control.Directory().with(entities.Suggestion.class,suggestionid).get(entities.Camp.class);
+			HashSet<Serializable> hosts = control.Directory().sync().with(entities.Suggestion.class,suggestionid).get(entities.Camp.class);
 			int hostcamp = (Integer) (new ArrayList<Serializable>(hosts)).get(0);
 			//Pull the suggestion out from control.Suggestion, and request edit details using campid and suggestion body
 			control.Camp().editDetails(hostcamp, control.Suggestion().get(suggestionid).getKey());
@@ -49,9 +49,7 @@ public final class doApproveSuggestion extends Interaction {
 			control.User().incrementPoints(ownerid, 1);
 			//Remove the past suggestion from both the storage and directory
 			control.Suggestion().delete(suggestionid);
-			control.Directory().remove(entities.Suggestion.class, suggestionid);
-			//Since changes have been made, just sync
-			control.Directory().sync();
+			control.Directory().sync().remove(entities.Suggestion.class, suggestionid);
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("Suggestion cannot be found");
 		}

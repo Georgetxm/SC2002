@@ -9,10 +9,10 @@ public interface Directory {
 	public abstract Lookup with(Class<?> type, Serializable id);
 	public abstract Lookup withvisibility();
 	public abstract HashSet<Serializable> get(Class<?> type);
-	public abstract void add(Class<?> type, Serializable id);
-	public abstract void remove(Class<?> type, Serializable id);
-	public abstract void link(List<Entry<Class<?>, Serializable>> items);
-	public abstract void delink(List<Entry<Class<?>, Serializable>> items);
+	public abstract Lookup add(Class<?> type, Serializable id);
+	public abstract Lookup remove(Class<?> type, Serializable id);
+	public abstract Lookup link(List<Entry<Class<?>, Serializable>> items);
+	public abstract Lookup delink(List<Entry<Class<?>, Serializable>> items);
 	public abstract void update();
 	public abstract Lookup sync();
 }

@@ -10,6 +10,8 @@ import camsAction.doDeleteCamp;
 import camsAction.doDeleteEnquiry;
 import camsAction.doDeleteSuggestion;
 import camsAction.doEditSuggestion;
+import camsAction.doGenerateAttendanceList;
+import camsAction.doGeneratePerformanceReport;
 import camsAction.doNothing;
 import camsAction.doSubmitAttendeeRegistration;
 import camsAction.doSubmitCamp;
@@ -256,6 +258,14 @@ public final class CamsInteraction{ //Menu choices
 	public static MenuChoice registerAsCommittee(Integer campid) {
 		return new MenuChoice(Perms.REGISTER_AS_COMMITTEE,	"Join the camp committee",	new doSubmitCommitteeRegistration().withcamp(campid));
 	}
+	
+	public static MenuChoice generateAttendanceList(Integer campid) {
+		return new MenuChoice(Perms.DEFAULT,"Generate attendance list",new doGenerateAttendanceList().withcamp(campid));
+	}
+	
+	public static MenuChoice generatePerformanceReport(Integer campid) {
+		return new MenuChoice(Perms.DEFAULT,"Generate performance report", new doGeneratePerformanceReport().withcamp(campid));
+	}
 
 	/**
 	 * List of menu choices to be used for the single suggestion menu
@@ -290,7 +300,9 @@ public final class CamsInteraction{ //Menu choices
 			viewAllCamps,
 			viewOwnCamps(userid),
 			viewOwnSuggestion(userid),
-			viewOwnEnquiry(userid)
+			viewOwnEnquiry(userid),
+			generatePerformanceReport(0),
+			generateAttendanceList(0)
 	);}
 	/**
 	 * List of menu choices to be used for the own camp menu

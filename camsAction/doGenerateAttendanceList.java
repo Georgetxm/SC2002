@@ -23,7 +23,7 @@ import types.Role;
  * @version 1.0
  * @since 2021-11-01
  */
-public final class doGenerateAttendeeList extends Interaction {
+public final class doGenerateAttendanceList extends Interaction {
 	/**
 	 * Generates an attendance list txt or csv
 	 *@return the correct single camp menu, removing rolerequested and preserving all other parameters

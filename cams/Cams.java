@@ -1,20 +1,13 @@
 package cams;
 
-import java.io.*;
-import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 import camsAction.MissingRequestedDataException;
 import controllers.Controller;
 import entities.Camp;
-import entities.CampInfo;
 import entities.User;
 import entities.UserInfoMissingException;
-import types.CampAspect;
-import types.Faculty;
 
 /**
  * The Java App class that contains main
@@ -39,8 +32,13 @@ public class Cams {
 		ReadWriteUserCSV.readUserCSV(userlist, "lists");
 		ReadWriteCampCSV.readCampCSV(camplist, "lists");
 
-		MainController control = new MainController(userlist, camplist);
 		Scanner s = new Scanner(System.in);
+		Controller control = Controller.INSTANCE;
+		control.setCamp(new controllers.CampController());
+		control.setEnquiry(new controllers.EnquiryController());
+		control.setSuggestion(new controllers.SuggestionController());
+		control.setUser(new controllers.UserController());
+		control.setDirectory(new controllers.Lookup().sync());
 		while (true) {
 			String currentuser = Login.getCurrentUser(s, userlist);
 			interactions.Interaction next = CamsInteraction.startmenu(currentuser);

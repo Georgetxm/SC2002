@@ -13,7 +13,6 @@ import types.Perms;
 public class UserController implements UserControlInterface {
 	private HashMap<String, User> userList;
 	private HashMap<Integer, Camp> campList;
-	private Integer campFilter;
 
 	/**
 	 * Constructor for UserController
@@ -24,7 +23,6 @@ public class UserController implements UserControlInterface {
 			HashMap<Integer, Camp> campList) {
 		this.userList = userList;
 		this.campList = campList;
-		this.campFilter = null;
 	}
 
 	/**

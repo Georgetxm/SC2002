@@ -9,6 +9,7 @@ public enum Controller {
     private SuggestionControlInterface suggestion;
     private UserControlInterface user;
     private Directory directory;
+	
     
 	public CampControlInterface Camp() {
 		return camp;

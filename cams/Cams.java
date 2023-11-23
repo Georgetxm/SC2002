@@ -7,6 +7,8 @@ import camsAction.MissingRequestedDataException;
 import controllers.Controller;
 // import controllers.MainController;
 import entities.Camp;
+import entities.Enquiry;
+import entities.Suggestion;
 import entities.User;
 import entities.UserInfoMissingException;
 
@@ -29,13 +31,15 @@ public class Cams {
 	public static void main(String[] args) throws UserInfoMissingException {
 		HashMap<String, User> userlist = new HashMap<String, User>();
 		HashMap<Integer, Camp> camplist = new HashMap<Integer, Camp>();
+		HashMap<Integer, Enquiry> enquiries = new HashMap<Integer, Enquiry>();
+		HashMap<Integer, Suggestion> suggestions = new HashMap<Integer, Suggestion>();
 		// Read CSV files from lists folder
 		ReadWriteUserCSV.readUserCSV(userlist, "lists");
 		ReadWriteCampCSV.readCampCSV(camplist, "lists");
 		System.out.println(userlist);
 		Scanner s = new Scanner(System.in);
 		Controller control = Controller.INSTANCE;
-		control.setCamp(new controllers.CampController());
+		control.setCamp(new controllers.CampController(userlist, camplist, suggestions, enquiries));
 		control.setEnquiry(new controllers.EnquiryController());
 		control.setSuggestion(new controllers.SuggestionController());
 		control.setUser(new controllers.UserController(userlist, camplist));

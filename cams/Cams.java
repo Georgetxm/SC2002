@@ -42,7 +42,7 @@ public class Cams {
 		control.setCamp(new controllers.CampController(camplist));
 		control.setEnquiry(new controllers.EnquiryController());
 		control.setSuggestion(new controllers.SuggestionController());
-		control.setUser(new controllers.UserController(userlist, camplist));
+		control.setUser(new controllers.UserController(userlist));
 		control.setDirectory(new controllers.Lookup().sync());
 		while (true) {
 			String currentuser = Login.getCurrentUser(s, userlist);

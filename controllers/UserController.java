@@ -3,7 +3,6 @@ package controllers;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import entities.Camp;
 import entities.Staff;
 import entities.Student;
 import entities.User;
@@ -18,8 +17,7 @@ public class UserController implements UserControlInterface {
 	 * 
 	 * @param userList the list of Users
 	 */
-	public UserController(HashMap<String, User> userList,
-			HashMap<Integer, Camp> campList) {
+	public UserController(HashMap<String, User> userList) {
 		this.userList = userList;
 	}
 

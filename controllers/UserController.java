@@ -1,45 +1,64 @@
 package controllers;
 
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map.Entry;
 
 import types.Faculty;
 import types.Perms;
 
-public interface UserController {
-	public Faculty getUserFaculty(String userid);
+public class UserController implements UserControlInterface {
 
-	public boolean joinCamp(String userid, int campid);
+	@Override
+	public Faculty getUserFaculty(String userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public boolean leaveCamp(String userid, int campid);
+	@Override
+	public boolean setCampCommittee(String userid, int campid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-	public boolean setCampCommittee(String userid, int campid);
+	@Override
+	public Integer getCampCommitteeOfStudent(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public Integer getCampCommitteeOfStudent(String userId);
+	@Override
+	public int incrementPoints(String userid, int points) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-	public HashMap<Integer, String> getCamp(String userid); // Returns id, name.
+	@Override
+	public EnumSet<Perms> grantPerms(String userid, EnumSet<Perms> newperms) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public HashSet<Entry<Integer, Integer>> getUserEnquiries(String userid); // Returns campid, enquiryid
+	@Override
+	public EnumSet<Perms> denyPerms(String userid, EnumSet<Perms> removedperms) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public HashSet<Entry<Integer, Integer>> getUserSuggestions(String userid); // Returns campid, suggestionid
+	@Override
+	public EnumSet<Perms> replacePerms(String userid, EnumSet<Perms> replacementperms) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public boolean addSuggestion(String userid, int campid, int suggestionid);
+	@Override
+	public Controller FilterCamp(int campid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public boolean addEnquiry(String userid, int campid, int enquiryid);
+	@Override
+	public Class<?> getClass(String userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public boolean deleteEnquiry(String userid, int campid, int enquiryid);
-
-	public boolean deleteSuggestion(String userid, int campid, int suggestionid);
-
-	public int incrementPoints(String userid, int points); // returns new points
-
-	public EnumSet<Perms> grantPerms(String userid, EnumSet<Perms> newperms); // Returns new perms
-
-	public EnumSet<Perms> denyPerms(String userid, EnumSet<Perms> removedperms); // Returns new perms
-
-	public EnumSet<Perms> replacePerms(String userid, EnumSet<Perms> replacementperms); // Returns new perms
-
-	public Controller FilterCamp(int campid);
 }

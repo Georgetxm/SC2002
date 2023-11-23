@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.SuggestionController;
-import controllers.UserController;
+import controllers.SuggestionControlInterface;
+import controllers.UserControlInterface;
 import interactions.Interaction;
 
 /**
@@ -31,11 +31,11 @@ public final class doDeleteSuggestion extends Interaction {
 			throws MissingRequestedDataException {
 		if(suggestionid==null) throw new MissingRequestedDataException("Invalid suggestion id");
 		try {
-			if (!((SuggestionController) control).isSuggestionEditable(suggestionid)) 
+			if (!((SuggestionControlInterface) control).isEditable(suggestionid)) 
 				System.out.println("This suggestion is finalised and can no longer be edited or deleted");
 			else{
-				((UserController) control).incrementPoints(((SuggestionController) control).getSuggestionOwner(suggestionid), -1);
-				((SuggestionController) control).deleteSuggestion(suggestionid);
+				((UserControlInterface) control).incrementPoints(((SuggestionControlInterface) control).getSuggestionOwner(suggestionid), -1);
+				((SuggestionControlInterface) control).delete(suggestionid);
 				System.out.println("Suggestion deleted. Points deducted accordingly");
 			}
 		} catch (ControllerItemMissingException e) {

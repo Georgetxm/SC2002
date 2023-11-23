@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import camsAction.MissingRequestedDataException;
-import controllers.MainController;
+import controllers.Controller;
 import entities.Camp;
 import entities.CampInfo;
 import entities.Staff;
@@ -66,7 +66,12 @@ public class Cams {
 		Camp fakeCamp = new Camp(fakeCampInfo, fakeAttendees, fakeCampCommittee, false, fakeCreationDate);
 		// end of fake camp info
 		
-		MainController control = new MainController(userlist, camplist);
+		Controller control = Controller.INSTANCE;
+		control.setCamp(new controllers.CampController());
+		control.setEnquiry(new controllers.EnquiryController());
+		control.setSuggestion(new controllers.SuggestionController());
+		control.setUser(new controllers.UserController());
+		control.setDirectory(new controllers.Lookup());
 		Scanner s = new Scanner(System.in);
 		while(true) {
 			String currentuser = Login.getCurrentUser(s,userlist);

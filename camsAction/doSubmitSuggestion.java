@@ -6,11 +6,11 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import cams.CamsInteraction;
-import controllers.CampController;
+import controllers.CampControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.SuggestionController;
-import controllers.UserController;
+import controllers.SuggestionControlInterface;
+import controllers.UserControlInterface;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import types.CampAspect;
@@ -34,11 +34,11 @@ public final class doSubmitSuggestion extends Interaction {
 			throws UserInfoMissingException, MissingRequestedDataException {
 		if(campid==null) throw new MissingRequestedDataException("Camp not found");
 		Entry<CampAspect, ? extends Object> edited = null;
-		if (campid != ((UserController) control).getCampCommitteeOfStudent(currentuser))
+		if (campid != ((UserControlInterface) control).getCampCommitteeOfStudent(currentuser))
 			System.out.println("Not a committee member of this camp");
 		else {
 			// Asks campcontrol for the camp info and pulls out the info
-			TreeMap<CampAspect, ? extends Object> info = ((CampController) control).getCampDetails(campid).info();
+			TreeMap<CampAspect, ? extends Object> info = ((CampControlInterface) control).details(campid).info();
 			int choice = 0;
 			while (true) {
 				System.out.println("What would you like to amend:");
@@ -78,17 +78,17 @@ public final class doSubmitSuggestion extends Interaction {
 			System.out.println("Please type your rationale:");
 			reason = s.nextLine();
 			try {
-				((SuggestionController) control).addSuggestion(edited, reason, currentuser, campid);
+				((SuggestionControlInterface) control).add(edited, reason, currentuser, campid);
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Camp id is invalid");
 			}
 			System.out.println("Your suggestion has been submitted.");
-			((UserController) control).incrementPoints(currentuser, 1);
+			((UserControlInterface) control).incrementPoints(currentuser, 1);
 			System.out.println("Your points have been incremented");
 		}
 		HashMap<Integer, String> usercamps = null;
 		try {
-			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+			usercamps = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new UserInfoMissingException("User id not valid");
 		}

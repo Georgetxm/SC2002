@@ -21,7 +21,7 @@ import types.Faculty;
 import types.Perms;
 import types.Role;
 
-public class MainController implements CampController, UserController, SuggestionController, EnquiryController {
+public class MainController implements CampControlInterface, UserControlInterface, SuggestionControlInterface, EnquiryControlInterface {
     private HashMap<String, User> users;
     private HashMap<Integer, Camp> camps;
     private HashMap<Integer, Suggestion> suggestions;
@@ -114,7 +114,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @return the Camp's ID
      */
     @Override
-    public int addCamp(CampInfo info, String staffid) {
+    public int add(CampInfo info, String staffid) {
         Camp camp = new Camp(info, new HashSet<String>(), new HashSet<String>(), false, LocalDate.now());
 
         camps.put((Integer) camp.getCampid(), camp);
@@ -224,7 +224,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @return true if the Camp is successfully deleted, false otherwise
      */
     @Override
-    public boolean deleteCamp(int campid) {
+    public boolean delete(int campid) {
         Camp camp = findCampById(campid);
         if (!(camp== null)) {
             for (String student : camp.getAttendees()) {
@@ -319,7 +319,7 @@ public class MainController implements CampController, UserController, Suggestio
         return false;
     }
 
-    public CampController filterVisible() {
+    public CampControlInterface filterVisible() {
         this.visibleFilter = true;
         return this;
     }
@@ -416,7 +416,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @return the CampInfo object with the given ID, null if not found
      */
     @Override
-    public CampInfo getCampDetails(int campId) {
+    public CampInfo details(int campId) {
         Camp camp = findCampById(campId);
         if (!(camp== null)) {
             return camp.getCampInfo();
@@ -433,7 +433,7 @@ public class MainController implements CampController, UserController, Suggestio
      */
 
     @Override
-    public HashMap<String, Role> getCampStudentList(int campid) {
+    public HashMap<String, Role> report(int campid) {
         Camp camp = findCampById(campid);
         if (!(camp== null)) {
             HashMap<String, Role> studentList = new HashMap<String, Role>();
@@ -491,7 +491,7 @@ public class MainController implements CampController, UserController, Suggestio
      */
 
     @Override
-    public boolean editCampDetails(int campid, Entry<CampAspect, ? extends Object> detail) {
+    public boolean editDetails(int campid, Entry<CampAspect, ? extends Object> detail) {
         Camp camp = findCampById(campid);
         if (!(camp== null)) {
             camp.getCampInfo().info().replace(detail.getKey(), detail.getValue());
@@ -926,7 +926,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @return the enquiry id if successful, -1 if not
      */
     @Override
-    public int addEnquiry(String enquiry, String ownerid, int campid) {
+    public int add(String enquiry, String ownerid, int campid) {
         if (!Student.class.isInstance(findUserById(ownerid))) {
             return -1;
         }
@@ -954,7 +954,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @throws ControllerItemMissingException
      */
     @Override
-    public int editEnquiry(int enquiryid, String enquiry) throws ControllerItemMissingException {
+    public int edit(int enquiryid, String enquiry) throws ControllerItemMissingException {
         Enquiry enquiryToEdit = findEnquiryById(enquiryid);
         if (enquiryToEdit== null) {
             throw new ControllerItemMissingException("Enquiry does not exist");
@@ -975,7 +975,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @return the enquiry text if successful, null if not
      */
     @Override
-    public String getEnquiry(int enquiryid) {
+    public String get(int enquiryid) {
         if (findEnquiryById(enquiryid)== null) {
             return null;
         }
@@ -1050,7 +1050,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @throws ControllerItemMissingException
      */
     @Override
-    public Boolean deleteEnquiry(int enquiryid) throws ControllerItemMissingException {
+    public Boolean delete(int enquiryid) throws ControllerItemMissingException {
         Enquiry enquiry = findEnquiryById(enquiryid);
         if (enquiry== null) {
             throw new ControllerItemMissingException("Enquiry does not exist");
@@ -1081,7 +1081,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @throws ControllerItemMissingException
      */
     @Override
-    public Boolean finaliseEnquiry(int enquiryid) throws ControllerItemMissingException {
+    public Boolean finalise(int enquiryid) throws ControllerItemMissingException {
         if (!enquiries.containsKey(enquiryid)) {
             throw new ControllerItemMissingException("Enquiry does not exist");
         }
@@ -1101,7 +1101,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @throws ControllerItemMissingException
      */
     @Override
-    public Boolean isEnquiryEditable(int enquiryid) throws ControllerItemMissingException {
+    public Boolean isEditable(int enquiryid) throws ControllerItemMissingException {
         if (!enquiries.containsKey(enquiryid)) {
             throw new ControllerItemMissingException("Enquiry does not exist");
         }
@@ -1201,7 +1201,7 @@ public class MainController implements CampController, UserController, Suggestio
      * @throws ControllerItemMissingException
      */
     @Override
-    public int addSuggestion(Entry<CampAspect, ? extends Object> suggestion, String rationale, String ownerid,
+    public int add(Entry<CampAspect, ? extends Object> suggestion, String rationale, String ownerid,
             int campid) throws ControllerItemMissingException {
         Camp camp = findCampById(campid);
         if (camp== null) {
@@ -1258,7 +1258,7 @@ public class MainController implements CampController, UserController, Suggestio
      * 
      */
     @Override
-    public Entry<Entry<CampAspect, ? extends Object>, String> getSuggestion(int suggestionid)
+    public Entry<Entry<CampAspect, ? extends Object>, String> get(int suggestionid)
             throws ControllerItemMissingException {
         Suggestion suggestion = findSuggestionById(suggestionid);
         if (suggestion== null) {
@@ -1332,7 +1332,7 @@ public class MainController implements CampController, UserController, Suggestio
     }
 
     @Override
-    public Boolean deleteSuggestion(int suggestionid) throws ControllerItemMissingException {
+    public Boolean delete(int suggestionid) throws ControllerItemMissingException {
         Suggestion suggestionToDelete = findSuggestionById(suggestionid);
         if (suggestionToDelete== null) {
             throw new ControllerItemMissingException("Suggestion does not exist");
@@ -1357,7 +1357,7 @@ public class MainController implements CampController, UserController, Suggestio
      * Sets a suggestion to be accepted so that the suggestion is finalised
      */
     @Override
-    public Boolean finaliseSuggestion(int suggestionid) throws ControllerItemMissingException {
+    public Boolean finalise(int suggestionid) throws ControllerItemMissingException {
         Suggestion suggestion = findSuggestionById(suggestionid);
         if (suggestion== null) {
             throw new ControllerItemMissingException("Suggestion does not exist");
@@ -1371,7 +1371,7 @@ public class MainController implements CampController, UserController, Suggestio
     }
 
     @Override
-    public Boolean isSuggestionEditable(int suggestionid) throws ControllerItemMissingException {
+    public Boolean isEditable(int suggestionid) throws ControllerItemMissingException {
         Suggestion suggestion = findSuggestionById(suggestionid);
         if (suggestion== null) {
             throw new ControllerItemMissingException("Suggestion does not exist");

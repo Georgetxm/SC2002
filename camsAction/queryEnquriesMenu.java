@@ -7,11 +7,11 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampController;
+import controllers.CampControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.ControllerParamsException;
-import controllers.EnquiryController;
+import controllers.EnquiryControlInterface;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import interactions.MenuChoice;
@@ -36,15 +36,15 @@ public final class queryEnquriesMenu extends UserMenu {
 	 * @throws MissingRequestedDataException if the user cannot have enquiries, or the enquiry selected has an invalid id
 	 */@Override
 	protected void populate(String currentuser, Scanner s, Controller control){
-		if(ownerid!=null) ((EnquiryController) control).FilterUser(this.ownerid);
-		if(campid!=null) ((EnquiryController) control).FilterCamp(this.campid);
+		if(ownerid!=null) ((EnquiryControlInterface) control).FilterUser(this.ownerid);
+		if(campid!=null) ((EnquiryControlInterface) control).FilterCamp(this.campid);
 		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's controllerid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
 
 		HashMap<Integer, String> enquiryset=null;
 		try {
-			enquiryset = ((EnquiryController) control).getEnquiries();
+			enquiryset = ((EnquiryControlInterface) control).getEnquiries();
 		} catch (ControllerParamsException | ControllerItemMissingException e) {
 			System.out.println("Enquiry filters are malformed");
 		}
@@ -66,7 +66,7 @@ public final class queryEnquriesMenu extends UserMenu {
 			if(this.campid==null) return CamsInteraction.startmenu(currentuser);
 			HashMap<Integer, String> campset = null;
 			try {
-				campset = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+				campset = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
 			} catch (ControllerItemMissingException e) {
 				throw new UserInfoMissingException("Cannot find user information");
 			}
@@ -76,8 +76,8 @@ public final class queryEnquriesMenu extends UserMenu {
 			int enquiryid = enquirylist.get(option).getKey();
 			System.out.println(">>"+choices.get(option).text());
 			try {
-				for(String reply:((EnquiryController) control).getReplies(enquiryid)) System.out.println(reply);
-				((EnquiryController) control).finaliseEnquiry(enquiryid);
+				for(String reply:((EnquiryControlInterface) control).getReplies(enquiryid)) System.out.println(reply);
+				((EnquiryControlInterface) control).finalise(enquiryid);
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Enquiry id is invalid");
 			}

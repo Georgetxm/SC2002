@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import camsAction.MissingRequestedDataException;
 import controllers.Controller;
-import controllers.UserController;
+import controllers.UserControlInterface;
 import entities.UserInfoMissingException;
 import types.Perms;
 
@@ -30,7 +30,7 @@ public abstract class UserMenu extends Interaction{
 	 */
 	protected final int givechoices(String currentuser, Scanner s, Controller control) throws UserInfoMissingException {
 		
-		EnumSet<Perms> userperm = ((UserController) control).grantPerms(currentuser, EnumSet.noneOf(Perms.class));
+		EnumSet<Perms> userperm = ((UserControlInterface) control).grantPerms(currentuser, EnumSet.noneOf(Perms.class));
 		
 		while(true) {
 			int selected;

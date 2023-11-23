@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.EnquiryController;
+import controllers.EnquiryControlInterface;
 import interactions.Interaction;
 /**
  * Interaction that represents the action of deleting an enquiry
@@ -27,14 +27,14 @@ public final class doDeleteEnquiry extends Interaction {
 		if(enquiryid==null) throw new MissingRequestedDataException("Invalid enquiry");
 		Boolean iseditable=false;
 		try {
-			iseditable = ((EnquiryController) control).isEnquiryEditable(enquiryid);
+			iseditable = ((EnquiryControlInterface) control).isEditable(enquiryid);
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("This enquiry cannot be found");
 		}
 		if(!iseditable) System.out.println("This enquiry is finalised and cannot be deleted or edited!");
 		else {
 			try {
-				((EnquiryController) control).deleteEnquiry(enquiryid);
+				((EnquiryControlInterface) control).delete(enquiryid);
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("This enquiry is malformed");
 			}

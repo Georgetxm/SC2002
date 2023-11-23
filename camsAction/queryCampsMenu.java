@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampController;
-import controllers.UserController;
+import controllers.CampControlInterface;
+import controllers.UserControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import entities.UserInfoMissingException;
@@ -40,25 +40,25 @@ public class queryCampsMenu extends UserMenu {
 	 */
 	@Override
 	protected final void populate(String currentuser, Scanner s, Controller control) throws UserInfoMissingException{
-		Faculty userfaculty = ((UserController) control).getUserFaculty(currentuser);
-		EnumSet<Perms> userperm= ((UserController) control).grantPerms(currentuser,EnumSet.noneOf(Perms.class));
+		Faculty userfaculty = ((UserControlInterface) control).getUserFaculty(currentuser);
+		EnumSet<Perms> userperm= ((UserControlInterface) control).grantPerms(currentuser,EnumSet.noneOf(Perms.class));
 		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		options.add(CamsInteraction.filterCampBy);
 		if(userid!=null) {
-			((CampController) control).FilterUser(userid);
+			((CampControlInterface) control).FilterUser(userid);
 			System.out.println("administered user filter");
 		}
 		if(filters!=null) {
 			List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
 			for(Entry<CampAspect, ? extends Object> filter:filterlist)
-				((CampController) control).FilterAspect(filter);
+				((CampControlInterface) control).FilterAspect(filter);
 		}
 		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) //filter should return Controller. This may lead to issues.
-			((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspect, Object>(CampAspect.USERGROUP,userfaculty));
+			((CampControlInterface) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspect, Object>(CampAspect.USERGROUP,userfaculty));
 		HashMap<Integer, String> campset = null;
 		try {
-			campset = ((CampController) control).getCamps();
+			campset = ((CampControlInterface) control).getCamps();
 		} catch (ControllerItemMissingException e) {
 			System.out.println("Cannot find user or invalid filter");
 		}
@@ -66,7 +66,7 @@ public class queryCampsMenu extends UserMenu {
 			camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
 			for(Entry<Integer, String> entry:camplist) {
 				try {
-					campset = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+					campset = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
 				} catch (ControllerItemMissingException e) {
 					throw new UserInfoMissingException("Cannot find user information");
 				}

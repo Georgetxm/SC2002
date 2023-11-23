@@ -1,50 +1,55 @@
 package controllers;
 
+import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map.Entry;
 
 import entities.CampInfo;
 import types.CampAspect;
 import types.Role;
 
-public interface CampController extends Controller {
-	public int addCamp(CampInfo info, String ownerid);
+public class CampController implements CampControlInterface {
 
-	public boolean joinCamp(int campid, String userid, Role role);
+	@Override
+	public int add(CampInfo info, String ownerid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-	public boolean addEnquiry(int campid, int enquiryid);
+	@Override
+	public boolean delete(int campid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-	public boolean addSuggestion(int campid, int suggestionid);
+	@Override
+	public CampInfo details(int campid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public boolean deleteCamp(int campid);
+	@Override
+	public String generateAttendeeList(int campid, EnumSet<Role> roles) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public boolean removeAttendeeFromCamp(int campid, String userid);
+	@Override
+	public boolean editDetails(int campid, Entry<CampAspect, ? extends Object> detail) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-	public Boolean deleteEnquiry(int campid,int enquiryid);
+	@Override
+	public boolean isAttendeeFull(int campid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-	public boolean deleteSuggestion(int campid, int suggestionid);
+	@Override
+	public boolean isCommiteeFull(int campid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-	public CampController filterVisible();
-
-	public boolean toggleCampVisiblity(int campid); // true = visible, false = not visible
-
-	public HashMap<Integer, String> getCamps() throws ControllerItemMissingException;
-
-	public CampInfo getCampDetails(int campid);
-
-	public HashMap<String, Role> getCampStudentList(int campid);
-
-	public HashSet<String> getCampAttendees(int campid);
-
-	public HashSet<String> getCampComittees(int campid);
-
-	public boolean editCampDetails(int campid, Entry<CampAspect, ? extends Object> detail);
-
-	public boolean isAttendeeFull(int campid);
-
-	public boolean isCommiteeFull(int campid);
-
-	public Controller FilterUser(String userid);
-	public Controller FilterAspect(Entry<CampAspect,? extends Object> filter);
 }

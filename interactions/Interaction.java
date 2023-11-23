@@ -1,4 +1,5 @@
 package interactions;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -6,6 +7,7 @@ import camsAction.MissingRequestedDataException;
 import controllers.Controller;
 import entities.UserInfoMissingException;
 import types.CampAspect;
+import types.Role;
 
 /**
  * 
@@ -28,6 +30,7 @@ public abstract class Interaction {
 	protected Integer enquiryid;
 	protected String ownerid;
 	protected HashMap<CampAspect,Object> filters;
+	protected EnumSet<Role> rolerequested = EnumSet.noneOf(types.Role.class);
 	protected String message;
 	/**
 	 * Function to be run

@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampController;
+import controllers.CampControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.UserController;
+import controllers.UserControlInterface;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import types.Perms;
@@ -35,31 +35,31 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 		next = null;
 		HashMap<Integer, String> camplist = null;
 		try {
-			camplist = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+			camplist = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new UserInfoMissingException("This userid cannot be found");
 		}
-		if(((CampController) control).isCommiteeFull(campid)) {
+		if(((CampControlInterface) control).isCommiteeFull(campid)) {
 			System.out.println("Committee is full. Please apply again next time.");
 		}
-		else if(((UserController) control).getCampCommitteeOfStudent(userid)!=null&&((UserController) control).getCampCommitteeOfStudent(userid)>=0)
+		else if(((UserControlInterface) control).getCampCommitteeOfStudent(userid)!=null&&((UserControlInterface) control).getCampCommitteeOfStudent(userid)>=0)
 				System.out.println("Already registered for an existing camp commitee");
 		else if(camplist!=null&&camplist.keySet().contains(campid)) 
 				System.out.println("Already registered for this camp as an attendee.");
 		else {
-			((CampController) control).joinCamp(campid, userid, Role.COMMITTEE);
-			((UserController) control).grantPerms(userid, EnumSet.of(
+			((CampControlInterface) control).joinCamp(campid, userid, Role.COMMITTEE);
+			((UserControlInterface) control).grantPerms(userid, EnumSet.of(
 				Perms.SUBMIT_CAMP_SUGGESTION,
 				Perms.EDIT_CAMP_SUGGESTION,
 				Perms.DELETE_CAMP_SUGGESTION,
 				Perms.VIEW_CAMP_ENQUIRY,
 				Perms.REPLY_CAMP_ENQUIRY
 			));
-			((UserController) control).denyPerms(userid, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
+			((UserControlInterface) control).denyPerms(userid, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
 			System.out.println("Registered successfully as a comittee member.");
 		}
 		try {
-			camplist = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+			camplist = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new UserInfoMissingException("This userid cannot be found");
 		}

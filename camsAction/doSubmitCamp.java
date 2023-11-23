@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import cams.CamsInteraction;
-import controllers.CampController;
+import controllers.CampControlInterface;
 import controllers.Controller;
 import entities.CampInfo;
 import entities.UserInfoMissingException;
@@ -30,7 +30,7 @@ public class doSubmitCamp extends Interaction {
 	@Override
 	public final Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
-		((CampController)control).addCamp(new CampInfo(new TreeMap<>(Map.ofEntries(
+		((CampControlInterface)control).add(new CampInfo(new TreeMap<>(Map.ofEntries(
 				(Entry<CampAspect, ? extends Object>) ParseInput.CampName(s),
 				(Entry<CampAspect, ? extends Object>) ParseInput.CampDate(s),
 				(Entry<CampAspect, ? extends Object>) ParseInput.CampRegisterDate(s),

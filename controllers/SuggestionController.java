@@ -1,42 +1,48 @@
 package controllers;
 
-import java.util.HashMap;
 import java.util.Map.Entry;
+
 import types.CampAspect;
 
-public interface SuggestionController extends Controller {
-	/**
-	 * Overriden methods from Suggestion Controller
-	 * Creates a new suggestion, each suggestion contains only one aspect of
-	 * CampInfo @see CampInfo
-	 * i.e. Multiple suggestions are separate entries in the suggestions HashMap
-	 * adds it to the list of suggestions in MainController's attributes
-	 * also tags the suggestion to the camp and user
-	 * 
-	 * @param suggestion the suggestion aspect text to be added
-	 * @param ownerid    the owner of the suggestion, which should be a student
-	 */
-	int addSuggestion(Entry<CampAspect, ? extends Object> suggestion, String rationale, String ownerid, int campid)
-			throws ControllerItemMissingException;
+public class SuggestionController implements SuggestionControlInterface {
 
-		
-	int editSuggestion(int id, Entry<CampAspect, ? extends Object> edited, String rationale) throws ControllerItemMissingException;
+	@Override
+	public int add(Entry<CampAspect, ? extends Object> suggestion, String rationale, String ownerid, int campid)
+			throws ControllerItemMissingException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-	Entry<Entry<CampAspect, ? extends Object>, String> getSuggestion(int suggestionid) throws ControllerItemMissingException;
+	@Override
+	public int edit(int id, Entry<CampAspect, ? extends Object> edited, String rationale)
+			throws ControllerItemMissingException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-	HashMap<Integer, Entry<CampAspect, ? extends Object>> getSuggestions() throws ControllerParamsException, ControllerItemMissingException;
+	@Override
+	public Entry<Entry<CampAspect, ? extends Object>, String> get(int suggestionid)
+			throws ControllerItemMissingException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	Boolean deleteSuggestion(int suggestionid) throws ControllerItemMissingException; // delete suggestion
+	@Override
+	public Boolean delete(int suggestionid) throws ControllerItemMissingException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	Boolean finaliseSuggestion(int suggestionid) throws ControllerItemMissingException; // mark as uneditable
+	@Override
+	public Boolean finalise(int suggestionid) throws ControllerItemMissingException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	Boolean isSuggestionEditable(int suggestionid) throws ControllerItemMissingException; // check if can edit
-
-	String getSuggestionOwner(int suggestionid) throws ControllerItemMissingException; // get owner of suggestion
-
-	int getHostCamp(int suggestionid) throws ControllerItemMissingException;
-
-	public Controller FilterUser(String userid); //
-	public Controller FilterCamp(int campid);
+	@Override
+	public Boolean isEditable(int suggestionid) throws ControllerItemMissingException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

@@ -9,11 +9,11 @@ import cams.CamsInteraction;
 
 import java.util.Scanner;
 
-import controllers.CampController;
+import controllers.CampControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import controllers.ControllerParamsException;
-import controllers.SuggestionController;
+import controllers.SuggestionControlInterface;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import interactions.MenuChoice;
@@ -46,10 +46,10 @@ public final class querySuggestionsMenu extends UserMenu {
 		//Gets the dictionary of a user's suggestionid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
 		List<Entry<Integer, Entry<CampAspect, ? extends Object>>> suggestionlist = null;
 		HashMap<Integer,Entry<CampAspect,? extends Object>> suggestionset;
-		if(ownerid!=null) ((SuggestionController) control).FilterUser(this.ownerid);
-		if(campid!=null) ((SuggestionController) control).FilterCamp(this.campid);
+		if(ownerid!=null) ((SuggestionControlInterface) control).FilterUser(this.ownerid);
+		if(campid!=null) ((SuggestionControlInterface) control).FilterCamp(this.campid);
 		try {
-			suggestionset = ((SuggestionController)control).getSuggestions();
+			suggestionset = ((SuggestionControlInterface)control).getSuggestions();
 		} catch (ControllerParamsException | ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("User info does not tally with one that has suggestions");
 		}
@@ -73,7 +73,7 @@ public final class querySuggestionsMenu extends UserMenu {
 			if(this.campid==null) return CamsInteraction.startmenu(currentuser);
 			HashMap<Integer, String> campset = null;
 			try {
-				campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
+				campset = ((CampControlInterface) ((CampControlInterface) control).FilterUser(userid)).getCamps();
 			} catch (ControllerItemMissingException e) {
 				throw new UserInfoMissingException("Cannot find user information");
 			}
@@ -82,8 +82,8 @@ public final class querySuggestionsMenu extends UserMenu {
 		int suggestionid = suggestionlist.get(option).getKey();
 		System.out.println(">>"+choices.get(option).text());
 		try {
-			System.out.println(((SuggestionController) control).getSuggestion(suggestionid).getValue());
-			((SuggestionController) control).finaliseSuggestion(suggestionid);
+			System.out.println(((SuggestionControlInterface) control).get(suggestionid).getValue());
+			((SuggestionControlInterface) control).finalise(suggestionid);
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("Suggestion is invalid");
 		}

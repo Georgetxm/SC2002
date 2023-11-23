@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import cams.CamsInteraction;
-import controllers.CampController;
+import controllers.CampControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import entities.UserInfoMissingException;
@@ -29,7 +29,7 @@ public class doEditCampDetails extends Interaction {
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
 		if(campid==null||userid==null) throw new MissingRequestedDataException("Camp or user editing not found");
-		TreeMap<CampAspect,? extends Object> info = ((CampController) control).getCampDetails(campid).info();
+		TreeMap<CampAspect,? extends Object> info = ((CampControlInterface) control).details(campid).info();
 		int choice=0;
 		while(true) {
 			System.out.println("What would you like to amend:");
@@ -55,10 +55,10 @@ public class doEditCampDetails extends Interaction {
 		case DESCRIPTION: 		edited = (Entry<CampAspect, ? extends Object>) ParseInput.CampDescription(s); break;
 		default: System.out.println("This field cannot be changed.");
 		}
-		if(edited!=null)((CampController) control).editCampDetails(campid,edited);
+		if(edited!=null)((CampControlInterface) control).editDetails(campid,edited);
 		HashMap<Integer, String> usercamps = null;
 		try {
-			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+			usercamps = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new UserInfoMissingException("User id not valid");
 		}

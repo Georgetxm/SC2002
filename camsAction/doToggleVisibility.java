@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampController;
+import controllers.CampControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import entities.UserInfoMissingException;
@@ -26,10 +26,10 @@ public final class doToggleVisibility extends Interaction {
 @Override
 	public Interaction run(String currentuser, Scanner s, Controller control) throws UserInfoMissingException{
 		System.out.println("Camp visibility changed. Camp is now:");
-		System.out.println(((CampController) control).toggleCampVisiblity(campid)?"Visible":"Not Visible");
+		System.out.println(((CampControlInterface) control).toggleCampVisiblity(campid)?"Visible":"Not Visible");
 		HashMap<Integer, String> usercamps = null;
 		try {
-			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+			usercamps = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new UserInfoMissingException("User id not valid");
 		}

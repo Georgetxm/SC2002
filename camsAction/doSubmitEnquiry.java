@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampController;
+import controllers.CampControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.EnquiryController;
+import controllers.EnquiryControlInterface;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
@@ -30,11 +30,11 @@ public final class doSubmitEnquiry extends Interaction {
 			throws UserInfoMissingException, MissingRequestedDataException {
 		if(campid==null) throw new MissingRequestedDataException("Camp ID wrong");
 		System.out.println("Please type your enquiry:");
-		((EnquiryController)control).addEnquiry(s.nextLine(),currentuser,campid);
+		((EnquiryControlInterface)control).add(s.nextLine(),currentuser,campid);
 		System.out.println("Your enquiry has been submitted.");
 		HashMap<Integer, String> usercamps = null;
 		try {
-			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+			usercamps = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new UserInfoMissingException("User id not valid");
 		}

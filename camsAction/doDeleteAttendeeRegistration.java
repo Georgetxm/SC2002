@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampController;
+import controllers.CampControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.UserController;
+import controllers.UserControlInterface;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
@@ -32,7 +32,7 @@ public class doDeleteAttendeeRegistration extends Interaction {
 		if(campid==null) throw new MissingRequestedDataException("Camp not found");
 		HashMap<Integer, String> campset = null;
 		try {
-			campset = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+			campset = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new UserInfoMissingException("User invalid");
 		}
@@ -40,12 +40,12 @@ public class doDeleteAttendeeRegistration extends Interaction {
 			System.out.println("You cannot withdraw from a camp you are not in");
 			return CamsInteraction.OtherCampMenu(campid,currentuser);
 		}
-		else if(((UserController) control).getCampCommitteeOfStudent(currentuser)==campid) {
+		else if(((UserControlInterface) control).getCampCommitteeOfStudent(currentuser)==campid) {
 			System.out.println("Cannot withdraw from camp as a camp committee member");
 			next = CamsInteraction.OwnCampMenu(campid,currentuser);
 		}
 		else{
-			((CampController)control).removeAttendeeFromCamp(campid, currentuser);
+			((CampControlInterface)control).removeAttendeeFromCamp(campid, currentuser);
 			System.out.println("Withdrawn Successfully");
 			next = CamsInteraction.OtherCampMenu(campid,currentuser);
 		}

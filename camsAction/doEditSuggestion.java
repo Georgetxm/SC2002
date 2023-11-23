@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.SuggestionController;
+import controllers.SuggestionControlInterface;
 import interactions.Interaction;
 import types.CampAspect;
 /**
@@ -27,9 +27,9 @@ public final class doEditSuggestion extends Interaction {
 		if(suggestionid==null) throw new MissingRequestedDataException("Suggstion id invalid");
 		CampAspect chosenaspect = null;
 		try {
-			if(!((SuggestionController) control).isSuggestionEditable(suggestionid))
+			if(!((SuggestionControlInterface) control).isEditable(suggestionid))
 				System.out.println("Suggestion has been viewed and may not be edited");
-			else chosenaspect = ((SuggestionController) control).getSuggestion(suggestionid).getKey().getKey();
+			else chosenaspect = ((SuggestionControlInterface) control).get(suggestionid).getKey().getKey();
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("Suggestion id is invalid");
 		}
@@ -46,7 +46,7 @@ public final class doEditSuggestion extends Interaction {
 		if(edited!=null) {
 			System.out.println("Please type your rationale:");
 			try {
-				((SuggestionController) control).editSuggestion(suggestionid, edited, s.nextLine());
+				((SuggestionControlInterface) control).editSuggestion(suggestionid, edited, s.nextLine());
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Suggestion id is invalid");
 			}

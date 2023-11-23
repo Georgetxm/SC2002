@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampController;
+import controllers.CampControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import entities.UserInfoMissingException;
@@ -30,23 +30,23 @@ public final class doSubmitAttendeeRegistration extends Interaction {
 		if(campid==null) throw new MissingRequestedDataException("No camp found");
 		HashMap<Integer, String> camplist;
 		try {
-			camplist = ((CampController) ((CampController)control).FilterUser(currentuser)).getCamps();
+			camplist = ((CampControlInterface) ((CampControlInterface)control).FilterUser(currentuser)).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new UserInfoMissingException("This user id cannot be found");
 		}
 		
 		if(camplist!=null&&camplist.keySet().contains(campid))
 			System.out.println("Already registered");
-		else if(((CampController)control).isAttendeeFull(campid))
+		else if(((CampControlInterface)control).isAttendeeFull(campid))
 			System.out.println("Camp is currently full. Please wait for others to withdraw.");
 		else {
-			((CampController)control).joinCamp(campid, currentuser, Role.ATTENDEE);
+			((CampControlInterface)control).joinCamp(campid, currentuser, Role.ATTENDEE);
 			System.out.println("Registered successfully as an attendee.");
 		}
-		System.out.println(((CampController) control).getCampStudentList(campid));
+		System.out.println(((CampControlInterface) control).report(campid));
 		HashMap<Integer, String> usercamps = null;
 		try {
-			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
+			usercamps = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
 		} catch (ControllerItemMissingException e) {
 			throw new UserInfoMissingException("User id not valid");
 		}

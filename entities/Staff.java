@@ -20,8 +20,8 @@ public class Staff extends User {
                 Perms.VIEW_CAMP_STUDENT_INFORMATION));
     }
 
-    public Staff(String userId, String password) {
-        super(userId, password, Faculty.WHOLE_NTU, EnumSet.of(
+    public Staff(String userId, String password, Faculty faculty) {
+        super(userId, password, faculty, EnumSet.of(
                 Perms.DEFAULT,
                 Perms.CREATE_CAMP,
                 Perms.DELETE_CAMP,

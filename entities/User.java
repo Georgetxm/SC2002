@@ -11,21 +11,14 @@ import types.Perms;
  * Inherited by Student and Staff classes
  * 
  * 
- *      A User has the base attributres of a userId, password, faculty and permissions
+ * A User has the base attributres of a userId, password, faculty and
+ * permissions
+ * 
  * @author Teo Xuan Ming
  * @version 1.0
  * @since 2021-11-12
  */
 
-/**
- * 
- */
-/**
- * 
- */
-/**
- * 
- */
 public class User {
     /**
      * userId is the unique identifier of a User, the string before the @ in the NTU

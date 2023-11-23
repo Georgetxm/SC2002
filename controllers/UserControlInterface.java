@@ -23,7 +23,7 @@ public interface UserControlInterface {
 
 	public EnumSet<Perms> replacePerms(String userid, EnumSet<Perms> replacementperms); // Returns new perms
 
-	public Controller FilterCamp(int campid);
-	
+	// public Controller FilterCamp(int campid);
+
 	public Class<?> getClass(String userid);
 }

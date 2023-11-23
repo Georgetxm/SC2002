@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import camsAction.MissingRequestedDataException;
 import controllers.Controller;
+// import controllers.MainController;
 import entities.Camp;
 import entities.User;
 import entities.UserInfoMissingException;
@@ -37,7 +38,7 @@ public class Cams {
 		control.setCamp(new controllers.CampController());
 		control.setEnquiry(new controllers.EnquiryController());
 		control.setSuggestion(new controllers.SuggestionController());
-		control.setUser(new controllers.UserController());
+		control.setUser(new controllers.UserController(userlist, camplist));
 		control.setDirectory(new controllers.Lookup().sync());
 		while (true) {
 			String currentuser = Login.getCurrentUser(s, userlist);

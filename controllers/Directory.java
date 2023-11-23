@@ -14,5 +14,5 @@ public interface Directory {
 	public abstract void link(List<Entry<Class<?>, Serializable>> items);
 	public abstract void delink(List<Entry<Class<?>, Serializable>> items);
 	public abstract void update();
-	public abstract Lookup init();
+	public abstract Lookup sync();
 }

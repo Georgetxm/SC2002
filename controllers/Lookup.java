@@ -104,7 +104,7 @@ public class Lookup implements Directory{
 	    } catch(Exception e) {}
 	}
 	@SuppressWarnings("unchecked")
-	public Lookup init() {
+	public Lookup sync() {
 		try {
 			File toRead=new File("classes");
 	        FileInputStream fis=new FileInputStream(toRead);

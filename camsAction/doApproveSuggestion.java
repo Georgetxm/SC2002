@@ -50,6 +50,8 @@ public final class doApproveSuggestion extends Interaction {
 			//Remove the past suggestion from both the storage and directory
 			control.Suggestion().delete(suggestionid);
 			control.Directory().remove(entities.Suggestion.class, suggestionid);
+			//Since changes have been made, just sync
+			control.Directory().sync();
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("Suggestion cannot be found");
 		}

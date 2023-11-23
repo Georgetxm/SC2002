@@ -23,5 +23,10 @@ public interface UserControlInterface {
 
 	public EnumSet<Perms> replacePerms(String userid, EnumSet<Perms> replacementperms); // Returns new perms
 
+<<<<<<< HEAD
+=======
+	// public Controller FilterCamp(int campid);
+
+>>>>>>> branch 'Lookup-4-Controller' of https://github.com/Georgetxm/SC2002.git
 	public Class<?> getClass(String userid);
 }

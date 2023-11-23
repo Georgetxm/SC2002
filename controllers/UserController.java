@@ -12,7 +12,6 @@ import types.Perms;
 
 public class UserController implements UserControlInterface {
 	private HashMap<String, User> userList;
-	private HashMap<Integer, Camp> campList;
 
 	/**
 	 * Constructor for UserController
@@ -22,7 +21,6 @@ public class UserController implements UserControlInterface {
 	public UserController(HashMap<String, User> userList,
 			HashMap<Integer, Camp> campList) {
 		this.userList = userList;
-		this.campList = campList;
 	}
 
 	/**
@@ -39,21 +37,6 @@ public class UserController implements UserControlInterface {
 		}
 		if (userList.containsKey(userId) && Staff.class.isInstance(userList.get(userId))) {
 			return (Staff) userList.get(userId);
-		}
-		return null;
-	}
-
-	/**
-	 * Returns a Camp object given its ID
-	 * 
-	 * @param campId the Camp's ID
-	 * 
-	 * @return the Camp object with the given ID, null if not found
-	 */
-
-	public Camp findCampById(int campId) {
-		if (campList.containsKey(campId)) {
-			return campList.get(campId);
 		}
 		return null;
 	}
@@ -92,11 +75,8 @@ public class UserController implements UserControlInterface {
 		if (!Student.class.isInstance(findUserById(userId))) {
 			return false;
 		}
-		Camp camp = findCampById(campId);
 		Student user = (Student) findUserById(userId);
-		if (!(camp == null)
-				&& user.registerForCamp(campId)
-				&& camp.addCommittee(userId)
+		if (user.registerForCamp(campId)
 				&& user.setCampComittee(campId)) {
 			return true;
 		}

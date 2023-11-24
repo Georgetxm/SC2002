@@ -15,7 +15,7 @@ import types.Perms;
  * permissions
  * 
  * @author Teo Xuan Ming
- * @version 1.0
+ * @version 1.1
  * @since 2021-11-12
  */
 
@@ -43,18 +43,12 @@ public class User {
     private EnumSet<Perms> permission;
 
     /**
-     * camps is a HashSet of campIds that the Student is registered as an attendee
-     */
-    private HashSet<Integer> camps;
-
-    /**
      * Default constructor for User
      */
     public User() {
         this.userId = "Name";
         this.password = "";
         this.faculty = Faculty.WHOLE_NTU;
-        this.camps = new HashSet<Integer>();
         this.permission = EnumSet.noneOf(Perms.class);
     }
 
@@ -71,7 +65,6 @@ public class User {
         this.password = password;
         this.faculty = faculty;
         this.permission = permission;
-        this.camps = new HashSet<Integer>();
     }
 
     /**
@@ -151,38 +144,5 @@ public class User {
      */
     public void changePassword(String newPassword) {
         this.password = newPassword;
-    }
-
-    /**
-     * Returns the list of Student's camps
-     * 
-     * @return the list of Student's camps
-     */
-    public HashSet<Integer> getCamps() {
-        return this.camps;
-    }
-
-    /**
-     * Adds a campId to the Student's camps HashSet as an attendee
-     * 
-     * @param campId the campId to be added
-     * 
-     * @return true if the campId is successfully added, false otherwise
-     */
-    public boolean registerForCamp(Integer campId) {
-        this.camps.add(campId);
-        return true;
-    }
-
-    /**
-     * Removes a campId from the Student's camps HashSet as an attendee
-     * 
-     * @param campid the campId to be removed
-     * 
-     * @return true if the campId is successfully removed, false otherwise
-     */
-    public boolean withdrawFromCamp(int campid) {
-        this.camps.remove(campid);
-        return true;
     }
 }

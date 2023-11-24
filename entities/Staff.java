@@ -33,18 +33,4 @@ public class Staff extends User {
                 Perms.VIEW_EVERY_CAMP,
                 Perms.VIEW_CAMP_STUDENT_INFORMATION));
     }
-
-    // public HashMap<Integer, String> getCampInCharge() {
-    // return this.campInCharge;
-    // }
-
-    // public boolean addCampInCharge(Integer campid, String name) {
-    // try {
-    // this.campInCharge.put(campid, name);
-    // } catch (Exception e) {
-    // System.out.println("Error adding camp in charge: " + e.getMessage());
-    // return false;
-    // }
-    // return true;
-    // }
 }

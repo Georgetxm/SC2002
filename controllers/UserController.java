@@ -74,8 +74,7 @@ public class UserController implements UserControlInterface {
 			return false;
 		}
 		Student user = (Student) findUserById(userId);
-		if (user.registerForCamp(campId)
-				&& user.setCampComittee(campId)) {
+		if (user.setCampComittee(campId)) {
 			return true;
 		}
 		return false;

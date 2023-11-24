@@ -15,7 +15,7 @@ import types.Perms;
  *      A Student can create enquiries and suggestions
  *      A Student can have points for giving suggestions and having it approved
  * @author Teo Xuan Ming
- * @version 1.0
+ * @version 1.1
  * @since 2021-11-06
  */
 public class Student extends User {
@@ -32,18 +32,6 @@ public class Student extends User {
      */
     private int points;
 
-    /**
-     * Enquiries that the Student has created
-     * enquiries is an HashMap of form campId, enquiryId
-     */
-    private HashMap<Integer, Integer> enquiries;
-
-    /**
-     * Suggestions that the Student has created
-     * suggestions is an HashMap of form campId, suggestionId
-     */
-    private HashMap<Integer, Integer> suggestions;
-
     public Student() {
         super("Armstrong", "StrongPassword", Faculty.ADM, EnumSet.of(
                 Perms.DEFAULT,
@@ -54,8 +42,6 @@ public class Student extends User {
                 Perms.WITHDRAW_AS_ATTENDEE));
         this.campCommittee = -1;
         this.points = 0;
-        this.enquiries = new HashMap<Integer, Integer>();
-        this.suggestions = new HashMap<Integer, Integer>();
     }
 
     /**
@@ -80,8 +66,6 @@ public class Student extends User {
                 Perms.WITHDRAW_AS_ATTENDEE));
         this.campCommittee = -1;
         this.points = 0;
-        this.enquiries = new HashMap<Integer, Integer>();
-        this.suggestions = new HashMap<Integer, Integer>();
     }
 
     /**
@@ -124,74 +108,6 @@ public class Student extends User {
      */
     public boolean incrementPoints(int points) {
         this.points += points;
-        return true;
-    }
-
-    /**
-     * Returns the list of enquiries this student has created in the form of
-     * HashMap of form campId, enquiryId
-     * 
-     * @return the list of enquiries this student has created
-     */
-    public HashMap<Integer, Integer> getEnquiries() {
-        return this.enquiries;
-    }
-
-    /**
-     * Adds an enquiryId to the Student's list of enquiries
-     * 
-     * @param enquiryId the enquiryId to be added
-     * 
-     * @return true if the enquiryId is successfully added, false otherwise
-     */
-    public boolean addEnquiry(int campid, int enquiryid) {
-        this.enquiries.put(campid, enquiryid);
-        return true;
-    }
-
-    /**
-     * Removes an enquiryId from the Student's list of enquiries
-     * 
-     * @param enquiryId the enquiryId to be removed
-     * 
-     * @return true if the enquiryId is successfully removed, false otherwise
-     */
-    public boolean removeEnquiry(int campid, int enquiryId) {
-        this.enquiries.remove(campid, enquiryId);
-        return true;
-    }
-
-    /**
-     * Returns the list of suggestions this student has created in the form of
-     * HashMap of form campId, suggestionId
-     * 
-     * @return the list of suggestions this student has created
-     */
-    public HashMap<Integer, Integer> getSuggestions() {
-        return this.suggestions;
-    }
-
-    /**
-     * Adds a suggestionId to the Student's list of suggestions
-     * 
-     * @param suggestionId the suggestionId to be added
-     * 
-     * @return true if the suggestionId is successfully added, false otherwise
-     */
-    public boolean addSuggestion(int campid, int suggestionid) {
-        this.suggestions.put(campid, suggestionid);
-        return true;
-    }
-
-    /**
-     * Removes a suggestionId from the Student's list of suggestions
-     * 
-     * @param suggestionId the suggestionId to be removed
-     * 
-     * @return true if the suggestionId is successfully removed, false otherwise
-     */
-    public boolean removeSuggestion(int campid, int suggestionId) {
-        this.suggestions.remove(campid, suggestionId);
         return true;
     }
 }

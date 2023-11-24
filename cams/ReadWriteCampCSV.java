@@ -3,6 +3,7 @@ package cams;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -73,38 +74,10 @@ public class ReadWriteCampCSV {
                             int campCommitteeSlots = Integer.parseInt(values[7]);
                             String campDescription = values[8];
                             String staffIC = values[9];
-
-                            // Get attendees as HashSet<String> of userIds
-                            HashSet<String> attendees = new HashSet<String>();
-                            String[] attendeeStrings = values[10].split(";");
-                            for (String attendeeId : attendeeStrings) {
-                                attendees.add(attendeeId);
-                            }
-
-                            // Get committee as HashSet<String> of userIds
-                            HashSet<String> committee = new HashSet<String>();
-                            String[] commiteeStrings = values[11].split(";");
-                            for (String committeeId : commiteeStrings) {
-                                committee.add(committeeId);
-                            }
-
-                            boolean visibility = Boolean.parseBoolean(values[12]);
-                            LocalDate creationDate = LocalDate.parse(values[13]);
-
-                            // Get enquiries as HashSet<Integer> of enquiryIds
-                            HashSet<Integer> enquiries = new HashSet<Integer>();
-                            String[] enquiriesString = values[14].split(";");
-                            for (String enquiriyId : enquiriesString) {
-                                enquiries.add(Integer.parseInt(enquiriyId));
-                            }
-
-                            // Get suggestions as HashSet<Integer> of suggestionIds
-                            HashSet<Integer> suggestions = new HashSet<Integer>();
-                            String[] suggestionsString = values[15].split(";");
-                            for (String suggestionId : suggestionsString) {
-                                suggestions.add(Integer.parseInt(suggestionId));
-                            }
-
+                            boolean visibility = Boolean.parseBoolean(values[10]);
+                            LocalDate creationDate = LocalDate.parse(values[11]);
+                            int attendeeCount = Integer.parseInt(values[12]);
+                            int committeeCount = Integer.parseInt(values[13]);
                             // Create CampInfo and Camp Object
                             TreeMap<CampAspect, Object> campInfoObj = new TreeMap<CampAspect, Object>();
                             campInfoObj.put(CampAspect.NAME, campName);
@@ -117,8 +90,7 @@ public class ReadWriteCampCSV {
                             campInfoObj.put(CampAspect.DESCRIPTION, campDescription);
                             campInfoObj.put(CampAspect.STAFFIC, staffIC);
                             CampInfo campInfo = new CampInfo(campInfoObj);
-                            Camp camp = new Camp(campInfo, attendees, committee, visibility, creationDate, enquiries,
-                                    suggestions);
+                            Camp camp = new Camp(campInfo, visibility, creationDate, attendeeCount, committeeCount);
                             campList.put(camp.getCampid(), camp);
                         }
                     } catch (IOException e) {
@@ -129,4 +101,66 @@ public class ReadWriteCampCSV {
         }
     }
 
+    /**
+     * Write user CSV.
+     * Output CSV format: name,email,faculty,password
+     * 
+     * @param userList         the user list
+     * @param fileNameWithPath e.g. /lists/staff_list.csv
+     * @return true, if successful
+     */
+    public static final boolean writeCampCSV(HashMap<Integer, Camp> campList, String fileNameWithPath) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(fileNameWithPath);
+            // header row
+            writer.append(
+                    "campId,campName,campDates,registrationDeadline,faculty,location,slots,committeeSlots,description,staffIC,visibility,createDate,attendeeCount,committeeCount\n");
+
+            for (Camp camp : campList.values()) {
+                writer.append(String.valueOf(camp.getCampid()));
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.NAME).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.DATE).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.REGISTRATION_DEADLINE).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.USERGROUP).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.LOCATION).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.SLOTS).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.COMMITTEESLOTS).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.DESCRIPTION).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.STAFFIC).toString());
+                writer.append(",");
+                writer.append(String.valueOf(camp.getVisibility()));
+                writer.append(",");
+                writer.append(camp.getCreationDate().toString());
+                writer.append("\n");
+                writer.append(",");
+                writer.append(String.valueOf(camp.getAttendeeCount()));
+                writer.append("\n");
+                writer.append(",");
+                writer.append(String.valueOf(camp.getCommitteeCount()));
+                writer.append("\n");
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // flush and close writer
+                writer.flush();
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 }

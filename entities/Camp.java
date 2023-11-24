@@ -27,6 +27,8 @@ public class Camp {
     private final int campid;
     private static int nextCampId = 0;
     private boolean visibility;
+    private int attendeeCount = 0;
+    private int committeeCount = 0;
     private final LocalDate creationDate;
 
     /**
@@ -59,11 +61,12 @@ public class Camp {
      * @param enquiries
      * @param suggestions
      */
-    public Camp(CampInfo campInfo, boolean visibility, LocalDate creationDate, HashSet<Integer> enquiries,
-            HashSet<Integer> suggestions) {
+    public Camp(CampInfo campInfo, boolean visibility, LocalDate creationDate, int attendeeCount, int committeeCount) {
         this.campInfo = campInfo;
         this.campid = nextCampId++;
         this.visibility = visibility;
+        this.attendeeCount = attendeeCount;
+        this.committeeCount = committeeCount;
         this.creationDate = creationDate;
     }
 
@@ -102,6 +105,46 @@ public class Camp {
      */
     public boolean setVisibility(boolean visibility) {
         this.visibility = visibility;
+        return true;
+    }
+
+    /**
+     * Getter for attendeeCount
+     * 
+     * @return the attendeeCount
+     */
+    public int getAttendeeCount() {
+        return this.attendeeCount;
+    }
+
+    /**
+     * Setter for attendeeCount
+     * 
+     * @param attendeeCount
+     * @return true if attendeeCount is successfully set, false otherwise
+     */
+    public boolean setAttendeeCount(int attendeeCount) {
+        this.attendeeCount = attendeeCount;
+        return true;
+    }
+
+    /**
+     * Getter for committeeCount
+     * 
+     * @return the committeeCount
+     */
+    public int getCommitteeCount() {
+        return this.committeeCount;
+    }
+
+    /**
+     * Setter for committeeCount
+     * 
+     * @param committeeCount
+     * @return true if committeeCount is successfully set, false otherwise
+     */
+    public boolean setCommitteeCount(int committeeCount) {
+        this.committeeCount = committeeCount;
         return true;
     }
 

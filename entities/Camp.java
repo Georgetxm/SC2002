@@ -26,12 +26,8 @@ public class Camp {
     private CampInfo campInfo;
     private final int campid;
     private static int nextCampId = 0;
-    private HashSet<String> attendees = new HashSet<String>();
-    private HashSet<String> campCommittee = new HashSet<String>();
     private boolean visibility;
     private final LocalDate creationDate;
-    private HashSet<Integer> enquiries = new HashSet<Integer>();
-    private HashSet<Integer> suggestions = new HashSet<Integer>();
 
     /**
      * Constructor for Camp. Intended use is for creating a new camp when entering
@@ -43,12 +39,9 @@ public class Camp {
      * @param visibility
      * @param creationDate
      */
-    public Camp(CampInfo campInfo, HashSet<String> attendees, HashSet<String> campCommittee,
-            boolean visibility, LocalDate creationDate) {
+    public Camp(CampInfo campInfo, boolean visibility, LocalDate creationDate) {
         this.campInfo = campInfo;
         this.campid = nextCampId++;
-        this.attendees = attendees;
-        this.campCommittee = campCommittee;
         this.visibility = visibility;
         this.creationDate = creationDate;
     }
@@ -66,12 +59,10 @@ public class Camp {
      * @param enquiries
      * @param suggestions
      */
-    public Camp(CampInfo campInfo, HashSet<String> attendees, HashSet<String> campCommittee,
-            boolean visibility, LocalDate creationDate, HashSet<Integer> enquiries, HashSet<Integer> suggestions) {
+    public Camp(CampInfo campInfo, boolean visibility, LocalDate creationDate, HashSet<Integer> enquiries,
+            HashSet<Integer> suggestions) {
         this.campInfo = campInfo;
         this.campid = nextCampId++;
-        this.attendees = attendees;
-        this.campCommittee = campCommittee;
         this.visibility = visibility;
         this.creationDate = creationDate;
     }
@@ -121,199 +112,5 @@ public class Camp {
      */
     public LocalDate getCreationDate() {
         return this.creationDate;
-    }
-
-    /**
-     * Getter for attendees
-     * 
-     * @return the attendees
-     */
-    public HashSet<String> getAttendees() {
-        return this.attendees;
-    }
-
-    /**
-     * Returns true if the userId is an attendee of this camp
-     * 
-     * @param userId
-     * @return true if the userId is an attendee of this camp
-     */
-    public boolean isCampAttendee(String userId) {
-        return this.attendees.contains(userId);
-    }
-
-    /**
-     * Returns true if the camp is full
-     * 
-     * @return true if the camp is full
-     */
-    public boolean isCampAttendeeFull() {
-        return this.attendees.size() >= (int) this.campInfo.info().get(CampAspect.SLOTS);
-    }
-
-    /**
-     * Adds a userId to the attendees HashSet
-     * 
-     * @param userId
-     * @return true if the userId is successfully added, false otherwise
-     */
-    public boolean addAttendee(String userId) {
-        if (this.isCampAttendeeFull()) {
-            return false;
-        }
-        this.attendees.add(userId);
-        Integer currentAttendees = (Integer) this.campInfo.info().get(CampAspect.SLOTS);
-        this.campInfo.info().put(CampAspect.SLOTS, ((Integer) (currentAttendees + 1)));
-
-        return true;
-    }
-
-    /**
-     * Removes a userId from the attendees HashSet
-     * 
-     * @param userId
-     * @return true if the userId is successfully removed, false otherwise
-     */
-    public boolean removeAttendee(String userId) {
-        if (!this.isCampAttendee(userId)) {
-            return false;
-        }
-        this.attendees.remove(userId);
-        Integer updatedAttendees = (Integer) this.campInfo.info().get(CampAspect.SLOTS) - 1;
-        this.campInfo.info().put(CampAspect.SLOTS, updatedAttendees);
-        return true;
-    }
-
-    /**
-     * Getter for campCommittee
-     * 
-     * @return campCommittee HashSet
-     */
-    public HashSet<String> getCampCommittee() {
-        return this.campCommittee;
-    }
-
-    /**
-     * Returns true if the userId is a camp committee of this camp
-     * 
-     * @param userId
-     * @return true if the userId is a camp committee of this camp
-     */
-    public boolean isCampCommittee(String userId) {
-        return this.campCommittee.contains(userId);
-    }
-
-    /**
-     * Returns true if the camp committee is full
-     * 
-     * @return true if the camp committee is full
-     */
-    public boolean isCampCommitteeFull() {
-        return this.campCommittee.size() >= (int) this.campInfo.info().get(CampAspect.COMMITTEESLOTS);
-    }
-
-    /**
-     * Adds a userId to the campCommittee HashSet
-     * 
-     * @param userId
-     * @return true if the userId is successfully added, false otherwise
-     */
-    public boolean addCommittee(String userId) {
-        if (this.isCampCommitteeFull()) {
-            System.out.println("Camp committee is full");
-            return false;
-        }
-
-        if (this.isCampAttendee(userId)) {
-            System.out.println(userId + " is an attendee");
-            return false;
-        }
-
-        this.campCommittee.add(userId);
-        // Integer currentAttendees = (Integer)
-        // this.campInfo.info().get(CampAspects.COMMITTEESLOTS);
-        // this.campInfo.info().put(CampAspects.SLOTS, currentAttendees + 1);
-        this.campInfo.info().compute(CampAspect.SLOTS,
-                (key, value) -> (value == null) ? (Integer) 1 : (Integer) value + 1);
-
-        return true;
-    }
-
-    /**
-     * Removes a userId from the campCommittee HashSet
-     * 
-     * @param userId
-     * @return true if the userId is successfully removed, false otherwise
-     */
-    public boolean removeCommittee(String userId) {
-        if (!this.isCampCommittee(userId)) {
-            return false;
-        }
-        this.campCommittee.remove(userId);
-        Integer currentAttendees = (Integer) this.campInfo.info().get(CampAspect.SLOTS);
-        this.campInfo.info().put(CampAspect.SLOTS, currentAttendees - 1);
-        return true;
-    }
-
-    /**
-     * Getter for enquiries
-     * 
-     * @return enquiries HashSet
-     */
-    public HashSet<Integer> getEnquiries() {
-        return this.enquiries;
-    }
-
-    /**
-     * Adds an enquiryId to the enquiries HashSet
-     * 
-     * @param enquiryId
-     * @return
-     */
-    public boolean addEnquiry(int enquiryId) {
-        this.enquiries.add(enquiryId);
-        return true;
-    }
-
-    /**
-     * Removes an enquiryId from the enquiries HashSet
-     * 
-     * @param enquiryId
-     * @return true if the enquiryId is successfully removed, false otherwise
-     */
-    public boolean removeEnquiry(int enquiryId) {
-        this.enquiries.remove(enquiryId);
-        return true;
-    }
-
-    /**
-     * Getter for suggestions
-     * 
-     * @return suggestions HashSet
-     */
-    public HashSet<Integer> getSuggestions() {
-        return this.suggestions;
-    }
-
-    /**
-     * Adds a suggestionId to the suggestions HashSet
-     * 
-     * @param suggestionId
-     * @return true if the suggestionId is successfully added, false otherwise
-     */
-    public boolean addSuggestion(int suggestionId) {
-        this.suggestions.add(suggestionId);
-        return true;
-    }
-
-    /**
-     * Removes a suggestionId from the suggestions HashSet
-     * 
-     * @param suggestionId
-     * @return true if the suggestionId is successfully removed, false otherwise
-     */
-    public boolean removeSuggestion(int suggestionId) {
-        this.suggestions.remove(suggestionId);
-        return true;
     }
 }

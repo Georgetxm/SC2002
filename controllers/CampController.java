@@ -3,16 +3,11 @@ package controllers;
 import java.time.LocalDate;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map.Entry;
 
+import cams.ReadWriteCampCSV;
 import entities.Camp;
 import entities.CampInfo;
-import entities.Enquiry;
-import entities.Staff;
-import entities.Student;
-import entities.Suggestion;
-import entities.User;
 import types.CampAspect;
 import types.Role;
 
@@ -57,9 +52,10 @@ public class CampController implements CampControlInterface {
 	 */
 	@Override
 	public int add(CampInfo info) {
-		Camp camp = new Camp(info, new HashSet<String>(), new HashSet<String>(), false, LocalDate.now());
+		Camp camp = new Camp(info, false, LocalDate.now());
 
 		camps.put((Integer) camp.getCampid(), camp);
+		ReadWriteCampCSV.writeCampCSV(camps, "list/camp_list.csv");
 
 		return camp.getCampid();
 	}
@@ -82,6 +78,7 @@ public class CampController implements CampControlInterface {
 		Camp camp = findCampById(campid);
 		if (!(camp == null)) {
 			camps.remove(camp.getCampid(), camp);
+			ReadWriteCampCSV.writeCampCSV(camps, "list/camp_list.csv");
 			return true;
 		}
 		return false;
@@ -125,6 +122,7 @@ public class CampController implements CampControlInterface {
 		Camp camp = findCampById(campid);
 		if (!(camp == null)) {
 			camp.getCampInfo().info().replace(detail.getKey(), detail.getValue());
+			ReadWriteCampCSV.writeCampCSV(camps, "list/camp_list.csv");
 			return true;
 		}
 		return false;
@@ -141,7 +139,7 @@ public class CampController implements CampControlInterface {
 	public boolean isAttendeeFull(int campid) {
 		Camp camp = findCampById(campid);
 		if (!(camp == null)) {
-			return camp.isCampAttendeeFull();
+			return (camp.getAttendeeCount() >= camp.getCampInfo().info().get(CampAspect.SLOTS).hashCode());
 		}
 		return false;
 	}
@@ -157,7 +155,7 @@ public class CampController implements CampControlInterface {
 	public boolean isCommitteeFull(int campid) {
 		Camp camp = findCampById(campid);
 		if (!(camp == null)) {
-			return camp.isCampCommitteeFull();
+			return (camp.getCommitteeCount() >= camp.getCampInfo().info().get(CampAspect.COMMITTEESLOTS).hashCode());
 		}
 		return false;
 	}

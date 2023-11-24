@@ -1,7 +1,6 @@
 package controllers;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map.Entry;
 
 import entities.CampInfo;

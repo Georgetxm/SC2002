@@ -207,4 +207,10 @@ public class UserController implements UserControlInterface {
 		return null;
 	}
 
+	@Override
+	public Boolean changePassword(String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -53,7 +53,7 @@ public class queryCampsMenu extends UserMenu {
 		}
 		if(filters!=null) {
 			List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
-			viewingset = new HashSet<Serializable>(control.Directory().get(entities.Camp.class));
+			viewingset = new HashSet<Serializable>(control.Directory().sync().get(entities.Camp.class));
 			for (Iterator<Serializable> it = viewingset.iterator(); it.hasNext();) {
 			    Serializable element = it.next();
 			    Faculty campfaculty = (Faculty) control.Camp().details((int) element).info().get(CampAspect.USERGROUP);
@@ -70,7 +70,7 @@ public class queryCampsMenu extends UserMenu {
 			    	}
 			}
 		}
-		else viewingset = control.Directory().get(entities.Camp.class);
+		else viewingset = control.Directory().sync().get(entities.Camp.class);
 		HashMap<Integer,String> campset = new HashMap<Integer,String>();
 		for(Serializable id: viewingset)
 			campset.put((Integer)id, (String) control.Camp().details((int) id).info().get(CampAspect.NAME));

@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import camsAction.doApproveSuggestion;
+import camsAction.doChangePassword;
 import camsAction.doDeleteAttendeeRegistration;
 import camsAction.doDeleteCamp;
 import camsAction.doDeleteEnquiry;
@@ -284,6 +285,10 @@ public final class CamsInteraction{ //Menu choices
 	public static MenuChoice generatePerformanceReport(Integer campid) {
 		return new MenuChoice(Perms.APPROVE_CAMP_SUGGESTION,"Generate performance report", new doGeneratePerformanceReport().withcamp(campid));
 	}
+	
+	public static MenuChoice changePassword() {
+		return new MenuChoice(Perms.DEFAULT,"Change your password", new doChangePassword());
+	}
 
 	/**
 	 * List of menu choices to be used for the single suggestion menu
@@ -318,7 +323,8 @@ public final class CamsInteraction{ //Menu choices
 			viewAllCamps,
 			viewOwnCamps(userid),
 			viewOwnSuggestion(userid),
-			viewOwnEnquiry(userid)
+			viewOwnEnquiry(userid),
+			changePassword()
 	);}
 	/**
 	 * List of menu choices to be used for the own camp menu
@@ -391,6 +397,12 @@ public final class CamsInteraction{ //Menu choices
 	public static StaticMenu SingleEnquiryMenu(int enquiryid) {
 		return new StaticMenu("What would you like to do with this enquiry?",singleenquirychoices(enquiryid), new queryEnquriesMenu());
 	}
+	/**
+	 * 
+	 * @param campid
+	 * @param userid
+	 * @return
+	 */
 	public static StaticMenu GenerateAttendanceList(int campid, String userid) {
 		return new StaticMenu("Who would you like to generate an attendence list of?",attendancelistchoices(campid), new queryCampsMenu());
 	}

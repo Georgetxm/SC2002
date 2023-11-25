@@ -123,7 +123,6 @@ public class Lookup implements Directory{
 	}
 	@SuppressWarnings("unchecked")
 	public Lookup sync() {
-		System.out.println(store);
 		try {
 			File toRead=new File("classes");
 	        FileInputStream fis=new FileInputStream(toRead);

@@ -300,9 +300,7 @@ public final class CamsInteraction{ //Menu choices
 			viewAllCamps,
 			viewOwnCamps(userid),
 			viewOwnSuggestion(userid),
-			viewOwnEnquiry(userid),
-			generatePerformanceReport(0),
-			generateAttendanceList(0)
+			viewOwnEnquiry(userid)
 	);}
 	/**
 	 * List of menu choices to be used for the own camp menu
@@ -319,9 +317,10 @@ public final class CamsInteraction{ //Menu choices
 		viewAllSuggestion,
 		viewOwnSuggestion(userid),
 		submitSuggestion(campid),
-		withdrawRegistration(campid)
-	);
-	}
+		withdrawRegistration(campid),
+		generatePerformanceReport(campid),
+		generateAttendanceList(campid)
+	);}
 	/**
 	 * List of menu choices to be used for the other camp menu
 	 * Users will be given these choices if they have selected a camp not on their camp list

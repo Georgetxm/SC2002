@@ -162,9 +162,11 @@ public class Lookup implements Directory{
 	public Boolean togglevisibility(Integer id) {
 		if(visible.contains(id)) {
 			visible.remove(id);
+			update();
 			return false;
 		}
 		visible.add(id);
+		update();
 		return true;
 	}
 }

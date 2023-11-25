@@ -59,7 +59,7 @@ public class queryCampsMenu extends UserMenu {
 			    Faculty campfaculty = (Faculty) control.Camp().details((int) element).info().get(CampAspect.USERGROUP);
 			    if(
 			    	!userperm.contains(Perms.VIEW_EVERY_CAMP)&&
-			    	(campfaculty!=userfaculty||campfaculty!=Faculty.WHOLE_NTU)	
+			    	(campfaculty!=userfaculty&&campfaculty!=Faculty.WHOLE_NTU)	
 			    ) {
 			    	it.remove();break;
 			    }

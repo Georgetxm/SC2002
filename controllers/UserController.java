@@ -208,9 +208,10 @@ public class UserController implements UserControlInterface {
 	}
 
 	@Override
-	public Boolean changePassword(String password) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean changePassword(String password,String id) {
+		User thisuser = findUserById(id);
+		thisuser.changePassword(password);
+		return true;
 	}
 
 }

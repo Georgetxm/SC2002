@@ -45,7 +45,7 @@ public class queryCampsMenu extends UserMenu {
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		options.add(CamsInteraction.filterCampBy);
 		if(userid!=null) {
-			control.Directory().with(entities.User.class,userid);
+			control.Directory().sync().with(entities.User.class,userid);
 		}
 		Set<Serializable> viewingset=new HashSet<Serializable>();
 		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) {
@@ -58,7 +58,7 @@ public class queryCampsMenu extends UserMenu {
 		    Faculty campfaculty = (Faculty) control.Camp().details((int) element).info().get(CampAspect.USERGROUP);
 		    if(
 		    	!userperm.contains(Perms.VIEW_EVERY_CAMP)&&
-		    	(campfaculty!=userfaculty&&campfaculty!=Faculty.WHOLE_NTU)	
+		    	campfaculty!=userfaculty&&campfaculty!=Faculty.WHOLE_NTU	
 		    ) {
 		    	it.remove();break;
 		    }

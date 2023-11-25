@@ -21,6 +21,6 @@ public interface UserControlInterface {
 	public EnumSet<Perms> replacePerms(String userid, EnumSet<Perms> replacementperms); // Returns new perms
 
 	public Class<?> getClass(String userid);
-	
-	public Boolean changePassword(String password);
+
+	public Boolean changePassword(String password, String id);
 }

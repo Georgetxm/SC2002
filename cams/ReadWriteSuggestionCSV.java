@@ -119,9 +119,10 @@ public class ReadWriteSuggestionCSV {
      */
     public static final boolean writeSuggestionCSV(HashMap<Integer, Suggestion> suggestionList,
             String fileNameWithPath) {
+        File file = new File(fileNameWithPath);
         FileWriter writer = null;
         try {
-            writer = new FileWriter(fileNameWithPath);
+            writer = new FileWriter(file);
             // header row
             writer.append("suggestionId,rationale,suggestionAspect,accepted,creationDate,lastUpdatedDate\n");
 
@@ -130,13 +131,14 @@ public class ReadWriteSuggestionCSV {
                         .append(",")
                         .append(suggestion.getRationale())
                         .append(",")
-                        .append(suggestion.getSuggestionAspect().toString())
+                        .append(convertAspectEntryToCsvRow(suggestion.getSuggestionAspect()))
                         .append(",")
                         .append(String.valueOf(suggestion.isAccepted()))
                         .append(",")
                         .append(suggestion.getCreationDate().toString())
                         .append(",")
-                        .append(suggestion.getLastUpdatedDate().toString())
+                        .append(suggestion.getLastUpdatedDate() != null ? suggestion.getLastUpdatedDate().toString()
+                                : LocalDate.now().toString())
                         .append("\n");
             }
             return true;

@@ -87,8 +87,14 @@ public final class ReadWriteUserCSV {
             writer.append("name,email,faculty,password\n");
 
             for (User user : userList.values()) {
-                writer.append(user.getUserId() + "," + user.getUserId() + "," + user.getFaculty() + ","
-                        + user.getPassword() + "\n");
+                writer.append(user.getUserId())
+                        .append(",")
+                        .append(user.getUserId() + "@e.ntu.edu.sg")
+                        .append(",")
+                        .append(user.getFaculty().toString())
+                        .append(',')
+                        .append(user.getPassword())
+                        .append("\n");
             }
             return true;
         } catch (IOException e) {

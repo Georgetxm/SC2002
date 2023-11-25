@@ -51,7 +51,7 @@ public class queryCampsMenu extends UserMenu {
 		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) {
 			control.Directory().sync().withvisibility();
 		}
-		List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
+		
 		viewingset = new HashSet<Serializable>(control.Directory().sync().get(entities.Camp.class));
 		for (Iterator<Serializable> it = viewingset.iterator(); it.hasNext();) {
 		    Serializable element = it.next();
@@ -62,11 +62,15 @@ public class queryCampsMenu extends UserMenu {
 		    ) {
 		    	it.remove();break;
 		    }
-		    else if(filters!=null) for(Entry<CampAspect, ? extends Object> filter:filterlist)
-		    	if(control.Camp().details((int) element).info().get(filter.getKey())!=filter.getValue()){
+		    else if(filters!=null) {
+		    	List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
+		    	for(Entry<CampAspect, ? extends Object> filter:filterlist)
+		    		if(control.Camp().details((int) element).info().get(filter.getKey())!=filter.getValue()){
 		    		it.remove();
 		    		break;
 		    	}
+		    }
+		    	
 		}
 		HashMap<Integer,String> campset = new HashMap<Integer,String>();
 		for(Serializable id: viewingset)

@@ -42,7 +42,11 @@ public class doDeleteCamp extends Interaction {
 			}
 		
 		for(Serializable id: control.Directory().sync().with(entities.Camp.class, campid).get(entities.Enquiry.class)) {
-			control.Enquiry().delete((int)id);
+			try {
+				control.Enquiry().delete((int)id);
+			} catch (ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("Camp ID incorrect");
+			}
 			control.Directory().sync().remove(entities.Enquiry.class, id);
 		}
 		for(Serializable id: control.Directory().sync().with(entities.Camp.class, campid).get(entities.Suggestion.class)) {

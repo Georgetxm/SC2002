@@ -19,7 +19,7 @@ public class Lookup implements Directory{
 	private HashSet<Integer> visible = new HashSet<Integer>();
 	private HashSet<Class<?>> classes = new HashSet<Class<?>>();
 	
-	private static HashMap<Class<?>,Object> regularfilters;
+	private static HashMap<Class<?>,Object> regularfilters = new HashMap<Class<?>,Object>();
 	private static boolean visibilityfilter;
 	
 	public Lookup with(Class<?> type, Serializable value){regularfilters.put(type, value); return this;}
@@ -85,7 +85,9 @@ public class Lookup implements Directory{
 	        oos.flush();
 	        oos.close();
 	        fos.close();
-	    } catch(Exception e) {}
+	    } catch(Exception e) {
+	    	e.printStackTrace();
+	    }
 		try {
 	        File fileOne=new File("network");
 	        FileOutputStream fos=new FileOutputStream(fileOne);
@@ -95,7 +97,7 @@ public class Lookup implements Directory{
 	        oos.flush();
 	        oos.close();
 	        fos.close();
-	    } catch(Exception e) {}
+	    } catch(Exception e) {e.printStackTrace();}
 		try {
 	        File fileOne=new File("store");
 	        FileOutputStream fos=new FileOutputStream(fileOne);
@@ -105,10 +107,11 @@ public class Lookup implements Directory{
 	        oos.flush();
 	        oos.close();
 	        fos.close();
-	    } catch(Exception e) {}
+	    } catch(Exception e) {e.printStackTrace();}
 	}
 	@SuppressWarnings("unchecked")
 	public Lookup sync() {
+		System.out.println(store);
 		try {
 			File toRead=new File("classes");
 	        FileInputStream fis=new FileInputStream(toRead);
@@ -116,7 +119,7 @@ public class Lookup implements Directory{
 	        classes = (HashSet<Class<?>>) ois.readObject();
 	        ois.close();
 	        fis.close();
-		}catch(Exception e) {}
+		}catch(Exception e) {e.printStackTrace();}
 		try {
 			File toRead=new File("network");
 	        FileInputStream fis=new FileInputStream(toRead);
@@ -124,7 +127,7 @@ public class Lookup implements Directory{
 	        network = (HashMap<Entry<Class<?>, Serializable>, HashMap<Class<?>, HashSet<Serializable>>>) ois.readObject();
 	        ois.close();
 	        fis.close();
-		}catch(Exception e) {}
+		}catch(Exception e) {e.printStackTrace();}
 		try {
 			File toRead=new File("store");
 	        FileInputStream fis=new FileInputStream(toRead);
@@ -132,7 +135,7 @@ public class Lookup implements Directory{
 	        store = (HashMap<Class<?>, HashSet<Serializable>>) ois.readObject();
 	        ois.close();
 	        fis.close();
-		}catch(Exception e) {}
+		}catch(Exception e) {e.printStackTrace();}
 		return this;
 	}
 	@Override

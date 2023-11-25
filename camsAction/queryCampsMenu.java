@@ -51,26 +51,23 @@ public class queryCampsMenu extends UserMenu {
 		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) {
 			control.Directory().sync().withvisibility();
 		}
-		if(filters!=null) {
-			List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
-			viewingset = new HashSet<Serializable>(control.Directory().sync().get(entities.Camp.class));
-			for (Iterator<Serializable> it = viewingset.iterator(); it.hasNext();) {
-			    Serializable element = it.next();
-			    Faculty campfaculty = (Faculty) control.Camp().details((int) element).info().get(CampAspect.USERGROUP);
-			    if(
-			    	!userperm.contains(Perms.VIEW_EVERY_CAMP)&&
-			    	(campfaculty!=userfaculty&&campfaculty!=Faculty.WHOLE_NTU)	
-			    ) {
-			    	it.remove();break;
-			    }
-			    else for(Entry<CampAspect, ? extends Object> filter:filterlist)
-			    	if(control.Camp().details((int) element).info().get(filter.getKey())!=filter.getValue()){
-			    		it.remove();
-			    		break;
-			    	}
-			}
+		List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
+		viewingset = new HashSet<Serializable>(control.Directory().sync().get(entities.Camp.class));
+		for (Iterator<Serializable> it = viewingset.iterator(); it.hasNext();) {
+		    Serializable element = it.next();
+		    Faculty campfaculty = (Faculty) control.Camp().details((int) element).info().get(CampAspect.USERGROUP);
+		    if(
+		    	!userperm.contains(Perms.VIEW_EVERY_CAMP)&&
+		    	(campfaculty!=userfaculty&&campfaculty!=Faculty.WHOLE_NTU)	
+		    ) {
+		    	it.remove();break;
+		    }
+		    else if(filters!=null) for(Entry<CampAspect, ? extends Object> filter:filterlist)
+		    	if(control.Camp().details((int) element).info().get(filter.getKey())!=filter.getValue()){
+		    		it.remove();
+		    		break;
+		    	}
 		}
-		else viewingset = control.Directory().sync().get(entities.Camp.class);
 		HashMap<Integer,String> campset = new HashMap<Integer,String>();
 		for(Serializable id: viewingset)
 			campset.put((Integer)id, (String) control.Camp().details((int) id).info().get(CampAspect.NAME));

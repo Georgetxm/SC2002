@@ -1,17 +1,14 @@
 package camsAction;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampControlInterface;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.ControllerParamsException;
-import controllers.EnquiryControlInterface;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import interactions.MenuChoice;
@@ -26,7 +23,7 @@ import types.Perms;
  * @since 2021-11-01
  */
 public final class queryEnquriesMenu extends UserMenu {
-	private List<Entry<Integer, String>> enquirylist = null;
+	private List<Serializable> enquirylist = null;
 	/**
 	 * Represents a menu of the user's own enquiries for them to choose.
 	 * <p>
@@ -36,23 +33,19 @@ public final class queryEnquriesMenu extends UserMenu {
 	 * @throws MissingRequestedDataException if the user cannot have enquiries, or the enquiry selected has an invalid id
 	 */@Override
 	protected void populate(String currentuser, Scanner s, Controller control){
-		if(ownerid!=null) ((EnquiryControlInterface) control).FilterUser(this.ownerid);
-		if(campid!=null) ((EnquiryControlInterface) control).FilterCamp(this.campid);
+		if(ownerid!=null) control.Directory().sync().with(entities.User.class, ownerid);
+		if(campid!=null) control.Directory().sync().with(entities.Camp.class, campid);
 		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's controllerid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
 
-		HashMap<Integer, String> enquiryset=null;
-		try {
-			enquiryset = ((EnquiryControlInterface) control).getEnquiries();
-		} catch (ControllerParamsException | ControllerItemMissingException e) {
-			System.out.println("Enquiry filters are malformed");
-		}
+		HashSet<Serializable> enquiryset=null;
+		enquiryset = control.Directory().sync().get(entities.Enquiry.class);
 		if(enquiryset!=null) {
-			enquirylist = new ArrayList<>(enquiryset.entrySet());
+			enquirylist = new ArrayList<Serializable>(enquiryset);
 			//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
-			for(Entry<Integer, String> entry : enquirylist) 
-				options.add(new MenuChoice(Perms.DEFAULT, entry.getValue(),CamsInteraction.SingleEnquiryMenu(entry.getKey())));
+			for(Serializable entry : enquirylist) 
+				options.add(new MenuChoice(Perms.DEFAULT, control.Enquiry().get((int) entry),CamsInteraction.SingleEnquiryMenu((int) entry)));
 		}
 		choices = options;
 	}
@@ -64,20 +57,16 @@ public final class queryEnquriesMenu extends UserMenu {
 		int option = givechoices(currentuser, s, control);
 		if(option<0) {
 			if(this.campid==null) return CamsInteraction.startmenu(currentuser);
-			HashMap<Integer, String> campset = null;
-			try {
-				campset = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
-			} catch (ControllerItemMissingException e) {
-				throw new UserInfoMissingException("Cannot find user information");
-			}
-			next = campset.keySet().contains(campid)?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+			HashSet<Serializable> campset = null;
+			campset = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
+			next = campset.contains(campid)?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 		}
 		else{
-			int enquiryid = enquirylist.get(option).getKey();
+			int enquiryid = (int) enquirylist.get(option);
 			System.out.println(">>"+choices.get(option).text());
 			try {
-				for(String reply:((EnquiryControlInterface) control).getReplies(enquiryid)) System.out.println(reply);
-				((EnquiryControlInterface) control).finalise(enquiryid);
+				for(String reply:control.Enquiry().getReplies(enquiryid)) System.out.println(reply);
+				control.Enquiry().finalise(enquiryid);
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Enquiry id is invalid");
 			}

@@ -135,4 +135,13 @@ public class Lookup implements Directory{
 		}catch(Exception e) {}
 		return this;
 	}
+	@Override
+	public Boolean togglevisibility(Integer id) {
+		if(visible.contains(id)) {
+			visible.remove(id);
+			return false;
+		}
+		visible.add(id);
+		return true;
+	}
 }

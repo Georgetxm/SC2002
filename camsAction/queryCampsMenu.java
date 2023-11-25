@@ -1,17 +1,17 @@
 package camsAction;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.Set;
 
 import cams.CamsInteraction;
-import controllers.CampControlInterface;
-import controllers.UserControlInterface;
 import controllers.Controller;
-import controllers.ControllerItemMissingException;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import interactions.MenuChoice;
@@ -40,36 +40,38 @@ public class queryCampsMenu extends UserMenu {
 	 */
 	@Override
 	protected final void populate(String currentuser, Scanner s, Controller control) throws UserInfoMissingException{
-		Faculty userfaculty = ((UserControlInterface) control).getUserFaculty(currentuser);
-		EnumSet<Perms> userperm= ((UserControlInterface) control).grantPerms(currentuser,EnumSet.noneOf(Perms.class));
+		Faculty userfaculty = control.User().getUserFaculty(currentuser);
+		EnumSet<Perms> userperm= control.User().grantPerms(currentuser,EnumSet.noneOf(Perms.class));
 		
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		options.add(CamsInteraction.filterCampBy);
 		if(userid!=null) {
-			((CampControlInterface) control).FilterUser(userid);
-			System.out.println("administered user filter");
+			control.Directory().with(entities.User.class,userid);
+		}
+		Set<Serializable> viewingset=null;
+		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) {
+			control.Directory().sync().withvisibility();
+			if(filters!=null) filters = new HashMap<CampAspect,Object>();
+			filters.put(CampAspect.USERGROUP, userfaculty);
 		}
 		if(filters!=null) {
 			List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
-			for(Entry<CampAspect, ? extends Object> filter:filterlist)
-				((CampControlInterface) control).FilterAspect(filter);
+			viewingset = Set.copyOf(control.Directory().get(entities.Camp.class));
+			for (Iterator<Serializable> it = viewingset.iterator(); it.hasNext();) {
+			    Serializable element = it.next();
+			    for(Entry<CampAspect, ? extends Object> filter:filterlist)
+			    	if(control.Camp().details((int) element).info().get(filter.getKey())!=filter.getValue()){
+			    		it.remove();
+			    		break;
+			    	}
+			}
 		}
-		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) //filter should return Controller. This may lead to issues.
-			((CampControlInterface) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspect, Object>(CampAspect.USERGROUP,userfaculty));
-		HashMap<Integer, String> campset = null;
-		try {
-			campset = ((CampControlInterface) control).getCamps();
-		} catch (ControllerItemMissingException e) {
-			System.out.println("Cannot find user or invalid filter");
-		}
+		HashMap<Integer,String> campset = new HashMap<Integer,String>();
+		for(Serializable id: viewingset)
+			campset.put((Integer)id, (String) control.Camp().details((int) id).info().get(CampAspect.NAME));
 		if(campset!=null) {
 			camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
 			for(Entry<Integer, String> entry:camplist) {
-				try {
-					campset = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
-				} catch (ControllerItemMissingException e) {
-					throw new UserInfoMissingException("Cannot find user information");
-				}
 				options.add(
 					new MenuChoice(Perms.DEFAULT, entry.getValue(), 
 						(campset!=null&&campset.keySet().contains(entry.getKey()))?

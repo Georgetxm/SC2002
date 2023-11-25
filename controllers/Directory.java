@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 public interface Directory {
 	public abstract Lookup with(Class<?> type, Serializable id);
 	public abstract Lookup withvisibility();
+	public abstract Boolean togglevisibility(Integer id);
 	public abstract HashSet<Serializable> get(Class<?> type);
 	public abstract Lookup add(Class<?> type, Serializable id);
 	public abstract Lookup remove(Class<?> type, Serializable id);

@@ -1,12 +1,11 @@
 package camsAction;
 
-import java.util.HashMap;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampControlInterface;
 import controllers.Controller;
-import controllers.ControllerItemMissingException;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
@@ -26,14 +25,10 @@ public final class doToggleVisibility extends Interaction {
 @Override
 	public Interaction run(String currentuser, Scanner s, Controller control) throws UserInfoMissingException{
 		System.out.println("Camp visibility changed. Camp is now:");
-		System.out.println(((CampControlInterface) control).toggleCampVisiblity(campid)?"Visible":"Not Visible");
-		HashMap<Integer, String> usercamps = null;
-		try {
-			usercamps = ((CampControlInterface) ((CampControlInterface) control).FilterUser(currentuser)).getCamps();
-		} catch (ControllerItemMissingException e) {
-			throw new UserInfoMissingException("User id not valid");
-		}
-		next = (usercamps!=null&&usercamps.containsKey(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+		System.out.println(control.Directory().togglevisibility(campid)?"Visible":"Not Visible");
+		HashSet<Serializable> usercamps = null;
+		usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
+		next = (usercamps!=null&&usercamps.contains(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 		if(this.userid!=null) next = next.withuser(userid);
 		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);

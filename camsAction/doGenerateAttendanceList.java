@@ -16,7 +16,6 @@ import java.util.TreeMap;
 import cams.CamsInteraction;
 import controllers.Controller;
 import entities.Student;
-import entities.User;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import types.CampAspect;

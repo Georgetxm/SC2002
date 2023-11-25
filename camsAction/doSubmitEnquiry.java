@@ -34,6 +34,9 @@ public final class doSubmitEnquiry extends Interaction {
 		control.Directory().sync().add(entities.Enquiry.class, thisenquiry);
 		control.Directory().sync().link(Arrays.asList(
 				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
+				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Enquiry.class,thisenquiry)
+		));
+		control.Directory().sync().link(Arrays.asList(
 				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser),
 				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Enquiry.class,thisenquiry)
 		));

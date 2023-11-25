@@ -26,9 +26,11 @@ public class Lookup implements Directory{
 	public Lookup withvisibility() {visibilityfilter = true; return this;}
 	public HashSet<Serializable> get(Class<?> type) {
 		HashSet<Serializable> returnset = store.get(type);
-		for(Class<?> filtertype : regularfilters.keySet())
-			returnset.retainAll(
-					network.get(new HashMap.SimpleEntry<Class<?>,Object>(filtertype,regularfilters.get(filtertype))).get(type));
+		if(returnset == null) returnset = new HashSet<Serializable>();
+		for(Class<?> filtertype : regularfilters.keySet()) {
+			HashSet<Serializable> filter = network.get(new HashMap.SimpleEntry<Class<?>,Object>(filtertype,regularfilters.get(filtertype))).get(type);
+			if(filter!=null)returnset.retainAll(filter);
+		}
 		if(type.equals(Camp.class)) {
 			if(visibilityfilter) returnset.retainAll(visible);
 		}

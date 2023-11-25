@@ -79,8 +79,8 @@ public final class querySuggestionsMenu extends UserMenu {
 			}
 		}
 		else {
-			next = choices.get(option).action().withsuggestion(suggestionid);
 			int suggestionid = (int) suggestionlist.get(option);
+			next = choices.get(option).action().withsuggestion(suggestionid);
 			System.out.println(">>"+choices.get(option).text());
 			try {
 				System.out.println(control.Suggestion().get(suggestionid));

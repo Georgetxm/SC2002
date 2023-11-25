@@ -41,7 +41,7 @@ public class Cams {
 		ReadWriteCampCSV.readCampCSV(camplist, "lists");
 		ReadWriteEnquiryCSV.readEnquiryCSV(enquirylist, "lists");
 		ReadWriteSuggestionCSV.readSuggestionCSV(suggestionlist, "lists");
-
+		//test
 		Scanner s = new Scanner(System.in);
 		Controller control = Controller.INSTANCE;
 		control.setCamp(new controllers.CampController(camplist));

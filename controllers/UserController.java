@@ -19,9 +19,7 @@ public class UserController implements UserControlInterface {
 	 * 
 	 * @param userList the list of Users
 	 */
-	public UserController() {
-		HashMap<String, User> users = new HashMap<String, User>();
-		ReadWriteUserCSV.readUserCSV(users, "lists/student_list.csv");
+	public UserController(HashMap<String, User> users) {
 		this.userList = users;
 	}
 

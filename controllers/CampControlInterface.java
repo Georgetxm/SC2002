@@ -1,11 +1,9 @@
 package controllers;
 
-import java.util.EnumSet;
 import java.util.Map.Entry;
 
 import entities.CampInfo;
 import types.CampAspect;
-import types.Role;
 
 public interface CampControlInterface {
 	public int add(CampInfo info);

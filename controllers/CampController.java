@@ -19,9 +19,7 @@ public class CampController implements CampControlInterface {
 	 * @param userList
 	 * @param campList
 	 */
-	public CampController() {
-		HashMap<Integer, Camp> campList = new HashMap<Integer, Camp>();
-		ReadWriteCampCSV.readCampCSV(campList, "lists/camp_list.csv");
+	public CampController(HashMap<Integer, Camp> campList) {
 		this.camps = campList;
 	}
 

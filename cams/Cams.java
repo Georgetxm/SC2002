@@ -39,16 +39,21 @@ public class Cams {
 	public static void main(String[] args) throws UserInfoMissingException {
 		HashMap<String, User> userlist = new HashMap<String, User>();
 		HashMap<Integer, Camp> camplist = new HashMap<Integer, Camp>();
+		HashMap<Integer, Enquiry> enquirylist = new HashMap<Integer, Enquiry>();
+		HashMap<Integer, Suggestion> suggestionlist = new HashMap<Integer, Suggestion>();
+
 		// Read CSV files from lists folder
 		ReadWriteUserCSV.readUserCSV(userlist, "lists");
 		ReadWriteCampCSV.readCampCSV(camplist, "lists");
+		ReadWriteEnquiryCSV.readEnquiryCSV(enquirylist, "lists");
+		ReadWriteSuggestionCSV.readSuggestionCSV(suggestionlist, "lists");
 
 		Scanner s = new Scanner(System.in);
 		Controller control = Controller.INSTANCE;
-		control.setCamp(new controllers.CampController());
-		control.setEnquiry(new controllers.EnquiryController());
-		control.setSuggestion(new controllers.SuggestionController());
-		control.setUser(new controllers.UserController());
+		control.setCamp(new controllers.CampController(camplist));
+		control.setUser(new controllers.UserController(userlist));
+		control.setEnquiry(new controllers.EnquiryController(enquirylist));
+		control.setSuggestion(new controllers.SuggestionController(suggestionlist));
 		control.setDirectory(new controllers.Lookup().sync());
 		while (true) {
 			String currentuser = Login.getCurrentUser(s, userlist);

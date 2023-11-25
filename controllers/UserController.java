@@ -9,6 +9,7 @@ import entities.Student;
 import entities.User;
 import types.Faculty;
 import types.Perms;
+import types.Role;
 
 public class UserController implements UserControlInterface {
 	private HashMap<String, User> userList;
@@ -76,7 +77,7 @@ public class UserController implements UserControlInterface {
 		}
 		Student user = (Student) findUserById(userId);
 		if (user.setCampComittee(campId)) {
-			ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv");
+			ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv", Role.COMMITTEE);
 			return true;
 		}
 		return false;
@@ -114,7 +115,7 @@ public class UserController implements UserControlInterface {
 			Student user = (Student) findUserById(userid);
 			if (!(user == null)) {
 				user.incrementPoints(points);
-				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv", Role.COMMITTEE);
 				return user.getPoints();
 			}
 		}
@@ -135,9 +136,9 @@ public class UserController implements UserControlInterface {
 		if (!(user == null)) {
 			user.addPerms(newperms);
 			if (user.getClass().equals(Student.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv", Role.ATTENDEE);
 			} else if (user.getClass().equals(Staff.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "lists/staff_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/staff_list.csv", Role.STAFF);
 			}
 			return user.getPerms();
 		}
@@ -158,9 +159,9 @@ public class UserController implements UserControlInterface {
 		if (!(user == null)) {
 			user.removePerms(removedPerms);
 			if (user.getClass().equals(Student.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv", Role.ATTENDEE);
 			} else if (user.getClass().equals(Staff.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "lists/staff_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/staff_list.csv", Role.STAFF);
 			}
 			return user.getPerms();
 		}
@@ -181,9 +182,9 @@ public class UserController implements UserControlInterface {
 		if (!(user == null)) {
 			user.replacePerms(replacementPerms);
 			if (user.getClass().equals(Student.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv", Role.ATTENDEE);
 			} else if (user.getClass().equals(Staff.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "lists/staff_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/staff_list.csv", Role.STAFF);
 			}
 			return user.getPerms();
 		}

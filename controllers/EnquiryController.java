@@ -13,6 +13,16 @@ public class EnquiryController implements EnquiryControlInterface {
 	private HashMap<Integer, Enquiry> enquiries;
 
 	/**
+	 * Constructor for Enquiry Controller
+	 * 
+	 * @param enquiries
+	 * @return
+	 */
+	public EnquiryController(HashMap<Integer, Enquiry> enquiries) {
+		this.enquiries = enquiries;
+	}
+
+	/**
 	 * Returns an Enquiry object given its ID
 	 * 
 	 * @param enquiryId

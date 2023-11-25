@@ -98,7 +98,7 @@ public class Lookup implements Directory{
 	public Lookup remove(Class<?> type, Serializable id) {
 		for(Entry<Class<?>,HashSet<Serializable>> neighbourclass: network.get(new HashMap.SimpleEntry<Class<?>,Serializable>(type,id)).entrySet())
 			for(Serializable neighbour: neighbourclass.getValue())
-				network.remove(new HashMap.SimpleEntry<Class<?>,Serializable>(neighbourclass.getKey(),neighbour));
+				network.get(new HashMap.SimpleEntry<Class<?>,Serializable>(neighbourclass.getKey(),neighbour)).get(type).remove(neighbourclass.getValue());
 		network.remove(new HashMap.SimpleEntry<Class<?>,Serializable>(type,id));
 		store.get(type).remove(id);
 		update();

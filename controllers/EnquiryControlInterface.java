@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 2021-11-12
  */
-public interface EnquiryControlInterface{
+public interface EnquiryControlInterface {
 
 	/**
 	 * addEnquiry adds an enquiry to the list of enquiries in MainController's
@@ -24,7 +24,7 @@ public interface EnquiryControlInterface{
 	 * @param campid  the camp the enquiry is about
 	 * @return the enquiry id if successful, -1 if not
 	 */
-	int add(String enquiry, String ownerid, int campid);
+	int add(String enquiry);
 
 	/**
 	 * Edit an enquiry
@@ -43,6 +43,7 @@ public interface EnquiryControlInterface{
 	 * @return the enquiry text if successful, null if not
 	 */
 	String get(int enquiryid);
+
 	/**
 	 * Overriden methods from Enquiry Controller
 	 * Finalise an enquiry by setting the seen attribute to true
@@ -64,6 +65,7 @@ public interface EnquiryControlInterface{
 	 * @return true if editable, throws controller item missing exception if not
 	 */
 	Boolean isEditable(int enquiryid) throws ControllerItemMissingException; // check if can edit
+
 	int saveReply(int enquiryid, String reply) throws ControllerItemMissingException;
 
 	/**
@@ -76,5 +78,5 @@ public interface EnquiryControlInterface{
 
 	ArrayList<String> getReplies(int enquiryid) throws ControllerItemMissingException;
 
-	Boolean delete(int enquiryid);
+	Boolean delete(int enquiryid) throws ControllerItemMissingException;
 }

@@ -81,7 +81,7 @@ public final class doGenerateAttendanceList extends Interaction {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");
 		LocalDateTime now = LocalDateTime.now();
 
-		File file = new File("/output/camp" + campid.toString() + "_attendance_" + dtf.format(now) + ".csv");
+		File file = new File("output/camp" + campid.toString() + "_attendance_" + dtf.format(now) + ".csv");
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(file);

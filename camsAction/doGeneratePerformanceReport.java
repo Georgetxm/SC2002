@@ -18,7 +18,8 @@ import entities.UserInfoMissingException;
 import interactions.Interaction;
 
 /**
- * Interaction that represents the action of generating and printing the performance report of camp committee members to csv
+ * Interaction that represents the action of generating and printing the
+ * performance report of camp committee members to csv
  * report.
  * Effectively serves as a function pointer
  * 
@@ -28,9 +29,12 @@ import interactions.Interaction;
  */
 public class doGeneratePerformanceReport extends Interaction {
 	/**
-	 * Asks the controller for a list of camp committee members and their points and generates a csv document displaying them
-	 *@return owncampmenu with campid, userid, and filters preserved
-	 *@throws MissingRequestedDataException if camp whose camp details were to be edited cannot be found.
+	 * Asks the controller for a list of camp committee members and their points and
+	 * generates a csv document displaying them
+	 * 
+	 * @return owncampmenu with campid, userid, and filters preserved
+	 * @throws MissingRequestedDataException if camp whose camp details were to be
+	 *                                       edited cannot be found.
 	 */
 	@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
@@ -65,7 +69,7 @@ public class doGeneratePerformanceReport extends Interaction {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");
 		LocalDateTime now = LocalDateTime.now();
 
-		File file = new File("/output/camp" + campid.toString() + "_peformance_" + dtf.format(now) + ".csv");
+		File file = new File("output/camp" + campid.toString() + "_peformance_" + dtf.format(now) + ".csv");
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(file);

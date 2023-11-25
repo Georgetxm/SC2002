@@ -21,11 +21,34 @@ import java.time.LocalDate;
 
 public class Camp {
     private CampInfo campInfo;
+    /**
+     * campId is the unique id of the camp
+     */
     private final int campid;
+
+    /**
+     * nextCampId is the next campId to be assigned to a new camp
+     * static attribute to ensure that each campId is unique
+     */
     private static int nextCampId = 0;
+
+    /**
+     * visibility is true if the camp is visible to students, false otherwise
+     */
     private boolean visibility;
+    /**
+     * attendeeCount is the current number of attendees in the camp
+     */
     private int attendeeCount = 0;
+
+    /**
+     * committeeCount is the current number of committee members in the camp
+     */
     private int committeeCount = 0;
+
+    /**
+     * creationDate is the date that the camp was created
+     */
     private final LocalDate creationDate;
 
     /**
@@ -33,8 +56,6 @@ public class Camp {
      * information from the CLI
      * 
      * @param campInfo
-     * @param attendees
-     * @param campCommittee
      * @param visibility
      * @param creationDate
      */
@@ -51,12 +72,11 @@ public class Camp {
      * the camp_list.csv where enquiries and suggestions ids are already included
      * 
      * @param campInfo
-     * @param attendees
-     * @param campCommittee
      * @param visibility
      * @param creationDate
-     * @param enquiries
-     * @param suggestions
+     * @param attendeeCount
+     * @param commiteeCount
+     * @param committeeCount
      */
     public Camp(int campId, CampInfo campInfo, boolean visibility, LocalDate creationDate, int attendeeCount,
             int committeeCount) {
@@ -144,7 +164,7 @@ public class Camp {
      * @return the committeeCount
      */
     public int getCommitteeCount() {
-        return this.committeeCount;
+    return this.committeeCount;
     }
 
     /**

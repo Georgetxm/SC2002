@@ -16,10 +16,22 @@ import controllers.Controller;
 import entities.Student;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
-import types.Role;
 
+/**
+ * Interaction that represents the action of generating and printing the performance report of camp committee members to csv
+ * report.
+ * Effectively serves as a function pointer
+ * 
+ * @author Tay Jih How
+ * @version 1.0
+ * @since 2021-11-25
+ */
 public class doGeneratePerformanceReport extends Interaction {
-
+	/**
+	 * Asks the controller for a list of camp committee members and their points and generates a csv document displaying them
+	 *@return owncampmenu with campid, userid, and filters preserved
+	 *@throws MissingRequestedDataException if camp whose camp details were to be edited cannot be found.
+	 */
 	@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
@@ -41,7 +53,7 @@ public class doGeneratePerformanceReport extends Interaction {
 				// hashmap
 				memberlist.put((String) name, control.User().incrementPoints((String) name, 0));
 
-		/**
+		/*
 		 * So right now the committee members and their points are in a HashMap, or
 		 * dictionary basically.
 		 * You need to somehow get this onto a csv or txt.

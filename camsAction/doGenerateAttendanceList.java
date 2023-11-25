@@ -33,8 +33,7 @@ import types.Role;
  */
 public final class doGenerateAttendanceList extends Interaction {
 	/**
-	 * Generates an attendance list txt or csv
-	 * 
+	 * Asks controller for a list of requested entities
 	 * @return the correct single camp menu, removing rolerequested and preserving
 	 *         all other parameters
 	 * @throws MissingRequestedDataException if suggestion to be deleted cannot be
@@ -43,8 +42,8 @@ public final class doGenerateAttendanceList extends Interaction {
 	@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
-		if (campid == null)
-			throw new MissingRequestedDataException("Camp is not valid");
+		if (campid == null||rolerequested.size()<1)
+			throw new MissingRequestedDataException("Camp is not valid or role requested less than 1");
 
 		// Get everyone, staff, committee or whatever associated with the camp. Is a set
 		// of strings.

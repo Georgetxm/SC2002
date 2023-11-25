@@ -2,6 +2,7 @@ package cams;
 import interactions.StaticMenu;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 import camsAction.doApproveSuggestion;
@@ -26,6 +27,7 @@ import camsAction.queryFilterCampByMenu;
 import camsAction.queryCampsMenu;
 import camsAction.queryEnquriesMenu;
 import camsAction.querySuggestionsMenu;
+import interactions.Interaction;
 import interactions.MenuChoice;
 import types.Perms;
 /**
@@ -34,6 +36,7 @@ import types.Perms;
  * @version 1.0
  * @since 2021-11-01
  */
+import types.Role;
 
 /**
  * 
@@ -259,8 +262,20 @@ public final class CamsInteraction{ //Menu choices
 		return new MenuChoice(Perms.REGISTER_AS_COMMITTEE,	"Join the camp committee",	new doSubmitCommitteeRegistration().withcamp(campid));
 	}
 	
-	public static MenuChoice generateAttendanceList(Integer campid) {
-		return new MenuChoice(Perms.DEFAULT,"Generate attendance list",new doGenerateAttendanceList().withcamp(campid));
+	public static MenuChoice generateAttendanceList(Integer campid, String userid) {
+		return new MenuChoice(Perms.DEFAULT,"Generate attendance list",GenerateAttendanceList(campid, userid).withcamp(campid));
+	}
+	
+	public static MenuChoice generateForAttendee(Integer campid) {
+		return new MenuChoice(Perms.DEFAULT,"Generate for only attendees",new doGenerateAttendanceList().withcamp(campid).withroles(EnumSet.of(Role.ATTENDEE)));
+	}
+	
+	public static MenuChoice generateForCommittee(Integer campid) {
+		return new MenuChoice(Perms.DEFAULT,"Generate for only camp committee members",new doGenerateAttendanceList().withcamp(campid).withroles(EnumSet.of(Role.COMMITTEE)));
+	}
+	
+	public static MenuChoice generateForBoth(Integer campid) {
+		return new MenuChoice(Perms.DEFAULT,"Generate for both attendees and camp committee members",new doGenerateAttendanceList().withcamp(campid).withroles(EnumSet.of(Role.COMMITTEE,Role.ATTENDEE)));
 	}
 	
 	public static MenuChoice generatePerformanceReport(Integer campid) {
@@ -319,7 +334,7 @@ public final class CamsInteraction{ //Menu choices
 		submitSuggestion(campid),
 		withdrawRegistration(campid),
 		generatePerformanceReport(campid),
-		generateAttendanceList(campid)
+		generateAttendanceList(campid,userid)
 	);}
 	/**
 	 * List of menu choices to be used for the other camp menu
@@ -332,7 +347,13 @@ public final class CamsInteraction{ //Menu choices
 			viewOwnEnquiry(userid),
 			submitEnquiry(campid)
 		);
-	}	
+	}
+	private static List<MenuChoice> attendancelistchoices(Integer campid){
+		return Arrays.asList(
+			generateForAttendee(campid),
+			generateForCommittee(campid),
+			generateForBoth(campid)
+	);}
 	/**
 	 * Denotes a Static Menu instance representing the menu users first see.
 	 * @see startmenuchoices
@@ -366,5 +387,8 @@ public final class CamsInteraction{ //Menu choices
 	 */
 	public static StaticMenu SingleEnquiryMenu(int enquiryid) {
 		return new StaticMenu("What would you like to do with this enquiry?",singleenquirychoices(enquiryid), new queryEnquriesMenu());
+	}
+	public static StaticMenu GenerateAttendanceList(int campid, String userid) {
+		return new StaticMenu("Who would you like to generate an attendence list of?",attendancelistchoices(campid), OwnCampMenu(campid,userid));
 	}
 }

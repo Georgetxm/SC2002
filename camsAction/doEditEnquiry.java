@@ -2,6 +2,7 @@ package camsAction;
 
 import java.util.Scanner;
 
+import cams.CamsInteraction;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
 import interactions.Interaction;
@@ -19,11 +20,10 @@ public final class doEditEnquiry extends Interaction {
 	/**
 	 * Requests the controller to modify the contents of a given enquiry.
 	 * Ask the controller if an enquiry may be edited before requesting the
-	 * deletion.
+	 * amendment.
 	 * 
-	 * @return true if controller accepts the request(s) and false if otherwise, or
-	 *         the enquiry cannot be deleted
-	 * @throws MissingRequestedDataException  if the enquiry to be deleted cannot be
+	 * @return single enquiry menu with all tags
+	 * @throws MissingRequestedDataException  if the enquiry to be edited cannot be
 	 *                                        found.
 	 */@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
@@ -40,7 +40,7 @@ public final class doEditEnquiry extends Interaction {
 		} catch (ControllerItemMissingException e) {
 			System.out.println("This enquiry cannot be found");
 		}
-		next = new queryEnquriesMenu();
+		next = CamsInteraction.SingleEnquiryMenu(enquiryid);
 		if(this.userid!=null) next = next.withuser(userid);
 		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);

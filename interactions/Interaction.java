@@ -64,4 +64,8 @@ public abstract class Interaction {
 		this.ownerid=id;
 		return this;
 	}
+	public final Interaction withroles(EnumSet<Role> roles) {
+		this.rolerequested=roles;
+		return this;
+	}
 }

@@ -17,9 +17,9 @@ import types.CampAspect;
 public final class doEditSuggestion extends Interaction {
 	/**
 	 * Requests the controller to change the content of a given suggestion.
-	 * Ask the controller if a suggestion may be edited before requesting the deletion.
-	 *@return true if controller accepts the request(s) and false if otherwise, or the suggestion cannot be deleted
-	 *@throws MissingRequestedDataException if suggestion to be deleted cannot be found.
+	 * Ask the controller if a suggestion may be edited before requesting the amendment.
+	 *@return single suggestion menu with all tags
+	 *@throws MissingRequestedDataException if suggestion to be edited cannot be found.
 	 */@SuppressWarnings("unchecked")
 	@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
@@ -52,7 +52,7 @@ public final class doEditSuggestion extends Interaction {
 			}
 			System.out.println("Edits have been saved");
 		}
-		next = new querySuggestionsMenu();
+		next = cams.CamsInteraction.SingleSuggestionMenu(suggestionid);
 		if(this.userid!=null) next = next.withuser(userid);
 		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);

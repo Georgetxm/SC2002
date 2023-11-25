@@ -55,7 +55,7 @@ public class CampController implements CampControlInterface {
 		Camp camp = new Camp(info, false, LocalDate.now());
 
 		camps.put((Integer) camp.getCampid(), camp);
-		ReadWriteCampCSV.writeCampCSV(camps, "list/camp_list.csv");
+		ReadWriteCampCSV.writeCampCSV(camps, "lists/camp_list.csv");
 
 		return camp.getCampid();
 	}
@@ -78,7 +78,7 @@ public class CampController implements CampControlInterface {
 		Camp camp = findCampById(campid);
 		if (!(camp == null)) {
 			camps.remove(camp.getCampid(), camp);
-			ReadWriteCampCSV.writeCampCSV(camps, "list/camp_list.csv");
+			ReadWriteCampCSV.writeCampCSV(camps, "lists/camp_list.csv");
 			return true;
 		}
 		return false;
@@ -122,7 +122,7 @@ public class CampController implements CampControlInterface {
 		Camp camp = findCampById(campid);
 		if (!(camp == null)) {
 			camp.getCampInfo().info().replace(detail.getKey(), detail.getValue());
-			ReadWriteCampCSV.writeCampCSV(camps, "list/camp_list.csv");
+			ReadWriteCampCSV.writeCampCSV(camps, "lists/camp_list.csv");
 			return true;
 		}
 		return false;

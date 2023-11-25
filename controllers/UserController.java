@@ -76,7 +76,7 @@ public class UserController implements UserControlInterface {
 		}
 		Student user = (Student) findUserById(userId);
 		if (user.setCampComittee(campId)) {
-			ReadWriteUserCSV.writeUserCSV(userList, "list/student_list.csv");
+			ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv");
 			return true;
 		}
 		return false;
@@ -114,7 +114,7 @@ public class UserController implements UserControlInterface {
 			Student user = (Student) findUserById(userid);
 			if (!(user == null)) {
 				user.incrementPoints(points);
-				ReadWriteUserCSV.writeUserCSV(userList, "list/student_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv");
 				return user.getPoints();
 			}
 		}
@@ -135,9 +135,9 @@ public class UserController implements UserControlInterface {
 		if (!(user == null)) {
 			user.addPerms(newperms);
 			if (user.getClass().equals(Student.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "list/student_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv");
 			} else if (user.getClass().equals(Staff.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "list/staff_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/staff_list.csv");
 			}
 			return user.getPerms();
 		}
@@ -158,9 +158,9 @@ public class UserController implements UserControlInterface {
 		if (!(user == null)) {
 			user.removePerms(removedPerms);
 			if (user.getClass().equals(Student.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "list/student_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv");
 			} else if (user.getClass().equals(Staff.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "list/staff_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/staff_list.csv");
 			}
 			return user.getPerms();
 		}
@@ -181,9 +181,9 @@ public class UserController implements UserControlInterface {
 		if (!(user == null)) {
 			user.replacePerms(replacementPerms);
 			if (user.getClass().equals(Student.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "list/student_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/student_list.csv");
 			} else if (user.getClass().equals(Staff.class)) {
-				ReadWriteUserCSV.writeUserCSV(userList, "list/staff_list.csv");
+				ReadWriteUserCSV.writeUserCSV(userList, "lists/staff_list.csv");
 			}
 			return user.getPerms();
 		}

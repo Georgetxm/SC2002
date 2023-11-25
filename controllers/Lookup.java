@@ -47,9 +47,17 @@ public class Lookup implements Directory{
 	 * Denotes whether the next get operation will exclude non visible camps.
 	 */
 	private static boolean visibilityfilter;
-	
+	/**
+	 * {@inheritDoc}
+	 */
 	public Lookup with(Class<?> type, Serializable value){regularfilters.put(type, value); return this;}
+	/**
+	 * {@inheritDoc}
+	 */
 	public Lookup withvisibility() {visibilityfilter = true; return this;}
+	/**
+	 * {@inheritDoc}
+	 */
 	public HashSet<Serializable> get(Class<?> type) {
 		HashSet<Serializable> returnset = store.get(type);
 		if(returnset == null) returnset = new HashSet<Serializable>();
@@ -65,7 +73,11 @@ public class Lookup implements Directory{
 		regularfilters.clear();
 		visibilityfilter = false;
 		return returnset;
-	}public Lookup add(Class<?> type, Serializable id) {
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public Lookup add(Class<?> type, Serializable id) {
 		if(!classes.contains(type)) {
 			classes.add(type);
 			for(HashMap<Class<?>,HashSet<Serializable>> node : network.values())
@@ -80,6 +92,9 @@ public class Lookup implements Directory{
 		update();
 		return this;
 	}
+	/**
+	 * {@inheritDoc}
+	 */
 	public Lookup remove(Class<?> type, Serializable id) {
 		for(Entry<Class<?>,HashSet<Serializable>> neighbourclass: network.get(new HashMap.SimpleEntry<Class<?>,Serializable>(type,id)).entrySet())
 			for(Serializable neighbour: neighbourclass.getValue())
@@ -89,6 +104,9 @@ public class Lookup implements Directory{
 		update();
 		return this;
 	}
+	/**
+	 * {@inheritDoc}
+	 */
 	public Lookup link(List<Entry<Class<?>, Serializable>> items) {
 		for(int i=0;i<items.size()-1;i++) for(int j=i+1;j<items.size();j++) {
 			network.get(new HashMap.SimpleEntry<Class<?>,Serializable>(items.get(i).getKey(),items.get(i).getValue())).get(items.get(j).getKey()).add(items.get(j).getValue());
@@ -97,6 +115,9 @@ public class Lookup implements Directory{
 		update();
 		return this;
 	}
+	/**
+	 * {@inheritDoc}
+	 */
 	public Lookup delink(List<Entry<Class<?>, Serializable>> items) {
 		for(int i=0;i<items.size()-1;i++) for(int j=i+1;j<items.size();j++) {
 			network.get(new HashMap.SimpleEntry<Class<?>,Serializable>(items.get(i).getKey(),items.get(i).getValue())).get(items.get(j).getKey()).remove(items.get(j).getValue());
@@ -105,6 +126,10 @@ public class Lookup implements Directory{
 		update();
 		return this;
 	}
+	/**
+	 * {@inheritDoc}
+	 * Stores network in network, classes in classes, visible in visible and store in store.
+	 */
 	public void update() {
 		try {
 	        File fileOne=new File("visible");
@@ -152,6 +177,10 @@ public class Lookup implements Directory{
 	    } catch(Exception e) {e.printStackTrace();}
 	}
 	@SuppressWarnings("unchecked")
+	/**
+	 * {@inheritDoc}
+	 * Stores network in network, classes in classes, visible in visible and store in store.
+	 */
 	public Lookup sync() {
 		try {
 			File toRead=new File("classes");
@@ -187,6 +216,9 @@ public class Lookup implements Directory{
 		}catch(Exception e) {e.printStackTrace();}
 		return this;
 	}
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Boolean togglevisibility(Integer id) {
 		if(visible.contains(id)) {

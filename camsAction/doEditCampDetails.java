@@ -27,7 +27,7 @@ public class doEditCampDetails extends Interaction {
 	 */@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
-		if(campid==null||userid==null) throw new MissingRequestedDataException("Camp or user editing not found");
+		if(campid==null) throw new MissingRequestedDataException("Camp or user editing not found");
 		TreeMap<CampAspect,? extends Object> info = control.Camp().details(campid).info();
 		int choice=0;
 		while(true) {

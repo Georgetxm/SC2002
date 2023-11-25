@@ -11,6 +11,7 @@ import entities.Staff;
 import entities.Student;
 import entities.User;
 import types.Faculty;
+import types.Role;
 
 /**
  * The Class that contains function to read and write
@@ -50,15 +51,16 @@ public final class ReadWriteUserCSV {
                         // Read each line of the file
                         while ((line = br.readLine()) != null) {
                             String[] values = line.split(",");
+                            String name = values[0];
                             String userId = values[1].split("@")[0]; // Remove @e.ntu.edu
                             String password = values[3];
                             Faculty faculty = Faculty.valueOf(values[2]);
 
                             if (file.getName().contains("staff")) {
-                                Staff staff = new Staff(userId, password, faculty);
+                                Staff staff = new Staff(userId, name, password, faculty);
                                 userList.put(userId, staff);
                             } else if (file.getName().contains("student")) {
-                                Student student = new Student(userId, password, faculty);
+                                Student student = new Student(userId, name, password, faculty);
                                 userList.put(userId, student);
                             }
 
@@ -79,22 +81,41 @@ public final class ReadWriteUserCSV {
      * @param fileNameWithPath e.g. /lists/staff_list.csv
      * @return true, if successful
      */
-    public static final boolean writeUserCSV(HashMap<String, User> userList, String fileNameWithPath) {
+    public static final boolean writeUserCSV(HashMap<String, User> userList, String fileNameWithPath, Role role) {
+
+        File file;
+        switch (role) {
+            case STAFF:
+                file = new File("lists/staff_list.csv");
+                break;
+            case ATTENDEE:
+            case COMMITTEE:
+                file = new File("lists/student_list.csv");
+                break;
+            default:
+                return false;
+        }
         FileWriter writer = null;
         try {
-            writer = new FileWriter(fileNameWithPath);
+            writer = new FileWriter(file);
             // header row
             writer.append("name,email,faculty,password\n");
 
             for (User user : userList.values()) {
-                writer.append(user.getUserId())
-                        .append(",")
-                        .append(user.getUserId() + "@e.ntu.edu.sg")
-                        .append(",")
-                        .append(user.getFaculty().toString())
-                        .append(',')
-                        .append(user.getPassword())
-                        .append("\n");
+                if (user.getClass() == Staff.class && role == Role.STAFF ||
+                        user.getClass() == Student.class && role == Role.ATTENDEE) {
+                    writer.append(user.getName())
+                            .append(",")
+                            .append(user.getUserId() + "@e.ntu.edu.sg")
+                            .append(",")
+                            .append(user.getUserId() + "@e.ntu.edu.sg")
+                            .append(",")
+                            .append(user.getFaculty().toString())
+                            .append(',')
+                            .append(user.getPassword())
+                            .append("\n");
+                }
+
             }
             return true;
         } catch (IOException e) {

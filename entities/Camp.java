@@ -58,9 +58,10 @@ public class Camp {
      * @param enquiries
      * @param suggestions
      */
-    public Camp(CampInfo campInfo, boolean visibility, LocalDate creationDate, int attendeeCount, int committeeCount) {
+    public Camp(int campId, CampInfo campInfo, boolean visibility, LocalDate creationDate, int attendeeCount,
+            int committeeCount) {
         this.campInfo = campInfo;
-        this.campid = nextCampId++;
+        this.campid = campId;
         this.visibility = visibility;
         this.attendeeCount = attendeeCount;
         this.committeeCount = committeeCount;

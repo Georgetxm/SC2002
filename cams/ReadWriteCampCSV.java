@@ -90,7 +90,8 @@ public class ReadWriteCampCSV {
                             campInfoObj.put(CampAspect.DESCRIPTION, campDescription);
                             campInfoObj.put(CampAspect.STAFFIC, staffIC);
                             CampInfo campInfo = new CampInfo(campInfoObj);
-                            Camp camp = new Camp(campInfo, visibility, creationDate, attendeeCount, committeeCount);
+                            Camp camp = new Camp(campId, campInfo, visibility, creationDate, attendeeCount,
+                                    committeeCount);
                             campList.put(camp.getCampid(), camp);
                             lastCampId = campId;
                         }

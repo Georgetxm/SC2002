@@ -7,6 +7,8 @@ import camsAction.MissingRequestedDataException;
 import controllers.Controller;
 // import controllers.MainController;
 import entities.Camp;
+import entities.Enquiry;
+import entities.Suggestion;
 import entities.User;
 import entities.UserInfoMissingException;
 

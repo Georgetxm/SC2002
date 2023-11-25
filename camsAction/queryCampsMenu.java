@@ -43,7 +43,7 @@ public class queryCampsMenu extends UserMenu {
 	protected final void populate(String currentuser, Scanner s, Controller control) throws UserInfoMissingException{
 		Faculty userfaculty = control.User().getUserFaculty(currentuser);
 		EnumSet<Perms> userperm= control.User().grantPerms(currentuser,EnumSet.noneOf(Perms.class));
-		
+		HashSet<Serializable> usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		options.add(CamsInteraction.filterCampBy);
 		if(userid!=null) {
@@ -52,15 +52,20 @@ public class queryCampsMenu extends UserMenu {
 		Set<Serializable> viewingset=new HashSet<Serializable>();
 		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) {
 			control.Directory().sync().withvisibility();
-			if(filters!=null) filters = new HashMap<CampAspect,Object>();
-			filters.put(CampAspect.USERGROUP, userfaculty);
 		}
 		if(filters!=null) {
 			List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
 			viewingset = new HashSet<Serializable>(control.Directory().get(entities.Camp.class));
 			for (Iterator<Serializable> it = viewingset.iterator(); it.hasNext();) {
 			    Serializable element = it.next();
-			    for(Entry<CampAspect, ? extends Object> filter:filterlist)
+			    Faculty campfaculty = (Faculty) control.Camp().details((int) element).info().get(CampAspect.USERGROUP);
+			    if(
+			    	!userperm.contains(Perms.VIEW_EVERY_CAMP)&&
+			    	(campfaculty!=userfaculty||campfaculty!=Faculty.WHOLE_NTU)	
+			    ) {
+			    	it.remove();break;
+			    }
+			    else for(Entry<CampAspect, ? extends Object> filter:filterlist)
 			    	if(control.Camp().details((int) element).info().get(filter.getKey())!=filter.getValue()){
 			    		it.remove();
 			    		break;
@@ -76,7 +81,7 @@ public class queryCampsMenu extends UserMenu {
 			for(Entry<Integer, String> entry:camplist) {
 				options.add(
 					new MenuChoice(Perms.DEFAULT, entry.getValue(), 
-						(campset!=null&&campset.keySet().contains(entry.getKey()))?
+						(usercamps!=null&&usercamps.contains(entry.getKey()))?
 							CamsInteraction.OwnCampMenu(entry.getKey(),currentuser).withcamp(entry.getKey()):
 							CamsInteraction.OtherCampMenu(entry.getKey(),currentuser).withcamp(entry.getKey())
 				));

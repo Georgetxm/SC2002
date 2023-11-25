@@ -261,7 +261,7 @@ public final class CamsInteraction{ //Menu choices
 	}
 	
 	public static MenuChoice generateAttendanceList(Integer campid, String userid) {
-		return new MenuChoice(Perms.SUBMIT_CAMP_SUGGESTION,"Generate attendance list",GenerateAttendanceList(campid, userid).withcamp(campid));
+		return new MenuChoice(Perms.REPLY_CAMP_ENQUIRY,"Generate attendance list",GenerateAttendanceList(campid, userid).withcamp(campid));
 	}
 	
 	public static MenuChoice generateForAttendee(Integer campid) {

@@ -31,6 +31,7 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 	 */@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
+		if(campid==null) throw new MissingRequestedDataException("Camp id not found");
 		next = null;
 		HashSet<Serializable> camplist = null;
 		camplist = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
@@ -46,6 +47,7 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
 					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser)
 			));
+			control.User().setCampCommittee(currentuser, campid);
 			control.User().grantPerms(currentuser, EnumSet.of(
 				Perms.SUBMIT_CAMP_SUGGESTION,
 				Perms.EDIT_CAMP_SUGGESTION,

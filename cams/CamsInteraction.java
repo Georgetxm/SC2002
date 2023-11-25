@@ -387,6 +387,6 @@ public final class CamsInteraction{ //Menu choices
 		return new StaticMenu("What would you like to do with this enquiry?",singleenquirychoices(enquiryid), new queryEnquriesMenu());
 	}
 	public static StaticMenu GenerateAttendanceList(int campid, String userid) {
-		return new StaticMenu("Who would you like to generate an attendence list of?",attendancelistchoices(campid), OwnCampMenu(campid,userid));
+		return new StaticMenu("Who would you like to generate an attendence list of?",attendancelistchoices(campid), new queryCampsMenu());
 	}
 }

@@ -113,19 +113,27 @@ public class ReadWriteCampCSV {
      * @return true, if successful
      */
     public static final boolean writeCampCSV(HashMap<Integer, Camp> campList, String fileNameWithPath) {
+        File file = new File(fileNameWithPath);
         FileWriter writer = null;
         try {
-            writer = new FileWriter(fileNameWithPath);
+            writer = new FileWriter(file);
             // header row
             writer.append(
                     "campId,campName,campDates,registrationDeadline,faculty,location,slots,committeeSlots,description,staffIC,visibility,createDate,attendeeCount,committeeCount\n");
 
             for (Camp camp : campList.values()) {
+
+                HashSet<LocalDate> datesHashSet = (HashSet<LocalDate>) camp.getCampInfo().info()
+                        .get(CampAspect.DATE);
+                String dates = "";
+                for (LocalDate localDate : datesHashSet) {
+                    dates += localDate.toString() + ";";
+                }
                 writer.append(String.valueOf(camp.getCampid()));
                 writer.append(",");
                 writer.append(camp.getCampInfo().info().get(CampAspect.NAME).toString());
                 writer.append(",");
-                writer.append(camp.getCampInfo().info().get(CampAspect.DATE).toString());
+                writer.append(dates);
                 writer.append(",");
                 writer.append(camp.getCampInfo().info().get(CampAspect.REGISTRATION_DEADLINE).toString());
                 writer.append(",");
@@ -144,10 +152,8 @@ public class ReadWriteCampCSV {
                 writer.append(String.valueOf(camp.getVisibility()));
                 writer.append(",");
                 writer.append(camp.getCreationDate().toString());
-                writer.append("\n");
                 writer.append(",");
                 writer.append(String.valueOf(camp.getAttendeeCount()));
-                writer.append("\n");
                 writer.append(",");
                 writer.append(String.valueOf(camp.getCommitteeCount()));
                 writer.append("\n");

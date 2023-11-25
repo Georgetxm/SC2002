@@ -82,12 +82,18 @@ public class ReadWriteEnquiryCSV {
             writer.append("enquiryId,enquiryBody,seen,creationDate,lastUpdateDate,replies\n");
 
             for (Enquiry enquiry : enquiryList.values()) {
-                writer.append(enquiry.getEnquiryId() + ","
-                        + enquiry.getEnquiryBody() + ","
-                        + enquiry.isSeen() + ","
-                        + enquiry.getCreationDate() + ","
-                        + enquiry.getLastUpdateDate() + ","
-                        + String.join(";", enquiry.getReplies()) + "\n");
+                writer.append(String.valueOf(enquiry.getEnquiryId()))
+                        .append(",")
+                        .append(enquiry.getEnquiryBody())
+                        .append(",")
+                        .append(String.valueOf(enquiry.isSeen()))
+                        .append(",")
+                        .append(enquiry.getCreationDate().toString())
+                        .append(",")
+                        .append(enquiry.getLastUpdateDate().toString())
+                        .append(",")
+                        .append(String.join(";", enquiry.getReplies()))
+                        .append("\n");
             }
             return true;
         } catch (IOException e) {

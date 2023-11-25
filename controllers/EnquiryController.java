@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import cams.ReadWriteEnquiryCSV;
-import entities.Camp;
 import entities.Enquiry;
-import entities.Student;
 
 public class EnquiryController implements EnquiryControlInterface {
 	private HashMap<Integer, Enquiry> enquiries;

@@ -80,7 +80,9 @@ public final class ReadWriteUserCSV {
      * @return true, if successful
      */
     public static final boolean writeUserCSV(HashMap<String, User> userList, String fileNameWithPath) {
-        try (FileWriter writer = new FileWriter(fileNameWithPath)) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(fileNameWithPath);
             // header row
             writer.append("name,email,faculty,password\n");
 
@@ -91,6 +93,13 @@ public final class ReadWriteUserCSV {
             return true;
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                writer.flush();
+                writer.close();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
         }
         return false;
     }

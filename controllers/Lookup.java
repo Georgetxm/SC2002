@@ -77,6 +77,18 @@ public class Lookup implements Directory{
 	}
 	public void update() {
 		try {
+	        File fileOne=new File("visible");
+	        FileOutputStream fos=new FileOutputStream(fileOne);
+	        ObjectOutputStream oos=new ObjectOutputStream(fos);
+
+	        oos.writeObject(visible);
+	        oos.flush();
+	        oos.close();
+	        fos.close();
+	    } catch(Exception e) {
+	    	e.printStackTrace();
+	    }
+		try {
 	        File fileOne=new File("classes");
 	        FileOutputStream fos=new FileOutputStream(fileOne);
 	        ObjectOutputStream oos=new ObjectOutputStream(fos);
@@ -117,6 +129,14 @@ public class Lookup implements Directory{
 	        FileInputStream fis=new FileInputStream(toRead);
 	        ObjectInputStream ois=new ObjectInputStream(fis);
 	        classes = (HashSet<Class<?>>) ois.readObject();
+	        ois.close();
+	        fis.close();
+		}catch(Exception e) {e.printStackTrace();}
+		try {
+			File toRead=new File("visible");
+	        FileInputStream fis=new FileInputStream(toRead);
+	        ObjectInputStream ois=new ObjectInputStream(fis);
+	        visible = (HashSet<Integer>) ois.readObject();
 	        ois.close();
 	        fis.close();
 		}catch(Exception e) {e.printStackTrace();}

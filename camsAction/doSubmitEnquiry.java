@@ -30,7 +30,7 @@ public final class doSubmitEnquiry extends Interaction {
 			throws UserInfoMissingException, MissingRequestedDataException {
 		if(campid==null) throw new MissingRequestedDataException("Camp ID wrong");
 		System.out.println("Please type your enquiry:");
-		int thisenquiry = control.Enquiry().add(s.nextLine(),currentuser,campid);
+		int thisenquiry = control.Enquiry().add(s.nextLine());
 		control.Directory().sync().add(entities.Enquiry.class, thisenquiry);
 		control.Directory().sync().link(Arrays.asList(
 				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),

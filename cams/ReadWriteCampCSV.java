@@ -51,7 +51,7 @@ public class ReadWriteCampCSV {
                         && file.getName().startsWith("camp")) {
                     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                         String line = br.readLine(); // Skip header line
-
+                        int lastCampId = 0;
                         while ((line = br.readLine()) != null) {
                             String[] values = line.split(",");
                             // Will not use, generate new campId when creating
@@ -92,7 +92,9 @@ public class ReadWriteCampCSV {
                             CampInfo campInfo = new CampInfo(campInfoObj);
                             Camp camp = new Camp(campInfo, visibility, creationDate, attendeeCount, committeeCount);
                             campList.put(camp.getCampid(), camp);
+                            lastCampId = campId;
                         }
+                        Camp.setNextCampId(lastCampId + 1);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

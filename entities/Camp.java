@@ -1,9 +1,6 @@
 package entities;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-
-import types.CampAspect;
 
 /**
  * Represents a Camp object
@@ -68,6 +65,18 @@ public class Camp {
         this.attendeeCount = attendeeCount;
         this.committeeCount = committeeCount;
         this.creationDate = creationDate;
+    }
+
+    /**
+     * When reading from the camp.csv, the campId is already included
+     * get the next campId from the csv file
+     * this ensures that the next campId is always greater than the previous
+     * and previous enquiryId will not be overwritten
+     * 
+     * @param nextCampId
+     */
+    public static void setNextCampId(int nextCampId) {
+        Camp.nextCampId = nextCampId;
     }
 
     /**

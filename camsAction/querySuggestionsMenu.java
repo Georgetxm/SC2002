@@ -27,12 +27,10 @@ import types.Perms;
 public final class querySuggestionsMenu extends UserMenu {
 	private List<Entry<Integer, Entry<CampAspect, ? extends Object>>> suggestionlist = null;
 	/**
-	 * Represents a menu of the user's own suggestions for them to choose from.
+	 * Populates the menu with suggestions for users to choose from.
 	 * <p>
 	 * These suggestions can either be of one camp or across camps depending on whether the user has selected a camp beforehand.
-	 * @return true if all requests succeed, false if otherwise
-	 * @throws entities.UserInfoMissingException if the current usrid cannot be found
-	 * @throws MissingRequestedDataException if the user cannot have suggestions, or the suggestion selected has an invalid id
+	 * These suggestions can be the user's own or any depending on whether the user has elected to see their own only
 	 */
 
 	@Override
@@ -64,6 +62,10 @@ public final class querySuggestionsMenu extends UserMenu {
 		choices = options;
 	}
 
+	/**
+	 * Gives users choices. If users pick a suggestion that is not theirs, finalise it.
+	 *@return return single suggestion menu if a suggestion is selected, start menu if no camp has been previously selected, and the appropriate single camp menu with camp, user, filter tags if one has
+	 */
 	@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
@@ -79,6 +81,7 @@ public final class querySuggestionsMenu extends UserMenu {
 		System.out.println(">>"+choices.get(option).text());
 		try {
 			System.out.println(control.Suggestion().get(suggestionid));
+			if(!control.Directory().with(entities.User.class, currentuser).get(entities.Suggestion.class).contains(suggestionid))
 			control.Suggestion().finalise(suggestionid);
 		} catch (ControllerItemMissingException e) {
 			throw new MissingRequestedDataException("Suggestion is invalid");

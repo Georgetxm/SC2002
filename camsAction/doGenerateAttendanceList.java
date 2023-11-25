@@ -33,7 +33,8 @@ import types.Role;
  */
 public final class doGenerateAttendanceList extends Interaction {
 	/**
-	 * Asks controller for a list of requested entities
+	 * Asks controller for a list of users of the requested type and camp details.
+	 * Generates a csv report.
 	 * @return the correct single camp menu, removing rolerequested and preserving
 	 *         all other parameters
 	 * @throws MissingRequestedDataException if suggestion to be deleted cannot be

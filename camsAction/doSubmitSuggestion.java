@@ -26,7 +26,7 @@ public final class doSubmitSuggestion extends Interaction {
 	 * Requests the controller to save a suggestion by the current user on a given camp to the database.
 	 * Then increments the points of the suggester by 1.
 	 * Asks the controller if the camp is full or the user has already joined before requesting.
-	 *@return true if controller accepts the request(s) and false if otherwise, or the camp is full, or the user is already registered
+	 *@return the appropriate single camp menu with camp, user, and filter tags
 	 *@throws MissingRequestedDataException if the camp to be registered for cannot be found
 	 *@throws UserInfoMissingException if the user id of the current user cannot be found
 	 */@Override
@@ -96,10 +96,8 @@ public final class doSubmitSuggestion extends Interaction {
 		usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
 		next = (usercamps!=null&&usercamps.contains(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 		if(this.userid!=null) next = next.withuser(userid);
-		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);
-		if(this.ownerid!=null) next = next.withowner(this.ownerid);
-		return next;
+		return next.withcamp(campid);
 	}
 
 }

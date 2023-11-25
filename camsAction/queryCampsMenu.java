@@ -31,16 +31,14 @@ import types.Perms;
 public class queryCampsMenu extends UserMenu {
 	private List<Entry<Integer, String>> camplist = null;
 	/**
-	 *Represents a menu displaying various camps for the user to choose, and an option to filter that list.
+	 *Populates the menu choices with camps for the user to choose, and an option to filter that list.
 	 *<p>
 	 *If the user had previously selected to view only the camps linked to them, it will be filtered to reflect that.
-	 *If the user does not have the view all camps perms, only visible camps belonging to his faculty will be shown.
-	 *@return true if all controller requests succeed
-	 *@throws MissingRequestedDataException if the ViewingOwnCamps tag is malformed.
-	 *@throws UserInfoMissingException if the user or their perms cannot be identified.
+	 *If the user does not have the view all camps perms, only visible camps belonging to his faculty or whole NTU will be shown.
+	 *If the user had previously set some filters, the camps will be filtered to reflect that
 	 */
 	@Override
-	protected final void populate(String currentuser, Scanner s, Controller control) throws UserInfoMissingException{
+	protected final void populate(String currentuser, Scanner s, Controller control){
 		Faculty userfaculty = control.User().getUserFaculty(currentuser);
 		EnumSet<Perms> userperm= control.User().grantPerms(currentuser,EnumSet.noneOf(Perms.class));
 		HashSet<Serializable> usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
@@ -90,6 +88,12 @@ public class queryCampsMenu extends UserMenu {
 		choices = options;
 	}
 
+	/**
+	 *Gives users the choices.
+	 *@return The appropriate single camp menu with camp, user and filter tags if a camp is chosen, or
+	 *query camp menu without filters, i.e. only preserving the user tag if the user previously added filters but pressed back, or
+	 *start menu if the user did not previously add filters but pressed back.
+	 */
 	@Override
 	public
 	final Interaction run(String currentuser, Scanner s, Controller control)

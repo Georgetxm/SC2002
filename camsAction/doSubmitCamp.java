@@ -25,7 +25,7 @@ public class doSubmitCamp extends Interaction {
 	/**
 	 * Requests the controller to create and save a camp based off user submitted details.
 	 * Queries the user for details before submitting the request.
-	 *@return true if controller accepts the request(s) and false if otherwise.
+	 *@return start menu
 	 *@throws UserInfoMissingException if the user id cannot be found.
 	 */
 	@Override

@@ -23,9 +23,7 @@ import types.Perms;
 public class queryFilterCampByMenu extends UserMenu {
 
 	/**
-	 * Offers users a menu of filters to choose from, and prompts the user to enter the required value.
-	 * @return true if all requests succeed, false if otherwise
-	 * @throws UserInfoMissingException if if one of its child functions detect user information is incomplete (e.g. ill-formatted or missing userid, permissions
+	 * Populates the menu with filters to choose from
 	 */@Override
 	protected final void populate(String currentuser, Scanner s, Controller control){
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
@@ -35,6 +33,11 @@ public class queryFilterCampByMenu extends UserMenu {
 		next = new queryCampsMenu();
 	}
 
+	/**
+	 * Gives users choices then prompts the user to enter the required value.
+	 * @return query camp menu with appropriate filters
+	 * @throws UserInfoMissingException if if one of its child functions detect user information is incomplete (e.g. ill-formatted or missing userid, permissions
+	 */
 	@Override
 	public
 	final Interaction run(String currentuser, Scanner s, Controller control) throws UserInfoMissingException{

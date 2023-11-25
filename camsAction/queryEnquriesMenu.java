@@ -25,12 +25,10 @@ import types.Perms;
 public final class queryEnquriesMenu extends UserMenu {
 	private List<Serializable> enquirylist = null;
 	/**
-	 * Represents a menu of the user's own enquiries for them to choose.
+	 * Populates menu choices with enquiries for the user to choose to choose.
 	 * <p>
 	 * These enquiries can either be for a given camp, or across camps depending on whether the user has selected a camp.
-	 * @return true if all requests succeed, false if otherwise
-	 * @throws entities.UserInfoMissingException if the current usrid cannot be found
-	 * @throws MissingRequestedDataException if the user cannot have enquiries, or the enquiry selected has an invalid id
+	 * These enquiries can either be only their own, or in general depending on whether the user elected to see their own enquiries or all enquiries
 	 */@Override
 	protected void populate(String currentuser, Scanner s, Controller control){
 		if(ownerid!=null) control.Directory().sync().with(entities.User.class, ownerid);
@@ -50,6 +48,10 @@ public final class queryEnquriesMenu extends UserMenu {
 		choices = options;
 	}
 
+	/**
+	 * Gives choices, if users pick an enquiry that is not their own, finalise it
+	 *@return single enquiry menu with user, owner, camp, enquiry, filter tags if the user picked an enquiry, or the appropriate single camp menu with user, camp, filter tags if the user picked back
+	 */
 	@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
@@ -66,6 +68,7 @@ public final class queryEnquriesMenu extends UserMenu {
 			System.out.println(">>"+choices.get(option).text());
 			try {
 				for(String reply:control.Enquiry().getReplies(enquiryid)) System.out.println(reply);
+				if(!control.Directory().sync().with(entities.User.class, currentuser).get(entities.Enquiry.class).contains(enquiryid))
 				control.Enquiry().finalise(enquiryid);
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Enquiry id is invalid");

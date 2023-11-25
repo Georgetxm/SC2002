@@ -18,7 +18,7 @@ import interactions.Interaction;
 public final class doToggleVisibility extends Interaction {
 	/**
 	 * Requests the controller to modify a camp's visibility between visible and not visible.
-	 *@return true if controller accepts the request(s) and false if otherwise.
+	 *@return the appropriate single camp menu with user, filter and camp tags
 	 * @throws UserInfoMissingException 
 	 *@throws MissingRequestedDataException if the camp to be made visible or not visible cannot be found.
 	 */
@@ -30,9 +30,8 @@ public final class doToggleVisibility extends Interaction {
 		usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
 		next = (usercamps!=null&&usercamps.contains(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 		if(this.userid!=null) next = next.withuser(userid);
-		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);
-		return next;
+		return next.withcamp(campid);
 	}
 
 }

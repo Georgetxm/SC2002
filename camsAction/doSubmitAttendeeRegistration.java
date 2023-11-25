@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 import cams.CamsInteraction;
 import controllers.Controller;
-import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
  * Interaction that represents the action of adding a user to a camp as an attendee.
@@ -21,12 +20,11 @@ public final class doSubmitAttendeeRegistration extends Interaction {
 	/**
 	 * Requests the controller to register the current user as an attendee of a given camp
 	 * Asks the controller if the camp is full or the user has already joined before requesting.
-	 *@return true if controller accepts the request(s) and false if otherwise, or the camp is full, or the user is already registered
+	 *@return the appropriate single camp menu with user and filter tags
 	 *@throws MissingRequestedDataException if the camp to be registered for cannot be found
-	 *@throws UserInfoMissingException if the user id of the current user cannot be found
 	 */@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
-			throws UserInfoMissingException, MissingRequestedDataException {
+			throws MissingRequestedDataException {
 		if(campid==null) throw new MissingRequestedDataException("No camp found");
 		HashSet<Serializable> camplist;
 		camplist = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);

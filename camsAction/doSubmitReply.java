@@ -23,7 +23,7 @@ public final class doSubmitReply extends Interaction {
 	 * Requests the user to increment the points of the replier by 1
 	 * Prompts the current user for the reply before requesting.
 	 * Controller is expected to minimally make a link from the suggestion to the replies if applicable.
-	 *@return true if controller accepts the request(s) and false if otherwise.
+	 *@return single enquiry menu with camp, user, owner, enquiry, and filter tags
 	 *@throws MissingRequestedDataException if the enquiry to be replied to cannot be found
 	 *@throws UserInfoMissingException if the user id of the current user cannot be found
 	 */@Override

@@ -21,7 +21,7 @@ public final class doSubmitEnquiry extends Interaction {
 	/**
 	 * Prompts the user for an enquiry and requests the controller to save it.
 	 * Controller is expected to make the relevant bidirectional links with the host camp, the user etc.
-	 *@return true if controller accepts the request(s) and false if otherwise.
+	 *@return the appropriate single camp menu with user, camp, filter tags
 	 *@throws MissingRequestedDataException if the camp the enquiry is part of cannot be found
 	 *@throws UserInfoMissingException if the user id of the current user cannot be found
 	 */
@@ -49,7 +49,6 @@ public final class doSubmitEnquiry extends Interaction {
 		if(this.userid!=null) next = next.withuser(userid);
 		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);
-		if(this.ownerid!=null) next = next.withowner(this.ownerid);
 		return next;
 	}
 

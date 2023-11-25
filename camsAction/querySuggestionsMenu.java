@@ -54,7 +54,7 @@ public final class querySuggestionsMenu extends UserMenu {
 				}
 				options.add(new MenuChoice(Perms.DEFAULT, 
 						entry.getKey().getKey().name()+":\n"+GetData.FromObject(entry.getKey().getValue()),
-						CamsInteraction.SingleSuggestionMenu((int) entryid)));
+						CamsInteraction.SingleSuggestionMenu((int) entryid).withsuggestion((int) entryid)));
 			}
 				
 		}
@@ -71,25 +71,30 @@ public final class querySuggestionsMenu extends UserMenu {
 		populate(currentuser, s, control);
 		int option = givechoices(currentuser, s, control);
 		if(option<0){
-			if(this.campid==null) return CamsInteraction.startmenu(currentuser);
-			HashSet<Serializable> campset = null;
-			campset = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
-			return campset.contains(campid)?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
-		};
-		int suggestionid = (int) suggestionlist.get(option);
-		System.out.println(">>"+choices.get(option).text());
-		try {
-			System.out.println(control.Suggestion().get(suggestionid));
-			if(!control.Directory().with(entities.User.class, currentuser).get(entities.Suggestion.class).contains(suggestionid))
-			control.Suggestion().finalise(suggestionid);
-		} catch (ControllerItemMissingException e) {
-			throw new MissingRequestedDataException("Suggestion is invalid");
+			if(this.campid==null) next = CamsInteraction.startmenu(currentuser);
+			else {
+				HashSet<Serializable> campset = null;
+				campset = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
+				next= campset.contains(campid)?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+			}
+		}
+		else {
+			next = choices.get(option).action().withsuggestion(suggestionid);
+			int suggestionid = (int) suggestionlist.get(option);
+			System.out.println(">>"+choices.get(option).text());
+			try {
+				System.out.println(control.Suggestion().get(suggestionid));
+				if(!control.Directory().with(entities.User.class, currentuser).get(entities.Suggestion.class).contains(suggestionid))
+				control.Suggestion().finalise(suggestionid);
+			} catch (ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("Suggestion is invalid");
+			}
 		}
 		if(userid!=null) next = next.withuser(userid);
 		if(campid!=null) next = next.withcamp(campid);
 		if(filters!=null) next = next.withfilter(filters);
 		if(this.ownerid!=null) next = next.withowner(this.ownerid);
-		return next.withsuggestion(suggestionid);
+		return next;
 	}
 
 }

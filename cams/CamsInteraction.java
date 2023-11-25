@@ -259,7 +259,12 @@ public final class CamsInteraction{ //Menu choices
 	public static MenuChoice registerAsCommittee(Integer campid) {
 		return new MenuChoice(Perms.REGISTER_AS_COMMITTEE,	"Join the camp committee",	new doSubmitCommitteeRegistration().withcamp(campid));
 	}
-	
+	/**
+	 * MenuChoice instance denoting the choice of registering for a camp as a committee.
+	 * <p>
+	 * It is implied both the user and the menu know which camp the registration is for
+	 * Usually a user would have already selected a camp before this choice is given
+	 */
 	public static MenuChoice generateAttendanceList(Integer campid, String userid) {
 		return new MenuChoice(Perms.REPLY_CAMP_ENQUIRY,"Generate attendance list",GenerateAttendanceList(campid, userid).withcamp(campid));
 	}

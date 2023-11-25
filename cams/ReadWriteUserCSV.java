@@ -106,9 +106,7 @@ public final class ReadWriteUserCSV {
                         user.getClass() == Student.class && role == Role.ATTENDEE) {
                     writer.append(user.getName())
                             .append(",")
-                            .append(user.getUserId() + "@e.ntu.edu.sg")
-                            .append(",")
-                            .append(user.getUserId() + "@e.ntu.edu.sg")
+                            .append(user.getUserId() + "@NTU.EDU.SG")
                             .append(",")
                             .append(user.getFaculty().toString())
                             .append(',')

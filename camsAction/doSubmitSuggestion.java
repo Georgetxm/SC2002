@@ -83,7 +83,7 @@ public final class doSubmitSuggestion extends Interaction {
 				control.Directory().sync().link(Arrays.asList(
 					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
 					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser),
-					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Enquiry.class,thissuggestion)
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Suggestion.class,thissuggestion)
 				));
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Camp id is invalid");

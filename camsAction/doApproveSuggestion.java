@@ -58,7 +58,7 @@ public final class doApproveSuggestion extends Interaction {
 		if(userid!=null) next = next.withuser(userid);
 		if(campid!=null) next = next.withcamp(campid);
 		if(filters!=null) next = next.withfilter(filters);
-		return next.withsuggestion(suggestionid);
+		return next;
 	}
 
 }

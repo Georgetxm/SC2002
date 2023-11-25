@@ -55,14 +55,14 @@ public class Enquiry {
      * @param creationDate
      * @param lastUpdatedDate
      */
-    public Enquiry(String enquiryBody, boolean seen,
-            LocalDate creationDate, LocalDate lastUpdateDate) {
-        this.enquiryId = nextEnquiryId++;
+    public Enquiry(int enquiryId, String enquiryBody, boolean seen,
+            LocalDate creationDate, LocalDate lastUpdateDate, ArrayList<String> replies) {
+        this.enquiryId = enquiryId;
         this.enquiryBody = enquiryBody;
         this.seen = seen;
         this.creationDate = creationDate;
         this.lastUpdateDate = lastUpdateDate;
-        this.replies = new ArrayList<String>();
+        this.replies = replies;
     }
 
     /**

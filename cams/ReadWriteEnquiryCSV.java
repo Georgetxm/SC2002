@@ -47,14 +47,15 @@ public class ReadWriteEnquiryCSV {
                             LocalDate creationDate = LocalDate.parse(values[3]);
                             LocalDate lastUpdateDate = LocalDate.parse(values[4]);
                             String replyString = values[5];
-                            ArrayList<String> repliyArrayList = new ArrayList<String>();
+                            ArrayList<String> replyArrayList = new ArrayList<String>();
                             String[] replies = replyString.split(";");
                             for (String reply : replies) {
-                                repliyArrayList.add(reply);
+                                replyArrayList.add(reply);
                             }
                             lastEnquiryId = enquiryId;
 
-                            Enquiry enquiry = new Enquiry(enquiryBody, seen, creationDate, lastUpdateDate);
+                            Enquiry enquiry = new Enquiry(enquiryId, enquiryBody, seen, creationDate, lastUpdateDate,
+                                    replyArrayList);
                             enquiryList.put(enquiryId, enquiry);
                         }
                         Enquiry.setNextEnquiryId(lastEnquiryId + 1);
@@ -75,24 +76,27 @@ public class ReadWriteEnquiryCSV {
      * @return true, if successful
      */
     public static final boolean writeEnquiryCSV(HashMap<Integer, Enquiry> enquiryList, String fileNameWithPath) {
+
+        File file = new File(fileNameWithPath);
         FileWriter writer = null;
         try {
-            writer = new FileWriter(fileNameWithPath);
+            writer = new FileWriter(file);
             // header row
             writer.append("enquiryId,enquiryBody,seen,creationDate,lastUpdateDate,replies\n");
 
             for (Enquiry enquiry : enquiryList.values()) {
                 writer.append(String.valueOf(enquiry.getEnquiryId()))
                         .append(",")
-                        .append(enquiry.getEnquiryBody())
+                        .append(!enquiry.getEnquiryBody().equals("") ? enquiry.getEnquiryBody() : "")
                         .append(",")
                         .append(String.valueOf(enquiry.isSeen()))
                         .append(",")
                         .append(enquiry.getCreationDate().toString())
                         .append(",")
-                        .append(enquiry.getLastUpdateDate().toString())
+                        .append(enquiry.getLastUpdateDate() != null ? enquiry.getLastUpdateDate().toString()
+                                : LocalDate.now().toString())
                         .append(",")
-                        .append(String.join(";", enquiry.getReplies()))
+                        .append(enquiry.getReplies() != null ? String.join(";", enquiry.getReplies()) : "")
                         .append("\n");
             }
             return true;

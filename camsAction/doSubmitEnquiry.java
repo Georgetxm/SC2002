@@ -29,6 +29,8 @@ public final class doSubmitEnquiry extends Interaction {
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
 		if(campid==null) throw new MissingRequestedDataException("Camp ID wrong");
+		if(control.User().getCampCommitteeOfStudent(currentuser)==campid)
+			System.out.println("You are a committee member of this camp and may not submit an enquiry");
 		System.out.println("Please type your enquiry:");
 		int thisenquiry = control.Enquiry().add(s.nextLine());
 		control.Directory().sync().add(entities.Enquiry.class, thisenquiry);

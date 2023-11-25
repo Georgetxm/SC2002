@@ -46,14 +46,14 @@ public final class doSubmitCommitteeRegistration extends Interaction {
 					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
 					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser)
 			));
-			control.User().grantPerms(userid, EnumSet.of(
+			control.User().grantPerms(currentuser, EnumSet.of(
 				Perms.SUBMIT_CAMP_SUGGESTION,
 				Perms.EDIT_CAMP_SUGGESTION,
 				Perms.DELETE_CAMP_SUGGESTION,
 				Perms.VIEW_CAMP_ENQUIRY,
 				Perms.REPLY_CAMP_ENQUIRY
 			));
-			control.User().denyPerms(userid, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
+			control.User().denyPerms(currentuser, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
 			System.out.println("Registered successfully as a comittee member.");
 		}
 		camplist = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);

@@ -1,7 +1,6 @@
 package controllers;
 
 import java.time.LocalDate;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -9,7 +8,6 @@ import cams.ReadWriteCampCSV;
 import entities.Camp;
 import entities.CampInfo;
 import types.CampAspect;
-import types.Role;
 
 public class CampController implements CampControlInterface {
 

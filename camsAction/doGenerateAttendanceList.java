@@ -1,5 +1,6 @@
 package camsAction;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
@@ -80,21 +81,27 @@ public final class doGenerateAttendanceList extends Interaction {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");
 		LocalDateTime now = LocalDateTime.now();
 
-		try (FileWriter writer = new FileWriter("/output/camp" + campid.toString() + "_" + dtf.format(now) + ".csv")) {
+		File file = new File("/output/camp" + campid.toString() + "_attendance_" + dtf.format(now) + ".csv");
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(file);
 			// header row
-			writer.append("name,email,faculty,password\n");
+			writer.append("userId,role\n");
 			for (Entry<String, Role> entry : memberlist) {
 				writer.append(entry.getKey() + "," + entry.getValue() + "\n");
 			}
 
-			// for (User user : userList.values()) {
-			// writer.append(user.getUserId() + "," + user.getUserId() + "," +
-			// user.getFaculty() + ","
-			// + user.getPassword() + "\n");
-			// }
-			// return true;
+			writer.append(campinfostring + "\n");
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				// flush and close writer
+				writer.flush();
+				writer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		HashSet<Serializable> usercamps = new HashSet<Serializable>();

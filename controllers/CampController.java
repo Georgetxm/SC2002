@@ -1,7 +1,6 @@
 package controllers;
 
 import java.time.LocalDate;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -9,7 +8,6 @@ import cams.ReadWriteCampCSV;
 import entities.Camp;
 import entities.CampInfo;
 import types.CampAspect;
-import types.Role;
 
 public class CampController implements CampControlInterface {
 
@@ -21,8 +19,9 @@ public class CampController implements CampControlInterface {
 	 * @param userList
 	 * @param campList
 	 */
-	public CampController(
-			HashMap<Integer, Camp> campList) {
+	public CampController() {
+		HashMap<Integer, Camp> campList = new HashMap<Integer, Camp>();
+		ReadWriteCampCSV.readCampCSV(campList, "lists/camp_list.csv");
 		this.camps = campList;
 	}
 
@@ -42,8 +41,10 @@ public class CampController implements CampControlInterface {
 	}
 
 	/**
+	 * Overriden method from CampControlInterface
 	 * Create a new Camp Object based on the given CampInfo object
 	 * Adds the Camp object to the camps ArrayList
+	 * Writes the camps ArrayList to the camp_list.csv file
 	 * 
 	 * @param info the CampInfo object containing the Camp's information, @See
 	 *             CampInfo record class for more details
@@ -61,13 +62,9 @@ public class CampController implements CampControlInterface {
 	}
 
 	/**
-	 * Overriden method from CampController
+	 * Overriden method from CampControlInterface
 	 * Deletes a Camp object from the camps ArrayList
-	 * Resets a Student's campCommittee int attribute to -1 if student is in the
-	 * committee of th deleted Camp
-	 * Removes a Camp from a User object's camps HashSet
-	 * Remove enquiries and suggestions of the Camp from the enquiries and
-	 * suggestions ArrayList
+	 * Writes the the new camps ArrayList to the camp_list.csv file
 	 * 
 	 * @param campid the Camp's ID
 	 * 
@@ -85,6 +82,7 @@ public class CampController implements CampControlInterface {
 	}
 
 	/**
+	 * Overriden method from CampControlInterface
 	 * Returns a CampInfo record object which contains information of the given its
 	 * ID
 	 * Check CampAspects.java for the list of attributes in CampInfo
@@ -102,15 +100,10 @@ public class CampController implements CampControlInterface {
 		return null;
 	}
 
-	@Override
-	public String generateAttendeeList(int campid, EnumSet<Role> roles) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**
-	 * Overriden method from CampController
+	 * Overriden method from CampControlInterface
 	 * Edit a single attribute of a Camp object
+	 * Writes the the new camps ArrayList to the camp_list.csv file
 	 * 
 	 * @param campid the Camp's ID
 	 * @param detail the attribute to be edited
@@ -129,8 +122,9 @@ public class CampController implements CampControlInterface {
 	}
 
 	/**
-	 * Overriden method from CampController
-	 * Checks if the Camp's attendee is full
+	 * Overriden method from CampControlInterface
+	 * Checks if the Camp's attendee is full by comparing the Camp's attendee count
+	 * to the Camp's attendee limit specified in the CampInfo object
 	 * 
 	 * @param campid the Camp's ID
 	 * @return true if the Camp's attendee is full, false otherwise
@@ -145,7 +139,7 @@ public class CampController implements CampControlInterface {
 	}
 
 	/**
-	 * Overriden method from CampController
+	 * Overriden method from CampControlInterface
 	 * Checks if the Camp's committee is full
 	 * 
 	 * @param campid the Camp's ID

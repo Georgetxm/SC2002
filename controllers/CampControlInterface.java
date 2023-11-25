@@ -14,8 +14,6 @@ public interface CampControlInterface {
 
 	public CampInfo details(int campid);
 
-	public String generateAttendeeList(int campid, EnumSet<Role> roles);
-
 	public boolean editDetails(int campid, Entry<CampAspect, ? extends Object> detail);
 
 	public boolean isAttendeeFull(int campid);

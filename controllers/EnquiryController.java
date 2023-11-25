@@ -16,8 +16,10 @@ public class EnquiryController implements EnquiryControlInterface {
 	 * @param enquiries
 	 * @return
 	 */
-	public EnquiryController(HashMap<Integer, Enquiry> enquiries) {
-		this.enquiries = enquiries;
+	public EnquiryController() {
+		HashMap<Integer, Enquiry> enquiryList = new HashMap<Integer, Enquiry>();
+		ReadWriteEnquiryCSV.readEnquiryCSV(enquiries, "lists/enquiry_list.csv");
+		this.enquiries = enquiryList;
 	}
 
 	/**

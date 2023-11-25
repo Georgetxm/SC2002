@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
-import entities.Enquiry;
 import entities.Suggestion;
 import types.CampAspect;
 
@@ -85,7 +84,7 @@ public class ReadWriteSuggestionCSV {
                         // Skip header line i.e. first row
                         String line = br.readLine();
 
-                        int lastEnquiryId = 0;
+                        int lastSuggestionId = 0;
                         // Read each line of the file
                         while ((line = br.readLine()) != null) {
                             String[] values = line.split(",");
@@ -101,7 +100,7 @@ public class ReadWriteSuggestionCSV {
                                     creationDate, lastUpdateDate);
                             suggestionList.put(suggestionId, suggestion);
                         }
-                        Enquiry.setNextEnquiryId(lastEnquiryId + 1);
+                        Suggestion.setNextSuggestionId(lastSuggestionId + 1);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -127,12 +126,18 @@ public class ReadWriteSuggestionCSV {
             writer.append("suggestionId,rationale,suggestionAspect,accepted,creationDate,lastUpdatedDate\n");
 
             for (Suggestion suggestion : suggestionList.values()) {
-                writer.append(suggestion.getSuggestionId() + ","
-                        + suggestion.getRationale() + ","
-                        + convertAspectEntryToCsvRow(suggestion.getSuggestionAspect()) + ","
-                        + suggestion.isAccepted() + ","
-                        + suggestion.getCreationDate() + ","
-                        + suggestion.getLastUpdatedDate() + "\n");
+                writer.append(String.valueOf(suggestion.getSuggestionId()))
+                        .append(",")
+                        .append(suggestion.getRationale())
+                        .append(",")
+                        .append(suggestion.getSuggestionAspect().toString())
+                        .append(",")
+                        .append(String.valueOf(suggestion.isAccepted()))
+                        .append(",")
+                        .append(suggestion.getCreationDate().toString())
+                        .append(",")
+                        .append(suggestion.getLastUpdatedDate().toString())
+                        .append("\n");
             }
             return true;
         } catch (IOException e) {
@@ -145,7 +150,8 @@ public class ReadWriteSuggestionCSV {
                 ioe.printStackTrace();
             }
         }
-        return false;
+        return true;
+
     }
 
 }

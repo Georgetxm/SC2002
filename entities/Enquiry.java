@@ -17,8 +17,6 @@ import java.util.ArrayList;
  * @since 2021-11-12
  */
 public class Enquiry {
-    private final String creatorUserId;
-    private final int campId;
     private static int nextEnquiryId = 0;
     private final int enquiryId;
     private String enquiryBody;
@@ -36,10 +34,8 @@ public class Enquiry {
      * @param seen
      * @param creationDate
      */
-    public Enquiry(String creatorUserId, int campId, String enquiryBody, boolean seen,
+    public Enquiry(String enquiryBody, boolean seen,
             LocalDate creationDate) {
-        this.campId = campId;
-        this.creatorUserId = creatorUserId;
         this.enquiryId = nextEnquiryId++;
         this.enquiryBody = enquiryBody;
         this.seen = seen;
@@ -49,24 +45,36 @@ public class Enquiry {
     }
 
     /**
+     * Constructor for Enquiry when reading from the enquiry.csv
+     * Overloaded to include lastUpdateDate
+     * 
+     * @param creatorUserId
+     * @param campId
+     * @param enquiryBody
+     * @param seen
+     * @param creationDate
+     * @param lastUpdatedDate
+     */
+    public Enquiry(String enquiryBody, boolean seen,
+            LocalDate creationDate, LocalDate lastUpdateDate) {
+        this.enquiryId = nextEnquiryId++;
+        this.enquiryBody = enquiryBody;
+        this.seen = seen;
+        this.creationDate = creationDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.replies = new ArrayList<String>();
+    }
+
+    /**
      * When reading from the enquiries.csv, the enquiryId is already included
      * get the next enquiryId from the csv file
      * this ensures that the next enquiryId is always greater than the previous
      * and previous enquiryId will not be overwritten
      * 
-     * @param nextSuggestionId
+     * @param nextEnquiryId
      */
-    public void setNextSuggestionId(int nextSuggestionId) {
-        Enquiry.nextEnquiryId = nextSuggestionId;
-    }
-
-    /**
-     * Get the userId of the creator of this enquiry
-     * 
-     * @return the userId of the creator of this enquiry
-     */
-    public String getCreatorUserId() {
-        return this.creatorUserId;
+    public static void setNextEnquiryId(int nextEnquiryId) {
+        Enquiry.nextEnquiryId = nextEnquiryId;
     }
 
     /**
@@ -149,15 +157,6 @@ public class Enquiry {
     public boolean updateLastUpdateDate(LocalDate lastestDate) {
         this.lastUpdateDate = lastestDate;
         return true;
-    }
-
-    /**
-     * Get the campId of this enquiry
-     * 
-     * @return the campId of this enquiry
-     */
-    public int getCampId() {
-        return this.campId;
     }
 
     /**

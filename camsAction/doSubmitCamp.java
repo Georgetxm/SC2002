@@ -44,7 +44,7 @@ public class doSubmitCamp extends Interaction {
 		))));
 		control.Directory().sync().add(entities.Camp.class, thiscamp);
 		control.Directory().sync().link(Arrays.asList(
-				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
+				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,thiscamp),
 				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser)
 		));
 		System.out.println("Camp has been created.");

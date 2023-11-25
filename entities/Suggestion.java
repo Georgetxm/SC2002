@@ -42,6 +42,7 @@ public class Suggestion {
             Entry<CampAspect, ? extends Object> suggestionAspect,
             LocalDate creationDate) {
         this.suggestionId = nextSuggestionId++;
+        this.rationale = rationale;
         this.suggestionAspect = suggestionAspect;
         this.accepted = false;
         this.creationDate = creationDate;
@@ -62,6 +63,7 @@ public class Suggestion {
             Entry<CampAspect, ? extends Object> suggestionAspect, boolean accepted,
             LocalDate creationDate, LocalDate lastUpdatedDate) {
         this.suggestionId = suggestionId;
+        this.rationale = rationale;
         this.suggestionAspect = suggestionAspect;
         this.accepted = accepted;
         this.creationDate = creationDate;

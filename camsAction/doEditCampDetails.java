@@ -22,7 +22,7 @@ public class doEditCampDetails extends Interaction {
 	/**
 	 * Requests the controller to change the values of one aspect in a camp's camp details.
 	 * Asks users for the aspect to be amended and the desired values to construct the controller request.
-	 *@return true if controller accepts the request(s) and false if otherwise, or the user attempted to edit an uneditable field.
+	 *@return owncampmenu with campid, userid, and filters preserved
 	 *@throws MissingRequestedDataException if camp whose camp details were to be edited cannot be found.
 	 */@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)

@@ -18,7 +18,7 @@ public final class doDeleteEnquiry extends Interaction {
 	 * Requests the controller to delete an enquiry from the database.
 	 * Asks controller if the enquiry is finalised before requesting deletion.
 	 * Controller is expected to ensure all links to the enquiry are also removed, and the database remainds consistent with no loose ends.
-	 *@return true if controller accepts the request(s) or false if enquiry is already finalised, or does not accept any request.
+	 *@return query enquiry menu with user id, filters, campid, and ownerid preserved
 	 *@throws MissingRequestedDataException if the enquiryid cannot be found
 	 */@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)

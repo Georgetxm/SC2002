@@ -24,7 +24,7 @@ public final class doApproveSuggestion extends Interaction {
 	 * Requests the controller to delete the suggestion, as it has already been
 	 * approved.
 	 * 
-	 * @return true if controller accepts the request(s)
+	 * @return query suggestion menu with camp id, filters and user id preserved
 	 * @throws MissingRequestedDataException  if camp to be edited cannot be found
 	 * @throws MissingRequestedDataException  if suggestion to be implemented cannot
 	 *                                        be found
@@ -58,7 +58,6 @@ public final class doApproveSuggestion extends Interaction {
 		if(userid!=null) next = next.withuser(userid);
 		if(campid!=null) next = next.withcamp(campid);
 		if(filters!=null) next = next.withfilter(filters);
-		if(this.ownerid!=null) next = next.withowner(this.ownerid);
 		return next.withsuggestion(suggestionid);
 	}
 

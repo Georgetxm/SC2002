@@ -19,9 +19,9 @@ import types.Perms;
  */
 public class doDeleteCamp extends Interaction {
 	/**
-	 * Requests the controller to remove a camp from its database.
-	 * Controller is expected to cut off all links if any and ensure the database is consisten with no loose ends
-	 *@return true if controller accepts the request(s)
+	 * Asks controller for all the camp committee members associated with the camp, and resets their permissions to attendee permissions
+	 * Requests the controller to remove a camp from its database inclusive of links
+	 *@return querycamps menu with user and filter tags
 	 *@throws MissingRequestedDataException if camp to be deleted cannot be found
 	 */@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)

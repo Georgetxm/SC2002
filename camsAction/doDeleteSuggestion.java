@@ -23,8 +23,7 @@ public final class doDeleteSuggestion extends Interaction {
 	 * Ask the controller if a suggestion may be edited before requesting the
 	 * deletion.
 	 * 
-	 * @return true if controller accepts the request(s) and false if otherwise, or
-	 *         the suggestion cannot be deleted
+	 * @return query suggestions menu with campid, userid, ownerid and filters preserved
 	 * @throws MissingRequestedDataException  if suggestion to be deleted cannot be
 	 *                                        found.
 	 */@Override

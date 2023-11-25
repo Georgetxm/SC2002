@@ -20,7 +20,7 @@ import interactions.Interaction;
 public class doDeleteAttendeeRegistration extends Interaction {
 	/**
 	 * Requests the controller to remove a bidirectional link between the current user and a camp specified.
-	 * Does not check if such a link already exists
+	 * Before delinking, checks if the user is in the camp as an attendee, else returns immediately.
 	 *@return true if controller accepts the request(s)
 	 *@throws MissingRequestedDataException if camp specified cannot be found.
 	 *@throws UserInfoMissingException if the current user's ID cannot be found

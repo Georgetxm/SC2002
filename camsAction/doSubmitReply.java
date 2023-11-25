@@ -1,5 +1,8 @@
 package camsAction;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
@@ -26,14 +29,22 @@ public final class doSubmitReply extends Interaction {
 	 */@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
-		System.out.println("Please type your reply.");
-		try {
-			control.Enquiry().saveReply(enquiryid, s.nextLine());
-		} catch (ControllerItemMissingException e) {
-			throw new MissingRequestedDataException("This enquiry cannot be found");
+		if(enquiryid==null) throw new MissingRequestedDataException("Enquiry id is null");
+		HashSet<Serializable> hosts = control.Directory().sync().with(entities.Suggestion.class,suggestionid).get(entities.Camp.class);
+		int hostcamp = (Integer) (new ArrayList<Serializable>(hosts)).get(0);
+		if(control.User().getClass(currentuser)==entities.Student.class&&control.User().getCampCommitteeOfStudent(currentuser)!=hostcamp) {
+			System.out.println("You may not reply to an enquiry you are not camp committee of");
 		}
-		System.out.println("Reply Submitted");
-		control.User().incrementPoints(currentuser, 1);
+		else{
+			System.out.println("Please type your reply.");
+			try {
+				control.Enquiry().saveReply(enquiryid, s.nextLine());
+			} catch (ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("This enquiry cannot be found");
+			}
+			System.out.println("Reply Submitted");
+			control.User().incrementPoints(currentuser, 1);
+		}
 		next = CamsInteraction.SingleEnquiryMenu(enquiryid);
 		if(this.userid!=null) next = next.withuser(userid);
 		if(this.campid!=null) next = next.withcamp(campid);

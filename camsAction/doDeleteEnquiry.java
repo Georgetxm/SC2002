@@ -32,7 +32,11 @@ public final class doDeleteEnquiry extends Interaction {
 		}
 		if(!iseditable) System.out.println("This enquiry is finalised and cannot be deleted or edited!");
 		else {
-			control.Enquiry().delete(enquiryid);
+			try {
+				control.Enquiry().delete(enquiryid);
+			} catch (ControllerItemMissingException e) {
+				System.out.println("Enquiry is invalid");
+			}
 			control.Directory().remove(entities.Enquiry.class, enquiryid);
 			System.out.println("Enquiry deleted");
 		}

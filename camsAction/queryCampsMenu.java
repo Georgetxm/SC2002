@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -48,7 +49,7 @@ public class queryCampsMenu extends UserMenu {
 		if(userid!=null) {
 			control.Directory().with(entities.User.class,userid);
 		}
-		Set<Serializable> viewingset=null;
+		Set<Serializable> viewingset=new HashSet<Serializable>();
 		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) {
 			control.Directory().sync().withvisibility();
 			if(filters!=null) filters = new HashMap<CampAspect,Object>();
@@ -56,7 +57,7 @@ public class queryCampsMenu extends UserMenu {
 		}
 		if(filters!=null) {
 			List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
-			viewingset = Set.copyOf(control.Directory().get(entities.Camp.class));
+			viewingset = new HashSet<Serializable>(control.Directory().get(entities.Camp.class));
 			for (Iterator<Serializable> it = viewingset.iterator(); it.hasNext();) {
 			    Serializable element = it.next();
 			    for(Entry<CampAspect, ? extends Object> filter:filterlist)
@@ -66,6 +67,7 @@ public class queryCampsMenu extends UserMenu {
 			    	}
 			}
 		}
+		else viewingset = control.Directory().get(entities.Camp.class);
 		HashMap<Integer,String> campset = new HashMap<Integer,String>();
 		for(Serializable id: viewingset)
 			campset.put((Integer)id, (String) control.Camp().details((int) id).info().get(CampAspect.NAME));

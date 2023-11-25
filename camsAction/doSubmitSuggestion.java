@@ -44,7 +44,7 @@ public final class doSubmitSuggestion extends Interaction {
 				System.out.println("What would you like to amend:");
 				int counter = 1;
 				for (CampAspect aspect : info.keySet())// For each aspect, print aspect
-					System.out.printf("%d: %s\n", counter, GetData.FromObject(info.get(aspect)));
+					System.out.printf("%d: %s\n", counter++, GetData.FromObject(info.get(aspect)));
 				choice = s.nextInt(); // user chooses an aspect, see if choice is valid
 				if (choice < 1 || choice > info.keySet().size()) {
 					System.out.println("Invalid option");

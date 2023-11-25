@@ -20,7 +20,8 @@ public class ReadWriteSuggestionCSV {
         CampAspect chosenaspect = suggestionAspect.getKey();
         String valueString = "";
         if (chosenaspect == CampAspect.DATE) {
-            HashSet<LocalDate> date = (HashSet<LocalDate>) suggestionAspect.getValue();
+            @SuppressWarnings("unchecked")
+			HashSet<LocalDate> date = (HashSet<LocalDate>) suggestionAspect.getValue();
             StringBuilder sb = new StringBuilder();
             for (LocalDate d : date) {
                 sb.append(d.toString()).append(";");

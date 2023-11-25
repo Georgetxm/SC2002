@@ -123,7 +123,8 @@ public class ReadWriteCampCSV {
 
             for (Camp camp : campList.values()) {
 
-                HashSet<LocalDate> datesHashSet = (HashSet<LocalDate>) camp.getCampInfo().info()
+                @SuppressWarnings("unchecked")
+				HashSet<LocalDate> datesHashSet = (HashSet<LocalDate>) camp.getCampInfo().info()
                         .get(CampAspect.DATE);
                 String dates = "";
                 for (LocalDate localDate : datesHashSet) {

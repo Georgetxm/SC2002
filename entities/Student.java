@@ -1,7 +1,6 @@
 package entities;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import types.Faculty;
 import types.Perms;
 

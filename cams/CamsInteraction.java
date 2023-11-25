@@ -1,6 +1,4 @@
 package cams;
-import interactions.StaticMenu;
-
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
@@ -10,6 +8,8 @@ import camsAction.doDeleteAttendeeRegistration;
 import camsAction.doDeleteCamp;
 import camsAction.doDeleteEnquiry;
 import camsAction.doDeleteSuggestion;
+import camsAction.doEditCampDetails;
+import camsAction.doEditEnquiry;
 import camsAction.doEditSuggestion;
 import camsAction.doGenerateAttendanceList;
 import camsAction.doGeneratePerformanceReport;
@@ -17,18 +17,16 @@ import camsAction.doNothing;
 import camsAction.doSubmitAttendeeRegistration;
 import camsAction.doSubmitCamp;
 import camsAction.doSubmitCommitteeRegistration;
-import camsAction.doEditCampDetails;
-import camsAction.doEditEnquiry;
 import camsAction.doSubmitEnquiry;
 import camsAction.doSubmitReply;
 import camsAction.doSubmitSuggestion;
 import camsAction.doToggleVisibility;
-import camsAction.queryFilterCampByMenu;
 import camsAction.queryCampsMenu;
 import camsAction.queryEnquriesMenu;
+import camsAction.queryFilterCampByMenu;
 import camsAction.querySuggestionsMenu;
-import interactions.Interaction;
 import interactions.MenuChoice;
+import interactions.StaticMenu;
 import types.Perms;
 /**
  * 

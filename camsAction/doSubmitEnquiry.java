@@ -31,18 +31,20 @@ public final class doSubmitEnquiry extends Interaction {
 		if(campid==null) throw new MissingRequestedDataException("Camp ID wrong");
 		if(control.User().getCampCommitteeOfStudent(currentuser)==campid)
 			System.out.println("You are a committee member of this camp and may not submit an enquiry");
-		System.out.println("Please type your enquiry:");
-		int thisenquiry = control.Enquiry().add(s.nextLine());
-		control.Directory().sync().add(entities.Enquiry.class, thisenquiry);
-		control.Directory().sync().link(Arrays.asList(
-				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
-				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Enquiry.class,thisenquiry)
-		));
-		control.Directory().sync().link(Arrays.asList(
-				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser),
-				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Enquiry.class,thisenquiry)
-		));
-		System.out.println("Your enquiry has been submitted.");
+		else {
+			System.out.println("Please type your enquiry:");
+			int thisenquiry = control.Enquiry().add(s.nextLine());
+			control.Directory().sync().add(entities.Enquiry.class, thisenquiry);
+			control.Directory().sync().link(Arrays.asList(
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Enquiry.class,thisenquiry)
+			));
+			control.Directory().sync().link(Arrays.asList(
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser),
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Enquiry.class,thisenquiry)
+			));
+			System.out.println("Your enquiry has been submitted.");
+		}
 		HashSet<Serializable> usercamps = null;
 		usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
 		next = (usercamps!=null&&usercamps.contains(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);

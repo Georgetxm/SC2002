@@ -23,7 +23,7 @@ public class ReadWriteSuggestionCSV {
             HashSet<LocalDate> date = (HashSet<LocalDate>) suggestionAspect.getValue();
             StringBuilder sb = new StringBuilder();
             for (LocalDate d : date) {
-                sb.append(d.toString()).append("|");
+                sb.append(d.toString()).append(";");
             }
             valueString = sb.toString();
         } else {
@@ -31,16 +31,16 @@ public class ReadWriteSuggestionCSV {
         }
         String aspectString = (chosenaspect != null) ? chosenaspect.toString() : "";
         String fValueString = (!valueString.equals(null)) ? valueString.toString() : "";
-        return aspectString + ";" + fValueString;
+        return aspectString + ":" + fValueString;
     }
 
     private static Entry<CampAspect, ? extends Object> convertCsvRowToAspectEntry(String csvRow) {
-        String[] values = csvRow.split(";");
+        String[] values = csvRow.split(":");
         CampAspect chosenaspect = (CampAspect) CampAspect.valueOf(values[0]);
         switch (chosenaspect) {
             case DATE:
                 HashSet<LocalDate> datelist = new HashSet<LocalDate>();
-                for (String d : values[1].split("|")) {
+                for (String d : values[1].split(";")) {
                     datelist.add(LocalDate.parse(d));
                 }
                 return new SimpleEntry<CampAspect, HashSet<LocalDate>>(CampAspect.DATE, datelist);

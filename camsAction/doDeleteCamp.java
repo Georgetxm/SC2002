@@ -39,6 +39,7 @@ public class doDeleteCamp extends Interaction {
 						Perms.DELETE_CAMP_SUGGESTION
 					));
 				control.User().grantPerms((String)name, EnumSet.of(Perms.REGISTER_AS_COMMITTEE));
+				control.User().setCampCommittee((String)name, -1);
 			}
 		
 		for(Serializable id: control.Directory().sync().with(entities.Camp.class, campid).get(entities.Enquiry.class)) {

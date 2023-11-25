@@ -261,7 +261,7 @@ public final class CamsInteraction{ //Menu choices
 	}
 	
 	public static MenuChoice generateAttendanceList(Integer campid, String userid) {
-		return new MenuChoice(Perms.DEFAULT,"Generate attendance list",GenerateAttendanceList(campid, userid).withcamp(campid));
+		return new MenuChoice(Perms.SUBMIT_CAMP_SUGGESTION,"Generate attendance list",GenerateAttendanceList(campid, userid).withcamp(campid));
 	}
 	
 	public static MenuChoice generateForAttendee(Integer campid) {
@@ -277,7 +277,7 @@ public final class CamsInteraction{ //Menu choices
 	}
 	
 	public static MenuChoice generatePerformanceReport(Integer campid) {
-		return new MenuChoice(Perms.DEFAULT,"Generate performance report", new doGeneratePerformanceReport().withcamp(campid));
+		return new MenuChoice(Perms.APPROVE_CAMP_SUGGESTION,"Generate performance report", new doGeneratePerformanceReport().withcamp(campid));
 	}
 
 	/**

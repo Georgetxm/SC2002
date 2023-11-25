@@ -21,8 +21,8 @@ public class CampController implements CampControlInterface {
 	 * @param userList
 	 * @param campList
 	 */
-	public CampController(
-			HashMap<Integer, Camp> campList) {
+	public CampController() {
+		HashMap<Integer, Camp> campList = new HashMap<Integer, Camp>();
 		this.camps = campList;
 	}
 

@@ -18,8 +18,10 @@ public class ReadWriteEnquiryCSV {
      * 
      * @param userList
      * @param pathName
+     * @return
      */
-    public static final void readEnquiryCSV(HashMap<Integer, Enquiry> enquiryList, String pathName) {
+    public static final HashMap<Integer, Enquiry> readEnquiryCSV(HashMap<Integer, Enquiry> enquiryList,
+            String pathName) {
 
         // Read all files from lists folder
         File folder = new File(pathName);
@@ -53,9 +55,9 @@ public class ReadWriteEnquiryCSV {
                                 replyArrayList.add(reply);
                             }
                             lastEnquiryId = enquiryId;
-
                             Enquiry enquiry = new Enquiry(enquiryId, enquiryBody, seen, creationDate, lastUpdateDate,
                                     replyArrayList);
+
                             enquiryList.put(enquiryId, enquiry);
                         }
                         Enquiry.setNextEnquiryId(lastEnquiryId + 1);
@@ -65,8 +67,10 @@ public class ReadWriteEnquiryCSV {
                 }
             }
         }
+        return enquiryList;
     }
 
+    // test
     /**
      * Write user CSV.
      * Output CSV format: name,email,faculty,password
@@ -76,28 +80,19 @@ public class ReadWriteEnquiryCSV {
      * @return true, if successful
      */
     public static final boolean writeEnquiryCSV(HashMap<Integer, Enquiry> enquiryList, String fileNameWithPath) {
-
-        File file = new File(fileNameWithPath);
         FileWriter writer = null;
         try {
-            writer = new FileWriter(file);
+            writer = new FileWriter(fileNameWithPath);
             // header row
             writer.append("enquiryId,enquiryBody,seen,creationDate,lastUpdateDate,replies\n");
 
             for (Enquiry enquiry : enquiryList.values()) {
-                writer.append(String.valueOf(enquiry.getEnquiryId()))
-                        .append(",")
-                        .append(!enquiry.getEnquiryBody().equals("") ? enquiry.getEnquiryBody() : "")
-                        .append(",")
-                        .append(String.valueOf(enquiry.isSeen()))
-                        .append(",")
-                        .append(enquiry.getCreationDate().toString())
-                        .append(",")
-                        .append(enquiry.getLastUpdateDate() != null ? enquiry.getLastUpdateDate().toString()
-                                : LocalDate.now().toString())
-                        .append(",")
-                        .append(enquiry.getReplies() != null ? String.join(";", enquiry.getReplies()) : "")
-                        .append("\n");
+                writer.append(enquiry.getEnquiryId() + ","
+                        + enquiry.getEnquiryBody() + ","
+                        + enquiry.isSeen() + ","
+                        + enquiry.getCreationDate() + ","
+                        + enquiry.getLastUpdateDate() + ","
+                        + String.join(";", enquiry.getReplies()) + "\n");
             }
             return true;
         } catch (IOException e) {

@@ -19,8 +19,10 @@ public class SuggestionController implements SuggestionControlInterface {
 	 * @param suggestions
 	 * @return
 	 */
-	public SuggestionController(HashMap<Integer, Suggestion> suggestions) {
-		this.suggestions = suggestions;
+	public SuggestionController() {
+		HashMap<Integer, Suggestion> suggestionList = new HashMap<Integer, Suggestion>();
+		ReadWriteSuggestionCSV.readSuggestionCSV(suggestionList, "lists/suggestion_list.csv");
+		this.suggestions = suggestionList;
 	}
 
 	/**

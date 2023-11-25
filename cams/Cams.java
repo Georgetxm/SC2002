@@ -39,24 +39,16 @@ public class Cams {
 	public static void main(String[] args) throws UserInfoMissingException {
 		HashMap<String, User> userlist = new HashMap<String, User>();
 		HashMap<Integer, Camp> camplist = new HashMap<Integer, Camp>();
-		HashMap<Integer, Enquiry> enquiries = new HashMap<Integer, Enquiry>();
-		HashMap<Integer, Suggestion> suggestions = new HashMap<Integer, Suggestion>();
 		// Read CSV files from lists folder
 		ReadWriteUserCSV.readUserCSV(userlist, "lists");
 		ReadWriteCampCSV.readCampCSV(camplist, "lists");
-		ReadWriteEnquiryCSV.readEnquiryCSV(enquiries, "lists");
-		ReadWriteSuggestionCSV.readSuggestionCSV(suggestions, "lists");
-		// ReadWriteCampCSV.writeCampCSV(camplist, "lists/camp_list.csv");
-		// ReadWriteEnquiryCSV.writeEnquiryCSV(enquiries, "lists/enquiry_list.csv");
-		// ReadWriteUserCSV.writeUserCSV(userlist, "lists/staff_list.csv",Role.ATTENDEE);
-		// ReadWriteUserCSV.writeUserCSV(userlist, "lists/staff_list.csv", Role.STAFF);
 
 		Scanner s = new Scanner(System.in);
 		Controller control = Controller.INSTANCE;
-		control.setCamp(new controllers.CampController(camplist));
-		control.setEnquiry(new controllers.EnquiryController(enquiries));
-		control.setSuggestion(new controllers.SuggestionController(suggestions));
-		control.setUser(new controllers.UserController(userlist));
+		control.setCamp(new controllers.CampController());
+		control.setEnquiry(new controllers.EnquiryController());
+		control.setSuggestion(new controllers.SuggestionController());
+		control.setUser(new controllers.UserController());
 		control.setDirectory(new controllers.Lookup().sync());
 		while (true) {
 			String currentuser = Login.getCurrentUser(s, userlist);

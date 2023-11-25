@@ -33,7 +33,7 @@ public class Student extends User {
     private int points;
 
     public Student() {
-        super("Armstrong", "StrongPassword", Faculty.ADM, EnumSet.of(
+        super("Armstrong", "Armstrong Docke", "StrongPassword", Faculty.ADM, EnumSet.of(
                 Perms.DEFAULT,
                 Perms.SUBMIT_CAMP_ENQUIRY,
                 Perms.VIEW_AVAILABLE_CAMP,
@@ -56,8 +56,8 @@ public class Student extends User {
      * @param permissions the Student's permissions, @see Perms
      *
      */
-    public Student(String userId, String password, Faculty faculty) {
-        super(userId, password, Faculty.ADM, EnumSet.of(
+    public Student(String userId, String name, String password, Faculty faculty) {
+        super(userId, name, password, Faculty.ADM, EnumSet.of(
                 Perms.DEFAULT,
                 Perms.SUBMIT_CAMP_ENQUIRY,
                 Perms.VIEW_AVAILABLE_CAMP,

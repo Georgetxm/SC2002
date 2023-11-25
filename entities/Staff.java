@@ -7,7 +7,7 @@ import types.Perms;
 public class Staff extends User {
 
     public Staff() {
-        super("Staffname", "", Faculty.WHOLE_NTU, EnumSet.of(
+        super("staffUserId", "name", "password", Faculty.WHOLE_NTU, EnumSet.of(
                 Perms.DEFAULT,
                 Perms.CREATE_CAMP,
                 Perms.DELETE_CAMP,
@@ -20,8 +20,8 @@ public class Staff extends User {
                 Perms.VIEW_CAMP_STUDENT_INFORMATION));
     }
 
-    public Staff(String userId, String password, Faculty faculty) {
-        super(userId, password, faculty, EnumSet.of(
+    public Staff(String userId, String name, String password, Faculty faculty) {
+        super(userId, name, password, faculty, EnumSet.of(
                 Perms.DEFAULT,
                 Perms.CREATE_CAMP,
                 Perms.DELETE_CAMP,

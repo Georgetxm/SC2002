@@ -1,7 +1,6 @@
 package entities;
 
 import java.util.EnumSet;
-import java.util.HashSet;
 
 import types.Faculty;
 import types.Perms;
@@ -25,6 +24,11 @@ public class User {
      * email e.g. XTEO011
      */
     private String userId;
+
+    /**
+     * name is the name of the User
+     */
+    private String name;
 
     /**
      * password is the password of the User
@@ -60,8 +64,9 @@ public class User {
      * @param faculty
      * @param permission
      */
-    public User(String userId, String password, Faculty faculty, EnumSet<Perms> permission) {
+    public User(String userId, String name, String password, Faculty faculty, EnumSet<Perms> permission) {
         this.userId = userId;
+        this.name = name;
         this.password = password;
         this.faculty = faculty;
         this.permission = permission;
@@ -74,6 +79,15 @@ public class User {
      */
     public String getUserId() {
         return userId;
+    }
+
+    /**
+     * Returns the userId of the User
+     * 
+     * @return the userId of the User
+     */
+    public String getName() {
+        return name;
     }
 
     /**

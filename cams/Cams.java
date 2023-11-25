@@ -38,12 +38,14 @@ public class Cams {
 		// Read CSV files from lists folder
 		ReadWriteUserCSV.readUserCSV(userlist, "lists");
 		ReadWriteCampCSV.readCampCSV(camplist, "lists");
+		ReadWriteEnquiryCSV.readEnquiryCSV(enquiries, "lists");
+		ReadWriteSuggestionCSV.readSuggestionCSV(suggestions, "lists");
 		System.out.println(userlist);
 		Scanner s = new Scanner(System.in);
 		Controller control = Controller.INSTANCE;
 		control.setCamp(new controllers.CampController(camplist));
-		control.setEnquiry(new controllers.EnquiryController());
-		control.setSuggestion(new controllers.SuggestionController());
+		control.setEnquiry(new controllers.EnquiryController(enquiries));
+		control.setSuggestion(new controllers.SuggestionController(suggestions));
 		control.setUser(new controllers.UserController(userlist));
 		control.setDirectory(new controllers.Lookup().sync());
 		while (true) {

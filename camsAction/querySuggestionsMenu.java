@@ -25,7 +25,7 @@ import types.Perms;
  * @since 2021-11-01
  */
 public final class querySuggestionsMenu extends UserMenu {
-	private List<Entry<Integer, Entry<CampAspect, ? extends Object>>> suggestionlist = null;
+	private List<Serializable> suggestionlist = null;
 	/**
 	 * Populates the menu with suggestions for users to choose from.
 	 * <p>
@@ -38,7 +38,6 @@ public final class querySuggestionsMenu extends UserMenu {
 			throws MissingRequestedDataException, UserInfoMissingException {
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's suggestionid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
-		List<Serializable> suggestionlist = null;
 		HashSet<Serializable> suggestionset;
 		if(ownerid!=null) control.Directory().sync().with(entities.User.class, ownerid);
 		if(campid!=null) control.Directory().sync().with(entities.Camp.class, campid);
@@ -77,7 +76,7 @@ public final class querySuggestionsMenu extends UserMenu {
 			campset = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
 			return campset.contains(campid)?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 		};
-		int suggestionid = suggestionlist.get(option).getKey();
+		int suggestionid = (int) suggestionlist.get(option);
 		System.out.println(">>"+choices.get(option).text());
 		try {
 			System.out.println(control.Suggestion().get(suggestionid));

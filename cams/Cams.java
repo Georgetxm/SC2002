@@ -1,24 +1,14 @@
 package cams;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Map.Entry;
-import java.util.AbstractMap.SimpleEntry;
 
 import camsAction.MissingRequestedDataException;
 import controllers.Controller;
 // import controllers.MainController;
 import entities.Camp;
-import entities.Enquiry;
-import entities.Suggestion;
 import entities.User;
 import entities.UserInfoMissingException;
-import types.CampAspect;
-import types.Role;
 
 /**
  * The Java App class that contains main

@@ -1,9 +1,13 @@
 package cams;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Map.Entry;
+import java.util.AbstractMap.SimpleEntry;
 
 import camsAction.MissingRequestedDataException;
 import controllers.Controller;
@@ -13,6 +17,8 @@ import entities.Enquiry;
 import entities.Suggestion;
 import entities.User;
 import entities.UserInfoMissingException;
+import types.CampAspect;
+import types.Role;
 
 /**
  * The Java App class that contains main
@@ -40,7 +46,11 @@ public class Cams {
 		ReadWriteCampCSV.readCampCSV(camplist, "lists");
 		ReadWriteEnquiryCSV.readEnquiryCSV(enquiries, "lists");
 		ReadWriteSuggestionCSV.readSuggestionCSV(suggestions, "lists");
-		System.out.println(userlist);
+		// ReadWriteCampCSV.writeCampCSV(camplist, "lists/camp_list.csv");
+		// ReadWriteEnquiryCSV.writeEnquiryCSV(enquiries, "lists/enquiry_list.csv");
+		// ReadWriteUserCSV.writeUserCSV(userlist, "lists/staff_list.csv",Role.ATTENDEE);
+		// ReadWriteUserCSV.writeUserCSV(userlist, "lists/staff_list.csv", Role.STAFF);
+
 		Scanner s = new Scanner(System.in);
 		Controller control = Controller.INSTANCE;
 		control.setCamp(new controllers.CampController(camplist));

@@ -45,7 +45,17 @@ public final class doGenerateAttendanceList extends Interaction {
 			throws UserInfoMissingException, MissingRequestedDataException {
 		if (campid == null||rolerequested.size()<1)
 			throw new MissingRequestedDataException("Camp is not valid or role requested less than 1");
-
+		
+		HashSet<Serializable> usercamps = new HashSet<Serializable>();
+		usercamps = control.Directory().with(entities.User.class, currentuser).get(entities.Camp.class);
+		next = (usercamps != null && usercamps.contains(campid)) ? CamsInteraction.OwnCampMenu(campid, currentuser)
+				: CamsInteraction.OtherCampMenu(campid, currentuser);
+		if (this.userid != null)
+			next = next.withuser(userid);
+		if (this.filters != null)
+			next = next.withfilter(filters);
+		if(control.User().getClass(currentuser)==entities.Student.class&&control.User().getCampCommitteeOfStudent(currentuser)!=campid)
+			return next.withcamp(campid);
 		// Get everyone, staff, committee or whatever associated with the camp. Is a set
 		// of strings.
 		HashSet<Serializable> everyone = control.Directory().with(entities.Camp.class, campid).get(entities.User.class);
@@ -104,14 +114,7 @@ public final class doGenerateAttendanceList extends Interaction {
 			}
 		}
 
-		HashSet<Serializable> usercamps = new HashSet<Serializable>();
-		usercamps = control.Directory().with(entities.User.class, currentuser).get(entities.Camp.class);
-		next = (usercamps != null && usercamps.contains(campid)) ? CamsInteraction.OwnCampMenu(campid, currentuser)
-				: CamsInteraction.OtherCampMenu(campid, currentuser);
-		if (this.userid != null)
-			next = next.withuser(userid);
-		if (this.filters != null)
-			next = next.withfilter(filters);
+		
 		return next.withcamp(campid);
 	}
 

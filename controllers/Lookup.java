@@ -13,13 +13,39 @@ import java.util.Map.Entry;
 
 import entities.Camp;
 
+/**
+ * A class that implements the functions required for a directory.
+ */
 public class Lookup implements Directory{
+	/**
+	 * Represents a graph of entities. Each entity is a node of the graph.
+	 * <p>
+	 * Each entity can be linked to any other entity, and stores a hashset for each type of entity it can be linked to.
+	 * Entity types are distinguished by their Java class, and the adjacency sets are stored in a HashMap.
+	 * This allows O(1) retrieval of linked elements, if a source is specified.
+	 */
 	private HashMap<Entry<Class<?>,Serializable>,HashMap<Class<?>,HashSet<Serializable>>> network = new HashMap<Entry<Class<?>,Serializable>,HashMap<Class<?>,HashSet<Serializable>>>();
+	/**
+	 * Stores all elements grouped by type. This allows O(1) retrieval of elements of a specific type.
+	 */
 	private HashMap<Class<?>,HashSet<Serializable>> store = new HashMap<Class<?>,HashSet<Serializable>>();
+	/**
+	 * Stores a set of visible camps. The visibility of a camp depends on whether it is part of this set.
+	 */
 	private HashSet<Integer> visible = new HashSet<Integer>();
+	/**
+	 * Stores a set of all entity classes encountered to aid in removal and addition of elements.
+	 */
 	private HashSet<Class<?>> classes = new HashSet<Class<?>>();
-	
+	/**
+	 * Stores entities to serve as filters for the next get operation.
+	 * <p>
+	 * Only elements with links to all these entities will be passed on during get operations. Entities without links to every entity listed here will be filtered out.
+	 */
 	private static HashMap<Class<?>,Object> regularfilters = new HashMap<Class<?>,Object>();
+	/**
+	 * Denotes whether the next get operation will exclude non visible camps.
+	 */
 	private static boolean visibilityfilter;
 	
 	public Lookup with(Class<?> type, Serializable value){regularfilters.put(type, value); return this;}

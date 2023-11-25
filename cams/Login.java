@@ -20,6 +20,7 @@ public final class Login {
 			System.out.println("User ID:");
 			String userid = s.nextLine();
 			System.out.println("Password:");
+			s.nextLine();
 			if(userlist.containsKey(userid)&&userlist.get(userid).getPassword().equals(s.nextLine())) return userid;
 			else System.out.println("Invalid password or id");
 		}

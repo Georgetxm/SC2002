@@ -21,10 +21,8 @@ import types.CampAspect;
  */
 
 public class Suggestion {
-    private final String creatorUserId;
-    private int nextSuggestionId = 0;
+    private static int nextSuggestionId = 0;
     private final int suggestionId;
-    private final int campId;
     private String rationale;
     private Entry<CampAspect, ? extends Object> suggestionAspect;
     private boolean accepted;
@@ -40,16 +38,34 @@ public class Suggestion {
      * @param suggestionAspect
      * @param creationDate
      */
-    public Suggestion(String creatorUserId, int campid, String rationale,
+    public Suggestion(String rationale,
             Entry<CampAspect, ? extends Object> suggestionAspect,
             LocalDate creationDate) {
-        this.creatorUserId = creatorUserId;
         this.suggestionId = nextSuggestionId++;
-        this.campId = campid;
         this.suggestionAspect = suggestionAspect;
         this.accepted = false;
         this.creationDate = creationDate;
         this.lastUpdatedDate = creationDate;
+    }
+
+    /**
+     * Constructor for Suggestion when reading from the suggestion_list.csv
+     * Overloaded to include lastUpdateDate
+     * 
+     * @param creatorUserId
+     * @param campid
+     * @param rationale
+     * @param suggestionAspect
+     * @param creationDate
+     */
+    public Suggestion(int suggestionId, String rationale,
+            Entry<CampAspect, ? extends Object> suggestionAspect, boolean accepted,
+            LocalDate creationDate, LocalDate lastUpdatedDate) {
+        this.suggestionId = suggestionId;
+        this.suggestionAspect = suggestionAspect;
+        this.accepted = accepted;
+        this.creationDate = creationDate;
+        this.lastUpdatedDate = lastUpdatedDate;
     }
 
     /**
@@ -60,17 +76,8 @@ public class Suggestion {
      * 
      * @param nextSuggestionId
      */
-    public void setNextSuggestionId(int nextSuggestionId) {
-        this.nextSuggestionId = nextSuggestionId;
-    }
-
-    /**
-     * Get the next getCreatorUserId of this suggestion
-     * 
-     * @return the getCreatorUserId of this suggestion
-     */
-    public String getCreatorUserId() {
-        return this.creatorUserId;
+    public static void setNextSuggestionId(int nextSuggestionId) {
+        Suggestion.nextSuggestionId = nextSuggestionId;
     }
 
     /**
@@ -80,15 +87,6 @@ public class Suggestion {
      */
     public int getSuggestionId() {
         return this.suggestionId;
-    }
-
-    /**
-     * Get the campId of this suggestion
-     * 
-     * @return the campId of this suggestion
-     */
-    public int getCampId() {
-        return this.campId;
     }
 
     /**
@@ -110,7 +108,7 @@ public class Suggestion {
      */
     public boolean setSuggestionAspect(Entry<CampAspect, ? extends Object> newSuggestionAspect) {
         if (newSuggestionAspect == null) {
-            throw new IllegalArgumentException("Suuggestion aspect cannot be null or empty");
+            throw new IllegalArgumentException("Suggestion aspect cannot be null or empty");
         }
         this.suggestionAspect = newSuggestionAspect;
         return true;

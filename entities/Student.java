@@ -68,6 +68,31 @@ public class Student extends User {
     }
 
     /**
+     * Creates new Student object with the given parameters meant for use when
+     * reading from student_list.csv
+     * 
+     * @param userId      the Student's userId
+     * 
+     * @param password    the Student's password
+     * 
+     * @param faculty     the Student's faculty, @see Faculty
+     * 
+     * @param permissions the Student's permissions, @see Perms
+     *
+     */
+    public Student(String userId, String name, String password, Faculty faculty, int campCommittee, int points) {
+        super(userId, name, password, faculty, EnumSet.of(
+                Perms.DEFAULT,
+                Perms.SUBMIT_CAMP_ENQUIRY,
+                Perms.VIEW_AVAILABLE_CAMP,
+                Perms.REGISTER_AS_ATTENDEE,
+                Perms.REGISTER_AS_COMMITTEE,
+                Perms.WITHDRAW_AS_ATTENDEE));
+        this.campCommittee = campCommittee;
+        this.points = points;
+    }
+
+    /**
      * Returns the Student's points
      * 
      * @return the Student's points
@@ -97,7 +122,8 @@ public class Student extends User {
         this.campCommittee = campId;
         return true;
     }
-    //test
+
+    // test
     /**
      * Increments the Student's points by the given points
      * 

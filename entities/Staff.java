@@ -38,10 +38,10 @@ public class Staff extends User {
      * Creates new Staff object with the given parameters, meant for use when
      * reading from staff_list.csv
      * 
-     * @param userId
-     * @param name
-     * @param password
-     * @param faculty
+     * @param userId   The userId of the Staff
+     * @param name     The name of the Staff
+     * @param password The password of the Staff
+     * @param faculty  The faculty of the Staff
      */
     public Staff(String userId, String name, String password, Faculty faculty) {
         super(userId, name, password, faculty, EnumSet.of(

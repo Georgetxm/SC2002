@@ -59,10 +59,10 @@ public class User {
     /**
      * Constructor for User
      * 
-     * @param userId
-     * @param password
-     * @param faculty
-     * @param permission
+     * @param userId     The userId of the User
+     * @param password   The password of the User
+     * @param faculty    The faculty of the User
+     * @param permission The permission of the User
      */
     public User(String userId, String name, String password, Faculty faculty, EnumSet<Perms> permission) {
         this.userId = userId;

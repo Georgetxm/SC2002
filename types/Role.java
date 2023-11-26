@@ -1,8 +1,14 @@
 package types;
 
 /**
- * The roles a user can take in a camp
+ * Represents the Role ENUM
+ * Used to represent the role of a user in a camp
+ * 
+ * @author Teo Xuan Ming
+ * @version 1.1
+ * @since 2021-11-24
  */
+
 public enum Role {
 	/**
 	 * Refers to an attendee of the camp.<p>
@@ -12,6 +18,7 @@ public enum Role {
 	 */
 	ATTENDEE,
 	/**
+<<<<<<< HEAD
 	 * Refers to a camp commitee member of the camp<p>
 	 * A special relationship between a student and the camp, on top of the attendee relationship.
 	 * Student can only be a camp committee of one camp.

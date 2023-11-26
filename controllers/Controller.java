@@ -5,8 +5,10 @@ package controllers;
  * Holds all the controllers for the program via the interface
  * Inherits from User class
  * 
- * @see UserControlInterface, CampControlInterface, EnquiryControlInterface,
- *      SuggestionControlInterface
+ * @see UserControlInterface
+ * @see CampControlInterface
+ * @see EnquiryControlInterface
+ * @see SuggestionControlInterface
  * @author Teo Xuan Ming
  * @version 1.1
  * @since 2021-11-24

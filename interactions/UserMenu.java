@@ -74,11 +74,11 @@ public abstract class UserMenu extends Interaction {
 			}
 			TLB.put(startcounter, -1);
 			System.out.printf("%d: %s\n", startcounter++, "Back");
-			int selected = -9;
+			selected = -9;
 			while(true){
-				inputs = s.nextLine();
+				String inputs = s.nextLine();
 				try {
-				   selected = Integer.parseInt(input);
+				   selected = Integer.parseInt(inputs);
 				 }catch(NumberFormatException e) {} 
 				if(selected!=-9) break;
 			}

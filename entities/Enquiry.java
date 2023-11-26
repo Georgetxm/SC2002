@@ -17,29 +17,51 @@ import java.util.ArrayList;
  * @since 2021-11-12
  */
 public class Enquiry {
-    private final String creatorUserId;
-    private final int campId;
+    /**
+     * nextEnquiryId ensures uniqueness of next enquiry as it gets added
+     */
     private static int nextEnquiryId = 0;
+
+    /**
+     * enquiryId is the unique id of the enquiry
+     */
     private final int enquiryId;
+
+    /**
+     * enquiryBody is the body of the enquiry
+     */
     private String enquiryBody;
+
+    /**
+     * seen is whether the enquiry has been seen
+     * if seen, the enquiry cannot be edited
+     */
     private boolean seen;
+
+    /**
+     * creationDate is the date that the enquiry was created
+     */
     private final LocalDate creationDate;
+    /**
+     * lastUpdateDate is the date that the enquiry was last updated
+     */
     private LocalDate lastUpdateDate;
+
+    /**
+     * replies is the list of replies to the enquiry
+     */
     private ArrayList<String> replies;
 
     /**
+     * 
      * Constructor for Enquiry
      * 
-     * @param creatorUserId
-     * @param campId
-     * @param enquiryBody
-     * @param seen
-     * @param creationDate
+     * @param enquiryBody the body of the enquiry
+     * @param seen      whether the enquiry has been seen
+     * @param creationDate the date that the enquiry was created
      */
-    public Enquiry(String creatorUserId, int campId, String enquiryBody, boolean seen,
+    public Enquiry(String enquiryBody, boolean seen,
             LocalDate creationDate) {
-        this.campId = campId;
-        this.creatorUserId = creatorUserId;
         this.enquiryId = nextEnquiryId++;
         this.enquiryBody = enquiryBody;
         this.seen = seen;
@@ -49,24 +71,37 @@ public class Enquiry {
     }
 
     /**
+     * 
+     * Constructor for Enquiry when reading from the enquiry.csv
+     * Overloaded to include lastUpdateDate and replies
+     * 
+     * @param enquiryId the enquiryId to be assigned to the new enquiry
+     * @param enquiryBody the body of the enquiry
+     * @param seen     whether the enquiry has been seen
+     * @param creationDate the date that the enquiry was created
+     * @param lastUpdateDate the date that the enquiry was last updated
+     * @param replies the list of replies to the enquiry
+     */
+    public Enquiry(int enquiryId, String enquiryBody, boolean seen,
+            LocalDate creationDate, LocalDate lastUpdateDate, ArrayList<String> replies) {
+        this.enquiryId = enquiryId;
+        this.enquiryBody = enquiryBody;
+        this.seen = seen;
+        this.creationDate = creationDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.replies = replies;
+    }
+
+    /**
      * When reading from the enquiries.csv, the enquiryId is already included
      * get the next enquiryId from the csv file
      * this ensures that the next enquiryId is always greater than the previous
      * and previous enquiryId will not be overwritten
      * 
-     * @param nextSuggestionId
+     * @param nextEnquiryId the next enquiryId to be assigned to a new enquiry
      */
-    public void setNextSuggestionId(int nextSuggestionId) {
-        Enquiry.nextEnquiryId = nextSuggestionId;
-    }
-
-    /**
-     * Get the userId of the creator of this enquiry
-     * 
-     * @return the userId of the creator of this enquiry
-     */
-    public String getCreatorUserId() {
-        return this.creatorUserId;
+    public static void setNextEnquiryId(int nextEnquiryId) {
+        Enquiry.nextEnquiryId = nextEnquiryId;
     }
 
     /**
@@ -90,7 +125,7 @@ public class Enquiry {
     /**
      * Set the enquiryBody of this enquiry
      * 
-     * @param newEnquiryBody
+     * @param newEnquiryBody the new enquiryBody to be set
      * @return true if the enquiryBody is successfully set, false otherwise
      */
     public boolean setEnquiryBody(String newEnquiryBody) {
@@ -114,7 +149,7 @@ public class Enquiry {
     /**
      * Set the seen attribute of this enquiry
      * 
-     * @param seen
+     * @param seen the new seen attribute to be set
      * @return true if the seen attribute is successfully set, false otherwise
      */
     public boolean setSeen(boolean seen) {
@@ -143,21 +178,12 @@ public class Enquiry {
     /**
      * Set the lastUpdateDate of this enquiry
      * 
-     * @param lastestDate
+     * @param lastestDate the new lastUpdateDate to be set
      * @return true if the lastUpdateDate is successfully set, false otherwise
      */
     public boolean updateLastUpdateDate(LocalDate lastestDate) {
         this.lastUpdateDate = lastestDate;
         return true;
-    }
-
-    /**
-     * Get the campId of this enquiry
-     * 
-     * @return the campId of this enquiry
-     */
-    public int getCampId() {
-        return this.campId;
     }
 
     /**
@@ -172,7 +198,7 @@ public class Enquiry {
     /**
      * Add a reply to this enquiry
      * 
-     * @param reply
+     * @param reply the reply to be added
      * @return true if the reply is successfully added, false otherwise
      */
     public boolean addReply(String reply) {
@@ -186,8 +212,8 @@ public class Enquiry {
     /**
      * Remove a reply from this enquiry
      * 
-     * @param reply
-     * @return
+     * @param reply the reply to be removed
+     * @return true if the reply is successfully removed, false otherwise
      */
     public boolean removeReply(String reply) {
         if (reply == null || reply.isEmpty()) {

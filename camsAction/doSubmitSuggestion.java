@@ -1,16 +1,16 @@
 package camsAction;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
 
 import cams.CamsInteraction;
-import controllers.CampController;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.SuggestionController;
-import controllers.UserController;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import types.CampAspect;
@@ -26,7 +26,7 @@ public final class doSubmitSuggestion extends Interaction {
 	 * Requests the controller to save a suggestion by the current user on a given camp to the database.
 	 * Then increments the points of the suggester by 1.
 	 * Asks the controller if the camp is full or the user has already joined before requesting.
-	 *@return true if controller accepts the request(s) and false if otherwise, or the camp is full, or the user is already registered
+	 *@return the appropriate single camp menu with camp, user, and filter tags
 	 *@throws MissingRequestedDataException if the camp to be registered for cannot be found
 	 *@throws UserInfoMissingException if the user id of the current user cannot be found
 	 */@Override
@@ -34,17 +34,17 @@ public final class doSubmitSuggestion extends Interaction {
 			throws UserInfoMissingException, MissingRequestedDataException {
 		if(campid==null) throw new MissingRequestedDataException("Camp not found");
 		Entry<CampAspect, ? extends Object> edited = null;
-		if (campid != ((UserController) control).getCampCommitteeOfStudent(currentuser))
+		if (campid != control.User().getCampCommitteeOfStudent(currentuser))
 			System.out.println("Not a committee member of this camp");
 		else {
 			// Asks campcontrol for the camp info and pulls out the info
-			TreeMap<CampAspect, ? extends Object> info = ((CampController) control).getCampDetails(campid).info();
+			TreeMap<CampAspect, ? extends Object> info = control.Camp().details(campid).info();
 			int choice = 0;
 			while (true) {
 				System.out.println("What would you like to amend:");
 				int counter = 1;
 				for (CampAspect aspect : info.keySet())// For each aspect, print aspect
-					System.out.printf("%d: %s\n", counter, GetData.FromObject(info.get(aspect)));
+					System.out.printf("%d: %s\n", counter++, GetData.FromObject(info.get(aspect)));
 				choice = s.nextInt(); // user chooses an aspect, see if choice is valid
 				if (choice < 1 || choice > info.keySet().size()) {
 					System.out.println("Invalid option");
@@ -78,26 +78,26 @@ public final class doSubmitSuggestion extends Interaction {
 			System.out.println("Please type your rationale:");
 			reason = s.nextLine();
 			try {
-				((SuggestionController) control).addSuggestion(edited, reason, currentuser, campid);
+				int thissuggestion = control.Suggestion().add(edited, reason);
+				control.Directory().add(entities.Suggestion.class, thissuggestion);
+				control.Directory().sync().link(Arrays.asList(
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser),
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Suggestion.class,thissuggestion)
+				));
 			} catch (ControllerItemMissingException e) {
 				throw new MissingRequestedDataException("Camp id is invalid");
 			}
 			System.out.println("Your suggestion has been submitted.");
-			((UserController) control).incrementPoints(currentuser, 1);
+			control.User().incrementPoints(currentuser, 1);
 			System.out.println("Your points have been incremented");
 		}
-		HashMap<Integer, String> usercamps = null;
-		try {
-			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
-		} catch (ControllerItemMissingException e) {
-			throw new UserInfoMissingException("User id not valid");
-		}
-		next = (usercamps!=null&&usercamps.containsKey(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+		HashSet<Serializable> usercamps = null;
+		usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
+		next = (usercamps!=null&&usercamps.contains(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 		if(this.userid!=null) next = next.withuser(userid);
-		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);
-		if(this.ownerid!=null) next = next.withowner(this.ownerid);
-		return next;
+		return next.withcamp(campid);
 	}
 
 }

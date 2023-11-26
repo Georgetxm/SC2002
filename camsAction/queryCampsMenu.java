@@ -1,17 +1,18 @@
 package camsAction;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.Set;
 
 import cams.CamsInteraction;
-import controllers.CampController;
-import controllers.UserController;
 import controllers.Controller;
-import controllers.ControllerItemMissingException;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import interactions.MenuChoice;
@@ -28,51 +29,64 @@ import types.Perms;
  * @since 2021-11-01
  */
 public class queryCampsMenu extends UserMenu {
+	/**
+	 * Represents the list of camps shown to the viewer.
+	 * <p>
+	 * This is listed as an attribute as it is populated by populate() but needs to be accessed by run.
+	 */
 	private List<Entry<Integer, String>> camplist = null;
 	/**
-	 *Represents a menu displaying various camps for the user to choose, and an option to filter that list.
+	 *Populates the menu choices with camps for the user to choose, and an option to filter that list.
 	 *<p>
 	 *If the user had previously selected to view only the camps linked to them, it will be filtered to reflect that.
-	 *If the user does not have the view all camps perms, only visible camps belonging to his faculty will be shown.
-	 *@return true if all controller requests succeed
-	 *@throws MissingRequestedDataException if the ViewingOwnCamps tag is malformed.
-	 *@throws UserInfoMissingException if the user or their perms cannot be identified.
+	 *If the user does not have the view all camps perms, only visible camps belonging to his faculty or whole NTU will be shown.
+	 *If the user had previously set some filters, the camps will be filtered to reflect that
 	 */
 	@Override
-	protected final void populate(String currentuser, Scanner s, Controller control) throws UserInfoMissingException{
-		Faculty userfaculty = ((UserController) control).getUserFaculty(currentuser);
-		EnumSet<Perms> userperm= ((UserController) control).grantPerms(currentuser,EnumSet.noneOf(Perms.class));
-		
+	protected final void populate(String currentuser, Scanner s, Controller control){
+		Faculty userfaculty = control.User().getUserFaculty(currentuser);
+		EnumSet<Perms> userperm= control.User().grantPerms(currentuser,EnumSet.noneOf(Perms.class));
+		HashSet<Serializable> usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		options.add(CamsInteraction.filterCampBy);
 		if(userid!=null) {
-			((CampController) control).FilterUser(userid);
-			System.out.println("administered user filter");
+			control.Directory().sync().with(entities.User.class,userid);
 		}
-		if(filters!=null) {
-			List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
-			for(Entry<CampAspect, ? extends Object> filter:filterlist)
-				((CampController) control).FilterAspect(filter);
+		Set<Serializable> viewingset=new HashSet<Serializable>();
+		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) {
+			control.Directory().sync().withvisibility();
 		}
-		if(!userperm.contains(Perms.VIEW_EVERY_CAMP)) //filter should return Controller. This may lead to issues.
-			((CampController) control).filterVisible().FilterAspect(new HashMap.SimpleEntry<CampAspect, Object>(CampAspect.USERGROUP,userfaculty));
-		HashMap<Integer, String> campset = null;
-		try {
-			campset = ((CampController) control).getCamps();
-		} catch (ControllerItemMissingException e) {
-			System.out.println("Cannot find user or invalid filter");
+		
+		viewingset = new HashSet<Serializable>(control.Directory().sync().get(entities.Camp.class));
+		for (Iterator<Serializable> it = viewingset.iterator(); it.hasNext();) {
+		    Serializable element = it.next();
+		    Faculty campfaculty = (Faculty) control.Camp().details((int) element).info().get(CampAspect.USERGROUP);
+		    if(
+		    	!userperm.contains(Perms.VIEW_EVERY_CAMP)&&
+		    	campfaculty!=userfaculty&&campfaculty!=Faculty.WHOLE_NTU	
+		    ) {
+		    	it.remove();break;
+		    }
+		    else if(filters!=null) {
+		    	List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
+		    	for(Entry<CampAspect, ? extends Object> filter:filterlist)
+		    		if(!control.Camp().details((int) element).info().get(filter.getKey()).equals(filter.getValue())){
+		    		it.remove();
+		    		System.out.println(filter);
+		    		break;
+		    	}
+		    }
+		    	
 		}
+		HashMap<Integer,String> campset = new HashMap<Integer,String>();
+		for(Serializable id: viewingset)
+			campset.put((Integer)id, (String) control.Camp().details((int) id).info().get(CampAspect.NAME));
 		if(campset!=null) {
 			camplist = new ArrayList<Entry<Integer, String>>(campset.entrySet());
 			for(Entry<Integer, String> entry:camplist) {
-				try {
-					campset = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
-				} catch (ControllerItemMissingException e) {
-					throw new UserInfoMissingException("Cannot find user information");
-				}
 				options.add(
 					new MenuChoice(Perms.DEFAULT, entry.getValue(), 
-						(campset!=null&&campset.keySet().contains(entry.getKey()))?
+						(usercamps!=null&&usercamps.contains(entry.getKey()))?
 							CamsInteraction.OwnCampMenu(entry.getKey(),currentuser).withcamp(entry.getKey()):
 							CamsInteraction.OtherCampMenu(entry.getKey(),currentuser).withcamp(entry.getKey())
 				));
@@ -81,6 +95,12 @@ public class queryCampsMenu extends UserMenu {
 		choices = options;
 	}
 
+	/**
+	 *Gives users the choices.
+	 *@return The appropriate single camp menu with camp, user and filter tags if a camp is chosen, or
+	 *query camp menu without filters, i.e. only preserving the user tag if the user previously added filters but pressed back, or
+	 *start menu if the user did not previously add filters but pressed back.
+	 */
 	@Override
 	public
 	final Interaction run(String currentuser, Scanner s, Controller control)
@@ -93,7 +113,8 @@ public class queryCampsMenu extends UserMenu {
 			if(this.userid!=null) next = next.withuser(userid);
 		}
 		else if(this.filters!=null) {
-			next = new queryCampsMenu();
+			this.filters.clear();
+			next = new queryCampsMenu().withfilter(filters);
 			if(this.userid!=null) next=next.withuser(userid);
 		}
 		else next = CamsInteraction.startmenu(currentuser);

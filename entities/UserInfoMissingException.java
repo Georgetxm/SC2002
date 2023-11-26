@@ -10,6 +10,11 @@ package entities;
  */
 
 public class UserInfoMissingException extends Exception {
+	/**
+	 * Constructor for UserInfoMissingException
+	 * 
+	 * @param info The error message
+	 */
 	public UserInfoMissingException(String info) {
 		super(info);
 	}

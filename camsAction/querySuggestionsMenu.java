@@ -1,19 +1,15 @@
 package camsAction;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
-
-import cams.CamsInteraction;
-
 import java.util.Scanner;
 
-import controllers.CampController;
+import cams.CamsInteraction;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.ControllerParamsException;
-import controllers.SuggestionController;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 import interactions.MenuChoice;
@@ -29,14 +25,17 @@ import types.Perms;
  * @since 2021-11-01
  */
 public final class querySuggestionsMenu extends UserMenu {
-	private List<Entry<Integer, Entry<CampAspect, ? extends Object>>> suggestionlist = null;
 	/**
-	 * Represents a menu of the user's own suggestions for them to choose from.
+	 * Represents the list of suggestions shown to the viewer.
+	 * <p>
+	 * This is listed as an attribute as it is populated by populate() but needs to be accessed by run.
+	 */
+	private List<Serializable> suggestionlist = null;
+	/**
+	 * Populates the menu with suggestions for users to choose from.
 	 * <p>
 	 * These suggestions can either be of one camp or across camps depending on whether the user has selected a camp beforehand.
-	 * @return true if all requests succeed, false if otherwise
-	 * @throws entities.UserInfoMissingException if the current usrid cannot be found
-	 * @throws MissingRequestedDataException if the user cannot have suggestions, or the suggestion selected has an invalid id
+	 * These suggestions can be the user's own or any depending on whether the user has elected to see their own only
 	 */
 
 	@Override
@@ -44,54 +43,63 @@ public final class querySuggestionsMenu extends UserMenu {
 			throws MissingRequestedDataException, UserInfoMissingException {
 		List<MenuChoice> options = new ArrayList<MenuChoice>();
 		//Gets the dictionary of a user's suggestionid:suggestion, and makes it into a list. Except cos its Java, so there's a fuckton of casting.
-		List<Entry<Integer, Entry<CampAspect, ? extends Object>>> suggestionlist = null;
-		HashMap<Integer,Entry<CampAspect,? extends Object>> suggestionset;
-		if(ownerid!=null) ((SuggestionController) control).FilterUser(this.ownerid);
-		if(campid!=null) ((SuggestionController) control).FilterCamp(this.campid);
-		try {
-			suggestionset = ((SuggestionController)control).getSuggestions();
-		} catch (ControllerParamsException | ControllerItemMissingException e) {
-			throw new MissingRequestedDataException("User info does not tally with one that has suggestions");
-		}
+		HashSet<Serializable> suggestionset;
+		if(ownerid!=null) control.Directory().sync().with(entities.User.class, ownerid);
+		if(campid!=null) control.Directory().sync().with(entities.Camp.class, campid);
+		suggestionset = control.Directory().sync().get(entities.Suggestion.class);
 		//Populates the MenuChoices with DefaultPerms, the suggestion text, and SingleSuggestionMenu
 		if(suggestionset!=null) {
-			suggestionlist = new ArrayList<>(suggestionset.entrySet());
-			for(Entry<Integer, Entry<CampAspect, ? extends Object>> entry : suggestionlist)
+			suggestionlist = new ArrayList<Serializable>(suggestionset);
+			for(Serializable entryid : suggestionlist) {
+				Entry<Entry<CampAspect, ? extends Object>, String> entry = null;
+				try {
+					entry = control.Suggestion().get((int) entryid);
+				} catch (ControllerItemMissingException e) {
+					throw new MissingRequestedDataException("Enquiry selected is invalid");
+				}
 				options.add(new MenuChoice(Perms.DEFAULT, 
-						entry.getValue().getKey().name()+":\n"+GetData.FromObject(entry.getValue().getValue()),
-						CamsInteraction.SingleSuggestionMenu(entry.getKey())));
+						entry.getKey().getKey().name()+":\n"+GetData.FromObject(entry.getKey().getValue()),
+						CamsInteraction.SingleSuggestionMenu((int) entryid).withsuggestion((int) entryid)));
+			}
+				
 		}
 		choices = options;
 	}
 
+	/**
+	 * Gives users choices. If users pick a suggestion that is not theirs, finalise it.
+	 *@return return single suggestion menu if a suggestion is selected, start menu if no camp has been previously selected, and the appropriate single camp menu with camp, user, filter tags if one has
+	 */
 	@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
 		populate(currentuser, s, control);
 		int option = givechoices(currentuser, s, control);
 		if(option<0){
-			if(this.campid==null) return CamsInteraction.startmenu(currentuser);
-			HashMap<Integer, String> campset = null;
-			try {
-				campset = ((CampController) ((CampController) control).FilterUser(userid)).getCamps();
-			} catch (ControllerItemMissingException e) {
-				throw new UserInfoMissingException("Cannot find user information");
+			if(this.campid==null) next = CamsInteraction.startmenu(currentuser);
+			else {
+				HashSet<Serializable> campset = null;
+				campset = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
+				next= campset.contains(campid)?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 			}
-			return campset.keySet().contains(campid)?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
-		};
-		int suggestionid = suggestionlist.get(option).getKey();
-		System.out.println(">>"+choices.get(option).text());
-		try {
-			System.out.println(((SuggestionController) control).getSuggestion(suggestionid).getValue());
-			((SuggestionController) control).finaliseSuggestion(suggestionid);
-		} catch (ControllerItemMissingException e) {
-			throw new MissingRequestedDataException("Suggestion is invalid");
+		}
+		else {
+			int suggestionid = (int) suggestionlist.get(option);
+			next = choices.get(option).action().withsuggestion(suggestionid);
+			System.out.println(">>"+choices.get(option).text());
+			try {
+				System.out.println(control.Suggestion().get(suggestionid));
+				if(!control.Directory().with(entities.User.class, currentuser).get(entities.Suggestion.class).contains(suggestionid))
+				control.Suggestion().finalise(suggestionid);
+			} catch (ControllerItemMissingException e) {
+				throw new MissingRequestedDataException("Suggestion is invalid");
+			}
 		}
 		if(userid!=null) next = next.withuser(userid);
 		if(campid!=null) next = next.withcamp(campid);
 		if(filters!=null) next = next.withfilter(filters);
 		if(this.ownerid!=null) next = next.withowner(this.ownerid);
-		return next.withsuggestion(suggestionid);
+		return next;
 	}
 
 }

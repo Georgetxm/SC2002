@@ -1,50 +1,167 @@
 package controllers;
 
+import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map.Entry;
 
+import cams.ReadWriteCampCSV;
+import entities.Camp;
 import entities.CampInfo;
 import types.CampAspect;
-import types.Role;
 
-public interface CampController extends Controller {
-	public int addCamp(CampInfo info, String ownerid);
+/**
+ * Represents the CampController class
+ * Holds a list of Camp objects
+ * Holds all methods to interface with the Camp object
+ * Created and held by the Controller ENUM
+ * 
+ * @author Teo Xuan Ming
+ * @version 1.1
+ * @since 2021-11-24
+ */
+public class CampController implements CampControlInterface {
 
-	public boolean joinCamp(int campid, String userid, Role role);
+	/**
+	 * The list of Camp objects
+	 */
+	private HashMap<Integer, Camp> camps;
 
-	public boolean addEnquiry(int campid, int enquiryid);
+	/**
+	 * Constructor for CampController
+	 * 
+	 * @param campList the list of Camp objects
+	 */
+	public CampController(HashMap<Integer, Camp> campList) {
+		this.camps = campList;
+	}
 
-	public boolean addSuggestion(int campid, int suggestionid);
+	/**
+	 * Returns a Camp object given its ID
+	 * 
+	 * @param campId the Camp's ID
+	 * 
+	 * @return the Camp object with the given ID, null if not found
+	 */
 
-	public boolean deleteCamp(int campid);
+	public Camp findCampById(int campId) {
+		if (camps.containsKey(campId)) {
+			return camps.get(campId);
+		}
+		return null;
+	}
 
-	public boolean removeAttendeeFromCamp(int campid, String userid);
+	/**
+	 * Overriden method from CampControlInterface
+	 * Create a new Camp Object based on the given CampInfo object
+	 * Adds the Camp object to the camps ArrayList
+	 * Writes the camps ArrayList to the camp_list.csv file
+	 * 
+	 * @param info the CampInfo object containing the Camp's information, @See
+	 *             CampInfo record class for more details
+	 * 
+	 * @return the Camp's ID
+	 */
+	@Override
+	public int add(CampInfo info) {
+		Camp camp = new Camp(info, LocalDate.now());
 
-	public Boolean deleteEnquiry(int campid,int enquiryid);
+		camps.put((Integer) camp.getCampid(), camp);
+		ReadWriteCampCSV.writeCampCSV(camps, "lists/camp_list.csv");
 
-	public boolean deleteSuggestion(int campid, int suggestionid);
+		return camp.getCampid();
+	}
 
-	public CampController filterVisible();
+	/**
+	 * Overriden method from CampControlInterface
+	 * Deletes a Camp object from the camps ArrayList
+	 * Writes the the new camps ArrayList to the camp_list.csv file
+	 * 
+	 * @param campid the Camp's ID
+	 * 
+	 * @return true if the Camp is successfully deleted, false otherwise
+	 */
+	@Override
+	public boolean delete(int campid) {
+		Camp camp = findCampById(campid);
+		if (!(camp == null)) {
+			camps.remove(camp.getCampid(), camp);
+			ReadWriteCampCSV.writeCampCSV(camps, "lists/camp_list.csv");
+			return true;
+		}
+		return false;
+	}
 
-	public boolean toggleCampVisiblity(int campid); // true = visible, false = not visible
+	/**
+	 * Overriden method from CampControlInterface
+	 * Returns a CampInfo record object which contains information of the given its
+	 * ID
+	 * Check CampAspects.java for the list of attributes in CampInfo
+	 * 
+	 * @param campId the Camp's ID
+	 * 
+	 * @return the CampInfo object with the given ID, null if not found
+	 */
+	@Override
+	public CampInfo details(int campId) {
+		Camp camp = findCampById(campId);
+		if (!(camp == null)) {
+			return camp.getCampInfo();
+		}
+		return null;
+	}
 
-	public HashMap<Integer, String> getCamps() throws ControllerItemMissingException;
+	/**
+	 * Overriden method from CampControlInterface
+	 * Edit a single attribute of a Camp object
+	 * Writes the the new camps ArrayList to the camp_list.csv file
+	 * 
+	 * @param campid the Camp's ID
+	 * @param detail the attribute to be edited
+	 * @return true if the attribute is successfully edited, false otherwise
+	 */
 
-	public CampInfo getCampDetails(int campid);
+	@Override
+	public boolean editDetails(int campid, Entry<CampAspect, ? extends Object> detail) {
+		Camp camp = findCampById(campid);
+		if (!(camp == null)) {
+			camp.getCampInfo().info().replace(detail.getKey(), detail.getValue());
+			ReadWriteCampCSV.writeCampCSV(camps, "lists/camp_list.csv");
+			return true;
+		}
+		return false;
+	}
 
-	public HashMap<String, Role> getCampStudentList(int campid);
+	/**
+	 * Overriden method from CampControlInterface
+	 * Checks if the Camp's attendee is full by comparing the Camp's attendee count
+	 * to the Camp's attendee limit specified in the CampInfo object
+	 * 
+	 * @param campid the Camp's ID
+	 * @return true if the Camp's attendee is full, false otherwise
+	 */
+	@Override
+	public boolean isAttendeeFull(int campid) {
+		Camp camp = findCampById(campid);
+		if (!(camp == null)) {
+			return (camp.getAttendeeCount() >= camp.getCampInfo().info().get(CampAspect.SLOTS).hashCode());
+		}
+		return false;
+	}
 
-	public HashSet<String> getCampAttendees(int campid);
+	/**
+	 * Overriden method from CampControlInterface
+	 * Checks if the Camp's committee is full
+	 * 
+	 * @param campid the Camp's ID
+	 * @return true if the Camp's committee is full, false otherwise
+	 */
+	@Override
+	public boolean isCommitteeFull(int campid) {
+		Camp camp = findCampById(campid);
+		if (!(camp == null)) {
+			return (camp.getCommitteeCount() >= camp.getCampInfo().info().get(CampAspect.COMMITTEESLOTS).hashCode());
+		}
+		return false;
+	}
 
-	public HashSet<String> getCampComittees(int campid);
-
-	public boolean editCampDetails(int campid, Entry<CampAspect, ? extends Object> detail);
-
-	public boolean isAttendeeFull(int campid);
-
-	public boolean isCommiteeFull(int campid);
-
-	public Controller FilterUser(String userid);
-	public Controller FilterAspect(Entry<CampAspect,? extends Object> filter);
 }

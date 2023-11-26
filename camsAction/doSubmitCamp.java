@@ -1,5 +1,7 @@
 package camsAction;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -7,7 +9,6 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import cams.CamsInteraction;
-import controllers.CampController;
 import controllers.Controller;
 import entities.CampInfo;
 import entities.UserInfoMissingException;
@@ -24,13 +25,13 @@ public class doSubmitCamp extends Interaction {
 	/**
 	 * Requests the controller to create and save a camp based off user submitted details.
 	 * Queries the user for details before submitting the request.
-	 *@return true if controller accepts the request(s) and false if otherwise.
+	 *@return start menu
 	 *@throws UserInfoMissingException if the user id cannot be found.
 	 */
 	@Override
 	public final Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
-		((CampController)control).addCamp(new CampInfo(new TreeMap<>(Map.ofEntries(
+		int thiscamp = control.Camp().add(new CampInfo(new TreeMap<>(Map.ofEntries(
 				(Entry<CampAspect, ? extends Object>) ParseInput.CampName(s),
 				(Entry<CampAspect, ? extends Object>) ParseInput.CampDate(s),
 				(Entry<CampAspect, ? extends Object>) ParseInput.CampRegisterDate(s),
@@ -40,7 +41,12 @@ public class doSubmitCamp extends Interaction {
 				(Entry<CampAspect, ? extends Object>) new HashMap.SimpleEntry<CampAspect,Integer>(CampAspect.COMMITTEESLOTS,10),
 				(Entry<CampAspect, ? extends Object>) ParseInput.CampDescription(s),
 				new HashMap.SimpleEntry<CampAspect, Object>(CampAspect.STAFFIC,currentuser)
-		))),currentuser);
+		))));
+		control.Directory().sync().add(entities.Camp.class, thiscamp);
+		control.Directory().sync().link(Arrays.asList(
+				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,thiscamp),
+				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser)
+		));
 		System.out.println("Camp has been created.");
 		return CamsInteraction.startmenu(currentuser);
 	}

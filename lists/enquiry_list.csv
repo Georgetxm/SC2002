@@ -1,0 +1,4 @@
+enquiryId,enquiryBody,seen,creationDate,lastUpdateDate,replies
+1,testEnquiry,true,2019-01-01,2019-01-01,reply1;reply2;reply3
+2,What is love baby don't hurt me,true,2019-01-01,2019-01-01,rick;astley;martin;garrix
+3,TEST,false,2023-11-25,2023-11-25,reas

@@ -21,35 +21,83 @@ import types.CampAspect;
  */
 
 public class Suggestion {
-    private final String creatorUserId;
-    private int nextSuggestionId = 0;
+    /**
+     * nextSuggestionId ensures uniqueness of next suggestion as it gets added
+     */
+    private static int nextSuggestionId = 0;
+
+    /**
+     * suggestionId is the unique id of the suggestion
+     */
     private final int suggestionId;
-    private final int campId;
+
+    /**
+     * rationale is the reason for the suggestion
+     */
     private String rationale;
+
+    /**
+     * suggestionAspect is the aspect of the camp that the suggestion is for
+     * 
+     * @see CampAspect
+     */
     private Entry<CampAspect, ? extends Object> suggestionAspect;
+
+    /**
+     * accepted is whether the suggestion has been accepted
+     * if accepted, the suggestion cannot be edited
+     */
     private boolean accepted;
+
+    /**
+     * creationDate is the date that the suggestion was created
+     */
     private final LocalDate creationDate;
+
+    /**
+     * lastUpdateDate is the date that the suggestion was last updated
+     */
     private LocalDate lastUpdatedDate;
 
     /**
      * Constructor for Suggestion
      * 
-     * @param creatorUserId
-     * @param campid
-     * @param rationale
-     * @param suggestionAspect
-     * @param creationDate
+     * @param rationale        the reason for the suggestion
+     * @param suggestionAspect the aspect of the camp that the suggestion is for
+     * @param creationDate     the date that the suggestion was created
      */
-    public Suggestion(String creatorUserId, int campid, String rationale,
+    public Suggestion(String rationale,
             Entry<CampAspect, ? extends Object> suggestionAspect,
             LocalDate creationDate) {
-        this.creatorUserId = creatorUserId;
         this.suggestionId = nextSuggestionId++;
-        this.campId = campid;
+        this.rationale = rationale;
         this.suggestionAspect = suggestionAspect;
         this.accepted = false;
         this.creationDate = creationDate;
         this.lastUpdatedDate = creationDate;
+    }
+
+    /**
+     * 
+     * Constructor for Suggestion when reading from the suggestion_list.csv
+     * Overloaded to include lastUpdateDate
+     * 
+     * @param suggestionId     the suggestionId to be assigned to the new suggestion
+     * @param rationale        the reason for the suggestion
+     * @param suggestionAspect the aspect of the camp that the suggestion is for
+     * @param accepted         whether the suggestion has been accepted
+     * @param creationDate     the date that the suggestion was created
+     * @param lastUpdatedDate  the date that the suggestion was last updated
+     */
+    public Suggestion(int suggestionId, String rationale,
+            Entry<CampAspect, ? extends Object> suggestionAspect, boolean accepted,
+            LocalDate creationDate, LocalDate lastUpdatedDate) {
+        this.suggestionId = suggestionId;
+        this.rationale = rationale;
+        this.suggestionAspect = suggestionAspect;
+        this.accepted = accepted;
+        this.creationDate = creationDate;
+        this.lastUpdatedDate = lastUpdatedDate;
     }
 
     /**
@@ -58,19 +106,11 @@ public class Suggestion {
      * this ensures that the next suggestionId is always greater than the previous
      * and previous suggestionId will not be overwritten
      * 
-     * @param nextSuggestionId
+     * @param nextSuggestionId the next suggestionId to be assigned to a new
+     *                         suggestion
      */
-    public void setNextSuggestionId(int nextSuggestionId) {
-        this.nextSuggestionId = nextSuggestionId;
-    }
-
-    /**
-     * Get the next getCreatorUserId of this suggestion
-     * 
-     * @return the getCreatorUserId of this suggestion
-     */
-    public String getCreatorUserId() {
-        return this.creatorUserId;
+    public static void setNextSuggestionId(int nextSuggestionId) {
+        Suggestion.nextSuggestionId = nextSuggestionId;
     }
 
     /**
@@ -80,15 +120,6 @@ public class Suggestion {
      */
     public int getSuggestionId() {
         return this.suggestionId;
-    }
-
-    /**
-     * Get the campId of this suggestion
-     * 
-     * @return the campId of this suggestion
-     */
-    public int getCampId() {
-        return this.campId;
     }
 
     /**
@@ -105,12 +136,12 @@ public class Suggestion {
      * Set the suggestionAspect of this suggestion. Each suggestion corresponds only
      * to one aspect of the camp
      * 
-     * @param newSuggestionAspect
-     * @return
+     * @param newSuggestionAspect the new suggestionAspect to be set
+     * @return true if suggestionAspect is successfully set, false otherwise
      */
     public boolean setSuggestionAspect(Entry<CampAspect, ? extends Object> newSuggestionAspect) {
         if (newSuggestionAspect == null) {
-            throw new IllegalArgumentException("Suuggestion aspect cannot be null or empty");
+            throw new IllegalArgumentException("Suggestion aspect cannot be null or empty");
         }
         this.suggestionAspect = newSuggestionAspect;
         return true;
@@ -128,7 +159,7 @@ public class Suggestion {
     /**
      * Set the rationale of this suggestion
      * 
-     * @param newRationale
+     * @param newRationale the new rationale to be set
      * @return true if rationale is successfully set, false otherwise
      */
     public boolean setRationale(String newRationale) {
@@ -151,7 +182,7 @@ public class Suggestion {
     /**
      * Set the accepted status of this suggestion
      * 
-     * @param accepted
+     * @param accepted the new accepted status to be set
      * @return true if accepted status is successfully set, false otherwise
      */
     public boolean setAccepted(boolean accepted) {
@@ -180,7 +211,7 @@ public class Suggestion {
     /**
      * Set the lastUpdatedDate of this suggestion
      * 
-     * @param lastUpdatedDate
+     * @param lastUpdatedDate the new lastUpdatedDate to be set
      * @return true if lastUpdatedDate is successfully set, false otherwise
      */
     public boolean setLastUpdatedDate(LocalDate lastUpdatedDate) {

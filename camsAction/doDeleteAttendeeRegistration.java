@@ -1,13 +1,13 @@
 package camsAction;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampController;
 import controllers.Controller;
-import controllers.ControllerItemMissingException;
-import controllers.UserController;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
@@ -20,7 +20,7 @@ import interactions.Interaction;
 public class doDeleteAttendeeRegistration extends Interaction {
 	/**
 	 * Requests the controller to remove a bidirectional link between the current user and a camp specified.
-	 * Does not check if such a link already exists
+	 * Before delinking, checks if the user is in the camp as an attendee, else returns immediately.
 	 *@return true if controller accepts the request(s)
 	 *@throws MissingRequestedDataException if camp specified cannot be found.
 	 *@throws UserInfoMissingException if the current user's ID cannot be found
@@ -30,22 +30,21 @@ public class doDeleteAttendeeRegistration extends Interaction {
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws MissingRequestedDataException, UserInfoMissingException {
 		if(campid==null) throw new MissingRequestedDataException("Camp not found");
-		HashMap<Integer, String> campset = null;
-		try {
-			campset = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
-		} catch (ControllerItemMissingException e) {
-			throw new UserInfoMissingException("User invalid");
-		}
-		if(campset!=null&&campset.keySet().contains(campid)) {
+		//Get list of camps user is in
+		HashSet<Serializable> campset = control.Directory().sync().with(entities.User.class,currentuser).get(entities.Camp.class);
+		if(campset!=null&&!campset.contains(campid)) { //If user's camps does not contain this camp
 			System.out.println("You cannot withdraw from a camp you are not in");
 			return CamsInteraction.OtherCampMenu(campid,currentuser);
 		}
-		else if(((UserController) control).getCampCommitteeOfStudent(currentuser)==campid) {
+		else if(control.User().getCampCommitteeOfStudent(currentuser)==campid) { //if user is camp committee of this camp
 			System.out.println("Cannot withdraw from camp as a camp committee member");
 			next = CamsInteraction.OwnCampMenu(campid,currentuser);
 		}
 		else{
-			((CampController)control).removeAttendeeFromCamp(campid, currentuser);
+			control.Directory().sync().delink(Arrays.asList(
+				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
+				new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser)
+			));
 			System.out.println("Withdrawn Successfully");
 			next = CamsInteraction.OtherCampMenu(campid,currentuser);
 		}

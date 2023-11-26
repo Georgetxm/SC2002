@@ -3,6 +3,7 @@ package cams;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -26,13 +27,13 @@ import types.Location;
 public class ReadWriteCampCSV {
     /**
      * Read camp_list CSV.
-     * Expected CSV format: campId,campName,campDate,
-     * campRegistrationDeadline,campFaculty,campLocation,campSlots,
-     * campCommitteeSlots,campDescription,staffIC,attendees,committee,
-     * visibility,creationDate,enquiries,suggestions
+     * Expected CSV format:
+     * campId, campName, campDates, registrationDeadline, faculty, location, slots,
+     * committeeSlots, description, staffIC, createDate, attendeeCount,
+     * committeeCount
      * 
-     * @param userList
-     * @param pathName
+     * @param campList the camp list
+     * @param pathName the path name e.g. /lists
      */
     public static final void readCampCSV(HashMap<Integer, Camp> campList, String pathName) {
 
@@ -50,7 +51,7 @@ public class ReadWriteCampCSV {
                         && file.getName().startsWith("camp")) {
                     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                         String line = br.readLine(); // Skip header line
-
+                        int lastCampId = 0;
                         while ((line = br.readLine()) != null) {
                             String[] values = line.split(",");
                             // Will not use, generate new campId when creating
@@ -73,38 +74,9 @@ public class ReadWriteCampCSV {
                             int campCommitteeSlots = Integer.parseInt(values[7]);
                             String campDescription = values[8];
                             String staffIC = values[9];
-
-                            // Get attendees as HashSet<String> of userIds
-                            HashSet<String> attendees = new HashSet<String>();
-                            String[] attendeeStrings = values[10].split(";");
-                            for (String attendeeId : attendeeStrings) {
-                                attendees.add(attendeeId);
-                            }
-
-                            // Get committee as HashSet<String> of userIds
-                            HashSet<String> committee = new HashSet<String>();
-                            String[] commiteeStrings = values[11].split(";");
-                            for (String committeeId : commiteeStrings) {
-                                committee.add(committeeId);
-                            }
-
-                            boolean visibility = Boolean.parseBoolean(values[12]);
-                            LocalDate creationDate = LocalDate.parse(values[13]);
-
-                            // Get enquiries as HashSet<Integer> of enquiryIds
-                            HashSet<Integer> enquiries = new HashSet<Integer>();
-                            String[] enquiriesString = values[14].split(";");
-                            for (String enquiriyId : enquiriesString) {
-                                enquiries.add(Integer.parseInt(enquiriyId));
-                            }
-
-                            // Get suggestions as HashSet<Integer> of suggestionIds
-                            HashSet<Integer> suggestions = new HashSet<Integer>();
-                            String[] suggestionsString = values[15].split(";");
-                            for (String suggestionId : suggestionsString) {
-                                suggestions.add(Integer.parseInt(suggestionId));
-                            }
-
+                            LocalDate creationDate = LocalDate.parse(values[10]);
+                            int attendeeCount = Integer.parseInt(values[11]);
+                            int committeeCount = Integer.parseInt(values[12]);
                             // Create CampInfo and Camp Object
                             TreeMap<CampAspect, Object> campInfoObj = new TreeMap<CampAspect, Object>();
                             campInfoObj.put(CampAspect.NAME, campName);
@@ -117,10 +89,12 @@ public class ReadWriteCampCSV {
                             campInfoObj.put(CampAspect.DESCRIPTION, campDescription);
                             campInfoObj.put(CampAspect.STAFFIC, staffIC);
                             CampInfo campInfo = new CampInfo(campInfoObj);
-                            Camp camp = new Camp(campInfo, attendees, committee, visibility, creationDate, enquiries,
-                                    suggestions);
+                            Camp camp = new Camp(campId, campInfo, creationDate, attendeeCount,
+                                    committeeCount);
                             campList.put(camp.getCampid(), camp);
+                            lastCampId = campId;
                         }
+                        Camp.setNextCampId(lastCampId + 1);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -129,4 +103,73 @@ public class ReadWriteCampCSV {
         }
     }
 
+    /**
+     * Write user CSV.
+     * Output CSV format: name,email,faculty,password
+     * 
+     * @param campList         the user list
+     * @param fileNameWithPath e.g. /lists/staff_list.csv
+     * @return true, if successful
+     */
+    public static final boolean writeCampCSV(HashMap<Integer, Camp> campList, String fileNameWithPath) {
+        File file = new File(fileNameWithPath);
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(file);
+            // header row
+            writer.append(
+                    "campId,campName,campDates,registrationDeadline,faculty,location,slots,committeeSlots,description,staffIC,visibility,createDate,attendeeCount,committeeCount\n");
+
+            for (Camp camp : campList.values()) {
+
+                @SuppressWarnings("unchecked")
+                HashSet<LocalDate> datesHashSet = (HashSet<LocalDate>) camp.getCampInfo().info()
+                        .get(CampAspect.DATE);
+                String dates = "";
+                for (LocalDate localDate : datesHashSet) {
+                    dates += localDate.toString() + ";";
+                }
+                writer.append(String.valueOf(camp.getCampid()));
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.NAME).toString());
+                writer.append(",");
+                writer.append(dates);
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.REGISTRATION_DEADLINE).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.USERGROUP).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.LOCATION).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.SLOTS).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.COMMITTEESLOTS).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.DESCRIPTION).toString());
+                writer.append(",");
+                writer.append(camp.getCampInfo().info().get(CampAspect.STAFFIC).toString());
+                // writer.append(",");
+                // writer.append(String.valueOf(camp.getVisibility()));
+                writer.append(",");
+                writer.append(camp.getCreationDate().toString());
+                writer.append(",");
+                writer.append(String.valueOf(camp.getAttendeeCount()));
+                writer.append(",");
+                writer.append(String.valueOf(camp.getCommitteeCount()));
+                writer.append("\n");
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // flush and close writer
+                writer.flush();
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 }

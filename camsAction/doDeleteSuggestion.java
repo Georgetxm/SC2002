@@ -1,11 +1,12 @@
 package camsAction;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.SuggestionController;
-import controllers.UserController;
 import interactions.Interaction;
 
 /**
@@ -22,8 +23,7 @@ public final class doDeleteSuggestion extends Interaction {
 	 * Ask the controller if a suggestion may be edited before requesting the
 	 * deletion.
 	 * 
-	 * @return true if controller accepts the request(s) and false if otherwise, or
-	 *         the suggestion cannot be deleted
+	 * @return query suggestions menu with campid, userid, ownerid and filters preserved
 	 * @throws MissingRequestedDataException  if suggestion to be deleted cannot be
 	 *                                        found.
 	 */@Override
@@ -31,11 +31,14 @@ public final class doDeleteSuggestion extends Interaction {
 			throws MissingRequestedDataException {
 		if(suggestionid==null) throw new MissingRequestedDataException("Invalid suggestion id");
 		try {
-			if (!((SuggestionController) control).isSuggestionEditable(suggestionid)) 
+			if (!control.Suggestion().isEditable(suggestionid)) 
 				System.out.println("This suggestion is finalised and can no longer be edited or deleted");
 			else{
-				((UserController) control).incrementPoints(((SuggestionController) control).getSuggestionOwner(suggestionid), -1);
-				((SuggestionController) control).deleteSuggestion(suggestionid);
+				HashSet<Serializable> owners = control.Directory().sync().with(entities.Suggestion.class, suggestionid).get(entities.User.class);
+				String owner = (String) new ArrayList<Serializable>(owners).get(0);
+				control.User().incrementPoints(owner, -1);
+				control.Suggestion().delete(suggestionid);
+				control.Directory().sync().remove(entities.Suggestion.class, suggestionid);
 				System.out.println("Suggestion deleted. Points deducted accordingly");
 			}
 		} catch (ControllerItemMissingException e) {

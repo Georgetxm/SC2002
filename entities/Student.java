@@ -1,7 +1,6 @@
 package entities;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import types.Faculty;
 import types.Perms;
 
@@ -15,7 +14,7 @@ import types.Perms;
  *      A Student can create enquiries and suggestions
  *      A Student can have points for giving suggestions and having it approved
  * @author Teo Xuan Ming
- * @version 1.0
+ * @version 1.1
  * @since 2021-11-06
  */
 public class Student extends User {
@@ -33,19 +32,10 @@ public class Student extends User {
     private int points;
 
     /**
-     * Enquiries that the Student has created
-     * enquiries is an HashMap of form campId, enquiryId
+     * Default constructor for Student
      */
-    private HashMap<Integer, Integer> enquiries;
-
-    /**
-     * Suggestions that the Student has created
-     * suggestions is an HashMap of form campId, suggestionId
-     */
-    private HashMap<Integer, Integer> suggestions;
-
     public Student() {
-        super("Armstrong", "StrongPassword", Faculty.ADM, EnumSet.of(
+        super("Armstrong", "Armstrong Docke", "StrongPassword", Faculty.ADM, EnumSet.of(
                 Perms.DEFAULT,
                 Perms.SUBMIT_CAMP_ENQUIRY,
                 Perms.VIEW_AVAILABLE_CAMP,
@@ -54,24 +44,18 @@ public class Student extends User {
                 Perms.WITHDRAW_AS_ATTENDEE));
         this.campCommittee = -1;
         this.points = 0;
-        this.enquiries = new HashMap<Integer, Integer>();
-        this.suggestions = new HashMap<Integer, Integer>();
     }
 
     /**
      * Creates new Student object with the given parameters
      * 
-     * @param userId      the Student's userId
-     * 
-     * @param password    the Student's password
-     * 
-     * @param faculty     the Student's faculty, @see Faculty
-     * 
-     * @param permissions the Student's permissions, @see Perms
-     *
+     * @param userId   The userId of the Student
+     * @param name     The name of the Student
+     * @param password The password of the Student
+     * @param faculty  The faculty of the Student
      */
-    public Student(String userId, String password, Faculty faculty) {
-        super(userId, password, Faculty.ADM, EnumSet.of(
+    public Student(String userId, String name, String password, Faculty faculty) {
+        super(userId, name, password, faculty, EnumSet.of(
                 Perms.DEFAULT,
                 Perms.SUBMIT_CAMP_ENQUIRY,
                 Perms.VIEW_AVAILABLE_CAMP,
@@ -80,8 +64,31 @@ public class Student extends User {
                 Perms.WITHDRAW_AS_ATTENDEE));
         this.campCommittee = -1;
         this.points = 0;
-        this.enquiries = new HashMap<Integer, Integer>();
-        this.suggestions = new HashMap<Integer, Integer>();
+    }
+
+    /**
+     * 
+     * Creates new Student object with the given parameters meant for use when
+     * reading from student_list.csv
+     * 
+     * @param userId        The userId of the Student
+     * @param name          The name of the Student
+     * @param password      The password of the Student
+     * @param faculty       The faculty of the Student
+     * @param campCommittee The campId of the camp that the Student is a committee
+     *                      of
+     * @param points        The number of points the Student has
+     */
+    public Student(String userId, String name, String password, Faculty faculty, int campCommittee, int points) {
+        super(userId, name, password, faculty, EnumSet.of(
+                Perms.DEFAULT,
+                Perms.SUBMIT_CAMP_ENQUIRY,
+                Perms.VIEW_AVAILABLE_CAMP,
+                Perms.REGISTER_AS_ATTENDEE,
+                Perms.REGISTER_AS_COMMITTEE,
+                Perms.WITHDRAW_AS_ATTENDEE));
+        this.campCommittee = campCommittee;
+        this.points = points;
     }
 
     /**
@@ -115,6 +122,7 @@ public class Student extends User {
         return true;
     }
 
+    // test
     /**
      * Increments the Student's points by the given points
      * 
@@ -124,74 +132,6 @@ public class Student extends User {
      */
     public boolean incrementPoints(int points) {
         this.points += points;
-        return true;
-    }
-
-    /**
-     * Returns the list of enquiries this student has created in the form of
-     * HashMap of form campId, enquiryId
-     * 
-     * @return the list of enquiries this student has created
-     */
-    public HashMap<Integer, Integer> getEnquiries() {
-        return this.enquiries;
-    }
-
-    /**
-     * Adds an enquiryId to the Student's list of enquiries
-     * 
-     * @param enquiryId the enquiryId to be added
-     * 
-     * @return true if the enquiryId is successfully added, false otherwise
-     */
-    public boolean addEnquiry(int campid, int enquiryid) {
-        this.enquiries.put(campid, enquiryid);
-        return true;
-    }
-
-    /**
-     * Removes an enquiryId from the Student's list of enquiries
-     * 
-     * @param enquiryId the enquiryId to be removed
-     * 
-     * @return true if the enquiryId is successfully removed, false otherwise
-     */
-    public boolean removeEnquiry(int campid, int enquiryId) {
-        this.enquiries.remove(campid, enquiryId);
-        return true;
-    }
-
-    /**
-     * Returns the list of suggestions this student has created in the form of
-     * HashMap of form campId, suggestionId
-     * 
-     * @return the list of suggestions this student has created
-     */
-    public HashMap<Integer, Integer> getSuggestions() {
-        return this.suggestions;
-    }
-
-    /**
-     * Adds a suggestionId to the Student's list of suggestions
-     * 
-     * @param suggestionId the suggestionId to be added
-     * 
-     * @return true if the suggestionId is successfully added, false otherwise
-     */
-    public boolean addSuggestion(int campid, int suggestionid) {
-        this.suggestions.put(campid, suggestionid);
-        return true;
-    }
-
-    /**
-     * Removes a suggestionId from the Student's list of suggestions
-     * 
-     * @param suggestionId the suggestionId to be removed
-     * 
-     * @return true if the suggestionId is successfully removed, false otherwise
-     */
-    public boolean removeSuggestion(int campid, int suggestionId) {
-        this.suggestions.remove(campid, suggestionId);
         return true;
     }
 }

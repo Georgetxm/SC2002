@@ -1,13 +1,13 @@
 package camsAction;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampController;
 import controllers.Controller;
-import controllers.ControllerItemMissingException;
-import controllers.EnquiryController;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
@@ -21,7 +21,7 @@ public final class doSubmitEnquiry extends Interaction {
 	/**
 	 * Prompts the user for an enquiry and requests the controller to save it.
 	 * Controller is expected to make the relevant bidirectional links with the host camp, the user etc.
-	 *@return true if controller accepts the request(s) and false if otherwise.
+	 *@return the appropriate single camp menu with user, camp, filter tags
 	 *@throws MissingRequestedDataException if the camp the enquiry is part of cannot be found
 	 *@throws UserInfoMissingException if the user id of the current user cannot be found
 	 */
@@ -29,20 +29,28 @@ public final class doSubmitEnquiry extends Interaction {
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
 		if(campid==null) throw new MissingRequestedDataException("Camp ID wrong");
-		System.out.println("Please type your enquiry:");
-		((EnquiryController)control).addEnquiry(s.nextLine(),currentuser,campid);
-		System.out.println("Your enquiry has been submitted.");
-		HashMap<Integer, String> usercamps = null;
-		try {
-			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
-		} catch (ControllerItemMissingException e) {
-			throw new UserInfoMissingException("User id not valid");
+		if(control.User().getCampCommitteeOfStudent(currentuser)==campid)
+			System.out.println("You are a committee member of this camp and may not submit an enquiry");
+		else {
+			System.out.println("Please type your enquiry:");
+			int thisenquiry = control.Enquiry().add(s.nextLine());
+			control.Directory().sync().add(entities.Enquiry.class, thisenquiry);
+			control.Directory().sync().link(Arrays.asList(
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Camp.class,campid),
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Enquiry.class,thisenquiry)
+			));
+			control.Directory().sync().link(Arrays.asList(
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.User.class,currentuser),
+					new HashMap.SimpleEntry<Class<?>,Serializable>(entities.Enquiry.class,thisenquiry)
+			));
+			System.out.println("Your enquiry has been submitted.");
 		}
-		next = (usercamps!=null&&usercamps.containsKey(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+		HashSet<Serializable> usercamps = null;
+		usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
+		next = (usercamps!=null&&usercamps.contains(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 		if(this.userid!=null) next = next.withuser(userid);
 		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);
-		if(this.ownerid!=null) next = next.withowner(this.ownerid);
 		return next;
 	}
 

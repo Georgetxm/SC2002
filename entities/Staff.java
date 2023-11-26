@@ -4,10 +4,24 @@ import java.util.EnumSet;
 import types.Faculty;
 import types.Perms;
 
+/**
+ * Represents a Staff object
+ * Inherits from User class
+ * 
+ * @see User
+ *      A Staff can have multiple camps as a STAFFIC @see CampAspect, CampInfo
+ *      A Staff can create, edit, delete camps
+ *      A Staff can approve suggestions to the camp they are a STAFFIC of
+ * @author Teo Xuan Ming
+ * @version 1.1
+ * @since 2021-11-06
+ */
 public class Staff extends User {
-
+    /**
+     * Default constructor for Staff
+     */
     public Staff() {
-        super("Staffname", "", Faculty.WHOLE_NTU, EnumSet.of(
+        super("staffUserId", "name", "password", Faculty.WHOLE_NTU, EnumSet.of(
                 Perms.DEFAULT,
                 Perms.CREATE_CAMP,
                 Perms.DELETE_CAMP,
@@ -20,8 +34,17 @@ public class Staff extends User {
                 Perms.VIEW_CAMP_STUDENT_INFORMATION));
     }
 
-    public Staff(String userId, String password, Faculty faculty) {
-        super(userId, password, faculty, EnumSet.of(
+    /**
+     * Creates new Staff object with the given parameters, meant for use when
+     * reading from staff_list.csv
+     * 
+     * @param userId   The userId of the Staff
+     * @param name     The name of the Staff
+     * @param password The password of the Staff
+     * @param faculty  The faculty of the Staff
+     */
+    public Staff(String userId, String name, String password, Faculty faculty) {
+        super(userId, name, password, faculty, EnumSet.of(
                 Perms.DEFAULT,
                 Perms.CREATE_CAMP,
                 Perms.DELETE_CAMP,
@@ -33,18 +56,4 @@ public class Staff extends User {
                 Perms.VIEW_EVERY_CAMP,
                 Perms.VIEW_CAMP_STUDENT_INFORMATION));
     }
-
-    // public HashMap<Integer, String> getCampInCharge() {
-    // return this.campInCharge;
-    // }
-
-    // public boolean addCampInCharge(Integer campid, String name) {
-    // try {
-    // this.campInCharge.put(campid, name);
-    // } catch (Exception e) {
-    // System.out.println("Error adding camp in charge: " + e.getMessage());
-    // return false;
-    // }
-    // return true;
-    // }
 }

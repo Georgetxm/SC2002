@@ -1,12 +1,12 @@
 package camsAction;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
-import controllers.CampController;
 import controllers.Controller;
 import controllers.ControllerItemMissingException;
-import controllers.SuggestionController;
-import controllers.UserController;
 import interactions.Interaction;
 
 /**
@@ -24,7 +24,7 @@ public final class doApproveSuggestion extends Interaction {
 	 * Requests the controller to delete the suggestion, as it has already been
 	 * approved.
 	 * 
-	 * @return true if controller accepts the request(s)
+	 * @return query suggestion menu with camp id, filters and user id preserved
 	 * @throws MissingRequestedDataException  if camp to be edited cannot be found
 	 * @throws MissingRequestedDataException  if suggestion to be implemented cannot
 	 *                                        be found
@@ -36,24 +36,29 @@ public final class doApproveSuggestion extends Interaction {
 			throws MissingRequestedDataException {
 		
 		if(suggestionid==null) throw new MissingRequestedDataException("Missing suggestionid");
-		
-		String ownerid;
 		try {
-			ownerid = ((SuggestionController) control).getSuggestionOwner(suggestionid);
-			((CampController) control).editCampDetails(((SuggestionController) control).getHostCamp(suggestionid),
-			((SuggestionController) control).getSuggestion(suggestionid).getKey());
-			((UserController) control).incrementPoints(ownerid, 1);
-			((SuggestionController) control).deleteSuggestion(suggestionid);
+			//Get owner of suggestion
+			HashSet<Serializable> owners = control.Directory().sync().with(entities.Suggestion.class,suggestionid).get(entities.User.class);
+			String ownerid = (String) (new ArrayList<Serializable>(owners)).get(0);
+			//Get host camp of suggestion
+			HashSet<Serializable> hosts = control.Directory().sync().with(entities.Suggestion.class,suggestionid).get(entities.Camp.class);
+			int hostcamp = (Integer) (new ArrayList<Serializable>(hosts)).get(0);
+			//Pull the suggestion out from control.Suggestion, and request edit details using campid and suggestion body
+			control.Camp().editDetails(hostcamp, control.Suggestion().get(suggestionid).getKey());
+			//Increment the points of the user
+			control.User().incrementPoints(ownerid, 1);
+			//Remove the past suggestion from both the storage and directory
+			control.Suggestion().delete(suggestionid);
+			control.Directory().sync().remove(entities.Suggestion.class, suggestionid);
 		} catch (ControllerItemMissingException e) {
-			throw new MissingRequestedDataException("Suggestion ccannot be found");
+			throw new MissingRequestedDataException("Suggestion cannot be found");
 		}
 		System.out.println("Suggestion Approved");
 		next = new querySuggestionsMenu();
 		if(userid!=null) next = next.withuser(userid);
 		if(campid!=null) next = next.withcamp(campid);
 		if(filters!=null) next = next.withfilter(filters);
-		if(this.ownerid!=null) next = next.withowner(this.ownerid);
-		return next.withsuggestion(suggestionid);
+		return next;
 	}
 
 }

@@ -1,13 +1,11 @@
 package camsAction;
 
-import java.util.HashMap;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import cams.CamsInteraction;
-import controllers.CampController;
 import controllers.Controller;
-import controllers.ControllerItemMissingException;
-import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
  * Interaction that represents the action of changing the visibility of a camp to a value other than its original value.
@@ -19,25 +17,18 @@ import interactions.Interaction;
 public final class doToggleVisibility extends Interaction {
 	/**
 	 * Requests the controller to modify a camp's visibility between visible and not visible.
-	 *@return true if controller accepts the request(s) and false if otherwise.
-	 * @throws UserInfoMissingException 
-	 *@throws MissingRequestedDataException if the camp to be made visible or not visible cannot be found.
+	 *@return the appropriate single camp menu with user, filter and camp tags
 	 */
 @Override
-	public Interaction run(String currentuser, Scanner s, Controller control) throws UserInfoMissingException{
+	public Interaction run(String currentuser, Scanner s, Controller control){
 		System.out.println("Camp visibility changed. Camp is now:");
-		System.out.println(((CampController) control).toggleCampVisiblity(campid)?"Visible":"Not Visible");
-		HashMap<Integer, String> usercamps = null;
-		try {
-			usercamps = ((CampController) ((CampController) control).FilterUser(currentuser)).getCamps();
-		} catch (ControllerItemMissingException e) {
-			throw new UserInfoMissingException("User id not valid");
-		}
-		next = (usercamps!=null&&usercamps.containsKey(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
+		System.out.println(control.Directory().togglevisibility(campid)?"Visible":"Not Visible");
+		HashSet<Serializable> usercamps = null;
+		usercamps = control.Directory().sync().with(entities.User.class, currentuser).get(entities.Camp.class);
+		next = (usercamps!=null&&usercamps.contains(campid))?CamsInteraction.OwnCampMenu(campid, currentuser):CamsInteraction.OtherCampMenu(campid,currentuser);
 		if(this.userid!=null) next = next.withuser(userid);
-		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);
-		return next;
+		return next.withcamp(campid);
 	}
 
 }

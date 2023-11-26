@@ -1,7 +1,6 @@
 package entities;
 
 import java.util.EnumSet;
-import java.util.HashSet;
 
 import types.Faculty;
 import types.Perms;
@@ -15,7 +14,7 @@ import types.Perms;
  * permissions
  * 
  * @author Teo Xuan Ming
- * @version 1.0
+ * @version 1.1
  * @since 2021-11-12
  */
 
@@ -25,6 +24,11 @@ public class User {
      * email e.g. XTEO011
      */
     private String userId;
+
+    /**
+     * name is the name of the User
+     */
+    private String name;
 
     /**
      * password is the password of the User
@@ -43,35 +47,30 @@ public class User {
     private EnumSet<Perms> permission;
 
     /**
-     * camps is a HashSet of campIds that the Student is registered as an attendee
-     */
-    private HashSet<Integer> camps;
-
-    /**
      * Default constructor for User
      */
     public User() {
         this.userId = "Name";
         this.password = "";
         this.faculty = Faculty.WHOLE_NTU;
-        this.camps = new HashSet<Integer>();
         this.permission = EnumSet.noneOf(Perms.class);
     }
 
     /**
      * Constructor for User
      * 
-     * @param userId
-     * @param password
-     * @param faculty
-     * @param permission
+     * @param userId     The userId of the User
+     * @param name       The name of the User
+     * @param password   The password of the User
+     * @param faculty    The faculty of the User
+     * @param permission The permission of the User
      */
-    public User(String userId, String password, Faculty faculty, EnumSet<Perms> permission) {
+    public User(String userId, String name, String password, Faculty faculty, EnumSet<Perms> permission) {
         this.userId = userId;
+        this.name = name;
         this.password = password;
         this.faculty = faculty;
         this.permission = permission;
-        this.camps = new HashSet<Integer>();
     }
 
     /**
@@ -81,6 +80,15 @@ public class User {
      */
     public String getUserId() {
         return userId;
+    }
+
+    /**
+     * Returns the userId of the User
+     * 
+     * @return the userId of the User
+     */
+    public String getName() {
+        return name;
     }
 
     /**
@@ -113,7 +121,7 @@ public class User {
     /**
      * Returns true if the User has been given the new permission(s)
      * 
-     * @param newPerms
+     * @param newPerms The new permission(s) to be given to the User
      * @return true if the User has been given the new permission(s)
      */
     public boolean addPerms(EnumSet<Perms> newPerms) {
@@ -124,7 +132,7 @@ public class User {
     /**
      * Returns true if the User permission(s) attribute has been replaced with the
      * 
-     * @param newPerms
+     * @param newPerms The new permission(s) to be replaced with
      * @return true if the User permission(s) attribute has been replaced with the
      */
     public boolean replacePerms(EnumSet<Perms> newPerms) {
@@ -135,7 +143,7 @@ public class User {
     /**
      * Returns true if the specified permission(s) has been removed from the User
      * 
-     * @param newPerms
+     * @param newPerms The permission(s) to be removed from the User
      * @return true if the specified permission(s) has been removed from the User
      */
     public boolean removePerms(EnumSet<Perms> newPerms) {
@@ -146,43 +154,9 @@ public class User {
     /**
      * Returns true if the User has the specified permission(s)
      * 
-     * @param newPassword
-     * @return true if the User has the specified permission(s)
+     * @param newPassword The permission(s) to be checked
      */
     public void changePassword(String newPassword) {
         this.password = newPassword;
-    }
-
-    /**
-     * Returns the list of Student's camps
-     * 
-     * @return the list of Student's camps
-     */
-    public HashSet<Integer> getCamps() {
-        return this.camps;
-    }
-
-    /**
-     * Adds a campId to the Student's camps HashSet as an attendee
-     * 
-     * @param campId the campId to be added
-     * 
-     * @return true if the campId is successfully added, false otherwise
-     */
-    public boolean registerForCamp(Integer campId) {
-        this.camps.add(campId);
-        return true;
-    }
-
-    /**
-     * Removes a campId from the Student's camps HashSet as an attendee
-     * 
-     * @param campid the campId to be removed
-     * 
-     * @return true if the campId is successfully removed, false otherwise
-     */
-    public boolean withdrawFromCamp(int campid) {
-        this.camps.remove(campid);
-        return true;
     }
 }

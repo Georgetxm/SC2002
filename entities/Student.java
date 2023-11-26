@@ -97,7 +97,7 @@ public class Student extends User {
         this.campCommittee = campId;
         return true;
     }
-
+    //test
     /**
      * Increments the Student's points by the given points
      * 

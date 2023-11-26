@@ -74,8 +74,14 @@ public abstract class UserMenu extends Interaction {
 			}
 			TLB.put(startcounter, -1);
 			System.out.printf("%d: %s\n", startcounter++, "Back");
-			selected = s.nextInt();
-			s.nextLine();
+			int selected = -9;
+			while(true){
+				inputs = s.nextLine();
+				try {
+				   selected = Integer.parseInt(input);
+				 }catch(NumberFormatException e) {} 
+				if(selected!=-9) break;
+			}
 			if (TLB.keySet().contains(selected))
 				return TLB.get(selected);
 		}

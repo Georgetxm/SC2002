@@ -53,6 +53,7 @@ public class queryCampsMenu extends UserMenu {
 		}
 		
 		viewingset = new HashSet<Serializable>(control.Directory().sync().get(entities.Camp.class));
+		System.out.println(viewingset);
 		for (Iterator<Serializable> it = viewingset.iterator(); it.hasNext();) {
 		    Serializable element = it.next();
 		    Faculty campfaculty = (Faculty) control.Camp().details((int) element).info().get(CampAspect.USERGROUP);
@@ -65,8 +66,9 @@ public class queryCampsMenu extends UserMenu {
 		    else if(filters!=null) {
 		    	List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
 		    	for(Entry<CampAspect, ? extends Object> filter:filterlist)
-		    		if(control.Camp().details((int) element).info().get(filter.getKey()).equals(filter.getValue())){
+		    		if(!control.Camp().details((int) element).info().get(filter.getKey()).equals(filter.getValue())){
 		    		it.remove();
+		    		System.out.println(filter);
 		    		break;
 		    	}
 		    }
@@ -107,7 +109,8 @@ public class queryCampsMenu extends UserMenu {
 			if(this.userid!=null) next = next.withuser(userid);
 		}
 		else if(this.filters!=null) {
-			next = new queryCampsMenu();
+			this.filters.clear();
+			next = new queryCampsMenu().withfilter(filters);
 			if(this.userid!=null) next=next.withuser(userid);
 		}
 		else next = CamsInteraction.startmenu(currentuser);

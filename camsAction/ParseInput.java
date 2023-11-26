@@ -169,6 +169,6 @@ final class ParseInput {
 	static final Entry<CampAspect,String>CampStaffIC(Scanner s){
 		System.out.println("Type staff name");
 		String userid=s.nextLine();
-		return new HashMap.SimpleEntry<CampAspect,String>(CampAspect.DESCRIPTION,userid);
+		return new HashMap.SimpleEntry<CampAspect,String>(CampAspect.STAFFIC,userid);
 	}
 }

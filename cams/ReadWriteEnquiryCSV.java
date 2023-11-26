@@ -11,13 +11,22 @@ import java.util.HashMap;
 
 import entities.Enquiry;
 
+/**
+ * The Class that contains function to read and write
+ * the "enquiry_list" CSV file.
+ * 
+ * @author Teo Xuan Ming
+ * @version 1.0
+ * @since 2021-11-20
+ */
 public class ReadWriteEnquiryCSV {
     /**
-     * Read user CSV.
-     * Expected CSV format: name,email,faculty,password
+     * Read Enquiry CSV.
+     * Expected CSV format: enquiryId, enquiryBody, seen, creationDate,
+     * lastUpdateDate, replies
      * 
-     * @param userList
-     * @param pathName
+     * @param enquiryList the enquiry list
+     * @param pathName    the path name e.g. /lists
      * @return
      */
     public static final HashMap<Integer, Enquiry> readEnquiryCSV(HashMap<Integer, Enquiry> enquiryList,
@@ -76,9 +85,9 @@ public class ReadWriteEnquiryCSV {
     // test
     /**
      * Write user CSV.
-     * Output CSV format: name,email,faculty,password
+     * Expected CSV format: enquiryId, enquiryBody, seen, creationDate,
      * 
-     * @param userList         the user list
+     * @param enquiryList      the enquiryList
      * @param fileNameWithPath e.g. /lists/staff_list.csv
      * @return true, if successful
      */

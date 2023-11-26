@@ -3,25 +3,18 @@ package controllers;
 import java.util.ArrayList;
 
 /**
- * EnquiryController is an interface implementing Controller methods for
- * managing Enquiries
- * 
- * 
+ * Represents the EnquiryControlInterface to be implemented by EnquiryController
  * 
  * @author Teo Xuan Ming
- * @version 1.0
- * @since 2021-11-12
+ * @version 1.1
+ * @since 2021-11-24
  */
 public interface EnquiryControlInterface {
 
 	/**
-	 * addEnquiry adds an enquiry to the list of enquiries in MainController's
-	 * attributes
-	 * also tags the enquiry to the camp and user
+	 * Add an enquiry
 	 * 
 	 * @param enquiry the enquiry text to be added
-	 * @param ownerid the owner of the enquiry, which should be a student
-	 * @param campid  the camp the enquiry is about
 	 * @return the enquiry id if successful, -1 if not
 	 */
 	int add(String enquiry);
@@ -45,10 +38,8 @@ public interface EnquiryControlInterface {
 	String get(int enquiryid);
 
 	/**
-	 * Overriden methods from Enquiry Controller
 	 * Finalise an enquiry by setting the seen attribute to true
-	 * so that enquiry can be replied to and points allocated to the responding
-	 * committee member
+	 * so that enquiry can be replied to
 	 * 
 	 * @param enquiryid the enquiry id to be finalised
 	 * @return true if successful, controller item missing exception if not
@@ -56,7 +47,6 @@ public interface EnquiryControlInterface {
 	Boolean finalise(int enquiryid) throws ControllerItemMissingException; // mark as uneditable
 
 	/**
-	 * Overriden methods from Enquiry Controller
 	 * Check if an enquiry is editable
 	 * If an enquiry has been finalised, (i.e.seen attribute is true), it is not
 	 * editable
@@ -64,12 +54,19 @@ public interface EnquiryControlInterface {
 	 * @param enquiryid the enquiry id to be checked
 	 * @return true if editable, throws controller item missing exception if not
 	 */
-	Boolean isEditable(int enquiryid) throws ControllerItemMissingException; // check if can edit
+	Boolean isEditable(int enquiryid) throws ControllerItemMissingException;
 
+	/**
+	 * Save a reply to an enquiry
+	 * 
+	 * @param enquiryid
+	 * @param reply
+	 * @return the enquiry id if successful, -1 if not
+	 * @throws ControllerItemMissingException
+	 */
 	int saveReply(int enquiryid, String reply) throws ControllerItemMissingException;
 
 	/**
-	 * Overriden methods from Enquiry Controller
 	 * Get the replies to an enquiry
 	 * 
 	 * @param enquiryid the enquiry id to be retrieved
@@ -78,5 +75,12 @@ public interface EnquiryControlInterface {
 
 	ArrayList<String> getReplies(int enquiryid) throws ControllerItemMissingException;
 
+	/**
+	 * Delete an enquiry
+	 * 
+	 * @param enquiryid
+	 * @return true if successful, controller item missing exception if not
+	 * @throws ControllerItemMissingException
+	 */
 	Boolean delete(int enquiryid) throws ControllerItemMissingException;
 }

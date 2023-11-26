@@ -20,6 +20,10 @@ import java.time.LocalDate;
  */
 
 public class Camp {
+    /**
+     * campInfo is the CampInfo object containing the camp's information @see
+     * CampInfo
+     */
     private CampInfo campInfo;
     /**
      * campId is the unique id of the camp
@@ -52,7 +56,6 @@ public class Camp {
      * information from the CLI
      * 
      * @param campInfo
-     * @param visibility
      * @param creationDate
      */
     public Camp(CampInfo campInfo, LocalDate creationDate) {
@@ -66,12 +69,11 @@ public class Camp {
      * from
      * the camp_list.csv where enquiries and suggestions ids are already included
      * 
-     * @param campInfo
-     * @param visibility
-     * @param creationDate
-     * @param attendeeCount
-     * @param commiteeCount
-     * @param committeeCount
+     * @param campId         the campId to be assigned to the new camp
+     * @param campInfo       the CampInfo object containing the camp's information
+     * @param creationDate   the date that the camp was created
+     * @param attendeeCount  the number of attendees in the camp
+     * @param committeeCount the number of committee members in the camp
      */
     public Camp(int campId, CampInfo campInfo, LocalDate creationDate, int attendeeCount,
             int committeeCount) {
@@ -88,7 +90,7 @@ public class Camp {
      * this ensures that the next campId is always greater than the previous
      * and previous enquiryId will not be overwritten
      * 
-     * @param nextCampId
+     * @param nextCampId the next campId to be assigned to a new camp
      */
     public static void setNextCampId(int nextCampId) {
         Camp.nextCampId = nextCampId;
@@ -112,7 +114,6 @@ public class Camp {
         return this.campInfo;
     }
 
-
     /**
      * Getter for attendeeCount
      * 
@@ -125,7 +126,7 @@ public class Camp {
     /**
      * Setter for attendeeCount
      * 
-     * @param attendeeCount
+     * @param attendeeCount the attendeeCount to set
      * @return true if attendeeCount is successfully set, false otherwise
      */
     public boolean setAttendeeCount(int attendeeCount) {
@@ -139,13 +140,13 @@ public class Camp {
      * @return the committeeCount
      */
     public int getCommitteeCount() {
-    return this.committeeCount;
+        return this.committeeCount;
     }
 
     /**
      * Setter for committeeCount
      * 
-     * @param committeeCount
+     * @param committeeCount the committeeCount to set
      * @return true if committeeCount is successfully set, false otherwise
      */
     public boolean setCommitteeCount(int committeeCount) {

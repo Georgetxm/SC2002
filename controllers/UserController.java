@@ -11,19 +11,33 @@ import types.Faculty;
 import types.Perms;
 import types.Role;
 
+/**
+ * Represents the UserController class
+ * Holds a list of User objects
+ * Holds all methods to interface with the User object
+ * Created and held by the Controller ENUM
+ * 
+ * @author Teo Xuan Ming
+ * @version 1.1
+ * @since 2021-11-24
+ */
 public class UserController implements UserControlInterface {
+	/**
+	 * The list of User objects
+	 */
 	private HashMap<String, User> userList;
 
 	/**
 	 * Constructor for UserController
 	 * 
-	 * @param userList the list of Users
+	 * @param users the list of Users
 	 */
 	public UserController(HashMap<String, User> users) {
 		this.userList = users;
 	}
 
 	/**
+	 * Overriden method from UserControllerInterface
 	 * Returns a User object given its ID
 	 * 
 	 * @param userId the User's ID
@@ -42,7 +56,7 @@ public class UserController implements UserControlInterface {
 	}
 
 	/**
-	 * Overriden method from UserController
+	 * Overriden method from UserControllerInterface
 	 * Returns the User's Faculty
 	 * 
 	 * @param userid the User's ID
@@ -59,7 +73,7 @@ public class UserController implements UserControlInterface {
 	}
 
 	/**
-	 * Overriden method from UserController
+	 * Overriden method from UserControllerInterface
 	 * Tags a User to a Camp object's committee HashMap attribute
 	 * Tags a Camp to a Student object's campCommittee int attribute
 	 * 
@@ -84,7 +98,7 @@ public class UserController implements UserControlInterface {
 	}
 
 	/**
-	 * Overriden method from UserController
+	 * Overriden method from UserControllerInterface
 	 * Gets the Camp committee a student is in
 	 * 
 	 * @param userId the User's ID
@@ -102,7 +116,7 @@ public class UserController implements UserControlInterface {
 	}
 
 	/**
-	 * Overriden method from UserController
+	 * Overriden method from UserControllerInterface
 	 * Increaments a Student's points
 	 * 
 	 * @param userid the Student's ID
@@ -123,7 +137,7 @@ public class UserController implements UserControlInterface {
 	}
 
 	/**
-	 * Overriden method from UserController
+	 * Overriden method from UserControllerInterface
 	 * Grants a Student a set of permissions
 	 * 
 	 * @param userid   the Student's ID
@@ -146,7 +160,7 @@ public class UserController implements UserControlInterface {
 	}
 
 	/**
-	 * Overriden method from UserController
+	 * Overriden method from UserControllerInterface
 	 * Denies a Student a set of permissions
 	 * 
 	 * @param userid       the Student's ID
@@ -169,7 +183,7 @@ public class UserController implements UserControlInterface {
 	}
 
 	/**
-	 * Overriden method from UserController
+	 * Overriden method from UserControllerInterface
 	 * Replaces a Student's set of permissions
 	 * 
 	 * @param userid           the Student's ID
@@ -192,7 +206,7 @@ public class UserController implements UserControlInterface {
 	}
 
 	/**
-	 * Overriden method from UserControlInterface
+	 * Overriden method from UserControllerInterface
 	 * Gets the class of a User (i.e. either Student or Staff)
 	 * 
 	 * @param userid the User's ID
@@ -207,8 +221,16 @@ public class UserController implements UserControlInterface {
 		return null;
 	}
 
+	/**
+	 * Overriden method from UserControllerInterface
+	 * Changes a User's password
+	 * 
+	 * @param password the new password
+	 * @param id       the User's ID
+	 * @return true if the password is successfully changed, false otherwise
+	 */
 	@Override
-	public Boolean changePassword(String password,String id) {
+	public Boolean changePassword(String password, String id) {
 		User thisuser = findUserById(id);
 		thisuser.changePassword(password);
 		return true;

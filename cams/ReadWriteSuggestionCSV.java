@@ -14,14 +14,27 @@ import java.util.Map.Entry;
 import entities.Suggestion;
 import types.CampAspect;
 
+/**
+ * The Class that contains function to read and write
+ * the "suggestion_list" CSV file.
+ * 
+ * @author Teo Xuan Ming
+ * @version 1.0
+ * @since 2021-11-20
+ */
 public class ReadWriteSuggestionCSV {
-
+    /**
+     * Read convert aspect entry to csv row.
+     * 
+     * @param suggestionAspect the suggestion aspect
+     * @return
+     */
     private static String convertAspectEntryToCsvRow(Entry<CampAspect, ? extends Object> suggestionAspect) {
         CampAspect chosenaspect = suggestionAspect.getKey();
         String valueString = "";
         if (chosenaspect == CampAspect.DATE) {
             @SuppressWarnings("unchecked")
-			HashSet<LocalDate> date = (HashSet<LocalDate>) suggestionAspect.getValue();
+            HashSet<LocalDate> date = (HashSet<LocalDate>) suggestionAspect.getValue();
             StringBuilder sb = new StringBuilder();
             for (LocalDate d : date) {
                 sb.append(d.toString()).append(";");
@@ -35,6 +48,12 @@ public class ReadWriteSuggestionCSV {
         return aspectString + ":" + fValueString;
     }
 
+    /**
+     * Read convert csv row to generate an aspect entry
+     * 
+     * @param csvRow
+     * @return
+     */
     private static Entry<CampAspect, ? extends Object> convertCsvRowToAspectEntry(String csvRow) {
         String[] values = csvRow.split(":");
         CampAspect chosenaspect = (CampAspect) CampAspect.valueOf(values[0]);
@@ -61,11 +80,15 @@ public class ReadWriteSuggestionCSV {
     }
 
     /**
-     * Read user CSV.
-     * Expected CSV format: name,email,faculty,password
+     * Read Suggestion CSV.
+     * Expected CSV format:
+     * suggestionId, rationale, suggestionAspect, accepted, creationDate,
+     * lastUpdatedDate
+     * lastUpdateDate, replies
      * 
-     * @param userList
-     * @param pathName
+     * @param suggestionList the suggestionList
+     * @param pathName       the path name e.g. /lists
+     * @return
      */
     public static final void readSuggestionCSV(HashMap<Integer, Suggestion> suggestionList, String pathName) {
 
@@ -111,10 +134,11 @@ public class ReadWriteSuggestionCSV {
     }
 
     /**
-     * Write user CSV.
-     * Output CSV format: name,email,faculty,password
+     * Write Suggestion CSV.
+     * Expected CSV format:
+     * suggestionId, rationale, suggestionAspect, accepted, creationDate,
      * 
-     * @param userList         the user list
+     * @param suggestionList         the suggestionList
      * @param fileNameWithPath e.g. /lists/staff_list.csv
      * @return true, if successful
      */

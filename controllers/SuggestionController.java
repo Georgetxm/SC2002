@@ -9,15 +9,28 @@ import cams.ReadWriteSuggestionCSV;
 import entities.Suggestion;
 import types.CampAspect;
 
+/**
+ * Represents the SuggestionController class
+ * Holds a list of Suggestion objects
+ * Holds all methods to interface with the Suggestion object
+ * Created and held by the Controller ENUM
+ * 
+ * @author Teo Xuan Ming
+ * @version 1.1
+ * @since 2021-11-24
+ */
 public class SuggestionController implements SuggestionControlInterface {
 
+	/**
+	 * The list of Suggestion objects
+	 */
 	private HashMap<Integer, Suggestion> suggestions;
 
 	/**
 	 * Constructor for Suggestion Controller
 	 * 
-	 * @param suggestions
-	 * @return
+	 * @param suggestions the list of Suggestion objects
+	 * @return the Suggestion object with the given ID, null if not found
 	 */
 	public SuggestionController(HashMap<Integer, Suggestion> suggestionList) {
 		this.suggestions = suggestionList;
@@ -26,7 +39,7 @@ public class SuggestionController implements SuggestionControlInterface {
 	/**
 	 * Returns a Suggestion object given its ID
 	 * 
-	 * @param suggestionId
+	 * @param suggestionId the Suggestion's ID
 	 * @return the Suggestion object with the given ID, null if not found
 	 */
 
@@ -38,7 +51,7 @@ public class SuggestionController implements SuggestionControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Suggestion Controller
+	 * Overriden methods from SuggestionControlInterface
 	 * Creates a new suggestion, each suggestion contains only one aspect of
 	 * CampInfo @see CampInfo
 	 * i.e. Multiple suggestions are separate entries in the suggestions HashMap
@@ -46,7 +59,8 @@ public class SuggestionController implements SuggestionControlInterface {
 	 * also tags the suggestion to the camp and user
 	 * 
 	 * @param suggestion the suggestion aspect text to be added
-	 * @param ownerid    the owner of the suggestion, which should be a student
+	 * @param rationale  the rationale for the suggestion
+	 * @return the suggestion id if successful
 	 * @throws ControllerItemMissingException
 	 */
 	@Override
@@ -60,7 +74,7 @@ public class SuggestionController implements SuggestionControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Suggestion Controller
+	 * Overriden methods from SuggestionControlInterface
 	 * Edit a suggestion based on the suggestion id
 	 * Updates the suggestion aspect and rationale
 	 * Updates the last updated date
@@ -90,6 +104,7 @@ public class SuggestionController implements SuggestionControlInterface {
 	}
 
 	/**
+	 * Overriden methods from SuggestionControlInterface
 	 * Gets a suggestion by its id
 	 * 
 	 * @param suggestionid the suggestion id to be retrieved
@@ -112,7 +127,7 @@ public class SuggestionController implements SuggestionControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Suggestion Controller Interface
+	 * Overriden methods from SuggestionControlInterface
 	 * Delete a suggestion based on the suggestion id
 	 * 
 	 * @param suggestionid the suggestion id to be deleted
@@ -132,8 +147,11 @@ public class SuggestionController implements SuggestionControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Suggestion Controller
+	 * Overriden methods from SuggestionControlInterface
 	 * Sets a suggestion to be accepted so that the suggestion is finalised
+	 * 
+	 * @param suggestionid the suggestion id to be finalised
+	 * @return true if successful, controller item missing exception if not
 	 */
 	@Override
 	public Boolean finalise(int suggestionid) throws ControllerItemMissingException {
@@ -148,7 +166,7 @@ public class SuggestionController implements SuggestionControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Suggestion Controller Interface
+	 * Overriden methods from SuggestionControlInterface
 	 * Checks if a suggestion is editable based on the suggestion's accepted status
 	 * If the suggestion is accepted, it is not editable
 	 * 

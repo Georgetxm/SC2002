@@ -27,13 +27,13 @@ import types.Location;
 public class ReadWriteCampCSV {
     /**
      * Read camp_list CSV.
-     * Expected CSV format: campId,campName,campDate,
-     * campRegistrationDeadline,campFaculty,campLocation,campSlots,
-     * campCommitteeSlots,campDescription,staffIC,attendees,committee,
-     * visibility,creationDate,enquiries,suggestions
+     * Expected CSV format:
+     * campId, campName, campDates, registrationDeadline, faculty, location, slots,
+     * committeeSlots, description, staffIC, createDate, attendeeCount,
+     * committeeCount
      * 
-     * @param userList
-     * @param pathName
+     * @param campList the camp list
+     * @param pathName the path name e.g. /lists
      */
     public static final void readCampCSV(HashMap<Integer, Camp> campList, String pathName) {
 
@@ -107,7 +107,7 @@ public class ReadWriteCampCSV {
      * Write user CSV.
      * Output CSV format: name,email,faculty,password
      * 
-     * @param userList         the user list
+     * @param campList         the user list
      * @param fileNameWithPath e.g. /lists/staff_list.csv
      * @return true, if successful
      */

@@ -17,19 +17,45 @@ import java.util.ArrayList;
  * @since 2021-11-12
  */
 public class Enquiry {
+    /**
+     * nextEnquiryId ensures uniqueness of next enquiry as it gets added
+     */
     private static int nextEnquiryId = 0;
+
+    /**
+     * enquiryId is the unique id of the enquiry
+     */
     private final int enquiryId;
+
+    /**
+     * enquiryBody is the body of the enquiry
+     */
     private String enquiryBody;
+
+    /**
+     * seen is whether the enquiry has been seen
+     * if seen, the enquiry cannot be edited
+     */
     private boolean seen;
+
+    /**
+     * creationDate is the date that the enquiry was created
+     */
     private final LocalDate creationDate;
+    /**
+     * lastUpdateDate is the date that the enquiry was last updated
+     */
     private LocalDate lastUpdateDate;
+
+    /**
+     * replies is the list of replies to the enquiry
+     */
     private ArrayList<String> replies;
 
     /**
+     * 
      * Constructor for Enquiry
      * 
-     * @param creatorUserId
-     * @param campId
      * @param enquiryBody
      * @param seen
      * @param creationDate
@@ -45,15 +71,16 @@ public class Enquiry {
     }
 
     /**
-     * Constructor for Enquiry when reading from the enquiry.csv
-     * Overloaded to include lastUpdateDate
      * 
-     * @param creatorUserId
-     * @param campId
+     * Constructor for Enquiry when reading from the enquiry.csv
+     * Overloaded to include lastUpdateDate and replies
+     * 
+     * @param enquiryId
      * @param enquiryBody
      * @param seen
      * @param creationDate
-     * @param lastUpdatedDate
+     * @param lastUpdateDate
+     * @param replies
      */
     public Enquiry(int enquiryId, String enquiryBody, boolean seen,
             LocalDate creationDate, LocalDate lastUpdateDate, ArrayList<String> replies) {
@@ -71,7 +98,7 @@ public class Enquiry {
      * this ensures that the next enquiryId is always greater than the previous
      * and previous enquiryId will not be overwritten
      * 
-     * @param nextEnquiryId
+     * @param nextEnquiryId the next enquiryId to be assigned to a new enquiry
      */
     public static void setNextEnquiryId(int nextEnquiryId) {
         Enquiry.nextEnquiryId = nextEnquiryId;
@@ -98,7 +125,7 @@ public class Enquiry {
     /**
      * Set the enquiryBody of this enquiry
      * 
-     * @param newEnquiryBody
+     * @param newEnquiryBody the new enquiryBody to be set
      * @return true if the enquiryBody is successfully set, false otherwise
      */
     public boolean setEnquiryBody(String newEnquiryBody) {
@@ -122,7 +149,7 @@ public class Enquiry {
     /**
      * Set the seen attribute of this enquiry
      * 
-     * @param seen
+     * @param seen the new seen attribute to be set
      * @return true if the seen attribute is successfully set, false otherwise
      */
     public boolean setSeen(boolean seen) {
@@ -151,7 +178,7 @@ public class Enquiry {
     /**
      * Set the lastUpdateDate of this enquiry
      * 
-     * @param lastestDate
+     * @param lastestDate the new lastUpdateDate to be set
      * @return true if the lastUpdateDate is successfully set, false otherwise
      */
     public boolean updateLastUpdateDate(LocalDate lastestDate) {
@@ -171,7 +198,7 @@ public class Enquiry {
     /**
      * Add a reply to this enquiry
      * 
-     * @param reply
+     * @param reply the reply to be added
      * @return true if the reply is successfully added, false otherwise
      */
     public boolean addReply(String reply) {
@@ -185,8 +212,8 @@ public class Enquiry {
     /**
      * Remove a reply from this enquiry
      * 
-     * @param reply
-     * @return
+     * @param reply the reply to be removed
+     * @return true if the reply is successfully removed, false otherwise
      */
     public boolean removeReply(String reply) {
         if (reply == null || reply.isEmpty()) {

@@ -154,7 +154,7 @@ public class User {
      * Returns true if the User has the specified permission(s)
      * 
      * @param newPassword
-     * @return true if the User has the specified permission(s)
+     * @return void
      */
     public void changePassword(String newPassword) {
         this.password = newPassword;

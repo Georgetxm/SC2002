@@ -46,14 +46,10 @@ public class Student extends User {
     /**
      * Creates new Student object with the given parameters
      * 
-     * @param userId      the Student's userId
-     * 
-     * @param password    the Student's password
-     * 
-     * @param faculty     the Student's faculty, @see Faculty
-     * 
-     * @param permissions the Student's permissions, @see Perms
-     *
+     * @param userId
+     * @param name
+     * @param password
+     * @param faculty
      */
     public Student(String userId, String name, String password, Faculty faculty) {
         super(userId, name, password, faculty, EnumSet.of(
@@ -68,17 +64,16 @@ public class Student extends User {
     }
 
     /**
+     * 
      * Creates new Student object with the given parameters meant for use when
      * reading from student_list.csv
      * 
-     * @param userId      the Student's userId
-     * 
-     * @param password    the Student's password
-     * 
-     * @param faculty     the Student's faculty, @see Faculty
-     * 
-     * @param permissions the Student's permissions, @see Perms
-     *
+     * @param userId
+     * @param name
+     * @param password
+     * @param faculty
+     * @param campCommittee
+     * @param points
      */
     public Student(String userId, String name, String password, Faculty faculty, int campCommittee, int points) {
         super(userId, name, password, faculty, EnumSet.of(

@@ -7,14 +7,23 @@ import java.util.HashMap;
 import cams.ReadWriteEnquiryCSV;
 import entities.Enquiry;
 
+/**
+ * Represents the EnquiryController class
+ * Holds a list of Enquiry objects
+ * Holds all methods to interface with the Enquiry object
+ * Created and held by the Controller ENUM
+ * 
+ * @author Teo Xuan Ming
+ * @version 1.1
+ * @since 2021-11-24
+ */
 public class EnquiryController implements EnquiryControlInterface {
 	private HashMap<Integer, Enquiry> enquiries;
 
 	/**
 	 * Constructor for Enquiry Controller
 	 * 
-	 * @param enquiries
-	 * @return
+	 * @param enquiries the list of Enquiry objects
 	 */
 	public EnquiryController(HashMap<Integer, Enquiry> enquiryList) {
 		this.enquiries = enquiryList;
@@ -23,7 +32,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	/**
 	 * Returns an Enquiry object given its ID
 	 * 
-	 * @param enquiryId
+	 * @param enquiryId the Enquiry's ID
 	 * @return the Enquiry object with the given ID, null if not found
 	 */
 	public Enquiry findEnquiryById(int enquiryId) {
@@ -34,15 +43,11 @@ public class EnquiryController implements EnquiryControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Enquiry Controller Interface
-	 * addEnquiry adds an enquiry to the list of enquiries in MainController's
-	 * attributes
-	 * also tags the enquiry to the camp and user
+	 * Overriden methods from EnquiryControllerInterface
+	 * adds an enquiry to the list of enquiries in the EnquiryController
 	 * 
 	 * @param enquiry the enquiry text to be added
-	 * @param ownerid the owner of the enquiry, which should be a student
-	 * @param campid  the camp the enquiry is about
-	 * @return the enquiry id if successful, -1 if not
+	 * @return the enquiry id if successful
 	 */
 	@Override
 	public int add(String enquiry) {
@@ -53,7 +58,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Enquiry Controller Interface
+	 * Overriden methods from EnquiryControllerInterface
 	 * Edit an enquiry text
 	 * Updates the last update date of the enquiry
 	 * 
@@ -78,7 +83,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Enquiry Controller Interface
+	 * Overriden methods from EnquiryControllerInterface
 	 * Get an enquiry text
 	 * 
 	 * @param enquiryid the enquiry id to be retrieved
@@ -94,10 +99,9 @@ public class EnquiryController implements EnquiryControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Enquiry Controller Interface
+	 * Overriden methods from EnquiryControllerInterface
 	 * Finalise an enquiry by setting the seen attribute to true
-	 * so that enquiry can be replied to and points allocated to the responding
-	 * committee member
+	 * so that enquiry can be replied to
 	 * 
 	 * @param enquiryid the enquiry id to be finalised
 	 * @return true if successful, controller item missing exception if not
@@ -115,7 +119,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Enquiry Controller Interface
+	 * Overriden methods from EnquiryControllerInterface
 	 * Check if an enquiry is editable
 	 * If an enquiry has been finalised, (i.e.seen attribute is true), it is not
 	 * editable
@@ -134,7 +138,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Enquiry Controller Interface
+	 * Overriden methods from EnquiryControllerInterface
 	 * Save the reply to an enquiry under the replies attribute
 	 * 
 	 * @param enquiryid the enquiry id to be replied to
@@ -157,7 +161,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Enquiry Controller Interface
+	 * Overriden methods from EnquiryControllerInterface
 	 * Get the replies to an enquiry
 	 * 
 	 * @param enquiryid the enquiry id to be retrieved
@@ -174,7 +178,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	}
 
 	/**
-	 * Overriden methods from Enquiry Controller Interface
+	 * Overriden methods from EnquiryControllerInterface
 	 * Delete an enquiry
 	 * Removes the enquiry id from the camp and user attribute
 	 * 

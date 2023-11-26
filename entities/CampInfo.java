@@ -1,25 +1,32 @@
 package entities;
+
 import java.util.TreeMap;
 
 import types.CampAspect;
 
-public record CampInfo( TreeMap<CampAspect,Object> info) {
-	public CampInfo {
-        if (info.size()!= CampAspect.values().length) 
-        throw new java.lang.IllegalArgumentException("CampInfo not complete");
+/**
+ * Represents the CampInfo record class
+ * Automatically checks if the CampInfo object is complete
+ * CampInfo object is complete if it contains all the CampAspect ENUM values
+ * CampInfo object is incomplete if it does not contain all the CampAspect ENUM
+ * values
+ * 
+ * @see CampAspect
+ * @param info the TreeMap containing the Camp's information
+ * @return CampInfo object
+ * 
+ * @author Teo Xuan Ming
+ * @version 1.1
+ * @since 2021-11-24
+ */
+public record CampInfo(TreeMap<CampAspect, Object> info) {
+    /**
+     * Constructor for CampInfo
+     * 
+     * @param info the TreeMap containing the Camp's information
+     */
+    public CampInfo {
+        if (info.size() != CampAspect.values().length)
+            throw new java.lang.IllegalArgumentException("CampInfo not complete");
     }
 }
-
-
-// Currently
-// {
-//		CampAspects.NAME: String name
-//		CampAspects.DATE: HashSet<LocalDate> dates
-//		CampAspects.LASTREGISTERDATE: LocalDate regdate
-//		CampAspects.USERGROUP: Faculty faculty
-//		CampAspects.LOCATION: Location location
-//		CampAspects.SLOTS: Integer totalslots
-//		CampAspects.COMITTEESLOTS: Integer comitteeslots
-//		CampAspects.DESCRIPTION: String description
-//		CampAspects.STAFFIC: Integer userid
-// }

@@ -9,15 +9,27 @@ import entities.Camp;
 import entities.CampInfo;
 import types.CampAspect;
 
+/**
+ * Represents the CampController class
+ * Holds a list of Camp objects
+ * Holds all methods to interface with the Camp object
+ * Created and held by the Controller ENUM
+ * 
+ * @author Teo Xuan Ming
+ * @version 1.1
+ * @since 2021-11-24
+ */
 public class CampController implements CampControlInterface {
 
+	/**
+	 * The list of Camp objects
+	 */
 	private HashMap<Integer, Camp> camps;
 
 	/**
 	 * Constructor for CampController
 	 * 
-	 * @param userList
-	 * @param campList
+	 * @param campList the list of Camp objects
 	 */
 	public CampController(HashMap<Integer, Camp> campList) {
 		this.camps = campList;

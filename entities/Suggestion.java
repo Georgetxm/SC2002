@@ -21,19 +21,47 @@ import types.CampAspect;
  */
 
 public class Suggestion {
+    /**
+     * nextSuggestionId ensures uniqueness of next suggestion as it gets added
+     */
     private static int nextSuggestionId = 0;
+
+    /**
+     * suggestionId is the unique id of the suggestion
+     */
     private final int suggestionId;
+
+    /**
+     * rationale is the reason for the suggestion
+     */
     private String rationale;
+
+    /**
+     * suggestionAspect is the aspect of the camp that the suggestion is for
+     * 
+     * @see CampAspect
+     */
     private Entry<CampAspect, ? extends Object> suggestionAspect;
+
+    /**
+     * accepted is whether the suggestion has been accepted
+     * if accepted, the suggestion cannot be edited
+     */
     private boolean accepted;
+
+    /**
+     * creationDate is the date that the suggestion was created
+     */
     private final LocalDate creationDate;
+
+    /**
+     * lastUpdateDate is the date that the suggestion was last updated
+     */
     private LocalDate lastUpdatedDate;
 
     /**
      * Constructor for Suggestion
      * 
-     * @param creatorUserId
-     * @param campid
      * @param rationale
      * @param suggestionAspect
      * @param creationDate
@@ -50,14 +78,16 @@ public class Suggestion {
     }
 
     /**
+     * 
      * Constructor for Suggestion when reading from the suggestion_list.csv
      * Overloaded to include lastUpdateDate
      * 
-     * @param creatorUserId
-     * @param campid
+     * @param suggestionId
      * @param rationale
      * @param suggestionAspect
+     * @param accepted
      * @param creationDate
+     * @param lastUpdatedDate
      */
     public Suggestion(int suggestionId, String rationale,
             Entry<CampAspect, ? extends Object> suggestionAspect, boolean accepted,
@@ -105,8 +135,8 @@ public class Suggestion {
      * Set the suggestionAspect of this suggestion. Each suggestion corresponds only
      * to one aspect of the camp
      * 
-     * @param newSuggestionAspect
-     * @return
+     * @param newSuggestionAspect the new suggestionAspect to be set
+     * @return true if suggestionAspect is successfully set, false otherwise
      */
     public boolean setSuggestionAspect(Entry<CampAspect, ? extends Object> newSuggestionAspect) {
         if (newSuggestionAspect == null) {
@@ -128,7 +158,7 @@ public class Suggestion {
     /**
      * Set the rationale of this suggestion
      * 
-     * @param newRationale
+     * @param newRationale the new rationale to be set
      * @return true if rationale is successfully set, false otherwise
      */
     public boolean setRationale(String newRationale) {
@@ -151,7 +181,7 @@ public class Suggestion {
     /**
      * Set the accepted status of this suggestion
      * 
-     * @param accepted
+     * @param accepted the new accepted status to be set
      * @return true if accepted status is successfully set, false otherwise
      */
     public boolean setAccepted(boolean accepted) {
@@ -180,7 +210,7 @@ public class Suggestion {
     /**
      * Set the lastUpdatedDate of this suggestion
      * 
-     * @param lastUpdatedDate
+     * @param lastUpdatedDate the new lastUpdatedDate to be set
      * @return true if lastUpdatedDate is successfully set, false otherwise
      */
     public boolean setLastUpdatedDate(LocalDate lastUpdatedDate) {

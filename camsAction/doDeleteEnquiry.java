@@ -40,7 +40,7 @@ public final class doDeleteEnquiry extends Interaction {
 			control.Directory().remove(entities.Enquiry.class, enquiryid);
 			System.out.println("Enquiry deleted");
 		}
-		next = new queryEnquriesMenu();
+		next = new queryEnquiriesMenu();
 		if(this.userid!=null) next = next.withuser(userid);
 		if(this.campid!=null) next = next.withcamp(campid);
 		if(this.filters!=null) next = next.withfilter(filters);

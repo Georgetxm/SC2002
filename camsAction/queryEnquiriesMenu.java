@@ -22,7 +22,7 @@ import types.Perms;
  * @version 1.0
  * @since 2021-11-01
  */
-public final class queryEnquriesMenu extends UserMenu {
+public final class queryEnquiriesMenu extends UserMenu {
 	private List<Serializable> enquirylist = null;
 	/**
 	 * Populates menu choices with enquiries for the user to choose to choose.

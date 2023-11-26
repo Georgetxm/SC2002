@@ -24,7 +24,7 @@ import camsAction.doSubmitReply;
 import camsAction.doSubmitSuggestion;
 import camsAction.doToggleVisibility;
 import camsAction.queryCampsMenu;
-import camsAction.queryEnquriesMenu;
+import camsAction.queryEnquiriesMenu;
 import camsAction.queryFilterCampByMenu;
 import camsAction.querySuggestionsMenu;
 import interactions.MenuChoice;
@@ -68,6 +68,7 @@ public final class CamsInteraction{ //Menu choices
      * MenuChoice instance denoting the choice of viewing camps stored in their own camp list 
      * <p>
      * This can be either participating camps for students, or managing camps for staff
+     * @param userid the user to filter the camps by
      * @return the menu choice
      */
 	public static MenuChoice viewOwnCamps(String userid) {
@@ -88,6 +89,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * It is implied the menu and user know what enquiry is being approved
      * Usually a user would have already selected a enquiry before this choice is given
+     * @param enquiryid the enquiry the reply is submitted to
      * @return the menu choice
 	 */
 	public static MenuChoice submitReply(Integer enquiryid) {
@@ -98,6 +100,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
      * It is implied the menu and user know what suggestion is being edited
      * Usually a user would have already selected a suggestion before this choice is given
+     * @param suggestionid the suggestion to be edited
      * @return the menu choice
 	 */
 	public static MenuChoice editSuggestion(Integer suggestionid) {
@@ -108,6 +111,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
      * It is implied the menu and user know what suggestion is being deleted
      * Usually a user would have already selected a suggestion before this choice is given
+     * @param suggestionid the suggestion to be deleted
      * @return the menu choice
 	 */
 	public static MenuChoice 	deleteSuggestion(Integer suggestionid) {
@@ -118,6 +122,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * It is implied the menu and user know what enquiry is being edited
      * Usually a user would have already selected a enquiry before this choice is given
+     * @param enquiryid the enquiry to be edited
      * @return the menu choice
 	 */
 	public static MenuChoice editEnquiry(Integer enquiryid) {
@@ -128,6 +133,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * It is implied the menu and user know what enquiry is being approved
      * Usually a user would have already selected a enquiry before this choice is given
+     * @param enquiryid the enquiry to be deleted
      * @return the menu choice
 	 */
 	public static MenuChoice deleteEnquiry(Integer enquiryid) {
@@ -156,6 +162,7 @@ public final class CamsInteraction{ //Menu choices
 	 * It is assumed this choice includes resolving all consequences as well, like removing the camp from students list of camps
 	 * It is assumed the points earned via past enquiries and suggestions will be retained
 	 * This is because this coder believes the camp being deleted does not devalue work the committee already spent on the camp
+	 * @param campid the camp to be deleted
      * @return the menu choice
 	 */
 	public static MenuChoice deleteCamp(Integer campid) {
@@ -168,6 +175,7 @@ public final class CamsInteraction{ //Menu choices
 	 * If future versions require, allowing more camp details to be edited is a simple one liner
 	 * Except for camp name, since camp name is also used as an additional layer of data integrity check
 	 * Editing the camp name would require editing the camp name in all user camp lists
+	 * @param campid the camp to be edited
      * @return the menu choice
 	 */
 	public static MenuChoice editCamp(Integer campid) {
@@ -179,6 +187,7 @@ public final class CamsInteraction{ //Menu choices
 	 * This is either from true to false, or false to true, depending on current visibility state
 	 * Check the camp initialisation for the default visibility state
 	 * @see entities.Camp
+	 * @param campid the camp to have its visibility toggled
      * @return the menu choice
 	 */
 	public static MenuChoice toggleVisibility(Integer campid) {
@@ -189,10 +198,11 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * This can either be for a particular camp, or in general
 	 * It is implied both the user and menu know if its for a particular camp, or in general due to past choice selection
+	 * @param userid the user to filter enquiries by
      * @return the menu choice
 	 */
 	public static MenuChoice viewOwnEnquiry(String userid) {
-		return new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,	"View your own enquiries",	new queryEnquriesMenu().withowner(userid));
+		return new MenuChoice(Perms.SUBMIT_CAMP_ENQUIRY,	"View your own enquiries",	new queryEnquiriesMenu().withowner(userid));
 	}
 	/**
 	 * MenuChoice instance denoting the choice of viewing all enquiries associated with a particular camp
@@ -203,12 +213,13 @@ public final class CamsInteraction{ //Menu choices
 	 * They would also need to ensure both intra and intercamp possibilities are handled
 	 * @see camsAction.queryEnquiriesMenu
 	 */
-	public static MenuChoice viewAllEnquiry	= new MenuChoice(Perms.VIEW_CAMP_ENQUIRY,"View all enquiries",new queryEnquriesMenu());
+	public static MenuChoice viewAllEnquiry	= new MenuChoice(Perms.VIEW_CAMP_ENQUIRY,"View all enquiries",new queryEnquiriesMenu());
 	/**
 	 * MenuChoice instance denoting the choice of submitting an enquiry to a camp
 	 * <p>
 	 * It is implied both the user and the menu know which camp the enquiry is being submitted for
 	 * Usually a user would have already selected a camp before this choice is given
+	 * @param campid the id of the camp to be submitted to
      * @return the menu choice
 	 */
 	public static MenuChoice submitEnquiry(Integer campid) {
@@ -219,6 +230,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * This can either be for a particular camp, or in general
 	 * It is implied both the user and menu know if its for a particular camp, or in general due to past choice selection
+	 * @param userid the user to filter suggestions by
      * @return the menu choice
 	 */
 	public static MenuChoice viewOwnSuggestion(String userid) {
@@ -239,6 +251,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * It is implied both the user and the menu know which camp the suggestion is being submitted for
 	 * Usually a user would have already selected a camp before this choice is given
+	 * @param campid the camp to submit suggestions to
      * @return the menu choice
 	 */
 	public static MenuChoice submitSuggestion(Integer campid) {
@@ -253,6 +266,7 @@ public final class CamsInteraction{ //Menu choices
 	 * If one wishes to allow users to do so, they would have to declare requisite permissions
 	 * @see Perms
 	 * They would also need to ensure newly affected user groups are handled
+	 * @param campid the camp to be withdrawn from
      * @return the menu choice
 	 */
 	public static MenuChoice withdrawRegistration(Integer campid) {
@@ -263,6 +277,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * It is implied both the user and the menu know which camp the registration is for
 	 * Usually a user would have already selected a camp before this choice is given
+	 * @param campid the camp the user is registering for
      * @return the menu choice
 	 */
 	public static MenuChoice registerAsAttendee (Integer campid) {
@@ -273,6 +288,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * It is implied both the user and the menu know which camp the registration is for
 	 * Usually a user would have already selected a camp before this choice is given
+	 * @param campid the camp the user is registering for
      * @return the menu choice
 	 */
 	public static MenuChoice registerAsCommittee(Integer campid) {
@@ -283,6 +299,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * It is implied both the user and the menu know which camp the registration is for
 	 * Usually a user would have already selected a camp before this choice is given
+	 * @param campid the camp to generate the report for
      * @return the menu choice
 	 */
 	public static MenuChoice generateAttendanceList(Integer campid) {
@@ -293,6 +310,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * It is implied both the user and the menu know which camp the list is for
 	 * Usually a user would have already selected a camp before this choice is given
+	 * @param campid the camp to generate the report for 
      * @return the menu choice
 	 */
 	public static MenuChoice generateForAttendee(Integer campid) {
@@ -303,6 +321,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * It is implied both the user and the menu know which camp the list is for
 	 * Usually a user would have already selected a camp before this choice is given
+	 * @param campid the camp to generate the report for 
      * @return the menu choice
 	 */
 	public static MenuChoice generateForCommittee(Integer campid) {
@@ -313,6 +332,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * It is implied both the user and the menu know which camp the list is for
 	 * Usually a user would have already selected a camp before this choice is given
+	 * @param campid the camp to generate the report for 
      * @return the menu choice
 	 */
 	public static MenuChoice generateForBoth(Integer campid) {
@@ -323,6 +343,7 @@ public final class CamsInteraction{ //Menu choices
 	 * <p>
 	 * It is implied both the user and the menu know which camp the report is for
 	 * Usually a user would have already selected a camp before this choice is given
+	 * @param campid the camp to generate the report for 
      * @return the menu choice
 	 */
 	public static MenuChoice generatePerformanceReport(Integer campid) {
@@ -330,14 +351,13 @@ public final class CamsInteraction{ //Menu choices
 	}
 	
 	/**
-	 * 
      * @return the menu choice
 	 */
 	public static MenuChoice changePassword() {
 		return new MenuChoice(Perms.DEFAULT,"Change your password", new doChangePassword());
 	}
 	/**
-	 * @param suggestionid
+	 * @param suggestionid the suggestion to be rejected
      * @return the menu choice
 	 */
 	public static MenuChoice rejectSuggestion(Integer suggestionid) {
@@ -348,6 +368,7 @@ public final class CamsInteraction{ //Menu choices
 	 * List of menu choices to be used for the single suggestion menu
 	 * <p>
 	 * Users will be given these choices once they have selected a suggestion
+	 * @param suggestionid the suggestion this menu relates to
      * @return the list of initialised choices constructed via factory
 	 */
 	private static List<MenuChoice>singlesuggestionchoice(int suggestionid){ 
@@ -361,6 +382,7 @@ public final class CamsInteraction{ //Menu choices
 	/**
 	 * List of menu choices to be used for the single enquiry menu
 	 * Users will be given these choices once they have selected an enquiry
+	 * @param enquiryid the enquiry this menu relates to
 	 * @return the list of initialised choices constructed via factory
 	 */
 	private static List<MenuChoice> singleenquirychoices(int enquiryid){
@@ -373,6 +395,7 @@ public final class CamsInteraction{ //Menu choices
 	/**
 	 * List of menu choices to be used for the start menu
 	 * Users will be given these choices immediately after logging in
+	 * @param userid the current user
 	 * @return the list of initialised choices constructed via factory
 	 */
 	private static List<MenuChoice> startmenuchoices(String userid){
@@ -387,6 +410,8 @@ public final class CamsInteraction{ //Menu choices
 	/**
 	 * List of menu choices to be used for the own camp menu
 	 * Users will be given these choices if they have selected a camp on their camp list
+	 * @param campid the camp the menu is about
+	 * @param userid the current user, as we need to check perms for subsequent menu traversal
 	 * @return the list of initialised choices constructed via factory
 	 */
 	private static List<MenuChoice> owncampchoices(Integer campid,String userid){
@@ -407,6 +432,8 @@ public final class CamsInteraction{ //Menu choices
 	/**
 	 * List of menu choices to be used for the other camp menu
 	 * Users will be given these choices if they have selected a camp not on their camp list
+	 * @param campid the camp the menu is about
+	 * @param userid the current user, as we need to check perms for subsequent menu traversal
 	 * @return the list of initialised choices constructed via factory
 	 */
 	private static List<MenuChoice> othercampchoices(Integer campid, String userid){
@@ -418,7 +445,7 @@ public final class CamsInteraction{ //Menu choices
 		);
 	}
 	/**
-	 * @param campid
+	 * @param campid the camp to generate an attendance list of
 	 * @return the list of initialised choices constructed via factory
 	 */
 	private static List<MenuChoice> attendancelistchoices(Integer campid){
@@ -430,6 +457,7 @@ public final class CamsInteraction{ //Menu choices
 	/**
 	 * Denotes a Static Menu instance representing the menu users first see.
 	 * @see startmenuchoices
+	 * @param userid the current user
 	 * @return the entire menu with initialised choices, as well as the interaction if none of the choices are selected
 	 */
 	public static StaticMenu startmenu(String userid) {
@@ -438,6 +466,8 @@ public final class CamsInteraction{ //Menu choices
 	/**
 	 * Denotes a Static Menu instance representing the menu users see after they have selected a camp on their camp list
 	 * @see owncampchoices
+	 * @param campid the camp the menu is about
+	 * @param userid the current user, as we need to check perms for subsequent menu traversal
 	 * @return the entire menu with initialised choices, as well as the interaction if none of the choices are selected
 	 */
 	public static StaticMenu OwnCampMenu(Integer campid, String userid) {
@@ -446,6 +476,8 @@ public final class CamsInteraction{ //Menu choices
 	/**
 	 * Denotes a Static Menu instance representing the menu users see after they have selected a camp not on their camp list
 	 * @see othercampchoices
+	 * @param campid the camp the menu is about
+	 * @param userid the current user, as we need to check perms for subsequent menu traversal
 	 * @return the entire menu with initialised choices, as well as the interaction if none of the choices are selected
 	 */
 	public static StaticMenu OtherCampMenu(Integer campid,String userid) {
@@ -454,6 +486,7 @@ public final class CamsInteraction{ //Menu choices
 	/**
 	 * Denotes a Static Menu instance representing the menu users see after they have selected a suggestion
 	 * @see singlesuggestionchoice
+	 * @param suggestionid the suggestion the menu relates to
 	 * @return the entire menu with initialised choices, as well as the interaction if none of the choices are selected
 	 */
 	public static StaticMenu SingleSuggestionMenu(int suggestionid) {
@@ -461,10 +494,11 @@ public final class CamsInteraction{ //Menu choices
 	}
 	/**
 	 * Denotes a Static Menu instance representing the menu users see after they have selected an enquiry
+	 * @param enquiryid the enquiry the menu relates to
 	 * @return the entire menu with initialised choices, as well as the interaction if none of the choices are selected
 	 */
 	public static StaticMenu SingleEnquiryMenu(int enquiryid) {
-		return new StaticMenu("What would you like to do with this enquiry?",singleenquirychoices(enquiryid), new queryEnquriesMenu());
+		return new StaticMenu("What would you like to do with this enquiry?",singleenquirychoices(enquiryid), new queryEnquiriesMenu());
 	}
 	/**
 	 * Denotes a static menu instance representing the menu users see after they click generate attendance list.<p>

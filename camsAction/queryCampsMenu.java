@@ -112,7 +112,7 @@ public class queryCampsMenu extends UserMenu {
 			if(this.filters!=null) next = next.withfilter(filters);
 			if(this.userid!=null) next = next.withuser(userid);
 		}
-		else if(this.filters!=null) {
+		else if(this.filters!=null&&this.filters.size()>0) {
 			this.filters.clear();
 			next = new queryCampsMenu().withfilter(filters);
 			if(this.userid!=null) next=next.withuser(userid);

@@ -48,11 +48,14 @@ public class ReadWriteEnquiryCSV {
                             Boolean seen = Boolean.parseBoolean(values[2]);
                             LocalDate creationDate = LocalDate.parse(values[3]);
                             LocalDate lastUpdateDate = LocalDate.parse(values[4]);
-                            String replyString = values[5];
+                            String replyString;
                             ArrayList<String> replyArrayList = new ArrayList<String>();
-                            String[] replies = replyString.split(";");
-                            for (String reply : replies) {
-                                replyArrayList.add(reply);
+                            if (values.length > 5) {
+                                replyString = values[5];
+                                String[] replies = replyString.split(";");
+                                for (String reply : replies) {
+                                    replyArrayList.add(reply);
+                                }
                             }
                             lastEnquiryId = enquiryId;
                             Enquiry enquiry = new Enquiry(enquiryId, enquiryBody, seen, creationDate, lastUpdateDate,
@@ -91,8 +94,12 @@ public class ReadWriteEnquiryCSV {
                         + enquiry.getEnquiryBody() + ","
                         + enquiry.isSeen() + ","
                         + enquiry.getCreationDate() + ","
-                        + enquiry.getLastUpdateDate() + ","
-                        + String.join(";", enquiry.getReplies()) + "\n");
+                        + enquiry.getLastUpdateDate() + ",");
+                if (enquiry.getReplies().size() > 0) {
+                    writer.append(String.join(";", enquiry.getReplies()) + "\n");
+                } else {
+                    writer.append("" + "\n");
+                }
             }
             return true;
         } catch (IOException e) {

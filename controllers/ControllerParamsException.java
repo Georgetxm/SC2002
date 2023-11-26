@@ -11,7 +11,7 @@ public class ControllerParamsException extends Exception {
 	/**
 	 * Constructor for ControllerParamsException
 	 * 
-	 * @param info
+	 * @param info The error message
 	 */
 	public ControllerParamsException(String info) {
 		super(info);

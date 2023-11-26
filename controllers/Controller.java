@@ -5,8 +5,10 @@ package controllers;
  * Holds all the controllers for the program via the interface
  * Inherits from User class
  * 
- * @see UserControlInterface, CampControlInterface, EnquiryControlInterface,
- *      SuggestionControlInterface
+ * @see UserControlInterface
+ * @see CampControlInterface
+ * @see EnquiryControlInterface,
+ * @see SuggestionControlInterface
  * @author Teo Xuan Ming
  * @version 1.1
  * @since 2021-11-24
@@ -75,7 +77,7 @@ public enum Controller {
 	/**
 	 * Creates new EnquiryControlInterface object with the given parameters, meant
 	 * 
-	 * @param enquiry
+	 * @param enquiry the EnquiryControlInterface object
 	 */
 	public void setEnquiry(EnquiryControlInterface enquiry) {
 		this.enquiry = enquiry;
@@ -84,7 +86,7 @@ public enum Controller {
 	/**
 	 * Default constructor for Controller
 	 * 
-	 * @return
+	 * @return SuggestionControlInterface
 	 */
 	public SuggestionControlInterface Suggestion() {
 		return suggestion;
@@ -94,7 +96,7 @@ public enum Controller {
 	 * Creates new SuggestionControlInterface object with the given parameters,
 	 * meant
 	 * 
-	 * @param suggestion
+	 * @param suggestion the SuggestionControlInterface object
 	 */
 	public void setSuggestion(SuggestionControlInterface suggestion) {
 		this.suggestion = suggestion;
@@ -103,7 +105,7 @@ public enum Controller {
 	/**
 	 * Default constructor for UserController
 	 * 
-	 * @return
+	 * @return UserController
 	 */
 	public UserControlInterface User() {
 		return user;
@@ -112,7 +114,7 @@ public enum Controller {
 	/**
 	 * Creates new UserControlInterface object with the given parameters, meant
 	 * 
-	 * @param user
+	 * @param user the UserControlInterface object
 	 */
 	public void setUser(UserControlInterface user) {
 		this.user = user;
@@ -121,7 +123,7 @@ public enum Controller {
 	/**
 	 * Default constructor for Directory
 	 * 
-	 * @return
+	 * @return Directory
 	 */
 
 	public Directory Directory() {

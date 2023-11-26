@@ -43,7 +43,7 @@ public interface CampControlInterface {
 	 * ID
 	 * Check CampAspects.java for the list of attributes in CampInfo
 	 * 
-	 * @param campId the Camp's ID
+	 * @param campid the Camp's ID
 	 * 
 	 * @return the CampInfo object with the given ID, null if not found
 	 */

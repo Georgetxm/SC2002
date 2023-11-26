@@ -65,7 +65,7 @@ public class queryCampsMenu extends UserMenu {
 		    else if(filters!=null) {
 		    	List<Entry<CampAspect, ? extends Object>> filterlist = new ArrayList<Entry<CampAspect, ? extends Object>>(filters.entrySet());
 		    	for(Entry<CampAspect, ? extends Object> filter:filterlist)
-		    		if(control.Camp().details((int) element).info().get(filter.getKey())!=filter.getValue()){
+		    		if(control.Camp().details((int) element).info().get(filter.getKey()).equals(filter.getValue())){
 		    		it.remove();
 		    		break;
 		    	}

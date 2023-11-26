@@ -58,7 +58,6 @@ public class queryCampsMenu extends UserMenu {
 		}
 		
 		viewingset = new HashSet<Serializable>(control.Directory().sync().get(entities.Camp.class));
-		System.out.println(viewingset);
 		for (Iterator<Serializable> it = viewingset.iterator(); it.hasNext();) {
 		    Serializable element = it.next();
 		    Faculty campfaculty = (Faculty) control.Camp().details((int) element).info().get(CampAspect.USERGROUP);

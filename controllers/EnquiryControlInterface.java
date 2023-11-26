@@ -25,7 +25,7 @@ public interface EnquiryControlInterface {
 	 * @param enquiryid the enquiry id to be edited
 	 * @param enquiry   the new enquiry text
 	 * @return the enquiry id if successful, -1 if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 	int edit(int enquiryid, String enquiry) throws ControllerItemMissingException;
 
@@ -43,6 +43,7 @@ public interface EnquiryControlInterface {
 	 * 
 	 * @param enquiryid the enquiry id to be finalised
 	 * @return true if successful, controller item missing exception if not
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 	Boolean finalise(int enquiryid) throws ControllerItemMissingException; // mark as uneditable
 
@@ -53,6 +54,7 @@ public interface EnquiryControlInterface {
 	 * 
 	 * @param enquiryid the enquiry id to be checked
 	 * @return true if editable, throws controller item missing exception if not
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 	Boolean isEditable(int enquiryid) throws ControllerItemMissingException;
 
@@ -62,7 +64,7 @@ public interface EnquiryControlInterface {
 	 * @param enquiryid
 	 * @param reply
 	 * @return the enquiry id if successful, -1 if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 	int saveReply(int enquiryid, String reply) throws ControllerItemMissingException;
 
@@ -71,6 +73,7 @@ public interface EnquiryControlInterface {
 	 * 
 	 * @param enquiryid the enquiry id to be retrieved
 	 * @return the replies to an enquiry if successful, controller item missing
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 
 	ArrayList<String> getReplies(int enquiryid) throws ControllerItemMissingException;
@@ -80,7 +83,7 @@ public interface EnquiryControlInterface {
 	 * 
 	 * @param enquiryid
 	 * @return true if successful, controller item missing exception if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 	Boolean delete(int enquiryid) throws ControllerItemMissingException;
 }

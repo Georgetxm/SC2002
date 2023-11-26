@@ -132,7 +132,7 @@ public enum Controller {
 	/**
 	 * Creates new Directory object with the given parameters, meant
 	 * 
-	 * @param dir
+	 * @param dir the current active directory
 	 */
 	public void setDirectory(Directory dir) {
 		this.directory = dir;

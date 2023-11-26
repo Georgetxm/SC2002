@@ -59,8 +59,7 @@ public class Lookup implements Directory{
 	 * {@inheritDoc}
 	 */
 	public HashSet<Serializable> get(Class<?> type) {
-		HashSet<Serializable> returnset = store.get(type);
-		if(returnset == null) returnset = new HashSet<Serializable>();
+		HashSet<Serializable> returnset = new HashSet<Serializable>(store.get(type));
 		for(Class<?> filtertype : regularfilters.keySet()) {
 			HashSet<Serializable> filter = null;
 			if(regularfilters.get(filtertype)!=null)

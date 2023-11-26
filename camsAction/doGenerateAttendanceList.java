@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ public final class doGenerateAttendanceList extends Interaction {
 	/**
 	 * Asks controller for a list of users of the requested type and camp details.
 	 * Generates a csv report.
+	 * 
 	 * @return the correct single camp menu, removing rolerequested and preserving
 	 *         all other parameters
 	 * @throws MissingRequestedDataException if suggestion to be deleted cannot be
@@ -43,9 +47,9 @@ public final class doGenerateAttendanceList extends Interaction {
 	@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {
-		if (campid == null||rolerequested.size()<1)
+		if (campid == null || rolerequested.size() < 1)
 			throw new MissingRequestedDataException("Camp is not valid or role requested less than 1");
-		
+
 		HashSet<Serializable> usercamps = new HashSet<Serializable>();
 		usercamps = control.Directory().with(entities.User.class, currentuser).get(entities.Camp.class);
 		next = (usercamps != null && usercamps.contains(campid)) ? CamsInteraction.OwnCampMenu(campid, currentuser)
@@ -54,7 +58,8 @@ public final class doGenerateAttendanceList extends Interaction {
 			next = next.withuser(userid);
 		if (this.filters != null)
 			next = next.withfilter(filters);
-		if(control.User().getClass(currentuser)==entities.Student.class&&control.User().getCampCommitteeOfStudent(currentuser)!=campid)
+		if (control.User().getClass(currentuser) == entities.Student.class
+				&& control.User().getCampCommitteeOfStudent(currentuser) != campid)
 			return next.withcamp(campid);
 		// Get everyone, staff, committee or whatever associated with the camp. Is a set
 		// of strings.
@@ -91,6 +96,16 @@ public final class doGenerateAttendanceList extends Interaction {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");
 		LocalDateTime now = LocalDateTime.now();
 
+		String subdirectoryName = "output";
+		Path subdirectoryPath = Paths.get(System.getProperty("user.dir"), subdirectoryName);
+		if (!Files.exists(subdirectoryPath) && !Files.isDirectory(subdirectoryPath)) {
+			try {
+				Files.createDirectory(subdirectoryPath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		File file = new File("output/camp" + campid.toString() + "_attendance_" + dtf.format(now) + ".csv");
 		FileWriter writer = null;
 		try {
@@ -114,7 +129,6 @@ public final class doGenerateAttendanceList extends Interaction {
 			}
 		}
 
-		
 		return next.withcamp(campid);
 	}
 

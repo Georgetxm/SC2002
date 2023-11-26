@@ -81,6 +81,7 @@ public abstract class UserMenu extends Interaction {
 				   selected = Integer.parseInt(inputs);
 				 }catch(NumberFormatException e) {} 
 				if(selected!=-9) break;
+				System.out.println("Please type in a valid option");
 			}
 			if (TLB.keySet().contains(selected))
 				return TLB.get(selected);

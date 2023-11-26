@@ -53,14 +53,22 @@ public final class ReadWriteUserCSV {
                             String[] values = line.split(",");
                             String name = values[0];
                             String userId = values[1].split("@")[0]; // Remove @e.ntu.edu
-                            String password = values[3];
                             Faculty faculty = Faculty.valueOf(values[2]);
+                            String password = values[3];
+                            int campCommittee = -1;
+                            if (values.length > 4) {
+                                campCommittee = Integer.parseInt(values[4]);
+                            }
+                            int points = 0;
+                            if (values.length > 5) {
+                                points = Integer.parseInt(values[5]);
+                            }
 
                             if (file.getName().contains("staff")) {
                                 Staff staff = new Staff(userId, name, password, faculty);
                                 userList.put(userId, staff);
                             } else if (file.getName().contains("student")) {
-                                Student student = new Student(userId, name, password, faculty);
+                                Student student = new Student(userId, name, password, faculty, campCommittee, points);
                                 userList.put(userId, student);
                             }
 
@@ -110,8 +118,16 @@ public final class ReadWriteUserCSV {
                             .append(",")
                             .append(user.getFaculty().toString())
                             .append(',')
-                            .append(user.getPassword())
-                            .append("\n");
+                            .append(user.getPassword());
+
+                    if (user.getClass() == Student.class) {
+                        writer.append(",")
+                                .append(String.valueOf(((Student) user).getCampCommittee()))
+                                .append(",")
+                                .append(String.valueOf(((Student) user).getPoints()));
+                    }
+
+                    writer.append("\n");
                 }
 
             }

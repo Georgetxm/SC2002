@@ -55,8 +55,8 @@ public class Camp {
      * Constructor for Camp. Intended use is for creating a new camp when entering
      * information from the CLI
      * 
-     * @param campInfo
-     * @param creationDate
+     * @param campInfo    the CampInfo object containing the camp's information
+     * @param creationDate the date that the camp was created
      */
     public Camp(CampInfo campInfo, LocalDate creationDate) {
         this.campInfo = campInfo;

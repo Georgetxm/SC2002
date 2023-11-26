@@ -7,7 +7,11 @@ package controllers;
  * 
  * @see UserControlInterface
  * @see CampControlInterface
+<<<<<<< HEAD
  * @see EnquiryControlInterface
+=======
+ * @see EnquiryControlInterface,
+>>>>>>> branch 'Lookup-4-Controller' of https://github.com/Georgetxm/SC2002.git
  * @see SuggestionControlInterface
  * @author Teo Xuan Ming
  * @version 1.1
@@ -77,7 +81,7 @@ public enum Controller {
 	/**
 	 * Creates new EnquiryControlInterface object with the given parameters, meant
 	 * 
-	 * @param enquiry
+	 * @param enquiry the EnquiryControlInterface object
 	 */
 	public void setEnquiry(EnquiryControlInterface enquiry) {
 		this.enquiry = enquiry;
@@ -86,7 +90,7 @@ public enum Controller {
 	/**
 	 * Default constructor for Controller
 	 * 
-	 * @return
+	 * @return SuggestionControlInterface
 	 */
 	public SuggestionControlInterface Suggestion() {
 		return suggestion;
@@ -96,7 +100,7 @@ public enum Controller {
 	 * Creates new SuggestionControlInterface object with the given parameters,
 	 * meant
 	 * 
-	 * @param suggestion
+	 * @param suggestion the SuggestionControlInterface object
 	 */
 	public void setSuggestion(SuggestionControlInterface suggestion) {
 		this.suggestion = suggestion;
@@ -105,7 +109,7 @@ public enum Controller {
 	/**
 	 * Default constructor for UserController
 	 * 
-	 * @return
+	 * @return UserController
 	 */
 	public UserControlInterface User() {
 		return user;
@@ -114,7 +118,7 @@ public enum Controller {
 	/**
 	 * Creates new UserControlInterface object with the given parameters, meant
 	 * 
-	 * @param user
+	 * @param user the UserControlInterface object
 	 */
 	public void setUser(UserControlInterface user) {
 		this.user = user;
@@ -123,7 +127,7 @@ public enum Controller {
 	/**
 	 * Default constructor for Directory
 	 * 
-	 * @return
+	 * @return Directory
 	 */
 
 	public Directory Directory() {

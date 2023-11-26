@@ -120,7 +120,7 @@ public class User {
     /**
      * Returns true if the User has been given the new permission(s)
      * 
-     * @param newPerms
+     * @param newPerms The new permission(s) to be given to the User
      * @return true if the User has been given the new permission(s)
      */
     public boolean addPerms(EnumSet<Perms> newPerms) {
@@ -142,7 +142,7 @@ public class User {
     /**
      * Returns true if the specified permission(s) has been removed from the User
      * 
-     * @param newPerms
+     * @param newPerms The permission(s) to be removed from the User
      * @return true if the specified permission(s) has been removed from the User
      */
     public boolean removePerms(EnumSet<Perms> newPerms) {
@@ -153,7 +153,7 @@ public class User {
     /**
      * Returns true if the User has the specified permission(s)
      * 
-     * @param newPassword
+     * @param newPassword The permission(s) to be checked
      * @return void
      */
     public void changePassword(String newPassword) {

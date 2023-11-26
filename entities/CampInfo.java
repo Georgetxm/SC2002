@@ -13,7 +13,6 @@ import types.CampAspect;
  * 
  * @see CampAspect
  * @param info the TreeMap containing the Camp's information
- * @return CampInfo object
  * 
  * @author Teo Xuan Ming
  * @version 1.1

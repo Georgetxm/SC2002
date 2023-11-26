@@ -33,10 +33,6 @@ public class Camp {
     private static int nextCampId = 0;
 
     /**
-     * visibility is true if the camp is visible to students, false otherwise
-     */
-    private boolean visibility;
-    /**
      * attendeeCount is the current number of attendees in the camp
      */
     private int attendeeCount = 0;
@@ -59,10 +55,9 @@ public class Camp {
      * @param visibility
      * @param creationDate
      */
-    public Camp(CampInfo campInfo, boolean visibility, LocalDate creationDate) {
+    public Camp(CampInfo campInfo, LocalDate creationDate) {
         this.campInfo = campInfo;
         this.campid = nextCampId++;
-        this.visibility = visibility;
         this.creationDate = creationDate;
     }
 
@@ -78,11 +73,10 @@ public class Camp {
      * @param commiteeCount
      * @param committeeCount
      */
-    public Camp(int campId, CampInfo campInfo, boolean visibility, LocalDate creationDate, int attendeeCount,
+    public Camp(int campId, CampInfo campInfo, LocalDate creationDate, int attendeeCount,
             int committeeCount) {
         this.campInfo = campInfo;
         this.campid = campId;
-        this.visibility = visibility;
         this.attendeeCount = attendeeCount;
         this.committeeCount = committeeCount;
         this.creationDate = creationDate;
@@ -118,25 +112,6 @@ public class Camp {
         return this.campInfo;
     }
 
-    /**
-     * Getter for visibility
-     * 
-     * @return the visibility
-     */
-    public boolean getVisibility() {
-        return this.visibility;
-    }
-
-    /**
-     * Setter for visibility
-     * 
-     * @param visibility
-     * @return true if visibility is successfully set, false otherwise
-     */
-    public boolean setVisibility(boolean visibility) {
-        this.visibility = visibility;
-        return true;
-    }
 
     /**
      * Getter for attendeeCount

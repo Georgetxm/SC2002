@@ -74,10 +74,9 @@ public class ReadWriteCampCSV {
                             int campCommitteeSlots = Integer.parseInt(values[7]);
                             String campDescription = values[8];
                             String staffIC = values[9];
-                            boolean visibility = Boolean.parseBoolean(values[10]);
-                            LocalDate creationDate = LocalDate.parse(values[11]);
-                            int attendeeCount = Integer.parseInt(values[12]);
-                            int committeeCount = Integer.parseInt(values[13]);
+                            LocalDate creationDate = LocalDate.parse(values[10]);
+                            int attendeeCount = Integer.parseInt(values[11]);
+                            int committeeCount = Integer.parseInt(values[12]);
                             // Create CampInfo and Camp Object
                             TreeMap<CampAspect, Object> campInfoObj = new TreeMap<CampAspect, Object>();
                             campInfoObj.put(CampAspect.NAME, campName);
@@ -90,7 +89,7 @@ public class ReadWriteCampCSV {
                             campInfoObj.put(CampAspect.DESCRIPTION, campDescription);
                             campInfoObj.put(CampAspect.STAFFIC, staffIC);
                             CampInfo campInfo = new CampInfo(campInfoObj);
-                            Camp camp = new Camp(campId, campInfo, visibility, creationDate, attendeeCount,
+                            Camp camp = new Camp(campId, campInfo, creationDate, attendeeCount,
                                     committeeCount);
                             campList.put(camp.getCampid(), camp);
                             lastCampId = campId;
@@ -124,7 +123,7 @@ public class ReadWriteCampCSV {
             for (Camp camp : campList.values()) {
 
                 @SuppressWarnings("unchecked")
-				HashSet<LocalDate> datesHashSet = (HashSet<LocalDate>) camp.getCampInfo().info()
+                HashSet<LocalDate> datesHashSet = (HashSet<LocalDate>) camp.getCampInfo().info()
                         .get(CampAspect.DATE);
                 String dates = "";
                 for (LocalDate localDate : datesHashSet) {
@@ -149,8 +148,8 @@ public class ReadWriteCampCSV {
                 writer.append(camp.getCampInfo().info().get(CampAspect.DESCRIPTION).toString());
                 writer.append(",");
                 writer.append(camp.getCampInfo().info().get(CampAspect.STAFFIC).toString());
-                writer.append(",");
-                writer.append(String.valueOf(camp.getVisibility()));
+                // writer.append(",");
+                // writer.append(String.valueOf(camp.getVisibility()));
                 writer.append(",");
                 writer.append(camp.getCreationDate().toString());
                 writer.append(",");

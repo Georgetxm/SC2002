@@ -51,7 +51,7 @@ public class CampController implements CampControlInterface {
 	 */
 	@Override
 	public int add(CampInfo info) {
-		Camp camp = new Camp(info, false, LocalDate.now());
+		Camp camp = new Camp(info, LocalDate.now());
 
 		camps.put((Integer) camp.getCampid(), camp);
 		ReadWriteCampCSV.writeCampCSV(camps, "lists/camp_list.csv");

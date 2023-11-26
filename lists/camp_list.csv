@@ -1,3 +1,3 @@
-campId,campName,campDates,registrationDeadline,faculty,location,slots,committeeSlots,description,staffIC,visibility,createDate,attendeeCount,committeeCount
-69,Interstellar,2019-12-30;2019-12-29;,2019-11-30,SCSE,YUNAN_GARDEN,200,10,Description for Interstellar,OURIN,false,2019-11-11,0,0
-72,Dog Camp,2019-02-23;2019-02-22;,2019-01-30,WHOLE_NTU,THE_ARC,500,15,Description for DOG CAMP,HUKUMAR,true,2019-01-11,0,0
+campId,campName,campDates,registrationDeadline,faculty,location,slots,committeeSlots,description,staffIC,createDate,attendeeCount,committeeCount
+69,Interstellar,2019-12-30;2019-12-29;,2019-11-30,SCSE,YUNAN_GARDEN,200,10,Description for Interstellar,OURIN,2019-11-11,0,0
+72,Dog Camp,2019-02-23;2019-02-22;,2019-01-30,WHOLE_NTU,THE_ARC,500,15,Description for DOG CAMP,HUKUMAR,2019-01-11,0,0

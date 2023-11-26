@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -68,6 +71,15 @@ public class doGeneratePerformanceReport extends Interaction {
 
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");
 		LocalDateTime now = LocalDateTime.now();
+		String subdirectoryName = "output";
+		Path subdirectoryPath = Paths.get(System.getProperty("user.dir"), subdirectoryName);
+		if (!Files.exists(subdirectoryPath) && !Files.isDirectory(subdirectoryPath)) {
+			try {
+				Files.createDirectory(subdirectoryPath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		File file = new File("output/camp" + campid.toString() + "_peformance_" + dtf.format(now) + ".csv");
 		FileWriter writer = null;

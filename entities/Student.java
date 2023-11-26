@@ -31,6 +31,9 @@ public class Student extends User {
      */
     private int points;
 
+    /**
+     * Default constructor for Student
+     */
     public Student() {
         super("Armstrong", "Armstrong Docke", "StrongPassword", Faculty.ADM, EnumSet.of(
                 Perms.DEFAULT,
@@ -46,10 +49,10 @@ public class Student extends User {
     /**
      * Creates new Student object with the given parameters
      * 
-     * @param userId
-     * @param name
-     * @param password
-     * @param faculty
+     * @param userId   The userId of the Student
+     * @param name     The name of the Student
+     * @param password The password of the Student
+     * @param faculty  The faculty of the Student
      */
     public Student(String userId, String name, String password, Faculty faculty) {
         super(userId, name, password, faculty, EnumSet.of(
@@ -68,12 +71,13 @@ public class Student extends User {
      * Creates new Student object with the given parameters meant for use when
      * reading from student_list.csv
      * 
-     * @param userId
-     * @param name
-     * @param password
-     * @param faculty
-     * @param campCommittee
-     * @param points
+     * @param userId        The userId of the Student
+     * @param name          The name of the Student
+     * @param password      The password of the Student
+     * @param faculty       The faculty of the Student
+     * @param campCommittee The campId of the camp that the Student is a committee
+     *                      of
+     * @param points        The number of points the Student has
      */
     public Student(String userId, String name, String password, Faculty faculty, int campCommittee, int points) {
         super(userId, name, password, faculty, EnumSet.of(

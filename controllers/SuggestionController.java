@@ -29,8 +29,7 @@ public class SuggestionController implements SuggestionControlInterface {
 	/**
 	 * Constructor for Suggestion Controller
 	 * 
-	 * @param suggestions the list of Suggestion objects
-	 * @return the Suggestion object with the given ID, null if not found
+	 * @param suggestionList the list of Suggestion objects
 	 */
 	public SuggestionController(HashMap<Integer, Suggestion> suggestionList) {
 		this.suggestions = suggestionList;
@@ -61,7 +60,7 @@ public class SuggestionController implements SuggestionControlInterface {
 	 * @param suggestion the suggestion aspect text to be added
 	 * @param rationale  the rationale for the suggestion
 	 * @return the suggestion id if successful
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if the camp or user is not found
 	 */
 	@Override
 	public int add(Entry<CampAspect, ? extends Object> suggestion, String rationale)
@@ -84,7 +83,7 @@ public class SuggestionController implements SuggestionControlInterface {
 	 * @param rationale the new rationale
 	 * @return the suggestion id if successful throws controller item missing
 	 *         exception if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if the suggestion cannot be found
 	 */
 	@Override
 	public int edit(int id, Entry<CampAspect, ? extends Object> edited, String rationale)
@@ -110,7 +109,7 @@ public class SuggestionController implements SuggestionControlInterface {
 	 * @param suggestionid the suggestion id to be retrieved
 	 * @return the suggestion object if successful, controller item missing
 	 *         exception if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if the suggestion cannot be found
 	 * 
 	 */
 	@Override

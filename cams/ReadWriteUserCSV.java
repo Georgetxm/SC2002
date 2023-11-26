@@ -27,8 +27,8 @@ public final class ReadWriteUserCSV {
      * Read user CSV.
      * Expected CSV format: name,email,faculty,password
      * 
-     * @param userList
-     * @param pathName
+     * @param userList the user list
+     * @param pathName the path name e.g. /lists
      */
     public static final void readUserCSV(HashMap<String, User> userList, String pathName) {
 
@@ -87,6 +87,7 @@ public final class ReadWriteUserCSV {
      * 
      * @param userList         the user list
      * @param fileNameWithPath e.g. /lists/staff_list.csv
+     * @param role             the role
      * @return true, if successful
      */
     public static final boolean writeUserCSV(HashMap<String, User> userList, String fileNameWithPath, Role role) {

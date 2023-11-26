@@ -27,7 +27,7 @@ public class ReadWriteSuggestionCSV {
      * Read convert aspect entry to csv row.
      * 
      * @param suggestionAspect the suggestion aspect
-     * @return
+     * @return the csv row string
      */
     private static String convertAspectEntryToCsvRow(Entry<CampAspect, ? extends Object> suggestionAspect) {
         CampAspect chosenaspect = suggestionAspect.getKey();
@@ -51,8 +51,8 @@ public class ReadWriteSuggestionCSV {
     /**
      * Read convert csv row to generate an aspect entry
      * 
-     * @param csvRow
-     * @return
+     * @param csvRow the csv row
+     * @return the aspect entry converted from a row string
      */
     private static Entry<CampAspect, ? extends Object> convertCsvRowToAspectEntry(String csvRow) {
         String[] values = csvRow.split(":");
@@ -81,6 +81,7 @@ public class ReadWriteSuggestionCSV {
 
     /**
      * Read Suggestion CSV.
+     * modifies the suggestionList by reference
      * Expected CSV format:
      * suggestionId, rationale, suggestionAspect, accepted, creationDate,
      * lastUpdatedDate
@@ -88,7 +89,6 @@ public class ReadWriteSuggestionCSV {
      * 
      * @param suggestionList the suggestionList
      * @param pathName       the path name e.g. /lists
-     * @return
      */
     public static final void readSuggestionCSV(HashMap<Integer, Suggestion> suggestionList, String pathName) {
 
@@ -138,7 +138,7 @@ public class ReadWriteSuggestionCSV {
      * Expected CSV format:
      * suggestionId, rationale, suggestionAspect, accepted, creationDate,
      * 
-     * @param suggestionList         the suggestionList
+     * @param suggestionList   the suggestionList
      * @param fileNameWithPath e.g. /lists/staff_list.csv
      * @return true, if successful
      */

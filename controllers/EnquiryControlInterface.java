@@ -61,8 +61,8 @@ public interface EnquiryControlInterface {
 	/**
 	 * Save a reply to an enquiry
 	 * 
-	 * @param enquiryid
-	 * @param reply
+	 * @param enquiryid the enquiry id to be replied to
+	 * @param reply     the reply text
 	 * @return the enquiry id if successful, -1 if not
 	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
@@ -81,7 +81,7 @@ public interface EnquiryControlInterface {
 	/**
 	 * Delete an enquiry
 	 * 
-	 * @param enquiryid
+	 * @param enquiryid the enquiry id to be deleted
 	 * @return true if successful, controller item missing exception if not
 	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */

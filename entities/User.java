@@ -60,6 +60,7 @@ public class User {
      * Constructor for User
      * 
      * @param userId     The userId of the User
+     * @param name       The name of the User
      * @param password   The password of the User
      * @param faculty    The faculty of the User
      * @param permission The permission of the User
@@ -131,7 +132,7 @@ public class User {
     /**
      * Returns true if the User permission(s) attribute has been replaced with the
      * 
-     * @param newPerms
+     * @param newPerms The new permission(s) to be replaced with
      * @return true if the User permission(s) attribute has been replaced with the
      */
     public boolean replacePerms(EnumSet<Perms> newPerms) {
@@ -154,7 +155,6 @@ public class User {
      * Returns true if the User has the specified permission(s)
      * 
      * @param newPassword The permission(s) to be checked
-     * @return void
      */
     public void changePassword(String newPassword) {
         this.password = newPassword;

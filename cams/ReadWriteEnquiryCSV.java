@@ -27,7 +27,7 @@ public class ReadWriteEnquiryCSV {
      * 
      * @param enquiryList the enquiry list
      * @param pathName    the path name e.g. /lists
-     * @return
+     * @return the hash map of enquiryId and enquiries
      */
     public static final HashMap<Integer, Enquiry> readEnquiryCSV(HashMap<Integer, Enquiry> enquiryList,
             String pathName) {

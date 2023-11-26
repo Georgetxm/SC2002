@@ -18,12 +18,15 @@ import entities.Enquiry;
  * @since 2021-11-24
  */
 public class EnquiryController implements EnquiryControlInterface {
+	/**
+	 * enquiries is the list of Enquiry objects
+	 */
 	private HashMap<Integer, Enquiry> enquiries;
 
 	/**
 	 * Constructor for Enquiry Controller
 	 * 
-	 * @param enquiries the list of Enquiry objects
+	 * @param enquiryList the list of Enquiry objects
 	 */
 	public EnquiryController(HashMap<Integer, Enquiry> enquiryList) {
 		this.enquiries = enquiryList;
@@ -65,7 +68,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	 * @param enquiryid the enquiry id to be edited
 	 * @param enquiry   the new enquiry text
 	 * @return the enquiry id if successful, -1 if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 	@Override
 	public int edit(int enquiryid, String enquiry) throws ControllerItemMissingException {
@@ -105,7 +108,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	 * 
 	 * @param enquiryid the enquiry id to be finalised
 	 * @return true if successful, controller item missing exception if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 	@Override
 	public Boolean finalise(int enquiryid) throws ControllerItemMissingException {
@@ -126,7 +129,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	 * 
 	 * @param enquiryid the enquiry id to be checked
 	 * @return true if editable, throws controller item missing exception if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 	@Override
 	public Boolean isEditable(int enquiryid) throws ControllerItemMissingException {
@@ -144,7 +147,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	 * @param enquiryid the enquiry id to be replied to
 	 * @param reply     the reply text
 	 * @return the enquiry id if successful, -1 if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 	@Override
 	public int saveReply(int enquiryid, String reply) throws ControllerItemMissingException {
@@ -166,7 +169,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	 * 
 	 * @param enquiryid the enquiry id to be retrieved
 	 * @return the replies to an enquiry if successful, controller item missing
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 	@Override
 	public ArrayList<String> getReplies(int enquiryid) throws ControllerItemMissingException {
@@ -184,7 +187,7 @@ public class EnquiryController implements EnquiryControlInterface {
 	 * 
 	 * @param enquiryid the enquiry id to be deleted
 	 * @return true if successful, controller item missing exception if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if enquiry cannot be found
 	 */
 	@Override
 	public Boolean delete(int enquiryid) throws ControllerItemMissingException {

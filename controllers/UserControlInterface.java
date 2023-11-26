@@ -26,9 +26,9 @@ public interface UserControlInterface {
 	 * Tags a User to a Camp object's committee HashMap attribute
 	 * Tags a Camp to a Student object's campCommittee int attribute
 	 * 
-	 * @param campId the Camp this User belongs to
+	 * @param userid the User's ID
 	 * 
-	 * @param userId the User's ID
+	 * @param campid the Camp this User belongs to
 	 * 
 	 * @return true if the User is successfully added to the Camp, false otherwise
 	 */
@@ -64,7 +64,7 @@ public interface UserControlInterface {
 	 * Denies a Student a set of permissions
 	 * 
 	 * @param userid       the Student's ID
-	 * @param removedPerms the set of permissions to be denied
+	 * @param removedperms the set of permissions to be denied
 	 * @return the Student's new set of permissions
 	 */
 	public EnumSet<Perms> denyPerms(String userid, EnumSet<Perms> removedperms);
@@ -73,7 +73,7 @@ public interface UserControlInterface {
 	 * Replaces a Student's set of permissions
 	 * 
 	 * @param userid           the Student's ID
-	 * @param replacementPerms the set of permissions to be replaced
+	 * @param replacementperms the set of permissions to be replaced
 	 * @return the Student's new set of permissions
 	 */
 	public EnumSet<Perms> replacePerms(String userid, EnumSet<Perms> replacementperms);

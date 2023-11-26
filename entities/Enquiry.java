@@ -56,9 +56,9 @@ public class Enquiry {
      * 
      * Constructor for Enquiry
      * 
-     * @param enquiryBody
-     * @param seen
-     * @param creationDate
+     * @param enquiryBody the body of the enquiry
+     * @param seen      whether the enquiry has been seen
+     * @param creationDate the date that the enquiry was created
      */
     public Enquiry(String enquiryBody, boolean seen,
             LocalDate creationDate) {
@@ -75,12 +75,12 @@ public class Enquiry {
      * Constructor for Enquiry when reading from the enquiry.csv
      * Overloaded to include lastUpdateDate and replies
      * 
-     * @param enquiryId
-     * @param enquiryBody
-     * @param seen
-     * @param creationDate
-     * @param lastUpdateDate
-     * @param replies
+     * @param enquiryId the enquiryId to be assigned to the new enquiry
+     * @param enquiryBody the body of the enquiry
+     * @param seen     whether the enquiry has been seen
+     * @param creationDate the date that the enquiry was created
+     * @param lastUpdateDate the date that the enquiry was last updated
+     * @param replies the list of replies to the enquiry
      */
     public Enquiry(int enquiryId, String enquiryBody, boolean seen,
             LocalDate creationDate, LocalDate lastUpdateDate, ArrayList<String> replies) {

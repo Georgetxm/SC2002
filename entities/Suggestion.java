@@ -62,9 +62,9 @@ public class Suggestion {
     /**
      * Constructor for Suggestion
      * 
-     * @param rationale
-     * @param suggestionAspect
-     * @param creationDate
+     * @param rationale        the reason for the suggestion
+     * @param suggestionAspect the aspect of the camp that the suggestion is for
+     * @param creationDate     the date that the suggestion was created
      */
     public Suggestion(String rationale,
             Entry<CampAspect, ? extends Object> suggestionAspect,
@@ -82,12 +82,12 @@ public class Suggestion {
      * Constructor for Suggestion when reading from the suggestion_list.csv
      * Overloaded to include lastUpdateDate
      * 
-     * @param suggestionId
-     * @param rationale
-     * @param suggestionAspect
-     * @param accepted
-     * @param creationDate
-     * @param lastUpdatedDate
+     * @param suggestionId     the suggestionId to be assigned to the new suggestion
+     * @param rationale        the reason for the suggestion
+     * @param suggestionAspect the aspect of the camp that the suggestion is for
+     * @param accepted         whether the suggestion has been accepted
+     * @param creationDate     the date that the suggestion was created
+     * @param lastUpdatedDate  the date that the suggestion was last updated
      */
     public Suggestion(int suggestionId, String rationale,
             Entry<CampAspect, ? extends Object> suggestionAspect, boolean accepted,
@@ -106,7 +106,8 @@ public class Suggestion {
      * this ensures that the next suggestionId is always greater than the previous
      * and previous suggestionId will not be overwritten
      * 
-     * @param nextSuggestionId
+     * @param nextSuggestionId the next suggestionId to be assigned to a new
+     *                         suggestion
      */
     public static void setNextSuggestionId(int nextSuggestionId) {
         Suggestion.nextSuggestionId = nextSuggestionId;

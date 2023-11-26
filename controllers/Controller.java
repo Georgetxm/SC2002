@@ -57,9 +57,8 @@ public enum Controller {
 	/**
 	 * Creates new CampControlInterface object with the given parameters, meant for
 	 * use when reading from camp_list.csv
-	 * 
 	 * @param camp the CampControlInterface object
-	 * @return void
+	 * 
 	 */
 	public void setCamp(CampControlInterface camp) {
 		this.camp = camp;

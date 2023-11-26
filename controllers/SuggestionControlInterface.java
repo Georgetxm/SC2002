@@ -22,7 +22,7 @@ public interface SuggestionControlInterface {
 	 * @param suggestion the suggestion aspect text to be added
 	 * @param rationale  the rationale for the suggestion
 	 * @return the suggestion id if successful
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if the camp or user is not found
 	 */
 	int add(Entry<CampAspect, ? extends Object> suggestion, String rationale)
 			throws ControllerItemMissingException;
@@ -37,7 +37,7 @@ public interface SuggestionControlInterface {
 	 * @param rationale the new rationale
 	 * @return the suggestion id if successful throws controller item missing
 	 *         exception if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if the suggestion cannot be found
 	 */
 	int edit(int id, Entry<CampAspect, ? extends Object> edited, String rationale)
 			throws ControllerItemMissingException;
@@ -48,7 +48,7 @@ public interface SuggestionControlInterface {
 	 * @param suggestionid the suggestion id to be retrieved
 	 * @return the suggestion object if successful, controller item missing
 	 *         exception if not
-	 * @throws ControllerItemMissingException
+	 * @throws ControllerItemMissingException if the suggestion cannot be found
 	 * 
 	 */
 	Entry<Entry<CampAspect, ? extends Object>, String> get(int suggestionid) throws ControllerItemMissingException;
@@ -58,6 +58,7 @@ public interface SuggestionControlInterface {
 	 * 
 	 * @param suggestionid the suggestion id to be deleted
 	 * @return true if successful, controller item missing exception if not
+	 * @throws ControllerItemMissingException if the suggestion cannot be found
 	 */
 	Boolean delete(int suggestionid) throws ControllerItemMissingException; // delete suggestion
 
@@ -66,6 +67,7 @@ public interface SuggestionControlInterface {
 	 * 
 	 * @param suggestionid the suggestion id to be finalised
 	 * @return true if successful, controller item missing exception if not
+	 * @throws ControllerItemMissingException if the suggestion cannot be found
 	 */
 	Boolean finalise(int suggestionid) throws ControllerItemMissingException; // mark as uneditable
 
@@ -75,6 +77,7 @@ public interface SuggestionControlInterface {
 	 * 
 	 * @param suggestionid the suggestion id to be checked
 	 * @return true if editable, controller item missing exception if not
+	 * @throws ControllerItemMissingException if the suggestion cannot be found
 	 */
 	Boolean isEditable(int suggestionid) throws ControllerItemMissingException; // check if can edit
 

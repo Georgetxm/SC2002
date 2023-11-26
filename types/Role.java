@@ -18,7 +18,6 @@ public enum Role {
 	 */
 	ATTENDEE,
 	/**
-<<<<<<< HEAD
 	 * Refers to a camp commitee member of the camp<p>
 	 * A special relationship between a student and the camp, on top of the attendee relationship.
 	 * Student can only be a camp committee of one camp.

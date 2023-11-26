@@ -19,8 +19,24 @@ public abstract class UserMenu extends Interaction{
 	 * This has to be populated before any choices can be given, and on run() all menus first populate this choices before taking any other action.
 	 */
 	protected List<MenuChoice> choices;
+	/**
+	 * The function called to populate the list of choices.
+	 * <p>The general format of run is populate, givechoices, set tags.
+	 * This function makes it easier to define what the menu does.
+	 * @param currentuser the current user
+	 * @param s the scanner used for the app
+	 * @param control the container for each of the five active control implementation instances
+	 * @throws MissingRequestedDataException
+	 * @throws UserInfoMissingException
+	 */
 	protected abstract void populate(String currentuser, Scanner s, Controller control) throws MissingRequestedDataException, UserInfoMissingException;
 	/**
+	 * 
+	 */
+	/**
+	 * @param currentuser the current user
+	 * @param s the scanner used for the app
+	 * @param control the container for each of the five active control implementation instances
 	 * Offers users whatever choice exists in choices, + back, which causes this interaction to return to its previous caller.
 	 * <p>
 	 * Only shows the choices users have permission to see.

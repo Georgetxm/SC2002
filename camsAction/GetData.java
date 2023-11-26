@@ -8,8 +8,7 @@ import java.util.Map.Entry;
 
 import javax.xml.crypto.Data;
 /**
- * Class that contains the error handling wrappers for Data exclusive to camsAction
- * Checks and throws the required exceptions as needed.
+ * Class that contains a method for parsing the datatypes we use as string.
  * As this serves mainly as an error handling wrapper, classes in camsAction are free to access Data directly if they do not need error handling.
  * This class is static and should not have any instances, and its constructor is private
  * @see Data
@@ -24,8 +23,8 @@ final class GetData {
 	private GetData() {}
 	/**
 	 * Recursively passes all constituent objects and turns them into strings
-	 * @param value
-	 * @return
+	 * @param value the value of an object needed to parse into string
+	 * @return the string value of a given class
 	 */
 	static final String FromObject(Object value){
 		String valuestring="";

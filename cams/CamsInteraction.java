@@ -79,6 +79,7 @@ public final class CamsInteraction{ //Menu choices
      * <p>
      * It is implied the menu and user know what suggestion is being approved
      * Usually a user would have already selected a suggestion before this choice is given
+     * @param suggestionid the suggestion to be approved
      * @return the menu choice
      */	
 	public static MenuChoice approveSuggestion(Integer suggestionid) {

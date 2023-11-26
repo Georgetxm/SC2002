@@ -7,8 +7,15 @@ import controllers.ControllerItemMissingException;
 import entities.UserInfoMissingException;
 import interactions.Interaction;
 
+/**
+ * The interaction representing the act of rejecting a suggestion.
+ */
 public class doRejectSuggestion extends Interaction {
 
+	/**
+	 * Requests suggestion control to delete a suggestion, and directory to also remove it from its database.
+	 * @return query suggestions menu with camp, user, filter tags
+	 */
 	@Override
 	public Interaction run(String currentuser, Scanner s, Controller control)
 			throws UserInfoMissingException, MissingRequestedDataException {

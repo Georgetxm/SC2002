@@ -25,6 +25,11 @@ import types.Perms;
  * @since 2021-11-01
  */
 public final class querySuggestionsMenu extends UserMenu {
+	/**
+	 * Represents the list of suggestions shown to the viewer.
+	 * <p>
+	 * This is listed as an attribute as it is populated by populate() but needs to be accessed by run.
+	 */
 	private List<Serializable> suggestionlist = null;
 	/**
 	 * Populates the menu with suggestions for users to choose from.

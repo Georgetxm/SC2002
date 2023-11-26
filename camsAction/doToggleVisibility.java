@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import cams.CamsInteraction;
 import controllers.Controller;
-import entities.UserInfoMissingException;
 import interactions.Interaction;
 /**
  * Interaction that represents the action of changing the visibility of a camp to a value other than its original value.
@@ -19,11 +18,9 @@ public final class doToggleVisibility extends Interaction {
 	/**
 	 * Requests the controller to modify a camp's visibility between visible and not visible.
 	 *@return the appropriate single camp menu with user, filter and camp tags
-	 * @throws UserInfoMissingException 
-	 *@throws MissingRequestedDataException if the camp to be made visible or not visible cannot be found.
 	 */
 @Override
-	public Interaction run(String currentuser, Scanner s, Controller control) throws UserInfoMissingException{
+	public Interaction run(String currentuser, Scanner s, Controller control){
 		System.out.println("Camp visibility changed. Camp is now:");
 		System.out.println(control.Directory().togglevisibility(campid)?"Visible":"Not Visible");
 		HashSet<Serializable> usercamps = null;

@@ -29,6 +29,11 @@ import types.Perms;
  * @since 2021-11-01
  */
 public class queryCampsMenu extends UserMenu {
+	/**
+	 * Represents the list of camps shown to the viewer.
+	 * <p>
+	 * This is listed as an attribute as it is populated by populate() but needs to be accessed by run.
+	 */
 	private List<Entry<Integer, String>> camplist = null;
 	/**
 	 *Populates the menu choices with camps for the user to choose, and an option to filter that list.

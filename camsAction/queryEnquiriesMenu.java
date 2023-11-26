@@ -23,6 +23,11 @@ import types.Perms;
  * @since 2021-11-01
  */
 public final class queryEnquiriesMenu extends UserMenu {
+	/**
+	 * Represents the list of enquiries shown to the viewer.
+	 * <p>
+	 * This is listed as an attribute as it is populated by populate() but needs to be accessed by run.
+	 */
 	private List<Serializable> enquirylist = null;
 	/**
 	 * Populates menu choices with enquiries for the user to choose to choose.

@@ -15,6 +15,7 @@ import camsAction.doEditSuggestion;
 import camsAction.doGenerateAttendanceList;
 import camsAction.doGeneratePerformanceReport;
 import camsAction.doNothing;
+import camsAction.doRejectSuggestion;
 import camsAction.doSubmitAttendeeRegistration;
 import camsAction.doSubmitCamp;
 import camsAction.doSubmitCommitteeRegistration;
@@ -269,25 +270,48 @@ public final class CamsInteraction{ //Menu choices
 	public static MenuChoice generateAttendanceList(Integer campid, String userid) {
 		return new MenuChoice(Perms.REPLY_CAMP_ENQUIRY,"Generate attendance list",GenerateAttendanceList(campid, userid).withcamp(campid));
 	}
-	
+	/**
+	 * MenuChoice instance denoting the choice of generating an attendance list of attendees.
+	 * <p>
+	 * It is implied both the user and the menu know which camp the list is for
+	 * Usually a user would have already selected a camp before this choice is given
+	 */
 	public static MenuChoice generateForAttendee(Integer campid) {
 		return new MenuChoice(Perms.DEFAULT,"Generate for only attendees",new doGenerateAttendanceList().withcamp(campid).withroles(EnumSet.of(Role.ATTENDEE)));
 	}
-	
+	/**
+	 * MenuChoice instance denoting the choice of generating an attendance list of camp committee members.
+	 * <p>
+	 * It is implied both the user and the menu know which camp the list is for
+	 * Usually a user would have already selected a camp before this choice is given
+	 */
 	public static MenuChoice generateForCommittee(Integer campid) {
 		return new MenuChoice(Perms.DEFAULT,"Generate for only camp committee members",new doGenerateAttendanceList().withcamp(campid).withroles(EnumSet.of(Role.COMMITTEE)));
 	}
-	
+	/**
+	 * MenuChoice instance denoting the choice of registering for all participants.
+	 * <p>
+	 * It is implied both the user and the menu know which camp the list is for
+	 * Usually a user would have already selected a camp before this choice is given
+	 */
 	public static MenuChoice generateForBoth(Integer campid) {
 		return new MenuChoice(Perms.DEFAULT,"Generate for both attendees and camp committee members",new doGenerateAttendanceList().withcamp(campid).withroles(EnumSet.of(Role.COMMITTEE,Role.ATTENDEE)));
 	}
-	
+	/**
+	 * MenuChoice instance denoting the choice of generating a performance report.
+	 * <p>
+	 * It is implied both the user and the menu know which camp the report is for
+	 * Usually a user would have already selected a camp before this choice is given
+	 */
 	public static MenuChoice generatePerformanceReport(Integer campid) {
 		return new MenuChoice(Perms.APPROVE_CAMP_SUGGESTION,"Generate performance report", new doGeneratePerformanceReport().withcamp(campid));
 	}
 	
 	public static MenuChoice changePassword() {
 		return new MenuChoice(Perms.DEFAULT,"Change your password", new doChangePassword());
+	}
+	public static MenuChoice rejectSuggestion(Integer suggestionid) {
+		return new MenuChoice(Perms.APPROVE_CAMP_SUGGESTION,"Reject this suggestion",new doRejectSuggestion().withsuggestion(suggestionid));
 	}
 
 	/**
@@ -299,8 +323,9 @@ public final class CamsInteraction{ //Menu choices
 		return 	Arrays.asList(
 			approveSuggestion(suggestionid),
 			editSuggestion(suggestionid),
-			deleteSuggestion(suggestionid));
-	}
+			deleteSuggestion(suggestionid),
+			rejectSuggestion(suggestionid)
+	);}
 		
 	/**
 	 * List of menu choices to be used for the single enquiry menu
@@ -398,7 +423,7 @@ public final class CamsInteraction{ //Menu choices
 		return new StaticMenu("What would you like to do with this enquiry?",singleenquirychoices(enquiryid), new queryEnquriesMenu());
 	}
 	/**
-	 * 
+	 * Denotes a static menu instance representing the menu users see after they select 
 	 * @param campid
 	 * @param userid
 	 * @return

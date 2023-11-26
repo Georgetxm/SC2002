@@ -7,11 +7,7 @@ package controllers;
  * 
  * @see UserControlInterface
  * @see CampControlInterface
-<<<<<<< HEAD
  * @see EnquiryControlInterface
-=======
- * @see EnquiryControlInterface,
->>>>>>> branch 'Lookup-4-Controller' of https://github.com/Georgetxm/SC2002.git
  * @see SuggestionControlInterface
  * @author Teo Xuan Ming
  * @version 1.1

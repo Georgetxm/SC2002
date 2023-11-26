@@ -82,8 +82,15 @@ final class ParseInput {
 		while(true) {
 			for(int i=1;i<=facultylist.length;i++ )
 				System.out.printf("%d:%s\n",i,facultylist[i-1].name());
-			choice=s.nextInt();
-			s.nextLine();
+			choice = -9;
+			while(true){
+				String inputs = s.nextLine();
+				try {
+					choice = Integer.parseInt(inputs);
+				 }catch(NumberFormatException e) {} 
+				if(choice!=-9) break;
+				System.out.println("Please type in a valid option");
+			}
 			if(choice<1||choice>facultylist.length) {
 				System.out.println("Invalid option chosen");
 				continue;
@@ -104,8 +111,15 @@ final class ParseInput {
 		while(true) {
 			for(int i=1;i<=locationlist.length;i++ )
 				System.out.printf("%d:%s\n",i,locationlist[i-1].name());
-			choice=s.nextInt();
-			s.nextLine();
+			choice = -9;
+			while(true){
+				String inputs = s.nextLine();
+				try {
+					choice = Integer.parseInt(inputs);
+				 }catch(NumberFormatException e) {} 
+				if(choice!=-9) break;
+				System.out.println("Please type in a valid option");
+			}
 			if(choice<1||choice>locationlist.length) {
 				System.out.println("Invalid option chosen");
 				continue;
@@ -123,8 +137,15 @@ final class ParseInput {
 		System.out.println("Please choose the number of participant slots");
 		Integer slots;
 		while(true) {
-			slots=s.nextInt();
-			s.nextLine();
+			slots = -9;
+			while(true){
+				String inputs = s.nextLine();
+				try {
+					choice = Integer.parseInt(inputs);
+				 }catch(NumberFormatException e) {} 
+				if(slots!=-9) break;
+				System.out.println("Please type in a valid option");
+			}
 			if(slots<1) {
 				System.out.println("Too few slots");
 				continue;
@@ -142,8 +163,15 @@ final class ParseInput {
 		System.out.println("Please choose the number of committee slots");
 		Integer slots;
 		while(true) {
-			slots=s.nextInt();
-			s.nextLine();
+			slots = -9;
+			while(true){
+				String inputs = s.nextLine();
+				try {
+					choice = Integer.parseInt(inputs);
+				 }catch(NumberFormatException e) {} 
+				if(slots!=-9) break;
+				System.out.println("Please type in a valid option");
+			}
 			if(slots<1) {
 				System.out.println("Too few slots");
 				continue;

@@ -56,7 +56,7 @@ public class Student extends User {
      *
      */
     public Student(String userId, String name, String password, Faculty faculty) {
-        super(userId, name, password, Faculty.ADM, EnumSet.of(
+        super(userId, name, password, faculty, EnumSet.of(
                 Perms.DEFAULT,
                 Perms.SUBMIT_CAMP_ENQUIRY,
                 Perms.VIEW_AVAILABLE_CAMP,
